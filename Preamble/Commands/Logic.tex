@@ -1,0 +1,36 @@
+% Preamble/Commands/Logic.tex
+
+% Main quantifier command with flexible parenthesization
+\NewDocumentCommand{\MakeQuantifier}{m m}
+{
+    \NewDocumentCommand{#1}{t p t: t p m m}
+    {
+        % ##1 (p) = parentheses around quantifier part
+        % ##2 (:) = use colon separator  
+        % ##3 (p) = parentheses around predicate part
+        % ##4 = variable/constraint
+        % ##5 = predicate
+        \IfBooleanTF{##1}{(#2\,##4)}{#2\,##4}%
+        \IfBooleanTF{##2}{\,{:}\,}{\,}%
+        \IfBooleanTF{##3}{(##5)}{##5}%
+    }
+}
+
+% Create the standard quantifiers
+\MakeQuantifier{\Forall}{\forall}
+\MakeQuantifier{\Exists}{\exists}
+
+\NewDocumentCommand{\eq}{}
+{
+    =
+}
+
+\NewDocumentCommand{\defeq}{}
+{
+    \vcentcolon=
+}
+
+\NewDocumentCommand{\eqdef}{}
+{
+    =\vcentcolon
+}

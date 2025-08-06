@@ -1,0 +1,141 @@
+% Document/LinearAlgebra/VectorSpaces/VectorSpaces.tex
+
+\chapter{Vector Spaces}
+
+\section{Definition and Basic Properties}
+
+Vector spaces are fundamental mathematical structures that generalize the familiar concepts of geometric vectors to abstract algebraic settings. They provide the foundation for linear algebra and have applications across mathematics, physics, and engineering.
+
+\begin{definition}[Vector Space]
+Let $F$ be a field. A \textbf{vector space} (or \textbf{linear space}) over $F$ is a set $V$ together with two operations:
+\begin{itemize}
+    \item \textbf{Vector addition}: $+ : V \times V \to V$, denoted $(u, v) \mapsto u + v$
+    \item \textbf{Scalar multiplication}: $\cdot : F \times V \to V$, denoted $(a, v) \mapsto a \cdot v$ (often written as $av$)
+\end{itemize}
+such that the following axioms are satisfied for all $u, v, w \in V$ and all $a, b \in F$:
+
+\textbf{Vector Addition Axioms:}
+\begin{enumerate}
+    \item \textbf{Associativity}: $(u + v) + w = u + (v + w)$
+    \item \textbf{Commutativity}: $u + v = v + u$
+    \item \textbf{Identity element}: $\Exists :{0 \in V} \Forall :{v \in V} v + 0 = v$
+    \item \textbf{Inverse elements}: $\Forall :{v \in V} \Exists :{(-v) \in V} v + (-v) = 0$
+\end{enumerate}
+
+\textbf{Scalar Multiplication Axioms:}
+\begin{enumerate}
+    \setcounter{enumi}{4}
+    \item \textbf{Compatibility}: $a(bv) = (ab)v$
+    \item \textbf{Identity element}: $1 \cdot v = v$ (where $1$ is the multiplicative identity in $F$)
+    \item \textbf{Distributivity over vector addition}: $a(u + v) = au + av$
+    \item \textbf{Distributivity over field addition}: $(a + b)v = av + bv$
+\end{enumerate}
+\end{definition}
+
+\begin{remark}
+The elements of $V$ are called \textbf{vectors}, the elements of $F$ are called \textbf{scalars}, and the field $F$ is called the \textbf{field of scalars}. The zero vector $0 \in V$ is unique, and for each vector $v \in V$, its additive inverse $-v$ is also unique.
+\end{remark}
+
+\begin{example}
+The most familiar vector spaces include:
+\begin{enumerate}
+    \item $\bb{R}^n$ over $\bb{R}$: The set of all $n$-tuples of real numbers with componentwise addition and scalar multiplication.
+    \item $\bb{C}^n$ over $\bb{C}$: The set of all $n$-tuples of complex numbers.
+    \item The set of all polynomials with coefficients in a field $F$, denoted $F[x]$.
+    \item The set of all continuous functions from $\bb{R}$ to $\bb{R}$, denoted $C(\bb{R})$.
+\end{enumerate}
+\end{example}
+
+\section{Basic Properties of Vector Spaces}
+
+From the axioms of a vector space, we can derive several important properties that hold in any vector space.
+
+\begin{proposition}[Basic Properties]
+Let $V$ be a vector space over a field $F$. Then for any $v \in V$ and $a \in F$:
+\begin{enumerate}
+    \item $0 \cdot v = 0$ (the scalar zero times any vector gives the zero vector)
+    \item $a \cdot 0 = 0$ (any scalar times the zero vector gives the zero vector)
+    \item $(-1) \cdot v = -v$ (multiplication by $-1$ gives the additive inverse)
+    \item If $av = 0$, then either $a = 0$ or $v = 0$
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+We prove each property:
+
+\textbf{Property 1:} $0 \cdot v = 0$
+\begin{align}
+0 \cdot v &= (0 + 0) \cdot v && \text{(additive identity in } F\text{)} \\
+&= 0 \cdot v + 0 \cdot v && \text{(distributivity over field addition)} \\
+\end{align}
+Adding $-(0 \cdot v)$ to both sides:
+\begin{align}
+0 \cdot v + (-(0 \cdot v)) &= (0 \cdot v + 0 \cdot v) + (-(0 \cdot v)) \\
+0 &= 0 \cdot v + (0 \cdot v + (-(0 \cdot v))) \\
+0 &= 0 \cdot v + 0 \\
+0 &= 0 \cdot v
+\end{align}
+
+\textbf{Property 2:} Similar argument using distributivity over vector addition.
+
+\textbf{Property 3:} $(-1) \cdot v = -v$
+\begin{align}
+v + (-1) \cdot v &= 1 \cdot v + (-1) \cdot v && \text{(scalar identity)} \\
+&= (1 + (-1)) \cdot v && \text{(distributivity over field addition)} \\
+&= 0 \cdot v && \text{(additive inverse in } F\text{)} \\
+&= 0 && \text{(Property 1)}
+\end{align}
+Therefore, $(-1) \cdot v$ is the additive inverse of $v$, so $(-1) \cdot v = -v$.
+
+\textbf{Property 4:} Suppose $av = 0$ and $a \neq 0$. Since $F$ is a field, $a$ has a multiplicative inverse $a^{-1}$. Then:
+\begin{align}
+v &= 1 \cdot v \\
+&= (a^{-1}a) \cdot v \\
+&= a^{-1}(av) \\
+&= a^{-1} \cdot 0 \\
+&= 0
+\end{align}
+\end{proof}
+
+\section{Subspaces}
+
+Not every subset of a vector space is itself a vector space, but those that are have special significance.
+
+\begin{definition}[Subspace]
+Let $V$ be a vector space over a field $F$. A subset $W \subseteq V$ is called a \textbf{subspace} of $V$ if $W$ is itself a vector space under the same operations of addition and scalar multiplication inherited from $V$.
+\end{definition}
+
+\begin{theorem}[Subspace Test]
+Let $V$ be a vector space over a field $F$, and let $W$ be a non-empty subset of $V$. Then $W$ is a subspace of $V$ if and only if:
+\begin{enumerate}
+    \item \textbf{Closure under addition}: $\Forall{u, v \in W} u + v \in W$
+    \item \textbf{Closure under scalar multiplication}: $\Forall{a \in F} \Forall{v \in W} av \in W$
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+$(\Rightarrow)$ If $W$ is a subspace, then by definition it satisfies all vector space axioms, including closure under both operations.
+
+$(\Leftarrow)$ Assume $W$ satisfies the two closure properties. We need to verify that $W$ satisfies all vector space axioms:
+
+\begin{itemize}
+    \item The associativity and commutativity of addition, and the compatibility and distributivity properties of scalar multiplication are inherited from $V$ since they hold for all elements of $V$.
+    
+    \item \textbf{Zero vector}: Since $W$ is non-empty, there exists some $v \in W$. By closure under scalar multiplication, $0 \cdot v = 0 \in W$.
+    
+    \item \textbf{Additive inverses}: For any $v \in W$, we have $(-1) \cdot v = -v \in W$ by closure under scalar multiplication.
+    
+    \item \textbf{Scalar identity}: For any $v \in W$, we have $1 \cdot v = v$, which is already in $W$.
+\end{itemize}
+\end{proof}
+
+\begin{example}[Common Subspaces]
+\begin{enumerate}
+    \item The \textbf{trivial subspace} $\{0\}$ consisting of only the zero vector.
+    \item The \textbf{improper subspace} $V$ itself.
+    \item In $\bb{R}^3$, any line through the origin forms a subspace.
+    \item In $\bb{R}^3$, any plane through the origin forms a subspace.
+    \item The set of all polynomials of degree at most $n$ forms a subspace of $F[x]$.
+\end{enumerate}
+\end{example}
+

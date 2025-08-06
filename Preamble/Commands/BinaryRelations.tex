@@ -1,0 +1,74 @@
+% Preamble/Commands/BinaryRelations.tex
+
+\NewDocumentCommand{\Domain}{m}
+{
+    \mathcal{D}(#1)
+}
+
+\NewDocumentCommand{\Range}{m}
+{
+    \mathcal{R}(#1)
+}
+
+\NewDocumentCommand{\Codomain}{m}
+{
+    \mathcal{R}(#1)
+}
+
+\NewDocumentCommand{\Corange}{m}
+{
+    \mathcal{D}(#1)
+}
+
+\NewDocumentCommand{\ConverseRel}{m}
+{
+    {#1}^T
+}
+
+\NewDocumentCommand{\ComplementRel}{m}
+{
+    {#1}^c
+}
+
+\NewDocumentCommand{\Inverse}{m}
+{
+    {#1}^{-1}
+}
+
+\NewDocumentCommand{\DirectImage}{m m}
+{
+    {#1}[{#2}]
+}
+
+\NewDocumentCommand{\InverseImage}{m m}
+{
+    \ConverseRel{#1}[{#2}]
+}
+
+\NewDocumentCommand{\Composition}{m m}
+{
+    {#1} \circ {#2}
+}
+
+\NewDocumentCommand{\Restriction}{m o o}
+{
+    \IfValueTF{#2}
+    {   
+        \IfValueTF{#3}
+        {
+            {#1} \rvert _{#2}^{#3}
+        }
+        {
+            {#1} \rvert _{#2}
+        }
+    }
+    {   
+        \IfValueTF{#3}
+        {
+            {#1} \rvert ^{#3}
+        }
+        {
+            {#1} \rvert
+        }
+    }
+}

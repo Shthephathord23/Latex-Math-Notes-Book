@@ -1,0 +1,378 @@
+\chapter{Binary Relations}
+
+\section{Definition and Basic Properties}
+
+The following are equivalent for any set $R$:
+
+\begin{itemize}
+    \item $\Exists p{A}{\Exists p{B}{R \subseteq A \times B}}$.
+    \item $\Forall: {x \in R}{\Exists p{y, z}{x = (y, z)}}$.
+\end{itemize}
+
+\begin{proof}
+    \textbf{($\Rightarrow$)} Assume $\Exists p{A}{\Exists p{B}{R \subseteq A \times B}}$.
+
+    Let $x \in R$ be arbitrary. Since $R \subseteq A \times B$, we have $x \in A \times B$. By definition of Cartesian product, $x = (a, b)$ for some $a \in A$ and $b \in B$. 
+
+    Taking $y = a$ and $z = b$, we have shown that $\Forall :{x \in R}{\Exists p{y, z}{x = (y, z)}}$.
+
+    \textbf{($\Leftarrow$)} Assume $\Forall :{x \in R}{\Exists p{y, z}{x = (y, z)}}$.
+
+    We need to find sets $A$ and $B$ such that $R \subseteq A \times B$.
+
+    By the \textbf{Axiom of Replacement}, since for each $x \in R$ there exists a unique first component $y$ such that $x = (y, z)$ for some $z$, we can form the set:
+    \[\Domain{R} \defeq \left\{ y \mid \Exists{x \in R}{\Exists{z}{x = (y, z)}} \right\} \]
+    called the \textbf{domain} of $R$.
+
+    Similarly, we can form the set:
+    \[\Range{R} \defeq \left\{ z \mid \Exists{x \in R}{\Exists{y}{x = (y, z)}} \right\} \]
+    called the \textbf{range} of $R$.
+
+    More precisely, by the Axiom of Replacement applied to the function $f(x) = \text{first component of } x$ on the set $R$, we obtain $A$. Similarly for $B$ using the function $g(x) = \text{second component of } x$.
+
+    Now let $x \in R$. By assumption, $\Exists p{y, z}{x = (y, z)}$. By construction of $A$ and $B$ using replacement, we have $y \in A$ and $z \in B$, so $x = (y, z) \in A \times B$.
+
+    Therefore $R \subseteq A \times B$, which proves $\Exists p{A}{\Exists p{B}{R \subseteq A \times B}}$.
+\end{proof}
+
+\begin{remark}
+Notice that the sets $A$ and $B$ are not unique.
+\end{remark}
+
+\begin{definition}
+    A \textbf{graph of a binary relation} is a set $R$ that satisfies one of the following equivalent conditions above.
+    A \textbf{binary relation} is a tuple $(A, B, R)$ such that $R \subseteq A \times B$.
+    We will denote graphs of binary relations with capital letters, such as $R, S$ etc. and binary relations with lowercase letters, such as $r, s$ etc.
+\end{definition}
+
+\begin{remark}
+    Notice that the sets $A$ and $B$ are not unique, but they must obey $\Domain{R} \subseteq A$ and $\Range{R} \subseteq B$.
+\end{remark}
+
+\subsection{Examples of Binary Relations}
+
+\begin{example}[Identity Relation]
+Let $A$ be any set. The \textbf{identity graph} on $A$ is defined as:
+\[\text{Id}_A \defeq \left\{ (a, a) \mid a \in A \right\}\]
+This is the identity relation $\text{id}_A \defeq (A, A, \text{Id}_A)$ where $\text{Id}_A \subseteq A \times A$.
+\end{example}
+
+\begin{example}[Empty Relation]
+Let $A$ and $B$ be any sets. The \textbf{empty relation} from $A$ to $B$ is:
+\[\emptyset \subseteq A \times B\]
+This gives us the binary relation $(A, B, \emptyset)$.
+\end{example}
+
+\begin{example}[Universal Relation]
+Let $A$ and $B$ be any sets. The \textbf{universal relation} from $A$ to $B$ is:
+\[A \times B\]
+This gives us the binary relation $(A, B, A \times B)$ where every element of $A$ is related to every element of $B$.
+\end{example}
+
+\begin{remark}
+These three examples represent the extreme cases:
+\begin{itemize}
+    \item The identity relation relates each element only to itself
+    \item The empty relation relates no elements
+    \item The universal relation relates every possible pair of elements
+\end{itemize}
+\end{remark}
+
+\subsection{The Complement of a Binary Relation}
+\begin{definition}[Complement of a binary relation]
+Let $r = (A, B, R)$ be a binary relation. The \textbf{complement} of $r$, denoted $\ComplementRel{r}$, is the binary relation $(A, B, \ComplementRel{R})$ where:
+\[\ComplementRel{R} \defeq (A \times B) \setminus R = \left\{ (x, y) \in A \times B \mid (x, y) \notin R \right\}\]
+\end{definition}
+
+\begin{remark}
+Note that the complement operation is only well-defined for binary relations (tuples with specified domain and codomain), not for arbitrary graphs of binary relations, since we need the universal set $A \times B$ to form the complement.
+\end{remark}
+
+\begin{proposition}[Properties of Complement for Binary Relations]
+Let $r = (A, B, R)$ and $s = (A, B, S)$ be binary relations with the same domain and codomain. Then:
+\begin{enumerate}
+    \item \textbf{Involution}: $\ComplementRel{(\ComplementRel{r})} = r$
+    \item \textbf{De Morgan's Laws}: $\ComplementRel{(r \cup s)} = \ComplementRel{r} \cap \ComplementRel{s}$ and $\ComplementRel{(r \cap s)} = \ComplementRel{r} \cup \ComplementRel{s}$
+    \item \textbf{Universal and Empty}: The universal relation $(A, B, A \times B)$ has complement $(A, B, \emptyset)$, and vice versa
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{(1) Involution}: 
+\begin{align}
+\ComplementRel{(\ComplementRel{r})} &= (A, B, \ComplementRel{((A \times B) \setminus R)}) \\
+&= (A, B, (A \times B) \setminus ((A \times B) \setminus R)) \\
+&= (A, B, R) = r
+\end{align}
+
+\textbf{(2) De Morgan's Laws}: For the first law:
+\begin{align}
+\ComplementRel{(r \cup s)} &= (A, B, \ComplementRel{(R \cup S)}) \\
+&= (A, B, (A \times B) \setminus (R \cup S)) \\
+&= (A, B, ((A \times B) \setminus R) \cap ((A \times B) \setminus S)) \\
+&= (A, B, \ComplementRel{R} \cap \ComplementRel{S}) = \ComplementRel{r} \cap \ComplementRel{s}
+\end{align}
+The second law follows similarly.
+
+\textbf{(3) Universal and Empty}: Direct from the definition of complement.
+\end{proof}
+
+\subsection{Converse of a Binary Relation}
+\begin{definition}[Converse of the graph of a binary relation]
+Let $R$ be a graph of a binary relation. The \textbf{converse} (or \textbf{transpose}) of $R$, denoted $\ConverseRel{R}$ or $R^{-1}$, is defined as:
+\[\ConverseRel{R} \defeq \left\{ (y, x) \mid (x, y) \in R \right\}\]
+\end{definition}
+
+\begin{definition}[Converse of a binary relation]
+Let $r = (A, B, R)$ be a binary relation. The \textbf{converse} of $r$, denoted $\ConverseRel{r}$, is the binary relation $(B, A, \ConverseRel{R})$.
+\end{definition}
+
+\begin{proposition}[Properties of Converse]
+Let $R$ and $S$ be graphs of binary relations. Then:
+\begin{enumerate}
+    \item \textbf{Involution}: $\ConverseRel{(\ConverseRel{R})} = R$
+    \item \textbf{Domain and Range}: $\Domain{\ConverseRel{R}} = \Range{R}$ and $\Range{\ConverseRel{R}} = \Domain{R}$
+    \item \textbf{Union}: $\ConverseRel{(R \cup S)} = \ConverseRel{R} \cup \ConverseRel{S}$
+    \item \textbf{Intersection}: $\ConverseRel{(R \cap S)} = \ConverseRel{R} \cap \ConverseRel{S}$
+    \item \textbf{Identity}: $\ConverseRel{(\text{Id}_A)} = \text{Id}_A$ for any set $A$
+    \item \textbf{Empty and Universal}: $\ConverseRel{\emptyset} = \emptyset$ and $\ConverseRel{(A \times B)} = B \times A$
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{(1) Involution}: For any $(x, y)$:
+\begin{align}
+(x, y) \in \ConverseRel{(\ConverseRel{R})} &\Leftrightarrow (y, x) \in \ConverseRel{R} \\
+&\Leftrightarrow (x, y) \in R
+\end{align}
+Therefore $\ConverseRel{(\ConverseRel{R})} = R$.
+
+\textbf{(2) Domain and Range}: 
+\begin{align}
+\Domain{\ConverseRel{R}} &= \left\{ x \mid \Exists{y}{(x, y) \in \ConverseRel{R}} \right\} \\
+&= \left\{ x \mid \Exists{y}{(y, x) \in R} \right\} \\
+&= \left\{ x \mid x \in \Range{R} \right\} = \Range{R}
+\end{align}
+Similarly, $\Range{\ConverseRel{R}} = \Domain{R}$.
+
+\textbf{(3) Union}: For any $(x, y)$:
+\begin{align}
+(x, y) \in \ConverseRel{(R \cup S)} &\Leftrightarrow (y, x) \in R \cup S \\
+&\Leftrightarrow (y, x) \in R \text{ or } (y, x) \in S \\
+&\Leftrightarrow (x, y) \in \ConverseRel{R} \text{ or } (x, y) \in \ConverseRel{S} \\
+&\Leftrightarrow (x, y) \in \ConverseRel{R} \cup \ConverseRel{S}
+\end{align}
+
+\textbf{(4) Intersection}: For any $(x, y)$:
+\begin{align}
+(x, y) \in \ConverseRel{(R \cap S)} &\Leftrightarrow (y, x) \in R \cap S \\
+&\Leftrightarrow (y, x) \in R \text{ and } (y, x) \in S \\
+&\Leftrightarrow (x, y) \in \ConverseRel{R} \text{ and } (x, y) \in \ConverseRel{S} \\
+&\Leftrightarrow (x, y) \in \ConverseRel{R} \cap \ConverseRel{S}
+\end{align}
+
+\textbf{(5) Identity}: For any $(x, y)$:
+\begin{align}
+(x, y) \in \ConverseRel{(\text{Id}_A)} &\Leftrightarrow (y, x) \in \text{Id}_A \\
+&\Leftrightarrow y = x \text{ and } y \in A \\
+&\Leftrightarrow x = y \text{ and } x \in A \\
+&\Leftrightarrow (x, y) \in \text{Id}_A
+\end{align}
+
+\textbf{(6) Empty and Universal}: 
+For the empty relation: $(x, y) \in \ConverseRel{\emptyset} \Leftrightarrow (y, x) \in \emptyset \Leftrightarrow \text{false} \Leftrightarrow (x, y) \in \emptyset$.
+
+For the universal relation: $(x, y) \in \ConverseRel{(A \times B)} \Leftrightarrow (y, x) \in A \times B \Leftrightarrow y \in A \text{ and } x \in B \Leftrightarrow (x, y) \in B \times A$.
+\end{proof}
+
+\begin{example}
+Let $A = \left\{ 1, 2 \right\}$ and $B = \left\{ a, b \right\}$. Consider the relation:
+\[R = \left\{ (1, a), (1, b), (2, a) \right\} \subseteq A \times B\]
+Then its converse is:
+\[\ConverseRel{R} = \left\{ (a, 1), (b, 1), (a, 2) \right\} \subseteq B \times A\]
+Notice that $\Domain{R} = \left\{ 1, 2 \right\} = \Range{\ConverseRel{R}}$ and $\Range{R} = \left\{ a, b \right\} = \Domain{\ConverseRel{R}}$.
+\end{example}
+
+\section{Composition of Binary Relations}
+
+\begin{definition}[Composition of graphs of binary relations]
+Let $R$ and $S$ be graphs of binary relations. The \textbf{composition} of $R$ and $S$, denoted $\Composition{S}{R}$, is defined as:
+\[ \Composition{S}{R} \defeq \left\{ (a, c) \mid \Exists pp{b}{(a, b) \in R \text{ and } (b, c) \in S} \right\} \]
+\end{definition}
+
+\begin{definition}[Composition of binary relations]
+Let $r = (A, B, R)$ and $s = (B, C, S)$ be binary relations. The \textbf{composition} of $r$ and $s$, denoted $\Composition{s}{r}$, is the binary relation $(A, C, \Composition{S}{R})$.
+\end{definition}
+
+\begin{remark}
+Note the order: $\Composition{s}{r}$ means we first apply relation $r$, then relation $s$. This follows the standard function composition convention.
+\end{remark}
+
+\begin{example}
+Let $A = \left\{ 1, 2 \right\}$, $B = \left\{ a, b, c \right\}$, and $C = \left\{ x, y \right\}$. Consider:
+\begin{align}
+R &= \left\{ (1, a), (1, b), (2, c) \right\} \\
+S &= \left\{ (a, x), (b, x), (c, y) \right\}
+\end{align}
+Then:
+\[\Composition{S}{R} = \left\{ (1, x), (2, y) \right\}\]
+\end{example}
+
+\begin{proposition}[Properties of Composition for graphs]
+Let $R$, $S$, and $T$ be graphs of binary relations where the compositions are defined. Then:
+\begin{enumerate}
+    \item $\Composition{(\Composition{T}{S})}{R} = \Composition{T}{(\Composition{S}{R})}$ (Associativity)
+    \item $\Composition{\text{Id}_A}{R} = R$ and $\Composition{R}{\text{Id}_A} = R$ when $R \subseteq A \times B$ (Identity)
+    \item $\ConverseRel{(\Composition{S}{R})} = \Composition{\ConverseRel{R}}{\ConverseRel{S}}$ (Converse of Composition)
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{(1) Associativity}: Standard proof by showing both sides are equivalent.
+
+\textbf{(2) Identity}: Direct verification using definitions.
+
+\textbf{(3) Converse of Composition}: Direct verification using definitions.
+\end{proof}
+
+\begin{corollary}[Properties of Composition for binary relations]
+Let $r$, $s$, and $t$ be binary relations where the compositions are defined. Then:
+\begin{enumerate}
+    \item $\Composition{(\Composition{t}{s})}{r} = \Composition{t}{(\Composition{s}{r})}$ (Associativity)
+    \item \textbf{Identity}: If $\text{id}_B = (B, B, \text{Id}_B)$ is the identity relation on $B$, then:
+    \begin{itemize}
+        \item $\Composition{\text{id}_B}{r} = r$ for any relation $r = (A, B, R)$
+        \item $\Composition{s}{\text{id}_B} = s$ for any relation $s = (B, C, S)$
+    \end{itemize}
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+These properties follow immediately from the corresponding properties for graphs of binary relations, since the composition of binary relations $(A, C, \Composition{S}{R})$ is defined in terms of the composition of their underlying graphs $\Composition{S}{R}$.
+\end{proof}
+
+\subsection{Restriction and Corestriction, Direct and Inverse Images}
+\begin{definition}[Restriction of a graph of a binary relation]
+Let $R$ be a graph of a binary relation and $A$ be a set. The \textbf{restriction} of $R$ to $A$, denoted $\Restriction{R}[A]$, is defined as:
+\[\Restriction{R}[A] \defeq \left\{ (x, y) \in R \mid x \in A \right\} = R \cap (A \times \Range{R})\]
+\end{definition}
+
+\begin{definition}[Corestriction of a graph of a binary relation]
+Let $R$ be a graph of a binary relation and $B$ be a set. The \textbf{corestriction} of $R$ to $B$, denoted $\Restriction{R}[][B]$, is defined as:
+\[\Restriction{R}[][B] \defeq \left\{ (x, y) \in R \mid y \in B \right\} = R \cap (\Domain{R} \times B)\]
+\end{definition}
+
+\begin{remark}
+    The notation works to both restrict and corestrict at the same time. 
+    \[ \Restriction{R}[A][B] \defeq \left\{ (x, y) \in R \mid x \in A \text{ and } y \in B \right\} = R \cap (A \times B) \]
+\end{remark}
+
+\begin{definition}[Direct Image]
+Let $R$ be a graph of a binary relation and $A$ be a set. The \textbf{direct image} of $A$ under $R$, denoted $\DirectImage{R}{A}$, is defined as:
+\[\DirectImage{R}{A} \defeq \left\{ y \in \Range{R} \mid \Exists{x \in A}{(x, y) \in R} \right\}\]
+\end{definition}
+
+\begin{definition}[Inverse Image]
+Let $R$ be a graph of a binary relation and $B$ be a set. The \textbf{inverse image} of $B$ under $R$, denoted $\InverseImage{R}{B}$, is defined as:
+\[\InverseImage{R}{B} \defeq \left\{ x \in \Domain{R} \mid \Exists{y \in B}{(x, y) \in R} \right\}\]
+\end{definition}
+
+\begin{proposition}[Unification via Composition]
+Let $R$ be a graph of a binary relation and let $A, B$ be sets. Then:
+\begin{enumerate}
+    \item $\Restriction{R}[A] = \Composition{R}{\text{Id}_A}$
+    \item $\Restriction{R}[][B] = \Composition{\text{Id}_B}{R}$
+    \item $\DirectImage{R}{A} = \Range{(\Composition{R}{\text{Id}_A})}$
+    \item $\InverseImage{R}{B} = \Domain{(\Composition{\text{Id}_B}{R})}$
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{(1) Restriction}: 
+\begin{align}
+\Composition{R}{\text{Id}_A} &= \left\{ (x, z) \mid \Exists{y}{(x, y) \in \text{Id}_A \text{ and } (y, z) \in R} \right\} \\
+&= \left\{ (x, z) \mid \Exists{y \in A}{x = y \text{ and } (y, z) \in R} \right\} \\
+&= \left\{ (x, z) \mid x \in A \text{ and } (x, z) \in R \right\} \\
+&= \Restriction{R}[A]
+\end{align}
+
+\textbf{(2) Corestriction}: 
+\begin{align}
+\Composition{\text{Id}_B}{R} &= \left\{ (x, z) \mid \Exists{y}{(x, y) \in R \text{ and } (y, z) \in \text{Id}_B} \right\} \\
+&= \left\{ (x, z) \mid \Exists{y \in B}{(x, y) \in R \text{ and } y = z} \right\} \\
+&= \left\{ (x, y) \mid (x, y) \in R \text{ and } y \in B \right\} \\
+&= \Restriction{R}[][B]
+\end{align}
+
+\textbf{(3) Direct Image}: From property (1):
+\begin{align}
+\DirectImage{R}{A} &= \left\{ y \mid \Exists{x \in A}{(x, y) \in R} \right\} \\
+&= \Range{(\Restriction{R}[A])} \\
+&= \Range{(\Composition{R}{\text{Id}_A})}
+\end{align}
+
+\textbf{(4) Inverse Image}: From property (2):
+\begin{align}
+\InverseImage{R}{B} &= \left\{ x \mid \Exists{y \in B}{(x, y) \in R} \right\} \\
+&= \Domain{(\Restriction{R}[][B])} \\
+&= \Domain{(\Composition{\text{Id}_B}{R})}
+\end{align}
+\end{proof}
+
+\begin{corollary}[Duality via Converse]
+The operations of restriction and corestriction are dual via converse, as are direct and inverse images:
+\begin{enumerate}
+    \item $\Restriction{\ConverseRel{R}}[B] = \ConverseRel{(\Restriction{R}[][B])}$
+    \item $\Restriction{\ConverseRel{R}}[][A] = \ConverseRel{(\Restriction{R}[A])}$
+    \item $\Restriction{R}[][B] = \ConverseRel{(\Restriction{\ConverseRel{R}}[B])}$
+    \item $\Restriction{R}[A] = \ConverseRel{(\Restriction{\ConverseRel{R}}[][A])}$
+    \item $\DirectImage{\ConverseRel{R}}{A} = \InverseImage{R}{A}$
+    \item $\InverseImage{\ConverseRel{R}}{B} = \DirectImage{R}{B}$
+    \item $\DirectImage{R}{A} = \InverseImage{\ConverseRel{R}}{A}$
+    \item $\InverseImage{R}{B} = \DirectImage{\ConverseRel{R}}{B}$
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+These follow directly from the definitions and properties of converse operations:
+
+\textbf{(1)}: By definition of restriction and converse:
+\begin{align}
+\Restriction{\ConverseRel{R}}[B] &= \left\{ (x, y) \in \ConverseRel{R} \mid x \in B \right\} \\
+&= \left\{ (x, y) \mid (y, x) \in R \text{ and } x \in B \right\} \\
+&= \ConverseRel{\left\{ (y, x) \mid (y, x) \in R \text{ and } x \in B \right\}} \\
+&= \ConverseRel{(\Restriction{R}[][B])}
+\end{align}
+
+\textbf{(2)}: By definition of corestriction and converse:
+\begin{align}
+\Restriction{\ConverseRel{R}}[][A] &= \left\{ (x, y) \in \ConverseRel{R} \mid y \in A \right\} \\
+&= \left\{ (x, y) \mid (y, x) \in R \text{ and } y \in A \right\} \\
+&= \ConverseRel{\left\{ (y, x) \mid (y, x) \in R \text{ and } y \in A \right\}} \\
+&= \ConverseRel{(\Restriction{R}[A])}
+\end{align}
+
+\textbf{(3)} and \textbf{(4)}: These follow from (1) and (2) by applying converse to both sides and using the involution property $\ConverseRel{(\ConverseRel{R})} = R$.
+
+\textbf{(5)}: By definition:
+\begin{align}
+\DirectImage{\ConverseRel{R}}{A} &= \left\{ y \mid \Exists{x \in A}{(x, y) \in \ConverseRel{R}} \right\} \\
+&= \left\{ y \mid \Exists{x \in A}{(y, x) \in R} \right\} \\
+&= \InverseImage{R}{A}
+\end{align}
+
+\textbf{(6)}: By definition:
+\begin{align}
+\InverseImage{\ConverseRel{R}}{B} &= \left\{ x \mid \Exists{y \in B}{(x, y) \in \ConverseRel{R}} \right\} \\
+&= \left\{ x \mid \Exists{y \in B}{(y, x) \in R} \right\} \\
+&= \DirectImage{R}{B}
+\end{align}
+
+\textbf{(7)} and \textbf{(8)}: These follow from (5) and (6) by applying converse to both sides and using the involution property $\ConverseRel{(\ConverseRel{R})} = R$.
+\end{proof}
+
+\begin{remark}
+This proposition shows that restriction, corestriction, direct images, and inverse images are all special cases of composition with identity relations. This unifies these seemingly different operations under the single framework of relation composition, demonstrating the fundamental role of composition in binary relation theory. 
+
+The corollary further shows the elegant duality between these operations via the converse operation, illustrating the deep symmetries inherent in the theory of binary relations. Specifically, corestriction is the restriction of the converse and dually, while direct image is the inverse image of the converse and dually.
+\end{remark}
