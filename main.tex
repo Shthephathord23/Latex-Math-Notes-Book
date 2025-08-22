@@ -1,6 +1,15 @@
-\documentclass{book}
+\PassOptionsToPackage{a4paper,left=2cm,right=2cm,twoside=false}{geometry}
+\documentclass[oneside]{bookest}
 
 \input{Preamble/Preamble}
+
+% Configure hyperref to remove colored boxes around links
+\hypersetup{
+  colorlinks=true,      % Use colored links instead of boxes
+  linkcolor=black,      % Color for internal links (like TOC)
+  citecolor=blue,       % Color for citations
+  urlcolor=blue         % Color for URLs
+}
 
 \title{Big Boss}
 \author{Stefan Ghinescu}

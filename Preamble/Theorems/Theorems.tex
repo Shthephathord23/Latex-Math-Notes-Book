@@ -1,19 +1,30 @@
 % Preamble/Theorems/Theorems.tex
 
-\theoremstyle{plain}
+\newtheoremstyle{break}
+  {\topsep}{\topsep}%
+  {\itshape}{}%
+  {\bfseries}{:}%
+  {\newline}{}%
+\theoremstyle{break}
+
+% \swapnumbers
+\theoremstyle{break}
+
+% \theoremstyle{break}
 \newtheorem{num}{Numerotare}[section]
 
-\theoremstyle{definition}
+% \theoremstyle{break}
 \newtheorem{definition}[num]{Definition}
+% \AfterEndEnvironment{definition}{\noindent\ignorespaces}
 
-\theoremstyle{plain}
+% \theoremstyle{break}
 \newtheorem{proposition}[num]{Proposition}
 
-\theoremstyle{plain}
+% \theoremstyle{break}
 \newtheorem{theorem}[num]{Theorem}
 
-\theoremstyle{plain}
-\newtheorem{corollary}[num]{Corolary}
+% \theoremstyle{break}
+\newtheorem{corollary}[num]{Corollary}
 
 \theoremstyle{definition}
 \newtheorem{example}[num]{Example}
@@ -22,3 +33,36 @@
 \newtheorem*{remark}{Remark}
 
 \renewcommand{\qedsymbol}{QED}
+
+% \makeatletter
+% \renewenvironment{proof}[1][\proofname]
+% {
+%     \par \pushQED{\qed}
+%     \normalfont \topsep6\p@\@plus6\p@\relax
+%     \trivlist
+%     \item[\hskip\labelsep
+%         \upshape
+%       #1\@addpunct{:}]\ignorespaces
+% }
+% {
+%     \popQED\endtrivlist\@endpefalse
+% }
+% \makeatother
+
+% \AtBeginEnvironment{definition}{\par\noindent\hspace{10em}\ignorespaces}
+% \AtBeginEnvironment{proposition}{\par\noindent\hspace{2em}\ignorespaces}
+% \AtBeginEnvironment{theorem}{\par\noindent\hspace{2em}\ignorespaces}
+% \AtBeginEnvironment{corollary}{\par\noindent\hspace{2em}\ignorespaces}
+% \AtBeginEnvironment{example}{\par\noindent\hspace{2em}\ignorespaces}
+
+
+% Scalable indentation for all theorem environments
+% Define a list of theorem environments that should have indentation
+\newcommand{\theoremenvs}{definition,proposition,theorem,corollary,example}
+
+% Apply indentation to each environment in the list
+\makeatletter
+\@for\next:=\theoremenvs\do{%
+  \AtBeginEnvironment{\next}{\hspace{2em}\ignorespaces}%
+}
+\makeatother

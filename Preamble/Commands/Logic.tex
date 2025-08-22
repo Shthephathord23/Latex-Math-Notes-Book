@@ -3,7 +3,7 @@
 % Main quantifier command with flexible parenthesization
 \NewDocumentCommand{\MakeQuantifier}{m m}
 {
-    \NewDocumentCommand{#1}{t p t: t p m m}
+    \NewDocumentCommand{#1}{tp t: tp m m}
     {
         % ##1 (p) = parentheses around quantifier part
         % ##2 (:) = use colon separator  

@@ -2,32 +2,44 @@
 
 \NewDocumentCommand{\Domain}{m}
 {
-    \mathcal{D}(#1)
+    \mathcal{D} \left( {#1} \right)
 }
 
 \NewDocumentCommand{\Range}{m}
 {
-    \mathcal{R}(#1)
+    \mathcal{R} \left( {#1} \right)
 }
 
 \NewDocumentCommand{\Codomain}{m}
 {
-    \mathcal{R}(#1)
+    \mathcal{R} \left( {#1} \right)
 }
 
 \NewDocumentCommand{\Corange}{m}
 {
-    \mathcal{D}(#1)
+    \mathcal{D} \left( {#1} \right)
 }
 
-\NewDocumentCommand{\ConverseRel}{m}
+\NewDocumentCommand{\ConverseRel}{tp m}
 {
-    {#1}^T
+    \IfBooleanTF{#1}
+    {
+        \left( {#2} \right)^T
+    }
+    {
+        {#2}^T
+    }
 }
 
-\NewDocumentCommand{\ComplementRel}{m}
+\NewDocumentCommand{\ComplementRel}{tp m}
 {
-    {#1}^c
+    \IfBooleanTF{#1}
+    {
+        \left( {#2} \right)^c
+    }
+    {
+        {#2}^c
+    }
 }
 
 \NewDocumentCommand{\Inverse}{m}
@@ -35,19 +47,37 @@
     {#1}^{-1}
 }
 
-\NewDocumentCommand{\DirectImage}{m m}
+\NewDocumentCommand{\DirectImage}{tp m m}
 {
-    {#1}[{#2}]
+    \IfBooleanTF{#1}
+    {
+        \left( {#2} \right) \left[ {#3} \right]
+    }
+    {
+        {#2} \left[ {#3} \right]
+    }
 }
 
-\NewDocumentCommand{\InverseImage}{m m}
+\NewDocumentCommand{\InverseImage}{tp m m}
 {
-    \ConverseRel{#1}[{#2}]
+    \IfBooleanTF{#1}
+    {
+        \left( \ConverseRel{#2} \right) \left[ {#3} \right]
+    }
+    {
+        \ConverseRel{#2} \left[ {#3} \right]
+    }
 }
 
-\NewDocumentCommand{\Composition}{m m}
+\NewDocumentCommand{\Composition}{tp tp m m}
 {
-    {#1} \circ {#2}
+    \IfBooleanTF{#1}
+    {
+        \left( {#3} \circ {#4} \right)
+    }
+    {
+        {#3} \circ {#4}
+    }
 }
 
 \NewDocumentCommand{\Restriction}{m o o}
@@ -70,5 +100,16 @@
         {
             {#1} \rvert
         }
+    }
+}
+
+\NewDocumentCommand{\UniversalRel}{m o}
+{
+    \IfValueTF{#2}
+    {
+        \nabla_{#1, #2}
+    }
+    {
+        \nabla_{#1}
     }
 }
