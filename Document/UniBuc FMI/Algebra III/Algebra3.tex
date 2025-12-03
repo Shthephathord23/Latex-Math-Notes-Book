@@ -1,0 +1,157 @@
+\chapter{3. Prime and Irreductible elements}
+
+\begin{definition}[Primes and Irreductibles in Integral Domains]
+    Let $A$ be an integral domain and let $U(A) = \left\{ a \in A \mid \Exists :{b \in A}{ab = 1} \right\}$ be the set of invertible elements (units).
+    
+    \begin{enumerate}
+        \item An element $p \in A$ is called \textbf{prime} if $p \notin U(A) \cup {0}$ and \[\Forall :{a, b \in A}{p \mid ab \implies p \mid a \tor p \mid b}\]
+        
+        \item An element $r \in A$ is called \textbf{irreducible} if $r \notin U(A) \cup {0}$ and \[\Forall :{a, b \in A}{r = ab \implies a \in U(A) \tor b \in U(A)}\]
+    \end{enumerate}
+    
+    In other words, a prime element divides a product only if it divides at least one of the factors, while an irreducible element cannot be written as a product of two non-units.
+\end{definition}
+
+\begin{remark}
+    \begin{enumerate}
+        \item If $a \mid r$ where $r$ is irreducible, then $a$ is associated with $r$ or $a \in U(A)$ (i.e., $a$ is associated in divisibility with $r$ or with $1$).
+        
+        \item Every prime element is irreducible. That is, if $p$ is prime, then $p$ is irreducible.
+    \end{enumerate}
+\end{remark}
+
+\begin{proof}[Proof of Remark 1]
+    Suppose $a \mid r$ where $r$ is irreducible. Then $\Exists :{b \in A}{r = ab}$.
+    
+    Since $r$ is irreducible, by definition we have $a \in U(A) \tor b \in U(A)$.
+    
+    \textbf{Case 1:} If $a \in U(A)$, then $a$ is associated with $1$, and we are done.
+    
+    \textbf{Case 2:} If $b \in U(A)$, then $b$ is invertible, so $\Exists :{b^{-1} \in A}{bb^{-1} = 1}$. Multiplying both sides of $r = ab$ by $b^{-1}$, we get:
+    \[r \cdot b^{-1} = ab \cdot b^{-1} = a(bb^{-1}) = a \cdot 1 = a\]
+    
+    Therefore $a = rb^{-1}$, which shows that $a$ and $r$ are associated (they differ by the unit $b^{-1}$).
+    
+    In either case, $a$ is associated with $r$ or $a \in U(A)$.
+\end{proof}
+
+\begin{proof}[Proof of Remark 2]
+    Let $p$ be a prime element. We need to show that $p$ is irreducible.
+    
+    By definition, $p \notin U(A) \cup \{0\}$. Now suppose $p = ab$ for some $a, b \in A$. We need to show that $a \in U(A) \tor b \in U(A)$.
+    
+    Since $p = ab$, we have $p \mid ab$. Since $p$ is prime, by definition $p \mid a \tor p \mid b$.
+    
+    \textbf{Case 1:} Suppose $p \mid a$. Then $\Exists :{c \in A}{a = pc}$. Substituting into $p = ab$:
+    \[p = ab = (pc)b = p(cb)\]
+    
+    Since $A$ is an integral domain and $p \neq 0$, we can cancel $p$ to obtain $1 = cb$. Therefore $b \in U(A)$.
+    
+    \textbf{Case 2:} Suppose $p \mid b$. By symmetric reasoning (with roles of $a$ and $b$ reversed), we obtain $a \in U(A)$.
+    
+    In either case, $a \in U(A) \tor b \in U(A)$, which shows that $p$ is irreducible.
+\end{proof}
+
+\begin{example}
+    Consider the ring $\bb{Z}[\sqrt{-5}] = \left\{ a + b\sqrt{-5} \mid a, b \in \bb{Z} \right\}$, which is an integral domain. We will show that each element in $\{2, 3, 1+\sqrt{-5}, 1-\sqrt{-5}\}$ is irreducible but not prime.
+    
+    Define the norm function $N : \bb{Z}[\sqrt{-5}] \to \bb{Z}_{\ge 0}$ by $N(a + b\sqrt{-5}) = a^2 + 5b^2$. Note that $N$ is multiplicative: $N(\alpha\beta) = N(\alpha)N(\beta)$ for all $\alpha, \beta \in \bb{Z}[\sqrt{-5}]$.
+    
+    Also observe that $U(\bb{Z}[\sqrt{-5}]) = \{-1, 1\}$, since if $\alpha \in U(\bb{Z}[\sqrt{-5}])$, then $\Exists :{\beta \in \bb{Z}[\sqrt{-5}]}{\alpha\beta = 1}$, which implies $N(\alpha)N(\beta) = N(1) = 1$. Since $N(\alpha), N(\beta) \in \bb{Z}_{\ge 0}$ and their product is $1$, we must have $N(\alpha) = 1$. If $\alpha = a + b\sqrt{-5}$, then $a^2 + 5b^2 = 1$ forces $b = 0$ and $a = \pm 1$.
+    
+    \textbf{Irreducibility:}
+    
+    For each $q \in \{2, 3, 1+\sqrt{-5}, 1-\sqrt{-5}\}$, we have:
+    \begin{align*}
+        N(2) &= 4, \\
+        N(3) &= 9, \\
+        N(1+\sqrt{-5}) &= 1 + 5 = 6, \\
+        N(1-\sqrt{-5}) &= 1 + 5 = 6.
+    \end{align*}
+    
+    Suppose $q = \alpha\beta$ for some $\alpha, \beta \in \bb{Z}[\sqrt{-5}]$. Then $N(q) = N(\alpha)N(\beta)$.
+    
+    \begin{itemize}
+        \item For $q = 2$: We have $4 = N(\alpha)N(\beta)$. The possible factorizations are $4 = 1 \cdot 4 = 2 \cdot 2$. If $N(\alpha) = 1$, then $\alpha \in U(\bb{Z}[\sqrt{-5}])$. If $N(\alpha) = 2$, then $a^2 + 5b^2 = 2$ for $\alpha = a + b\sqrt{-5}$, which has no integer solutions. If $N(\alpha) = 4$, then $N(\beta) = 1$, so $\beta \in U(\bb{Z}[\sqrt{-5}])$. Thus $2$ is irreducible.
+        
+        \item For $q = 3$: We have $9 = N(\alpha)N(\beta)$. The possible factorizations are $9 = 1 \cdot 9 = 3 \cdot 3$. If $N(\alpha) = 1$, then $\alpha \in U(\bb{Z}[\sqrt{-5}])$. If $N(\alpha) = 3$, then $a^2 + 5b^2 = 3$, which has no integer solutions. If $N(\alpha) = 9$, then $N(\beta) = 1$, so $\beta \in U(\bb{Z}[\sqrt{-5}])$. Thus $3$ is irreducible.
+        
+        \item For $q = 1 \pm \sqrt{-5}$: We have $6 = N(\alpha)N(\beta)$. The factorizations are $6 = 1 \cdot 6 = 2 \cdot 3$. We've shown that $a^2 + 5b^2 = 2$ and $a^2 + 5b^2 = 3$ have no integer solutions. If $N(\alpha) = 1$ or $N(\beta) = 1$, then one factor is a unit. Thus $1 \pm \sqrt{-5}$ are irreducible.
+    \end{itemize}
+    
+    \textbf{Not Prime:}
+    
+    Observe that in $\bb{Z}[\sqrt{-5}]$, we have the factorization:
+    \[6 = 2 \cdot 3 = (1 + \sqrt{-5})(1 - \sqrt{-5})\]
+    
+    We can verify: $(1 + \sqrt{-5})(1 - \sqrt{-5}) = 1 - (i\sqrt{5})^2 = 1 - (-5) = 6$.
+    
+    \begin{itemize}
+        \item \textbf{$2$ is not prime:} Since $2 \mid 6 = (1 + \sqrt{-5})(1 - \sqrt{-5})$, but $2 \nmid (1 + \sqrt{-5})$ and $2 \nmid (1 - \sqrt{-5})$. 
+        
+        To see $2 \nmid (1 + \sqrt{-5})$: if $1 + \sqrt{-5} = 2\alpha$ for some $\alpha = a + b\sqrt{-5}$, then $1 + \sqrt{-5} = 2a + 2b\sqrt{-5}$, giving $1 = 2a$ and $1 = 2b$, which is impossible in $\bb{Z}$.
+        
+        \item \textbf{$3$ is not prime:} Since $3 \mid 6 = (1 + \sqrt{-5})(1 - \sqrt{-5})$, but $3 \nmid (1 + \sqrt{-5})$ and $3 \nmid (1 - \sqrt{-5})$.
+        
+        To see $3 \nmid (1 + \sqrt{-5})$: if $1 + \sqrt{-5} = 3\alpha$ for some $\alpha = a + b\sqrt{-5}$, then $1 + \sqrt{-5} = 3a + 3b\sqrt{-5}$, giving $1 = 3a$ and $1 = 3b$, which is impossible in $\bb{Z}$.
+        
+        \item \textbf{$1 + \sqrt{-5}$ is not prime:} Since $(1 + \sqrt{-5}) \mid 6 = 2 \cdot 3$, but $(1 + \sqrt{-5}) \nmid 2$ and $(1 + \sqrt{-5}) \nmid 3$.
+        
+        To see $(1 + \sqrt{-5}) \nmid 2$: if $2 = (1 + \sqrt{-5})\alpha$ for $\alpha = a + b\sqrt{-5}$, then $N(2) = N(1 + \sqrt{-5})N(\alpha)$ gives $4 = 6N(\alpha)$, impossible since $N(\alpha) \in \bb{Z}_{\ge 0}$.
+        
+        \item \textbf{$1 - \sqrt{-5}$ is not prime:} By symmetric reasoning with $(1 - \sqrt{-5}) \mid 6 = 2 \cdot 3$.
+    \end{itemize}
+    
+    This example demonstrates that in general integral domains, the converse of Remark 2 is false: irreducible elements need not be prime.
+\end{example}
+
+\begin{lemma}
+    Let $A$ be an integral domain and let $a, b, c$ be elements in $A$ such that $\text{lcm}(a, b)$ exists and $\text{lcm}(a, b) = ab$. If $a \mid bc$ then $a \mid c$.
+\end{lemma}
+
+\begin{proof}
+    Suppose $a \mid bc$. Then $\Exists :{d \in A}{bc = ad}$.
+    
+    Since $\text{lcm}(a, b) = ab$, the element $ab$ is a common multiple of both $a$ and $b$, and it is the least such multiple (up to associates).
+    
+    Since $a \mid bc$, we have that $bc$ is also a common multiple of $a$ and $b$ (as $b \mid bc$ trivially). By the definition of lcm, we have $ab \mid bc$, so $\Exists :{e \in A}{bc = abe}$.
+    
+    From $bc = ad$ and $bc = abe$, we obtain $ad = abe$.
+    
+    Since $A$ is an integral domain and $a \neq 0$ (as $a$ divides something non-zero), we can cancel $a$ to get $d = be$.
+    
+    Substituting back into $bc = ad$:
+    \[bc = a(be) = (ab)e\]
+    
+    Canceling $b$ (which is non-zero since $bc \neq 0$), we obtain $c = ae$.
+    
+    Therefore $a \mid c$, as required.
+\end{proof}
+
+\begin{proposition}[Primes and Irreductibles coincide in GCD Domains]
+    Let $A$ be a GCD domain. Then an element $r \in A$ is irreducible if and only if $r$ is prime.
+\end{proposition}
+
+\begin{proof}
+    We already know from Remark 2 that every prime element is irreducible in any integral domain. Thus it suffices to show that in a GCD domain, every irreducible element is prime.
+    
+    Let $r$ be an irreducible element in $A$. We need to show that $r$ is prime, i.e., $\Forall :{a, b \in A}{r \mid ab \implies r \mid a \tor r \mid b}$.
+    
+    Suppose $r \mid ab$ for some $a, b \in A$. Since $A$ is a GCD domain, $\gcd(r, a)$ exists. Let $d = \gcd(r, a)$.
+    
+    Then $d \mid r$. Since $r$ is irreducible, by Remark 1, either $d$ is associated with $r$ or $d \in U(A)$.
+    
+    \textbf{Case 1:} Suppose $d$ is associated with $r$. Then $d \sim r$, so $r \mid d$. Since $d \mid a$, we have $r \mid a$, and we are done.
+    
+    \textbf{Case 2:} Suppose $d \in U(A)$. Then $\gcd(r, a) \sim 1$, which means $r$ and $a$ are coprime.
+    
+    Since $r$ and $a$ are coprime, we have $\text{lcm}(r, a) \sim ra$ (in GCD domains, $\gcd(x, y) \cdot \text{lcm}(x, y) \sim xy$).
+    
+    Now, since $r \mid ab$ and $a \mid ab$, we have that $ab$ is a common multiple of $r$ and $a$. Therefore $\text{lcm}(r, a) \mid ab$.
+    
+    Since $\text{lcm}(r, a) \sim ra$, we can assume without loss of generality that $\text{lcm}(r, a) = ra$ (by replacing $r$ with an associate if necessary).
+    
+    By the lemma, since $\text{lcm}(r, a) = ra$ and $r \mid ab$, we conclude that $r \mid b$.
+    
+    In either case, $r \mid a \tor r \mid b$, which shows that $r$ is prime.
+\end{proof}

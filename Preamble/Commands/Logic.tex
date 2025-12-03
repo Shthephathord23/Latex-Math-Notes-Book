@@ -3,9 +3,9 @@
 % Main quantifier command with flexible parenthesization
 \NewDocumentCommand{\MakeQuantifier}{m m}
 {
-    \NewDocumentCommand{#1}{tp t: tp m m}
+    \NewDocumentCommand{#1}{tv t: tp m m}
     {
-        % ##1 (p) = parentheses around quantifier part
+        % ##1 (v) = parentheses around quantifier part
         % ##2 (:) = use colon separator  
         % ##3 (p) = parentheses around predicate part
         % ##4 = variable/constraint
@@ -19,6 +19,7 @@
 % Create the standard quantifiers
 \MakeQuantifier{\Forall}{\forall}
 \MakeQuantifier{\Exists}{\exists}
+\MakeQuantifier{\ExistsUnique}{\exists!}
 
 \NewDocumentCommand{\eq}{}
 {
@@ -33,4 +34,14 @@
 \NewDocumentCommand{\eqdef}{}
 {
     =\vcentcolon
+}
+
+\NewDocumentCommand{\tand}{}
+{
+    \text{ and }
+}
+
+\NewDocumentCommand{\tor}{}
+{
+    \text{ or }
 }

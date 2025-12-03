@@ -3,7 +3,11 @@
 \NewDocumentCommand{\Powerset}{tf m}
 {
     \IfBooleanTF{#1}
-    { \mathcal{P}_{\text{fin}}(#2) }
-    { \mathcal{P}(#2)}
+    { 
+        \mathcal{P}_{\text{fin}}(#2)
+    }
+    {
+        \mathcal{P}(#2)
+    }
 }
 

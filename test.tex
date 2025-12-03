@@ -1,0 +1,42 @@
+\documentclass{article}
+
+\input{Preamble/Preamble}
+
+% Test command using Option 1: different tokens for each feature
+\NewDocumentCommand{\TestQuantifier}{tP t: tQ m m}
+{
+    % #1 (P) = parentheses around quantifier part
+    % #2 (:) = use colon separator  
+    % #3 (Q) = parentheses around predicate part
+    % #4 = variable/constraint
+    % #5 = predicate
+    \IfBooleanTF{#1}{(\forall\,#4)}{\forall\,#4}%
+    \IfBooleanTF{#2}{\,{:}\,}{\,}%
+    \IfBooleanTF{#3}{(#5)}{#5}%
+}
+
+\begin{document}
+% Basic usage
+$$ \TestQuantifier{x \in \mathbb{R}}{x^2 \geq 0} $$
+
+% Parentheses around quantifier only (P token)
+$$ \TestQuantifier P{x \in \mathbb{R}}{x^2 \geq 0} $$
+
+% Colon separator only (: token)
+$$ \TestQuantifier :{x \in \mathbb{R}}{x^2 \geq 0} $$
+
+% Parentheses around predicate only (Q token)
+$$ \TestQuantifier Q{x \in \mathbb{R}}{x^2 \geq 0} $$
+
+% Parentheses around quantifier + colon (P and : tokens)
+$$ \TestQuantifier P:{x \in \mathbb{R}}{x^2 \geq 0} $$
+
+% Colon + parentheses around predicate (: and Q tokens)
+$$ \TestQuantifier :Q{x \in \mathbb{R}}{x^2 \geq 0} $$
+
+% All features (P, :, and Q tokens)
+$$ \TestQuantifier P:Q{x \in \mathbb{R}}{x^2 \geq 0} $$
+
+$$ \Forall :{\epsilon > 0}{\Exists :{\delta > 0}{\Forall :{x \in D}{0 < |x - a| < \delta \implies |f(x) - L| < \epsilon}}} $$
+
+\end{document}

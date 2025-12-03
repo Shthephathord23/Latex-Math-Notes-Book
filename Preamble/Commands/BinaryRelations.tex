@@ -2,105 +2,27 @@
 
 \NewDocumentCommand{\Domain}{m}
 {
-    \mathcal{D} \left( {#1} \right)
+    \mathcal{D}(#1)
 }
 
 \NewDocumentCommand{\Range}{m}
 {
-    \mathcal{R} \left( {#1} \right)
+    \mathcal{R}(#1)
 }
 
 \NewDocumentCommand{\Codomain}{m}
 {
-    \mathcal{R} \left( {#1} \right)
+    \mathcal{C}(#1)
 }
 
-\NewDocumentCommand{\Corange}{m}
+\NewDocumentCommand{\Identity}{m}
 {
-    \mathcal{D} \left( {#1} \right)
+    \mathrm{Id}_{#1}
 }
 
-\NewDocumentCommand{\ConverseRel}{tp m}
+\NewDocumentCommand{\identity}{m}
 {
-    \IfBooleanTF{#1}
-    {
-        \left( {#2} \right)^T
-    }
-    {
-        {#2}^T
-    }
-}
-
-\NewDocumentCommand{\ComplementRel}{tp m}
-{
-    \IfBooleanTF{#1}
-    {
-        \left( {#2} \right)^c
-    }
-    {
-        {#2}^c
-    }
-}
-
-\NewDocumentCommand{\Inverse}{m}
-{
-    {#1}^{-1}
-}
-
-\NewDocumentCommand{\DirectImage}{tp m m}
-{
-    \IfBooleanTF{#1}
-    {
-        \left( {#2} \right) \left[ {#3} \right]
-    }
-    {
-        {#2} \left[ {#3} \right]
-    }
-}
-
-\NewDocumentCommand{\InverseImage}{tp m m}
-{
-    \IfBooleanTF{#1}
-    {
-        \left( \ConverseRel{#2} \right) \left[ {#3} \right]
-    }
-    {
-        \ConverseRel{#2} \left[ {#3} \right]
-    }
-}
-
-\NewDocumentCommand{\Composition}{tp tp m m}
-{
-    \IfBooleanTF{#1}
-    {
-        \left( {#3} \circ {#4} \right)
-    }
-    {
-        {#3} \circ {#4}
-    }
-}
-
-\NewDocumentCommand{\Restriction}{m o o}
-{
-    \IfValueTF{#2}
-    {   
-        \IfValueTF{#3}
-        {
-            {#1} \rvert _{#2}^{#3}
-        }
-        {
-            {#1} \rvert _{#2}
-        }
-    }
-    {   
-        \IfValueTF{#3}
-        {
-            {#1} \rvert ^{#3}
-        }
-        {
-            {#1} \rvert
-        }
-    }
+    \mathrm{id}_{#1}
 }
 
 \NewDocumentCommand{\UniversalRel}{m o}
@@ -112,4 +34,49 @@
     {
         \nabla_{#1}
     }
+}
+
+\NewDocumentCommand{\ComplementRel}{tp m}
+{
+    \IfBooleanTF{#1}
+    {
+        {\left(#2\right)}^\mathrm{c}
+    }
+    {
+        {#2}^\mathrm{c}
+    }
+}
+
+\NewDocumentCommand{\ConverseRel}{tp m}
+{
+    \IfBooleanTF{#1}
+    {
+        {\left(#2\right)}^\mathrm{T}
+    }
+    {
+        {#2}^\mathrm{T}
+    }
+}
+
+
+
+
+\NewDocumentCommand{\Composition}{m m}
+{
+    #1 \circ #2
+}
+
+\NewDocumentCommand{\Restriction}{m o o}
+{
+    #1\IfValueT{#2}{\vert_{#2}}\IfValueT{#3}{^{#3}}
+}
+
+\NewDocumentCommand{\DirectImage}{m m}
+{
+    #1\left[#2\right]
+}
+
+\NewDocumentCommand{\InverseImage}{m m}
+{
+    {#1}^{\leftarrow}\left[#2\right]
 }

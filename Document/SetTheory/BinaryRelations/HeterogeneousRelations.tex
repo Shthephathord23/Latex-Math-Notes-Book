@@ -1,0 +1,402 @@
+
+\chapter{Heterogenous Binary Relations}
+
+\section{Definition}
+
+Let $r = (A, B, R)$ be a binary relation. If $A = B$, we call $r$ a homogenous relation. If we do not care whether $A = B$ we say $r$ is heterogenous.
+
+\section{Classification}
+
+We classify binary relations based on how they relate elements from their domain to their codomain. The following four fundamental properties capture different aspects of this relationship.
+
+\begin{definition}[Univalent Relation]
+Let $r = (A, B, R)$ be a binary relation. We say $r$ is \textbf{univalent} (or \textbf{right-unique}) if every element in the domain is related to at most one element in the codomain:
+\[ \Forall :{a \in A}{\Forall :{b_1, b_2 \in B}{(a, b_1) \in R \tand (a, b_2) \in R \implies b_1 = b_2}} \]
+Equivalently, if $(a, b_1) \in R$ and $(a, b_2) \in R$, then $b_1 = b_2$. \\
+If $r = (A, B, R)$ we also say the graph of binary relations $R$ is univalent.
+\end{definition}
+
+\begin{definition}[Total Relation]
+Let $r = (A, B, R)$ be a binary relation. We say $r$ is \textbf{total} (or sometimes \textbf{left-total}) if every element in the domain $A$ is related to at least one element in the codomain $B$:
+\[ \Forall :{a \in A}{\Exists :{b \in B}{(a, b) \in R}} \]
+Equivalently, $\Domain{R} = A$.
+\end{definition}
+
+\begin{definition}[Injective Relation]
+Let $r = (A, B, R)$ be a binary relation. We say $r$ is \textbf{injective} (or \textbf{left-unique}) if every element in the codomain is related to at most one element in the domain:
+\[ \Forall :{b \in B}{\Forall :{a_1, a_2 \in A}{(a_1, b) \in R \tand (a_2, b) \in R \implies a_1 = a_2}} \]
+Equivalently, if $(a_1, b) \in R$ and $(a_2, b) \in R$, then $a_1 = a_2$.
+\end{definition}
+
+\begin{definition}[Surjective Relation]
+Let $r = (A, B, R)$ be a binary relation. We say $r$ is \textbf{surjective} (or \textbf{right-total}) if every element in the codomain $B$ is related to at least one element in the domain $A$:
+\[ \Forall :{b \in B}{\Exists p{a \in A}{(a, b) \in R}} \]
+Equivalently, $\Range{R} = B$.
+\end{definition}
+
+\begin{definition}[Functions as Relation]
+Let $r = (A, B, R)$ be a binary relation. We say $r$ is a \textbf{function} if it is both total and univalent. That is:
+\begin{enumerate}
+    \item Every element in $A$ is related to at least one element in $B$ (total)
+    \item Every element in $A$ is related to at most one element in $B$ (univalent)
+\end{enumerate}
+Equivalently, $r$ is a function $\iff \Forall :{a \in A}{\ExistsUnique {b \in B}{(a, b) \in R}}$.
+\end{definition}
+
+\begin{remark}
+    If $r = (A, B, R)$ we also say the graph of binary relations $R$ is univalent.
+    If $r = (A, B, R)$ we also say the graph of binary relations $R$ is injective.
+    We do not say a graph of a binary relation is total or surjective since more information on the domain/codomain is needed.
+\end{remark}
+
+\begin{remark}
+Terminology:\\
+These properties can be combined in various ways:
+\begin{itemize}
+    \item A relation that is total but not univalent relates each element of $A$ to one or more elements of $B$
+    \item A relation that is univalent but not total relates some (but not necessarily all) elements of $A$ to exactly one element of $B$ (this is sometimes called a \textbf{partial function})
+    \item A relation that is both a function and injective is called an \textbf{injective function}
+    \item A relation that is both a function and surjective is called a \textbf{surjective function}
+    \item A relation that is a function, injective, and surjective is called a \textbf{bijective function} or \textbf{bijection}
+    \item A relation that is surjective but not a function can relate elements of $A$ to multiple elements of $B$, as long as every element of $B$ is covered
+\end{itemize}
+\end{remark}
+
+\begin{example}[Basic Examples]
+Let $A$ be any nonempty set.
+\begin{enumerate}
+    \item The \textbf{identity relation} $\identity{A} = (A, A, \Identity{A})$ is total, univalent, injective, and surjective (hence a bijection).
+    \item The \textbf{empty relation} $(A, B, \emptyset)$ is univalent and injective, but not total (unless $A = \emptyset$) and not surjective (unless $B = \emptyset$).
+    \item The \textbf{universal relation} $(A, B, A \times B)$ is total and surjective, but not univalent (unless $|A| \leq 1$) and not injective (unless $|B| \leq 1$).
+\end{enumerate}
+\end{example}
+
+\begin{example}
+Let $A = \{1, 2, 3\}$ and $B = \{a, b, c\}$.
+
+\begin{enumerate}
+    \item $R_1 = \{(1, a), (2, b), (3, c)\}$ is total, univalent, injective, surjective, hence a bijective function.
+    \item $R_2 = \{(1, a), (1, b), (2, a), (3, c)\}$ is total and surjective, but not univalent (hence not a function) and not injective.
+    \item $R_3 = \{(1, a), (2, b)\}$ is univalent and injective but not total and not surjective (hence not a function).
+    \item $R_4 = \{(1, a), (2, a), (3, b)\}$ is total and univalent (hence a function) but not injective and not surjective.
+    \item $R_5 = \{(1, a), (2, a), (2, b)\}$ is neither total nor univalent nor injective nor surjective nor a function.
+    \item $R_6 = \{(1, a), (2, b), (3, c), (3, a)\}$ is total and surjective but not univalent (hence not a function) and not injective.
+    \item $R_7 = \{(1, a), (1, b), (2, b), (3, c)\}$ is total, univalent, and surjective (hence a surjective function) but not injective.
+\end{enumerate}
+\end{example}
+
+\begin{proposition}[Characterization via Converse]
+Let $r = (A, B, R)$ be a binary relation. Then:
+\begin{enumerate}
+    \item $r$ is injective if and only if $\ConverseRel{r}$ is univalent
+    \item $r$ is univalent if and only if $\ConverseRel{r}$ is injective
+    \item $r$ is surjective if and only if $\ConverseRel{r}$ is total
+    \item $r$ is total if and only if $\ConverseRel{r}$ is surjective
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{(1)} $r$ is injective means:
+\[ \Forall :{b \in B}{\Forall :{a_1, a_2 \in A}{(a_1, b) \in R \tand (a_2, b) \in R \implies a_1 = a_2}} \]
+
+This is equivalent to:
+\[ \Forall :{b \in B}{\Forall :{a_1, a_2 \in A}{(b, a_1) \in \ConverseRel{R} \tand (b, a_2) \in \ConverseRel{R} \implies a_1 = a_2}} \]
+
+which means $\ConverseRel{r}$ is univalent.
+
+\textbf{(2)} This follows by applying (1) to $\ConverseRel{r}$ and using the involution property $\ConverseRel p{\ConverseRel{r}} = r$.
+
+\textbf{(3)} $r$ is surjective means:
+\[ \Forall :{b \in B}{\Exists p{a \in A}{(a, b) \in R}} \]
+
+This is equivalent to:
+\[ \Forall :{b \in B}{\Exists p{a \in A}{(b, a) \in \ConverseRel{R}}} \]
+
+which means $\ConverseRel{r}$ is total.
+
+\textbf{(4)} This follows by applying (3) to $\ConverseRel{r}$ and using the involution property $\ConverseRel p{\ConverseRel{r}} = r$.
+\end{proof}
+
+\begin{remark}
+The characterization via converse establishes a fundamental duality between properties of relations:
+\begin{itemize}
+    \item Any universal property that holds for univalent relations automatically transfers to injective relations via the converse, and vice versa. If we prove that all univalent relations satisfy some property $P$, then all injective relations satisfy the "converse version" of $P$, since $r$ injective means $\ConverseRel{r}$ univalent.
+    \item Similarly, any universal property of total relations automatically transfers to surjective relations via the converse, and vice versa.
+\end{itemize}
+This duality principle allows us to prove half as many theorems while obtaining twice as many results. For instance, if we prove a composition property for univalent relations, we immediately obtain the corresponding result for injective relations by applying the theorem to the converse.
+\end{remark}
+
+\begin{proposition}[Equivalent definitions]
+    Let $r = (A, B, R)$ be a binary relation. Then:
+\begin{enumerate}
+    \item $r$ is univalent $\iff \Composition{R}{\ConverseRel{R}} \subseteq \Identity{B}$
+    \item $r$ is total $\iff \Composition{\ConverseRel{R}}{R} \supseteq \Identity{A}$
+    \item $r$ is injective $\iff \Composition{\ConverseRel{R}}{R} \subseteq \Identity{A}$
+    \item $r$ is surjective $\iff \Composition{R}{\ConverseRel{R}} \supseteq \Identity{B}$
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{(1) Univalent}: 
+
+($\Rightarrow$) Assume $r$ is univalent. Let $(b_1, b_2) \in \Composition{R}{\ConverseRel{R}}$. Then $\Exists :p{a \in A}{(b_1, a) \in \ConverseRel{R} \tand (a, b_2) \in R}$, which means $\Exists :p{a \in A}{(a, b_1) \in R \tand (a, b_2) \in R}$. Since $r$ is univalent, we have $b_1 = b_2$. Therefore $(b_1, b_2) = (b_1, b_1) \in \Identity{B}$, so $\Composition{R}{\ConverseRel{R}} \subseteq \Identity{B}$.
+
+($\Leftarrow$) Assume $\Composition{R}{\ConverseRel{R}} \subseteq \Identity{B}$. Suppose $(a, b_1) \in R$ and $(a, b_2) \in R$. Then $(b_1, a) \in \ConverseRel{R}$ and $(a, b_2) \in R$, so $(b_1, b_2) \in \Composition{R}{\ConverseRel{R}}$. Since $\Composition{R}{\ConverseRel{R}} \subseteq \Identity{B}$, we have $(b_1, b_2) \in \Identity{B}$, which means $b_1 = b_2$. Therefore $r$ is univalent.
+
+\textbf{(2) Total}:
+
+($\Rightarrow$) Assume $r$ is total. Let $a \in A$ be arbitrary. Since $r$ is total, $\Exists :p{b \in B}{(a, b) \in R}$. Then $(a, b) \in R$ and $(b, a) \in \ConverseRel{R}$, so $(a, a) \in \Composition{\ConverseRel{R}}{R}$. Since $a$ was arbitrary, $(a, a) \in \Composition{\ConverseRel{R}}{R}$ for all $a \in A$. Therefore $\Identity{A} \subseteq \Composition{\ConverseRel{R}}{R}$.
+
+($\Leftarrow$) Assume $\Composition{\ConverseRel{R}}{R} \supseteq \Identity{A}$. Let $a \in A$ be arbitrary. Then $(a, a) \in \Identity{A} \subseteq \Composition{\ConverseRel{R}}{R}$. By definition of composition, $\Exists :p{b \in B}{(a, b) \in R \tand (b, a) \in \ConverseRel{R}}$. Since $(b, a) \in \ConverseRel{R}$ is equivalent to $(a, b) \in R$, the first condition already gives us $(a, b) \in R$ for some $b \in B$. Therefore $r$ is total.
+
+\textbf{(3) Injective}:
+
+($\Rightarrow$) Assume $r$ is injective. Let $(a_1, a_2) \in \Composition{\ConverseRel{R}}{R}$. Then $\Exists :p{b \in B}{(a_1, b) \in R \tand (b, a_2) \in \ConverseRel{R}}$, which means $\Exists :p{b \in B}{(a_1, b) \in R \tand (a_2, b) \in R}$. Since $r$ is injective, we have $a_1 = a_2$. Therefore $(a_1, a_2) = (a_1, a_1) \in \Identity{A}$, so $\Composition{\ConverseRel{R}}{R} \subseteq \Identity{A}$.
+
+($\Leftarrow$) Assume $\Composition{\ConverseRel{R}}{R} \subseteq \Identity{A}$. Suppose $(a_1, b) \in R$ and $(a_2, b) \in R$. Then $(a_1, b) \in R$ and $(b, a_2) \in \ConverseRel{R}$, so $(a_1, a_2) \in \Composition{\ConverseRel{R}}{R}$. Since $\Composition{\ConverseRel{R}}{R} \subseteq \Identity{A}$, we have $(a_1, a_2) \in \Identity{A}$, which means $a_1 = a_2$. Therefore $r$ is injective.
+
+\textbf{(4) Surjective}:
+
+($\Rightarrow$) Assume $r$ is surjective. Let $b \in B$ be arbitrary. Since $r$ is surjective, $\Exists :p{a \in A}{(a, b) \in R}$. Then $(a, b) \in R$ and $(b, a) \in \ConverseRel{R}$, so $(b, b) \in \Composition{R}{\ConverseRel{R}}$. Since $b$ was arbitrary, $(b, b) \in \Composition{R}{\ConverseRel{R}}$ for all $b \in B$. Therefore $\Identity{B} \subseteq \Composition{R}{\ConverseRel{R}}$.
+
+($\Leftarrow$) Assume $\Composition{R}{\ConverseRel{R}} \supseteq \Identity{B}$. Let $b \in B$ be arbitrary. Then $(b, b) \in \Identity{B} \subseteq \Composition{R}{\ConverseRel{R}}$. By definition of composition, $\Exists :p{a \in A}{(b, a) \in \ConverseRel{R} \tand (a, b) \in R}$. Since $(b, a) \in \ConverseRel{R}$ is equivalent to $(a, b) \in R$, the second condition already gives us $(a, b) \in R$ for some $a \in A$. Therefore $r$ is surjective.
+\end{proof}
+
+\begin{remark}
+Note that the proofs of (3) and (4) follow the same structure as (1) and (2) respectively, which is expected given the duality established by the characterization via converse: $r$ is injective if and only if $\ConverseRel{r}$ is univalent, and $r$ is surjective if and only if $\ConverseRel{r}$ is total.
+\end{remark}
+
+\begin{proposition}[Alternate Equivalent Conditions for Univalence, Totality, Injectivity, and Surjectivity]
+Let $r = (A, B, R)$ be a binary relation. Let $\{s_i\}_{i \in I}$ be a family of relations and $\{B_i\}_{i \in I}$ be a family of sets, where $|I| \geq 2$ when specified. Then:
+\begin{enumerate}
+    \item \textbf{Total}: $r$ is total $\iff \InverseImage{r}{B} = A$.
+    \item \textbf{Surjective}: $r$ is surjective $\iff \DirectImage{r}{A} = B$.
+    \item \textbf{Univalent}: The following are equivalent:
+        \begin{itemize}
+            \item $r$ is univalent.
+            \item $\Composition{(\bigcap_{i \in I} s_i)}{r} = \bigcap_{i \in I} \Composition{s_i}{r}$ for any family of relations $\{s_i\}_{i \in I}$ with $|I| \geq 2$.
+            \item $\InverseImage{r}{\bigcap_{i \in I} B_i} = \bigcap_{i \in I} \InverseImage{r}{B_i}$ for any family of sets $\{B_i\}_{i \in I}$ with $|I| \geq 2$.
+            \item $\InverseImage{r}{B_1 \cap B_2} = \InverseImage{r}{B_1} \cap \InverseImage{r}{B_2}$ for any sets $B_1, B_2$.
+        \end{itemize}
+    \item \textbf{Injective}: The following are equivalent:
+        \begin{itemize}
+            \item $r$ is injective.
+            \item $\Composition{r}{(\bigcap_{i \in I} s_i)} = \bigcap_{i \in I} \Composition{r}{s_i}$ for any family of relations $\{s_i\}_{i \in I}$ with $|I| \geq 2$.
+            \item $\DirectImage{r}{\bigcap_{i \in I} A_i} = \bigcap_{i \in I} \DirectImage{r}{A_i}$ for any family of sets $\{A_i\}_{i \in I}$ with $|I| \geq 2$.
+            \item $\DirectImage{r}{A_1 \cap A_2} = \DirectImage{r}{A_1} \cap \DirectImage{r}{A_2}$ for any sets $A_1, A_2$.
+        \end{itemize}
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{(1) Total}:
+
+($\Rightarrow$) Assume $r$ is total. By definition, this means $\Domain{R} = A$. We know that $\InverseImage{r}{B} = \Domain{\Composition{\Identity{B}}{R}}$. Since $R \subseteq A \times B$, the range of $R$ is a subset of $B$, so $\Composition{\Identity{B}}{R} = R$. Thus $\InverseImage{r}{B} = \Domain{R} = A$.
+
+($\Leftarrow$) Assume $\InverseImage{r}{B} = A$. By definition of inverse image, $\InverseImage{r}{B} = \{ x \in A \mid \Exists :{y \in B}{(x, y) \in R} \} = \Domain{R}$. Since $\Domain{R} = A$, $r$ is total.
+
+\textbf{(2) Surjective}:
+
+This follows from (1) by duality. $r$ is surjective $\iff \ConverseRel{r}$ is total $\iff \InverseImage{\ConverseRel{r}}{A} = B \iff \DirectImage{r}{A} = B$.
+
+\textbf{(3) Univalent}:
+
+We prove the equivalences in a cycle: univalent $\implies$ composition $\implies$ domain-intersection $\implies$ arbitrary intersection $\implies$ binary intersection $\implies$ univalent.
+
+\textit{(Univalent $\implies$ Composition):} Assume $r$ is univalent. We always have $\Composition{(\bigcap_{i \in I} s_i)}{r} \subseteq \bigcap_{i \in I} \Composition{s_i}{r}$. For the reverse inclusion, let $(x, z) \in \bigcap_{i \in I} \Composition{s_i}{r}$. Then $\Forall :{i \in I}{(x, z) \in \Composition{s_i}{r}}$, so $\Forall :{i \in I}{\Exists :p{y}{(x, y) \in R \tand (y, z) \in S_i}}$. 
+
+Since $r$ is univalent, for a given $x$, the $y$ such that $(x, y) \in R$ is unique (if it exists). Let this unique element be $y$. Then we must have $(y, z) \in S_i$ for all $i \in I$, so $(y, z) \in \bigcap_{i \in I} S_i$. Thus $(x, z) \in \Composition{(\bigcap_{i \in I} s_i)}{r}$.
+
+\textit{(Composition $\implies$ Domain-Intersection):} Assume $\Composition{(\bigcap_{i \in I} s_i)}{r} = \bigcap_{i \in I} \Composition{s_i}{r}$ for any family of relations. We show that $\Domain{\bigcap_{i \in I} \Composition{s_i}{r}} = \bigcap_{i \in I} \Domain{\Composition{s_i}{r}}$.
+
+We always have $\Domain{\bigcap_{i \in I} \Composition{s_i}{r}} \subseteq \bigcap_{i \in I} \Domain{\Composition{s_i}{r}}$. For the reverse inclusion, let $x \in \bigcap_{i \in I} \Domain{\Composition{s_i}{r}}$. Then $\Forall :{i \in I}{x \in \Domain{\Composition{s_i}{r}}}$, so $\Forall :{i \in I}{\Exists :p{z_i}{(x, z_i) \in \Composition{s_i}{r}}}$. By the composition assumption, $\Composition{(\bigcap_{i \in I} s_i)}{r} = \bigcap_{i \in I} \Composition{s_i}{r}$. Taking domains: $\Domain{\Composition{(\bigcap_{i \in I} s_i)}{r}} = \Domain{\bigcap_{i \in I} \Composition{s_i}{r}}$. Since $x \in \bigcap_{i \in I} \Domain{\Composition{s_i}{r}}$ and the $\subseteq$ direction holds, we need to show $x \in \Domain{\bigcap_{i \in I} \Composition{s_i}{r}}$. From $\Forall :{i \in I}{\Exists :p{z_i}{(x, z_i) \in \Composition{s_i}{r}}}$ and univalence of $r$ (which follows from the composition property), all $z_i$ must be equal. Let $z$ be this common value. Then $(x, z) \in \Composition{s_i}{r}$ for all $i$, so $(x, z) \in \bigcap_{i \in I} \Composition{s_i}{r}$, thus $x \in \Domain{\bigcap_{i \in I} \Composition{s_i}{r}}$.
+
+\textit{(Domain-Intersection $\implies$ Arbitrary Intersection):} Assume $\Domain{\bigcap_{i \in I} \Composition{s_i}{r}} = \bigcap_{i \in I} \Domain{\Composition{s_i}{r}}$ for any family of relations. Taking $s_i = \Identity{B_i}$:
+\begin{align*}
+\InverseImage{r}{\bigcap_{i \in I} B_i} &= \Domain{\Composition{\Identity{\bigcap_{i \in I} B_i}}{R}} \\
+&= \Domain{\Composition{(\bigcap_{i \in I} \Identity{B_i})}{r}} \\
+&= \Domain{\bigcap_{i \in I} \Composition{\Identity{B_i}}{r}} \\
+&= \bigcap_{i \in I} \Domain{\Composition{\Identity{B_i}}{r}} \\
+&= \bigcap_{i \in I} \InverseImage{r}{B_i}
+\end{align*}
+
+\textit{(Arbitrary Intersection $\implies$ Binary Intersection):} Trivial, take $I = \{1, 2\}$.
+
+\textit{(Binary Intersection $\implies$ Univalent):} Assume $\InverseImage{r}{B_1 \cap B_2} = \InverseImage{r}{B_1} \cap \InverseImage{r}{B_2}$ for all $B_1, B_2$. Suppose $r$ is not univalent. Then $\Exists :p{x, y_1, y_2}{(x, y_1) \in R \tand (x, y_2) \in R \tand y_1 \neq y_2}$. 
+
+Let $B_1 = \{y_1\}$ and $B_2 = \{y_2\}$. Then $B_1 \cap B_2 = \emptyset$, so $\InverseImage{r}{B_1 \cap B_2} = \emptyset$. But $x \in \InverseImage{r}{B_1}$ and $x \in \InverseImage{r}{B_2}$, so $x \in \InverseImage{r}{B_1} \cap \InverseImage{r}{B_2}$. Contradiction.
+
+\textbf{(4) Injective}:
+
+This follows from (3) by duality. $r$ is injective $\iff \ConverseRel{r}$ is univalent. Applying (3) to $\ConverseRel{r}$:
+\begin{itemize}
+    \item $\ConverseRel{r}$ is univalent $\iff \Composition{(\bigcap_{i \in I} s_i)}{\ConverseRel{r}} = \bigcap_{i \in I} \Composition{s_i}{\ConverseRel{r}}$. Taking converses: $\Composition{r}{(\bigcap_{i \in I} \ConverseRel{s_i})} = \bigcap_{i \in I} \Composition{r}{\ConverseRel{s_i}}$, which is equivalent to the composition statement for injective relations.
+    \item $\ConverseRel{r}$ is univalent $\iff \InverseImage{\ConverseRel{r}}{\bigcap_{i \in I} B_i} = \bigcap_{i \in I} \InverseImage{\ConverseRel{r}}{B_i}$. Since $\InverseImage{\ConverseRel{r}}{B} = \DirectImage{r}{B}$, this gives $\DirectImage{r}{\bigcap_{i \in I} A_i} = \bigcap_{i \in I} \DirectImage{r}{A_i}$.
+    \item Similarly for the binary intersection case.
+\end{itemize}
+\end{proof}
+
+
+\begin{proposition}[Composition Properties]
+Let $r = (A, B, R)$ and $s = (B, C, S)$ be binary relations. Then:
+\begin{enumerate}
+    \item If $r$ and $s$ are both univalent, then $\Composition{s}{r}$ is univalent
+    \item If $r$ and $s$ are both total, then $\Composition{s}{r}$ is total
+    \item If $r$ and $s$ are both injective, then $\Composition{s}{r}$ is injective
+    \item If $r$ and $s$ are both surjective, then $\Composition{s}{r}$ is surjective
+    \item If $r$ and $s$ are both functions, then $\Composition{s}{r}$ is a function
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{(1) Univalent}: Assume $r$ and $s$ are both univalent. We need to show $\Composition{s}{r}$ is univalent, i.e., $\Composition{(\Composition{S}{R})}{\ConverseRel p{\Composition{S}{R}}} \subseteq \Identity{C}$.
+
+By the converse of composition property, $\ConverseRel p{\Composition{S}{R}} = \Composition{\ConverseRel{R}}{\ConverseRel{S}}$. Therefore:
+\begin{align*}
+\Composition{(\Composition{S}{R})}{\ConverseRel p{\Composition{S}{R}}} 
+&= \Composition{(\Composition{S}{R})}{(\Composition{\ConverseRel{R}}{\ConverseRel{S}})} \\
+&= \Composition{S}{(\Composition{R}{\ConverseRel{R}})}{\ConverseRel{S}} \quad \text{(by associativity)} \\
+&\subseteq \Composition{S}{(\Identity{B})}{\ConverseRel{S}} \quad \text{(since $r$ is univalent)} \\
+&= \Composition{S}{\ConverseRel{S}} \\
+&\subseteq \Identity{C} \quad \text{(since $s$ is univalent)}
+\end{align*}
+Therefore $\Composition{s}{r}$ is univalent.
+
+\textbf{(2) Total}: Assume $r$ and $s$ are both total. We need to show $\Composition{s}{r}$ is total, i.e., $\Composition{\ConverseRel p{\Composition{S}{R}}}{\Composition{S}{R}} \supseteq \Identity{A}$.
+
+By the converse of composition property:
+\begin{align*}
+\Composition{\ConverseRel p{\Composition{S}{R}}}{\Composition{S}{R}} 
+&= \Composition{(\Composition{\ConverseRel{R}}{\ConverseRel{S}})}{(\Composition{S}{R})} \\
+&= \Composition{\ConverseRel{R}}{(\Composition{\ConverseRel{S}}{\Composition{S}{R}})} \quad \text{(by associativity)} \\
+&\supseteq \Composition{\ConverseRel{R}}{(\Identity{B})}{R} \quad \text{(since $s$ is total)} \\
+&= \Composition{\ConverseRel{R}}{R} \\
+&\supseteq \Identity{A} \quad \text{(since $r$ is total)}
+\end{align*}
+Therefore $\Composition{s}{r}$ is total.
+
+\textbf{(3) Injective}: Assume $r$ and $s$ are both injective. We need to show $\Composition{s}{r}$ is injective, i.e., $\Composition{\ConverseRel p{\Composition{S}{R}}}{\Composition{S}{R}} \subseteq \Identity{A}$.
+
+By the converse of composition property:
+\begin{align*}
+\Composition{\ConverseRel p{\Composition{S}{R}}}{\Composition{S}{R}} 
+&= \Composition{(\Composition{\ConverseRel{R}}{\ConverseRel{S}})}{(\Composition{S}{R})} \\
+&= \Composition{\ConverseRel{R}}{(\Composition{\ConverseRel{S}}{\Composition{S}{R}})} \quad \text{(by associativity)} \\
+&\subseteq \Composition{\ConverseRel{R}}{(\Identity{B})}{R} \quad \text{(since $s$ is injective)} \\
+&= \Composition{\ConverseRel{R}}{R} \\
+&\subseteq \Identity{A} \quad \text{(since $r$ is injective)}
+\end{align*}
+Therefore $\Composition{s}{r}$ is injective.
+
+\textbf{(4) Surjective}: Assume $r$ and $s$ are both surjective. We need to show $\Composition{s}{r}$ is surjective, i.e., $\Composition{(\Composition{S}{R})}{\ConverseRel p{\Composition{S}{R}}} \supseteq \Identity{C}$.
+
+By the converse of composition property:
+\begin{align*}
+\Composition{(\Composition{S}{R})}{\ConverseRel p{\Composition{S}{R}}} 
+&= \Composition{(\Composition{S}{R})}{(\Composition{\ConverseRel{R}}{\ConverseRel{S}})} \\
+&= \Composition{S}{(\Composition{R}{\ConverseRel{R}})}{\ConverseRel{S}} \quad \text{(by associativity)} \\
+&\supseteq \Composition{S}{(\Identity{B})}{\ConverseRel{S}} \quad \text{(since $r$ is surjective)} \\
+&= \Composition{S}{\ConverseRel{S}} \\
+&\supseteq \Identity{C} \quad \text{(since $s$ is surjective)}
+\end{align*}
+Therefore $\Composition{s}{r}$ is surjective.
+
+\textbf{(5) Functions}: This follows immediately from (1) and (2), since a function is a relation that is both univalent and total.
+\end{proof}
+
+\begin{remark}
+These composition properties show that the classes of total, univalent, injective, surjective, and functions relations are all closed under composition. In particular:
+\begin{itemize}
+    \item The composition of functions is a function
+    \item The composition of injective functions is injective
+    \item The composition of surjective functions is surjective
+    \item The composition of bijections is a bijection
+\end{itemize}
+\end{remark}
+
+\begin{proposition}[Necessary Conditions for Composition Properties]
+Let $r = (A, B, R)$ and $s = (B, C, S)$ be binary relations. Then:
+\begin{enumerate}
+    \item \textbf{Totality}: If $\Composition{s}{r}$ is total, then $r$ is total.
+    \item \textbf{Surjectivity}: If $\Composition{s}{r}$ is surjective, then $s$ is surjective.
+    \item \textbf{Univalence}: If $\Composition{s}{r}$ is univalent, then $\Restriction{s}[\Range{R}]$ is univalent.
+    \item \textbf{Injectivity}: If $\Composition{s}{r}$ is injective, then $\Restriction{r}[][\Domain{S}]$ is injective.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{(1) Totality}:
+
+Assume $\Composition{s}{r}$ is total. Let $a \in A$ be arbitrary. Since $\Composition{s}{r}$ is total, $\Exists :{c \in C}{(a, c) \in \Composition{S}{R}}$. By definition of composition, $\Exists :{b \in B}{(a, b) \in R \tand (b, c) \in S}$. Thus $\Exists :{b \in B}{(a, b) \in R}$, so $r$ is total.
+
+\textbf{(2) Surjectivity}:
+
+This follows from (1) by duality. $\Composition{s}{r}$ is surjective $\iff \ConverseRel p{\Composition{s}{r}}$ is total $\iff \Composition{\ConverseRel{r}}{\ConverseRel{s}}$ is total $\implies \ConverseRel{s}$ is total $\iff s$ is surjective.
+
+\textbf{(3) Univalence}:
+
+Assume $\Composition{s}{r}$ is univalent. We need to show $\Restriction{s}[\Range{R}]$ is univalent. Let $b_1, b_2 \in \Range{R}$ and $c \in C$ such that $(b_1, c) \in S$ and $(b_2, c) \in S$. Since $b_1, b_2 \in \Range{R}$, there exist $a_1, a_2 \in A$ such that $(a_1, b_1) \in R$ and $(a_2, b_2) \in R$. 
+
+Then $(a_1, c) \in \Composition{S}{R}$ (via $b_1$) and $(a_2, c) \in \Composition{S}{R}$ (via $b_2$). Since $\Composition{s}{r}$ is univalent, we have $a_1 = a_2$. Let $a = a_1 = a_2$. Then $(a, b_1) \in R$ and $(a, b_2) \in R$.
+
+Now, if $r$ were univalent, we would have $b_1 = b_2$ immediately. However, we cannot assume $r$ is univalent. Instead, we observe that for any $b \in \Range{R}$ and $c \in C$, if $(b, c) \in S$, then for any $a$ with $(a, b) \in R$, we have $(a, c) \in \Composition{S}{R}$. Since $\Composition{s}{r}$ is univalent, this $c$ is uniquely determined by $a$. But we need to show uniqueness in $b$ for fixed $c$.
+
+Actually, let's reconsider. Suppose $(b_1, c), (b_2, c) \in S$ with $b_1, b_2 \in \Range{R}$. Pick any $a_1$ with $(a_1, b_1) \in R$ and any $a_2$ with $(a_2, b_2) \in R$. If $a_1 = a_2 = a$, then $(a, c) \in \Composition{S}{R}$ via both $b_1$ and $b_2$. Since composition is well-defined, this is fine. But if $a_1 \neq a_2$, then both $(a_1, c)$ and $(a_2, c)$ are in $\Composition{S}{R}$, which contradicts univalence of $\Composition{s}{r}$ only if they're related to the same element in $A$, which they're not.
+
+The correct statement is: if $(b, c_1), (b, c_2) \in S$ with $b \in \Range{R}$, then $c_1 = c_2$. Let $a$ be such that $(a, b) \in R$. Then $(a, c_1), (a, c_2) \in \Composition{S}{R}$. Since $\Composition{s}{r}$ is univalent, $c_1 = c_2$. Therefore $\Restriction{s}[\Range{R}]$ is univalent.
+
+\textbf{(4) Injectivity}:
+
+This follows from (3) by duality. $\Composition{s}{r}$ is injective $\iff \ConverseRel p{\Composition{s}{r}}$ is univalent $\iff \Composition{\ConverseRel{r}}{\ConverseRel{s}}$ is univalent $\implies \Restriction{\ConverseRel{r}}[\Range{\ConverseRel{S}}]$ is univalent. Since $\Range{\ConverseRel{S}} = \Domain{S}$ and $\Restriction{\ConverseRel{r}}[\Domain{S}] = \ConverseRel p{\Restriction{r}[][\Domain{S}]}$, we have $\ConverseRel p{\Restriction{r}[][\Domain{S}]}$ is univalent, which means $\Restriction{r}[][\Domain{S}]$ is injective.
+\end{proof}
+
+\begin{proposition}[Characterization of Isomorphisms in Rel]
+Let $r = (A, B, R)$ be a binary relation. Then $r$ is an isomorphism in the category $\mathbf{Rel}$ (i.e., there exists $s = (B, A, S)$ such that $\Composition{r}{s} = \identity{B}$ and $\Composition{s}{r} = \identity{A}$) if and only if $r$ is total, univalent, injective, and surjective.
+\end{proposition}
+
+\begin{proof}
+($\Rightarrow$) Assume $r$ is an isomorphism with inverse $s = (B, A, S)$. Then $\Composition{r}{s} = \identity{B}$ and $\Composition{s}{r} = \identity{A}$.
+
+Since $\identity{A}$ is total and injective, and $\identity{B}$ is surjective and univalent, we apply the Necessary Conditions proposition to both compositions:
+
+\textbf{From $\Composition{s}{r} = \identity{A}$}:
+\begin{itemize}
+    \item $r$ is total (item 1).
+    \item $s$ is surjective (item 2), so $\Range{S} = A$.
+    \item $\Restriction{r}[][\Domain{S}]$ is injective (item 4).
+\end{itemize}
+
+\textbf{From $\Composition{r}{s} = \identity{B}$}:
+\begin{itemize}
+    \item $r$ is surjective (item 2).
+    \item $s$ is total (item 1), so $\Domain{S} = B$.
+    \item $\Restriction{r}[\Range{S}]$ is univalent (item 3).
+\end{itemize}
+
+Since $\Domain{S} = B$ and $\Range{S} = A$, we have $\Restriction{r}[][B] = r$ is injective and $\Restriction{r}[A] = r$ is univalent. Thus $r$ has all four properties.
+
+($\Leftarrow$) Assume $r$ is total, univalent, injective, and surjective. We show that $s = \ConverseRel{r}$ is the inverse of $r$.
+
+By the Equivalent definitions proposition:
+\begin{align*}
+\Composition{R}{\ConverseRel{R}} &\supseteq \Identity{B} \quad \text{(since $r$ is surjective)} \\
+\Composition{R}{\ConverseRel{R}} &\subseteq \Identity{B} \quad \text{(since $r$ is univalent)}
+\end{align*}
+Therefore $\Composition{r}{\ConverseRel{r}} = \identity{B}$.
+
+Similarly:
+\begin{align*}
+\Composition{\ConverseRel{R}}{R} &\supseteq \Identity{A} \quad \text{(since $r$ is total)} \\
+\Composition{\ConverseRel{R}}{R} &\subseteq \Identity{A} \quad \text{(since $r$ is injective)}
+\end{align*}
+Therefore $\Composition{\ConverseRel{r}}{r} = \identity{A}$.
+
+Thus $r$ is an isomorphism with inverse $\ConverseRel{r}$.
+\end{proof}
+
+\begin{remark}
+This proposition shows that in the category $\mathbf{Rel}$, isomorphisms are precisely the bijective functions. The forward direction demonstrates the power of the Necessary Conditions proposition: by analyzing the composition with the inverse, we can deduce all four properties. The backward direction shows that the converse relation provides the inverse when all four properties hold.
+\end{remark}
+
+\input{Document/SetTheory/BinaryRelations/InducedFunctions.tex}
+

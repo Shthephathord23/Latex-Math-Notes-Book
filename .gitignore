@@ -3,5 +3,6 @@
 *.log
 *.out
 *.toc
-./.vscode/
-./.github/
+.vscode/
+.github/
+.agent/

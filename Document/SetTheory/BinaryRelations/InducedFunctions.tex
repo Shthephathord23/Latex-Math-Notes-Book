@@ -1,0 +1,62 @@
+
+\section{Induced Functions on Power Sets}
+
+Every binary relation $r = (A, B, R)$ induces two functions between the power sets of its domain and codomain.
+
+\begin{proposition}[Induced Functions from Relations]
+Let $r = (A, B, R)$ be a binary relation. Then $r$ induces:
+\begin{enumerate}
+    \item A function $r_* : \mathcal{P}(A) \to \mathcal{P}(B)$ defined by $r_*(N) = \DirectImage{r}{N}$ for all $N \subseteq A$.
+    \item A function $r^* : \mathcal{P}(B) \to \mathcal{P}(A)$ defined by $r^*(M) = \InverseImage{r}{M}$ for all $M \subseteq B$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Both are well-defined functions since for any subset of the domain/codomain, the direct/inverse image is uniquely determined and is a subset of the codomain/domain respectively.
+\end{proof}
+
+\begin{remark}
+Not all functions from $\mathcal{P}(A)$ to $\mathcal{P}(B)$ arise from binary relations. We now characterize precisely which functions can be induced by relations.
+\end{remark}
+
+\begin{example}[Functions Not Induced by Relations]
+Let $A = \{1, 2\}$ and $B = \{a, b\}$. Consider the function $f : \mathcal{P}(A) \to \mathcal{P}(B)$ defined by:
+\begin{align*}
+f(\emptyset) &= \{a\} \\
+f(\{1\}) &= \{b\} \\
+f(\{2\}) &= \{a\} \\
+f(\{1, 2\}) &= \{a, b\}
+\end{align*}
+
+This function cannot be induced by any relation $r = (A, B, R)$ because $f(\emptyset) = \{a\} \neq \emptyset$, but for any relation, $\DirectImage{r}{\emptyset} = \emptyset$.
+\end{example}
+
+\begin{proposition}[Characterization of Functions Induced by Relations]
+A function $f : \mathcal{P}(A) \to \mathcal{P}(B)$ is induced by some binary relation $r = (A, B, R)$ (i.e., $f = r_*$) if and only if $f$ distributes over arbitrary unions:
+\[ f(\bigcup_{i \in I} N_i) = \bigcup_{i \in I} f(N_i) \]
+for any family $\{N_i\}_{i \in I}$ of subsets of $A$.
+\end{proposition}
+
+\begin{proof}
+($\Rightarrow$) Assume $f = r_*$ for some relation $r = (A, B, R)$.
+
+By the properties of direct images established earlier, $\DirectImage{r}{\bigcup_{i \in I} N_i} = \bigcup_{i \in I} \DirectImage{r}{N_i}$.
+
+($\Leftarrow$) Assume $f$ distributes over arbitrary unions. Define $R = \{(a, b) \in A \times B \mid b \in f(\{a\})\}$. We claim that $f = r_*$ where $r = (A, B, R)$.
+
+For any $N \subseteq A$, we can write $N = \bigcup_{a \in N} \{a\}$. Then:
+\begin{align*}
+\DirectImage{r}{N} &= \{b \in B \mid \Exists :{a \in N}{(a, b) \in R}\} \\
+&= \{b \in B \mid \Exists :{a \in N}{b \in f(\{a\})}\} \\
+&= \bigcup_{a \in N} f(\{a\}) \\
+&= f\left(\bigcup_{a \in N} \{a\}\right) \quad \text{(by distributivity over unions)} \\
+&= f(N)
+\end{align*}
+
+Thus $f = r_*$.
+\end{proof}
+
+\begin{remark}
+Note that the property $f(\emptyset) = \emptyset$ is automatically satisfied since taking $I = \emptyset$ in the arbitrary union property gives $f\left(\bigcup_{i \in \emptyset} N_i\right) = f(\emptyset) = \bigcup_{i \in \emptyset} f(N_i) = \emptyset$.
+\end{remark}
+

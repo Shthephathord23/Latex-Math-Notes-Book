@@ -5,34 +5,34 @@
 The following are equivalent for any set $R$:
 
 \begin{itemize}
-    \item $\Exists p{A}{\Exists pp{B}{R \subseteq A \times B}}$.
-    \item $\Forall: {x \in R}{\Exists p{y}{\Exists pp{z}{x = (y, z)}}}$.
+    \item $\Exists v{A}{\Exists vp{B}{R \subseteq A \times B}}$.
+    \item $\Forall:{w \in R}{\Exists v{x}{\Exists vp{y}{w = (x, y)}}}$.
 \end{itemize}
 
 \begin{proof}
-    \textbf{($\Rightarrow$)} Assume $\Exists p{A}{\Exists pp{B}{R \subseteq A \times B}}$.
+    \textbf{($\Rightarrow$)} Assume $\Exists v{A}{\Exists vp{B}{R \subseteq A \times B}}$.
 
-    Let $x \in R$ be arbitrary. Since $R \subseteq A \times B$, we have $x \in A \times B$. By definition of Cartesian product, $x = (a, b)$ for some $a \in A$ and $b \in B$. 
+    Let $w \in R$ be arbitrary. Since $R \subseteq A \times B$, we have $w \in A \times B$. By definition of Cartesian product, $w = (a, b)$ for some $a \in A$ and $b \in B$. 
 
-    Taking $y = a$ and $z = b$, we have shown that $\Forall :{x \in R}{\Exists p{y}{\Exists pp{z}{x = (y, z)}}}$.
+    Taking $x = a$ and $y = b$, we have shown that $\Forall:{w \in R}{\Exists v{x}{\Exists vp{y}{w = (x, y)}}}$.
 
-    \textbf{($\Leftarrow$)} Assume $\Forall :{x \in R}{\Exists p{y}{\Exists pp{z}{x = (y, z)}}}$.
+    \textbf{($\Leftarrow$)} Assume $\Forall:{w \in R}{\Exists v{x}{\Exists vp{y}{w = (x, y)}}}$.
 
     We need to find sets $A$ and $B$ such that $R \subseteq A \times B$.
 
-    By the \textbf{Axiom of Replacement}, since for each $x \in R$ there exists a unique first component $y$ such that $x = (y, z)$ for some $z$, we can form the set:
-    \[\Domain{R} \defeq \left\{ y \mid \Exists{x \in R}{\Exists{z}{x = (y, z)}} \right\} \]
+    By the \textbf{Axiom of Replacement}, since for each $w \in R$ there exists a unique first component $x$ such that $w = (x, y)$ for some $y$, we can form the set:
+    \[A \defeq \left\{ x \mid \Exists vp{y}{(x, y) \in R} \right\} \]
     % called the \textbf{domain} of $R$.
 
     Similarly, we can form the set:
-    \[\Range{R} \defeq \left\{ z \mid \Exists{x \in R}{\Exists{y}{x = (y, z)}} \right\} \]
+    \[B \defeq \left\{ y \mid \Exists vp{x}{(x, y) \in R} \right\} \]
     % called the \textbf{range} of $R$.
 
     More precisely, by the Axiom of Replacement applied to the function $f(x) = \text{"first component of } x \text{"}$ on the set $R$, we obtain $A$. Similarly for $B$ using the function $g(x) = \text{"second component of } x \text{"}$.
 
-    Now let $x \in R$. By assumption, $\Exists p{y}{\Exists pp{z}{x = (y, z)}}$. By construction of $A$ and $B$ using replacement, we have $y \in A$ and $z \in B$, so $x = (y, z) \in A \times B$.
+    Now let $w \in R$. By assumption, $\Exists v{x}{\Exists vp{y}{w = (x, y)}}$. By construction of $A$ and $B$ using replacement, we have $x \in A$ and $y \in B$, so $w = (x, y) \in A \times B$.
 
-    Therefore $R \subseteq A \times B$, which proves $\Exists p{A}{\Exists pp{B}{R \subseteq A \times B}}$.
+    Therefore $R \subseteq A \times B$, which proves $\Exists v{A}{\Exists vp{B}{R \subseteq A \times B}}$.
 \end{proof}
 
 \begin{remark}
@@ -46,10 +46,12 @@ The following are equivalent for any set $R$:
 \end{definition}
 
 \begin{definition}[Domain and Range for a Graph of a Binary Relation]
-    Let $R \subseteq A \times B$ be a graph of a binary relation. The \textbf{domain} of $R$, denoted $\Domain{R}$, is the set:
-    \[\Domain{R} \defeq \left\{ x \in A \mid \Exists{y \in B}{(x, y) \in R} \right\}\]
+    % \hspace{2em}
+    Let $R$ be a graph of a binary relation.\\
+    The \textbf{domain} of $R$, denoted $\Domain{R}$, is the set:
+    \[\Domain{R} \defeq \left\{ x \mid \Exists vp{y}{(x, y) \in R} \right\}\]
     The \textbf{range} of $R$, denoted $\Range{R}$, is the set:
-    \[\Range{R} \defeq \left\{ y \in B \mid \Exists{x \in A}{(x, y) \in R} \right\}\]
+    \[\Range{R} \defeq \left\{ y \mid \Exists vp{x}{(x, y) \in R} \right\}\]
 \end{definition}
 
 
@@ -57,8 +59,8 @@ The following are equivalent for any set $R$:
 
 \begin{example}[Identity Relation]
 Let $A$ be any set. The \textbf{identity graph} on $A$ is defined as:
-\[\text{Id}_A \defeq \left\{ (a, a) \mid a \in A \right\}\]
-This is the identity relation $\text{id}_A \defeq (A, A, \text{Id}_A)$ where $\text{Id}_A \subseteq A \times A$.
+\[\Identity{A} \defeq \left\{ (a, a) \mid a \in A \right\}\]
+This is the identity relation $\identity{A} \defeq (A, A, \Identity{A})$ where $\Identity{A} \subseteq A \times A$.
 \end{example}
 
 \begin{example}[Empty Relation]
@@ -82,48 +84,6 @@ These three examples represent the extreme cases:
 \end{itemize}
 \end{remark}
 
-\subsection{The Complement of a Binary Relation}
-\begin{definition}[Complement of a binary relation]
-Let $r = (A, B, R)$ be a binary relation. The \textbf{complement} of $r$, denoted $\ComplementRel{r}$, is the binary relation $(A, B, \ComplementRel{R})$ where:
-\[\ComplementRel{R} \defeq \UniversalRel{A}[B] \setminus R = \left\{ (x, y) \in A \times B \mid (x, y) \notin R \right\}\]
-\end{definition}
-
-\begin{remark}
-Note that the complement operation is only well-defined for binary relations (tuples with specified domain and codomain), not for arbitrary graphs of binary relations, since we need the universal set $A \times B$ to form the complement.
-\end{remark}
-
-\begin{proposition}[Properties of Complement for Binary Relations]
-Let $r = (A, B, R)$ and $s = (A, B, S)$ be binary relations with the same domain and codomain. Then:
-\begin{enumerate}
-    \item \textbf{Involution}: $\ComplementRel{(\ComplementRel{r})} = r$
-    \item \textbf{De Morgan's Laws}: $\ComplementRel{(r \cup s)} = \ComplementRel{r} \cap \ComplementRel{s}$ and $\ComplementRel{(r \cap s)} = \ComplementRel{r} \cup \ComplementRel{s}$
-    \item \textbf{Antimonotonicity}: If $R \subseteq S$ then $\ComplementRel{S} \subseteq \ComplementRel{R}$
-    \item \textbf{Universal and Empty}: The universal relation $(A, B, \UniversalRel{A}[B])$ has complement $(A, B, \emptyset)$, and vice versa
-\end{enumerate}
-\end{proposition}
-
-\begin{proof}
-\textbf{(1) Involution}: 
-\begin{align}
-\ComplementRel{(\ComplementRel{r})} &= (A, B, \ComplementRel{((A \times B) \setminus R)}) \\
-&= (A, B, (A \times B) \setminus ((A \times B) \setminus R)) \\
-&= (A, B, R) = r
-\end{align}
-
-\textbf{(2) De Morgan's Laws}: For the first law:
-\begin{align}
-\ComplementRel{(r \cup s)} &= (A, B, \ComplementRel{(R \cup S)}) \\
-&= (A, B, (A \times B) \setminus (R \cup S)) \\
-&= (A, B, ((A \times B) \setminus R) \cap ((A \times B) \setminus S)) \\
-&= (A, B, \ComplementRel{R} \cap \ComplementRel{S}) = \ComplementRel{r} \cap \ComplementRel{s}
-\end{align}
-The second law follows similarly.
-
-\textbf{(3) Antimonotonicity}: Assume $R \subseteq S$. Let $(x,y) \in \ComplementRel{S}$. Then $(x,y) \in A \times B$ and $(x,y) \notin S$. Since $R \subseteq S$, if $(x,y)$ were in $R$ then it would be in $S$, which is not the case. Therefore $(x,y) \notin R$, so $(x,y) \in \ComplementRel{R}$.
-
-\textbf{(4) Universal and Empty}: Direct from the definition of complement.
-\end{proof}
-
 \subsection{Operations on Binary Relations}
 
 Since binary relations are defined as tuples $(A, B, R)$ where $R \subseteq A \times B$, we can define set-theoretic operations on them when they share the same domain and codomain.
@@ -142,6 +102,54 @@ Let $\{r_i\}_{i \in I} = \{(A, B, R_i)\}_{i \in I}$ be a family of binary relati
 Let $r = (A, B, R)$ and $s = (A, B, S)$ be binary relations with the same domain $A$ and codomain $B$. We say $r \subseteq s$ if and only if $R \subseteq S$.
 \end{definition}
 
+\subsection{The Complement of a Binary Relation}
+\begin{definition}[Complement of a binary relation]
+Let $r = (A, B, R)$ be a binary relation. The \textbf{complement} of $r$, denoted $\ComplementRel{r}$, is the binary relation $(A, B, \ComplementRel{R})$ where:
+\[\ComplementRel{R} \defeq \UniversalRel{A}[B] \setminus R = \left\{ (x, y) \in A \times B \mid (x, y) \notin R \right\}\]
+\end{definition}
+
+\begin{remark}
+Note that the complement operation is only well-defined for binary relations (tuples with specified domain and codomain), not for arbitrary graphs of binary relations, since we need the universal set $A \times B$ to form the complement.
+\end{remark}
+
+\begin{proposition}[Properties of Complement for Binary Relations]
+Let $\{r_i\}_{i \in I} = \{(A, B, R_i)\}_{i \in I}$ be a family of binary relations with the same domain and codomain. Then:
+\begin{enumerate}
+    \item \textbf{Involution}: $\ComplementRel p{\ComplementRel{r}} = r$ for any $r = (A, B, R)$
+    \item \textbf{De Morgan's Laws}: $\ComplementRel p{\bigcup_{i \in I} r_i} = \bigcap_{i \in I} \ComplementRel{r_i}$ and $\ComplementRel p{\bigcap_{i \in I} r_i} = \bigcup_{i \in I} \ComplementRel{r_i}$
+    \item \textbf{Antimonotonicity}: If $r = (A, B, R)$ and $s = (A, B, S)$ with $R \subseteq S$ then $\ComplementRel{s} \subseteq \ComplementRel{r}$
+    \item \textbf{Universal and Empty}: The universal relation $(A, B, \UniversalRel{A}[B])$ has complement $(A, B, \emptyset)$, and vice versa
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{(1) Involution}: 
+\begin{align*}
+\ComplementRel p{\ComplementRel{r}} &= (A, B, \ComplementRel p{(A \times B) \setminus R}) \\
+&= (A, B, (A \times B) \setminus ((A \times B) \setminus R)) \\
+&= (A, B, R) = r
+\end{align*}
+
+\textbf{(2) De Morgan's Laws}: For the first law:
+\begin{align*}
+\ComplementRel p{\bigcup_{i \in I} r_i} &= \left(A, B, \ComplementRel p{\bigcup_{i \in I} R_i}\right) \\
+&= \left(A, B, (A \times B) \setminus \left(\bigcup_{i \in I} R_i\right)\right) \\
+&= \left(A, B, \bigcap_{i \in I} ((A \times B) \setminus R_i)\right) \\
+&= \left(A, B, \bigcap_{i \in I} \ComplementRel{R_i}\right) = \bigcap_{i \in I} \ComplementRel{r_i}
+\end{align*}
+For the second law:
+\begin{align*}
+\ComplementRel p{\bigcap_{i \in I} r_i} &= \left(A, B, \ComplementRel p{\bigcap_{i \in I} R_i}\right) \\
+&= \left(A, B, (A \times B) \setminus \left(\bigcap_{i \in I} R_i\right)\right) \\
+&= \left(A, B, \bigcup_{i \in I} ((A \times B) \setminus R_i)\right) \\
+&= \left(A, B, \bigcup_{i \in I} \ComplementRel{R_i}\right) = \bigcup_{i \in I} \ComplementRel{r_i}
+\end{align*}
+
+\textbf{(3) Antimonotonicity}: Assume $r = (A, B, R)$ and $s = (A, B, S)$ with $R \subseteq S$. Let $(x,y) \in \ComplementRel{S}$. Then $(x,y) \in A \times B$ and $(x,y) \notin S$. Since $R \subseteq S$, if $(x,y)$ were in $R$ then it would be in $S$, which is not the case. Therefore $(x,y) \notin R$, so $(x,y) \in \ComplementRel{R}$.
+
+\textbf{(4) Universal and Empty}: Direct from the definition of complement.
+\end{proof}
+
 \subsection{Converse of a Binary Relation}
 \begin{definition}[Converse of the graph of a binary relation]
 Let $R$ be a graph of a binary relation. The \textbf{converse} (or \textbf{transpose}) of $R$, denoted $\ConverseRel{R}$ or $R^{-1}$, is defined as:
@@ -153,76 +161,76 @@ Let $r = (A, B, R)$ be a binary relation. The \textbf{converse} of $r$, denoted 
 \end{definition}
 
 \begin{proposition}[Properties of Converse]
-Let $R$ and $S$ be graphs of binary relations. Then:
+Let $\{R_i\}_{i \in I}$ be a family of graphs of binary relations. Then:
 \begin{enumerate}
-    \item \textbf{Involution}: $\ConverseRel{(\ConverseRel{R})} = R$
-    \item \textbf{Domain and Range}: $\Domain{\ConverseRel{R}} = \Range{R}$ and $\Range{\ConverseRel{R}} = \Domain{R}$
-    \item \textbf{Union}: $\ConverseRel{(R \cup S)} = \ConverseRel{R} \cup \ConverseRel{S}$
-    \item \textbf{Intersection}: $\ConverseRel{(R \cap S)} = \ConverseRel{R} \cap \ConverseRel{S}$
+    \item \textbf{Involution}: $\ConverseRel p{\ConverseRel{R}} = R$ for any graph $R$
+    \item \textbf{Domain and Range}: $\Domain{\ConverseRel{R}} = \Range{R}$ and $\Range{\ConverseRel{R}} = \Domain{R}$ for any graph $R$
+    \item \textbf{Arbitrary Union}: $\ConverseRel p{\bigcup_{i \in I} R_i} = \bigcup_{i \in I} \ConverseRel{R_i}$
+    \item \textbf{Arbitrary Intersection}: $\ConverseRel p{\bigcap_{i \in I} R_i} = \bigcap_{i \in I} \ConverseRel{R_i}$
     \item \textbf{Monotonicity}: If $R \subseteq S$ then $\ConverseRel{R} \subseteq \ConverseRel{S}$
-    \item \textbf{Identity}: $\ConverseRel{(\text{Id}_A)} = \text{Id}_A$ for any set $A$
-    \item \textbf{Empty and Universal}: $\ConverseRel{\emptyset} = \emptyset$ and $\ConverseRel{(\UniversalRel{A}[B])} = \UniversalRel{B}[A]$
+    \item \textbf{Identity}: $\ConverseRel{\Identity{A}} = \Identity{A}$ for any set $A$
+    \item \textbf{Empty and Universal}: $\ConverseRel{\emptyset} = \emptyset$ and $\ConverseRel p{\UniversalRel{A}[B]} = \UniversalRel{B}[A]$
 \end{enumerate}
 \end{proposition}
 
 \begin{proof}
 \textbf{(1) Involution}: For any $(x, y)$:
-\begin{align}
-(x, y) \in \ConverseRel{(\ConverseRel{R})} &\Leftrightarrow (y, x) \in \ConverseRel{R} \\
+\begin{align*}
+(x, y) \in \ConverseRel p{\ConverseRel{R}} &\Leftrightarrow (y, x) \in \ConverseRel{R} \\
 &\Leftrightarrow (x, y) \in R
-\end{align}
-Therefore $\ConverseRel{(\ConverseRel{R})} = R$.
+\end{align*}
+Therefore $\ConverseRel p{\ConverseRel{R}} = R$.
 
 \textbf{(2) Domain and Range}: 
-\begin{align}
-\Domain{\ConverseRel{R}} &= \left\{ x \mid \Exists{y}{(x, y) \in \ConverseRel{R}} \right\} \\
-&= \left\{ x \mid \Exists{y}{(y, x) \in R} \right\} \\
+\begin{align*}
+\Domain{\ConverseRel{R}} &= \left\{ x \mid \Exists vp{y}{(x, y) \in \ConverseRel{R}} \right\} \\
+&= \left\{ x \mid \Exists vp{y}{(y, x) \in R} \right\} \\
 &= \left\{ x \mid x \in \Range{R} \right\} = \Range{R}
-\end{align}
+\end{align*}
 Similarly, $\Range{\ConverseRel{R}} = \Domain{R}$.
 
-\textbf{(3) Union}: For any $(x, y)$:
-\begin{align}
-(x, y) \in \ConverseRel{(R \cup S)} &\Leftrightarrow (y, x) \in R \cup S \\
-&\Leftrightarrow (y, x) \in R \text{ or } (y, x) \in S \\
-&\Leftrightarrow (x, y) \in \ConverseRel{R} \text{ or } (x, y) \in \ConverseRel{S} \\
-&\Leftrightarrow (x, y) \in \ConverseRel{R} \cup \ConverseRel{S}
-\end{align}
+\textbf{(3) Arbitrary Union}: For any $(x, y)$:
+\begin{align*}
+(x, y) \in \ConverseRel p{\bigcup_{i \in I} R_i} &\Leftrightarrow (y, x) \in \bigcup_{i \in I} R_i \\
+&\Leftrightarrow \Exists :{i \in I}{(y, x) \in R_i} \\
+&\Leftrightarrow \Exists :{i \in I}{(x, y) \in \ConverseRel{R_i}} \\
+&\Leftrightarrow (x, y) \in \bigcup_{i \in I} \ConverseRel{R_i}
+\end{align*}
 
-\textbf{(4) Intersection}: For any $(x, y)$:
-\begin{align}
-(x, y) \in \ConverseRel{(R \cap S)} &\Leftrightarrow (y, x) \in R \cap S \\
-&\Leftrightarrow (y, x) \in R \text{ and } (y, x) \in S \\
-&\Leftrightarrow (x, y) \in \ConverseRel{R} \text{ and } (x, y) \in \ConverseRel{S} \\
-&\Leftrightarrow (x, y) \in \ConverseRel{R} \cap \ConverseRel{S}
-\end{align}
+\textbf{(4) Arbitrary Intersection}: For any $(x, y)$:
+\begin{align*}
+(x, y) \in \ConverseRel p{\bigcap_{i \in I} R_i} &\Leftrightarrow (y, x) \in \bigcap_{i \in I} R_i \\
+&\Leftrightarrow \Forall :{i \in I}{(y, x) \in R_i} \\
+&\Leftrightarrow \Forall :{i \in I}{(x, y) \in \ConverseRel{R_i}} \\
+&\Leftrightarrow (x, y) \in \bigcap_{i \in I} \ConverseRel{R_i}
+\end{align*}
 
 \textbf{(5) Monotonicity}: Assume $R \subseteq S$. Let $(x, y) \in \ConverseRel{R}$. Then $(y, x) \in R$. Since $R \subseteq S$, we have $(y, x) \in S$, which implies $(x, y) \in \ConverseRel{S}$. Therefore $\ConverseRel{R} \subseteq \ConverseRel{S}$.
 
 \textbf{(6) Identity}: For any $(x, y)$:
-\begin{align}
-(x, y) \in \ConverseRel{(\text{Id}_A)} &\Leftrightarrow (y, x) \in \text{Id}_A \\
-&\Leftrightarrow y = x \text{ and } y \in A \\
-&\Leftrightarrow x = y \text{ and } x \in A \\
-&\Leftrightarrow (x, y) \in \text{Id}_A
-\end{align}
+\begin{align*}
+(x, y) \in \ConverseRel p{\Identity{A}} &\Leftrightarrow (y, x) \in \Identity{A} \\
+&\Leftrightarrow y = x \tand y \in A \\
+&\Leftrightarrow x = y \tand x \in A \\
+&\Leftrightarrow (x, y) \in \Identity{A}
+\end{align*}
 
 \textbf{(7) Empty and Universal}: 
 For the empty relation: $(x, y) \in \ConverseRel{\emptyset} \Leftrightarrow (y, x) \in \emptyset \Leftrightarrow \text{false} \Leftrightarrow (x, y) \in \emptyset$.
 
-For the universal relation: $(x, y) \in \ConverseRel{(A \times B)} \Leftrightarrow (y, x) \in A \times B \Leftrightarrow y \in A \text{ and } x \in B \Leftrightarrow (x, y) \in B \times A$.
+For the universal relation: $(x, y) \in \ConverseRel p{A \times B} \Leftrightarrow (y, x) \in A \times B \Leftrightarrow y \in A \tand x \in B \Leftrightarrow (x, y) \in B \times A$.
 \end{proof}
 
 \begin{proposition}[Properties of Converse for Binary Relations]
-Let $r = (A, B, R)$ and $s = (A, B, S)$ be binary relations with the same domain and codomain. Then:
+Let $\{r_i\}_{i \in I} = \{(A, B, R_i)\}_{i \in I}$ be a family of binary relations with the same domain and codomain. Then:
 \begin{enumerate}
-    \item \textbf{Involution}: $\ConverseRel{(\ConverseRel{r})} = r$
-    \item \textbf{Domain and Codomain}: $\Domain{\ConverseRel{r}} = \Range{r}$ and $\Codomain{\ConverseRel{r}} = \Domain{r}$
-    \item \textbf{Union}: $\ConverseRel{(r \cup s)} = \ConverseRel{r} \cup \ConverseRel{s}$
-    \item \textbf{Intersection}: $\ConverseRel{(r \cap s)} = \ConverseRel{r} \cap \ConverseRel{s}$
+    \item \textbf{Involution}: $\ConverseRel p{\ConverseRel{r}} = r$ for any relation $r$
+    \item \textbf{Domain and Codomain}: $\Domain{\ConverseRel{r}} = \Range{r}$ and $\Codomain{\ConverseRel{r}} = \Domain{r}$ for any relation $r$
+    \item \textbf{Arbitrary Union}: $\ConverseRel p{\bigcup_{i \in I} r_i} = \bigcup_{i \in I} \ConverseRel{r_i}$
+    \item \textbf{Arbitrary Intersection}: $\ConverseRel p{\bigcap_{i \in I} r_i} = \bigcap_{i \in I} \ConverseRel{r_i}$
     \item \textbf{Monotonicity}: If $r \subseteq s$ then $\ConverseRel{r} \subseteq \ConverseRel{s}$
-    \item \textbf{Identity}: $\ConverseRel{\text{id}_A} = \text{id}_A$ 
-    \item \textbf{Empty and Universal}: $\ConverseRel{\emptyset_{A,B}} = \emptyset_{B,A}$ and $\ConverseRel{(\UniversalRel{A}[B])} = \UniversalRel{B}[A]$
+    \item \textbf{Identity}: $\ConverseRel{\identity{A}} = \identity{A}$ 
+    \item \textbf{Empty and Universal}: $\ConverseRel{\emptyset_{A,B}} = \emptyset_{B,A}$ and $\ConverseRel p{\UniversalRel{A}[B]} = \UniversalRel{B}[A]$
 \end{enumerate}
 \end{proposition}
 
@@ -242,7 +250,9 @@ Notice that $\Domain{R} = \left\{ 1, 2 \right\} = \Range{\ConverseRel{R}}$ and $
 
 \begin{definition}[Composition of graphs of binary relations]
 Let $R$ and $S$ be graphs of binary relations. The \textbf{composition} of $R$ and $S$, denoted $\Composition{S}{R}$, is defined as:
-\[ \Composition{S}{R} \defeq \left\{ (a, c) \mid \Exists pp{b}{(a, b) \in R \text{ and } (b, c) \in S} \right\} \]
+\[
+\Composition{S}{R} \defeq \left\{ (a, c) \mid \Exists vp{b}{(a, b) \in R \tand (b, c) \in S} \right\}
+\]
 \end{definition}
 
 \begin{definition}[Composition of binary relations]
@@ -256,10 +266,10 @@ The composition of graphs of binary relations is defined for all graphs, but the
 
 \begin{example}
 Let $A = \left\{ 1, 2 \right\}$, $B = \left\{ a, b, c \right\}$, and $C = \left\{ x, y \right\}$. Consider:
-\begin{align}
+\begin{align*}
 R &= \left\{ (1, a), (1, b), (2, c) \right\} \\
 S &= \left\{ (a, x), (b, x), (c, y) \right\}
-\end{align}
+\end{align*}
 Then:
 \[\Composition{S}{R} = \left\{ (1, x), (2, y) \right\}\]
 \end{example}
@@ -271,69 +281,70 @@ Let $R$, $S$, and $T$ be graphs of binary relations. Then:
 \begin{enumerate}
     \item $\Domain{\Composition{S}{R}} \subseteq \Domain{R}$
     \item $\Range{\Composition{S}{R}} \subseteq \Range{S}$
-    \item $\Composition{S}{R} = \{(a,c) \mid \Exists{b \in \Range{R} \cap \Domain{S}}{(a,b) \in R \text{ and } (b,c) \in S}\}$
+    \item $\Composition{S}{R} = \{(a,c) \mid \Exists :  {b \in \Range{R} \cap \Domain{S}}{(a,b) \in R \tand (b,c) \in S}\}$
     \item \textbf{Associativity}: $\Composition{(\Composition{T}{S})}{R} = \Composition{T}{(\Composition{S}{R})}$
-    \item \textbf{Identity}: $\Composition{\text{Id}_B}{R} = R$ and $\Composition{R}{\text{Id}_A} = R$ when $R \subseteq A \times B$
-    \item \textbf{Converse of Composition}: $\ConverseRel{(\Composition{S}{R})} = \Composition{\ConverseRel{R}}{\ConverseRel{S}}$
+    \item \textbf{Identity}: $\Composition{\Identity{B}}{R} = R = \Composition{R}{\Identity{A}} \text{ when } R \subseteq A \times B$
+    \item \textbf{Converse of Composition}: $\ConverseRel p{\Composition{S}{R}} = \Composition{\ConverseRel{R}}{\ConverseRel{S}}$
 \end{enumerate}
 \end{proposition}
 
 \begin{proof}
-\textbf{(1)} Let $a \in \Domain{\Composition{S}{R}}$. Then $\Exists{c}{(a,c) \in \Composition{S}{R}}$, so $\Exists{b}{(a,b) \in R \text{ and } (b,c) \in S}$. Thus $a \in \Domain{R}$.
+\textbf{(1)} Let $a \in \Domain{\Composition{S}{R}}$. Then $\Exists{c}{(a,c) \in \Composition{S}{R}}$, so $\Exists{b}{(a,b) \in R \tand (b,c) \in S}$. Thus $a \in \Domain{R}$.
 
-\textbf{(2)} Let $c \in \Range{\Composition{S}{R}}$. Then $\Exists{a}{(a,c) \in \Composition{S}{R}}$, so $\Exists{b}{(a,b) \in R \text{ and } (b,c) \in S}$. Thus $c \in \Range{S}$.
+\textbf{(2)} Let $c \in \Range{\Composition{S}{R}}$. Then $\Exists{a}{(a,c) \in \Composition{S}{R}}$, so $\Exists{b}{(a,b) \in R \tand (b,c) \in S}$. Thus $c \in \Range{S}$.
 
 \textbf{(3)} By definition:
 \[
-\Composition{S}{R} = \left\{ (a,c) \mid \Exists{b}{(a,b) \in R \text{ and } (b,c) \in S} \right\}
+\Composition{S}{R} = \left\{ (a,c) \mid \Exists vp{b}{(a,b) \in R \tand (b,c) \in S} \right\}
 \]
 If $(a,b) \in R$ then $b \in \Range{R}$, and if $(b,c) \in S$ then $b \in \Domain{S}$. Thus:
 \[
-\Exists{b}{(a,b) \in R \text{ and } (b,c) \in S} \Leftrightarrow \Exists{b \in \Range{R} \cap \Domain{S}}{(a,b) \in R \text{ and } (b,c) \in S}
+\Exists vp{b}{(a,b) \in R \tand (b,c) \in S} \Leftrightarrow \Exists :{b \in \Range{R} \cap \Domain{S}}{(a,b) \in R \tand (b,c) \in S}
 \]
 Therefore the equality holds.
 
 \textbf{(4) Associativity}: 
 For any $(a,d)$:
-\begin{align}
+\begin{align*}
 (a,d) \in \Composition{(\Composition{T}{S})}{R} 
-&\Leftrightarrow \Exists b{(a,b) \in R \text{ and } (b,d) \in \Composition{T}{S}} \\
-&\Leftrightarrow \Exists b{(a,b) \in R \text{ and } \Exists c{(b,c) \in S \text{ and } (c,d) \in T}} \\
-&\Leftrightarrow \Exists c{\Exists b{(a,b) \in R \text{ and } (b,c) \in S} \text{ and } (c,d) \in T} \\
-&\Leftrightarrow \Exists c{(a,c) \in \Composition{S}{R} \text{ and } (c,d) \in T} \\
+&\Leftrightarrow \Exists vp{b}{(a,b) \in R \tand (b,d) \in \Composition{T}{S}} \\
+&\Leftrightarrow \Exists vp{b}{(a,b) \in R \tand \Exists vp{c}{(b,c) \in S \tand (c,d) \in T}} \\
+&\Leftrightarrow \Exists vp{c}{\Exists vp{b}{(a,b) \in R \tand (b,c) \in S} \tand (c,d) \in T} \\
+&\Leftrightarrow \Exists vp{c}{(a,c) \in \Composition{S}{R} \tand (c,d) \in T} \\
 &\Leftrightarrow (a,d) \in \Composition{T}{(\Composition{S}{R})}
-\end{align}
+\end{align*}
 
 \textbf{(5) Identity}: 
 First part: Assume $R \subseteq A \times B$. For any $(a,b)$:
-\begin{align}
-(a,b) \in \Composition{\text{Id}_A}{R} 
-&\Leftrightarrow \Exists x{(a,x) \in \text{Id}_A \text{ and } (x,b) \in R} \\
-&\Leftrightarrow \Exists x \in A{a = x \text{ and } (x,b) \in R} \\
+\begin{align*}
+(a,b) \in \Composition{\Identity{A}}{R} 
+&\Leftrightarrow \Exists vp{x}{(a,x) \in \Identity{A} \tand (x,b) \in R} \\
+&\Leftrightarrow \Exists :p{x \in A}{a = x \tand (x,b) \in R} \\
 &\Leftrightarrow (a,b) \in R
-\end{align}
-Similarly for $\Composition{R}{\text{Id}_A} = R$.
+\end{align*}
+Similarly for $\Composition{R}{\Identity{A}} = R$.
 
 \textbf{(6) Converse of Composition}: 
 For any $(a,c)$:
-\begin{align}
-(a,c) \in \ConverseRel{(\Composition{S}{R})}
+\begin{align*}
+(a,c) \in \ConverseRel p{\Composition{S}{R}}
 &\Leftrightarrow (c,a) \in \Composition{S}{R} \\
-&\Leftrightarrow \Exists b{(c,b) \in R \text{ and } (b,a) \in S} \\
-&\Leftrightarrow \Exists b{(b,c) \in \ConverseRel{R} \text{ and } (a,b) \in \ConverseRel{S}} \\
+&\Leftrightarrow \Exists vp{b}{(c,b) \in R \tand (b,a) \in S} \\
+&\Leftrightarrow \Exists vp{b}{(b,c) \in \ConverseRel{R} \tand (a,b) \in \ConverseRel{S}} \\
 &\Leftrightarrow (a,c) \in \Composition{\ConverseRel{R}}{\ConverseRel{S}}
-\end{align}
+\end{align*}
 \end{proof}
 
 \begin{corollary}[Basic Properties of Composition for binary relations]
 Let $r$, $s$, and $t$ be binary relations where the compositions are defined. Then:
 \begin{enumerate}
-    \item $\Composition{(\Composition{t}{s})}{r} = \Composition{t}{(\Composition{s}{r})}$ (Associativity)
-    \item \textbf{Identity}: If $\text{id}_B = (B, B, \text{Id}_B)$ is the identity relation on $B$, then:
+    \item \textbf{Associativity}: $\Composition{(\Composition{t}{s})}{r} = \Composition{t}{(\Composition{s}{r})}$
+    \item \textbf{Identity}: If $\identity{B} = (B, B, \Identity{B})$ is the identity relation on $B$, then:
     \begin{itemize}
-        \item $\Composition{\text{id}_B}{r} = r$ for any relation $r = (A, B, R)$
-        \item $\Composition{s}{\text{id}_B} = s$ for any relation $s = (B, C, S)$
+        \item $\Composition{\identity{B}}{r} = r$ for any relation $r = (A, B, R)$
+        \item $\Composition{s}{\identity{B}} = s$ for any relation $s = (B, C, S)$
     \end{itemize}
+    \item \textbf{Converse of Composition}: $\ConverseRel p{\Composition{s}{r}} = \Composition{\ConverseRel{r}}{\ConverseRel{s}}$
 \end{enumerate}
 \end{corollary}
 
@@ -366,8 +377,8 @@ Let $R, S, T$ be graphs of binary relations, and let $\{R_i\}_{i \in I}$ and $\{
     
     \item \textbf{Antimonotonicity with Complement}:
     \begin{itemize}
-        \item $\Composition{\ComplementRel {S}}{R} \subseteq \ComplementRel p{\Composition{S}{R}}$
-        \item $\Composition{S}{\ComplementRel {R}} \subseteq \ComplementRel p{\Composition{S}{R}}$
+        \item $\Composition{\ComplementRel{S}}{R} \subseteq \ComplementRel p{\Composition{S}{R}}$
+        \item $\Composition{S}{\ComplementRel{R}} \subseteq \ComplementRel p{\Composition{S}{R}}$
     \end{itemize}
 \end{enumerate}
 \end{proposition}
@@ -377,70 +388,70 @@ Let $R, S, T$ be graphs of binary relations, and let $\{R_i\}_{i \in I}$ and $\{
 \textbf{(1) Distributivity over Union}:
 
 For left distributivity:
-\begin{align}
+\begin{align*}
 (a,c) \in \Composition{S}{\left( \bigcup_{i \in I} R_i \right)} 
-&\Leftrightarrow \Exists b{(a,b) \in \bigcup_{i \in I} R_i \text{ and } (b,c) \in S} \\
-&\Leftrightarrow \Exists b{\left( \Exists i \in I{(a,b) \in R_i} \right) \text{ and } (b,c) \in S} \\
-&\Leftrightarrow \Exists i \in I{\Exists b{(a,b) \in R_i \text{ and } (b,c) \in S}} \\
-&\Leftrightarrow \Exists i \in I{(a,c) \in \Composition{S}{R_i}} \\
+&\Leftrightarrow \Exists vp{b}{(a,b) \in \bigcup_{i \in I} R_i \tand (b,c) \in S} \\
+&\Leftrightarrow \Exists vp{b}{\left( \Exists :{i \in I}{(a,b) \in R_i} \right) \tand (b,c) \in S} \\
+&\Leftrightarrow \Exists :{i \in I}{\Exists vp{b}{(a,b) \in R_i \tand (b,c) \in S}} \\
+&\Leftrightarrow \Exists :{i \in I}{(a,c) \in \Composition{S}{R_i}} \\
 &\Leftrightarrow (a,c) \in \bigcup_{i \in I} \Composition{S}{R_i}
-\end{align}
+\end{align*}
 
 Right distributivity follows similarly.
 
 \textbf{(2) Subdistributivity over Intersection}:
 
 For left subdistributivity:
-\begin{align}
+\begin{align*}
 (a,c) \in \Composition{S}{\left( \bigcap_{i \in I} R_i \right)} 
-&\Leftrightarrow \Exists b{(a,b) \in \bigcap_{i \in I} R_i \text{ and } (b,c) \in S} \\
-&\Leftrightarrow \Exists b{\left( \Forall i \in I{(a,b) \in R_i} \right) \text{ and } (b,c) \in S} \\
-&\Rightarrow \Forall i \in I{\Exists b{(a,b) \in R_i \text{ and } (b,c) \in S}} \\
-&\Leftrightarrow \Forall i \in I{(a,c) \in \Composition{S}{R_i}} \\
+&\Leftrightarrow \Exists vp{b}{(a,b) \in \bigcap_{i \in I} R_i \tand (b,c) \in S} \\
+&\Leftrightarrow \Exists vp{b}{\left( \Forall :{i \in I}{(a,b) \in R_i} \right) \tand (b,c) \in S} \\
+&\Rightarrow \Forall :{i \in I}{\Exists vp{b}{(a,b) \in R_i \tand (b,c) \in S}} \\
+&\Leftrightarrow \Forall :{i \in I}{(a,c) \in \Composition{S}{R_i}} \\
 &\Leftrightarrow (a,c) \in \bigcap_{i \in I} \Composition{S}{R_i}
-\end{align}
+\end{align*}
 
 Right subdistributivity follows similarly. Note that equality doesn't hold in general.
 
 \textbf{(3) Monotonicity}:
 
 If $R_1 \subseteq R_2$:
-\begin{align}
+\begin{align*}
 (a,c) \in \Composition{S}{R_1} 
-&\Leftrightarrow \Exists b{(a,b) \in R_1 \text{ and } (b,c) \in S} \\
-&\Rightarrow \Exists b{(a,b) \in R_2 \text{ and } (b,c) \in S} \quad (\text{since } R_1 \subseteq R_2) \\
+&\Leftrightarrow \Exists vp{b}{(a,b) \in R_1 \tand (b,c) \in S} \\
+&\Rightarrow \Exists vp{b}{(a,b) \in R_2 \tand (b,c) \in S} \quad (\text{since } R_1 \subseteq R_2) \\
 &\Leftrightarrow (a,c) \in \Composition{S}{R_2}
-\end{align}
+\end{align*}
 
 If $S_1 \subseteq S_2$:
-\begin{align}
+\begin{align*}
 (a,c) \in \Composition{S_1}{R} 
-&\Leftrightarrow \Exists b{(a,b) \in R \text{ and } (b,c) \in S_1} \\
-&\Rightarrow \Exists b{(a,b) \in R \text{ and } (b,c) \in S_2} \quad (\text{since } S_1 \subseteq S_2) \\
+&\Leftrightarrow \Exists vp{b}{(a,b) \in R \tand (b,c) \in S_1} \\
+&\Rightarrow \Exists vp{b}{(a,b) \in R \tand (b,c) \in S_2} \quad (\text{since } S_1 \subseteq S_2) \\
 &\Leftrightarrow (a,c) \in \Composition{S_2}{R}
-\end{align}
+\end{align*}
 
 \textbf{(4) Antimonotonicity with Complement}:
 
 For the first part:
-\begin{align}
+\begin{align*}
 (a,c) \in \Composition{\ComplementRel {S}}{R} 
-&\Leftrightarrow \Exists b{(a,b) \in R \text{ and } (b,c) \in \ComplementRel {S}} \\
-&\Leftrightarrow \Exists b{(a,b) \in R \text{ and } (b,c) \notin S} \\
-&\Rightarrow \neg \Forall b{(a,b) \in R \Rightarrow (b,c) \in S} \\
+&\Leftrightarrow \Exists vp{b}{(a,b) \in R \tand (b,c) \in \ComplementRel {S}} \\
+&\Leftrightarrow \Exists vp{b}{(a,b) \in R \tand (b,c) \notin S} \\
+&\Rightarrow \neg \Forall vp{b}{(a,b) \in R \Rightarrow (b,c) \in S} \\
 &\Leftrightarrow (a,c) \notin \Composition{S}{R} \\
 &\Leftrightarrow (a,c) \in \ComplementRel p{\Composition{S}{R}}
-\end{align}
+\end{align*}
 
 For the second part:
-\begin{align}
+\begin{align*}
 (a,c) \in \Composition{S}{\ComplementRel {R}} 
-&\Leftrightarrow \Exists b{(a,b) \in \ComplementRel {R} \text{ and } (b,c) \in S} \\
-&\Leftrightarrow \Exists b{(a,b) \notin R \text{ and } (b,c) \in S} \\
-&\Rightarrow \neg \Forall b{(b,c) \in S \Rightarrow (a,b) \in R} \\
+&\Leftrightarrow \Exists vp{b}{(a,b) \in \ComplementRel {R} \tand (b,c) \in S} \\
+&\Leftrightarrow \Exists vp{b}{(a,b) \notin R \tand (b,c) \in S} \\
+&\Rightarrow \neg \Forall vp{b}{(b,c) \in S \Rightarrow (a,b) \in R} \\
 &\Leftrightarrow (a,c) \notin \Composition{S}{R} \\
 &\Leftrightarrow (a,c) \in \ComplementRel p{\Composition{S}{R}}
-\end{align}
+\end{align*}
 \end{proof}
 
 
@@ -494,26 +505,26 @@ If $r = (A, B, R)$ is a binary relation, then the restriction of $R$ to $A' \sub
 Let $R$ be a graph of a binary relation and $B$ be a set. The \textbf{corestriction} of $R$ to $B$, denoted $\Restriction{R}[][B]$, is defined as:
 \[\Restriction{R}[][B] \defeq \left\{ (x, y) \in R \mid y \in B \right\} = R \cap (\Domain{R} \times B)\]
 
-If $r = (A, B, R)$ is a binary relation, then the corestriction of $R$ to $B' \subseteq B$, denoted $\Restriction{r}[][B'] \defeq $, is just $(A, B', \Restriction{R}[][B'])$.
+If $r = (A, B, R)$ is a binary relation, then the corestriction of $R$ to $B' \subseteq B$, denoted $\Restriction{r}[][B']$, is just $(A, B', \Restriction{R}[][B'])$.
 \end{definition}
 
 \begin{remark}
     The notation works to both restrict and corestrict at the same time.
-    \[ \Restriction{R}[A][B] \defeq \left\{ (x, y) \in R \mid x \in A \text{ and } y \in B \right\} = R \cap (A \times B) \]
+    \[ \Restriction{R}[A][B] \defeq \left\{ (x, y) \in R \mid x \in A \tand y \in B \right\} = R \cap (A \times B) \]
 
     If $r = (A, B, R)$ is a binary relation and $A' \subseteq A$ and $B' \subseteq B$, denoted $\Restriction{r}[A'][B']$, is just $(A', B', \Restriction{R}[A'][B'])$.
 \end{remark}
 
 \begin{definition}[Direct Image]
 Let $R$ be a graph of a binary relation and $A$ be a set. The \textbf{direct image} of $A$ under $R$, denoted $\DirectImage{R}{A}$, is defined as:
-\[ \DirectImage{R}{A} \defeq \left\{ y \in \Range{R} \mid \Exists{x \in A}{(x, y) \in R} \right\} = \Range{\Restriction{R}[A][]} \]
+\[ \DirectImage{R}{A} \defeq \left\{ y \in \Range{R} \mid \Exists :{x \in A}{(x, y) \in R} \right\} = \Range{\Restriction{R}[A][]} \]
 
 If $r= (A, B, R)$ is a binary relation, then the direct image of $A$ under $r$, denoted $\DirectImage{r}{A}$, is just $\DirectImage{r}{A} \defeq \DirectImage{R}{A}$.
 \end{definition}
 
 \begin{definition}[Inverse Image]
 Let $R$ be a graph of a binary relation and $B$ be a set. The \textbf{inverse image} of $B$ under $R$, denoted $\InverseImage{R}{B}$, is defined as:
-\[ \InverseImage{R}{B} \defeq \left\{ x \in \Domain{R} \mid \Exists{y \in B}{(x, y) \in R} \right\} = \Domain{\Restriction{R}[][B]} \]
+\[ \InverseImage{R}{B} \defeq \left\{ x \in \Domain{R} \mid \Exists :{y \in B}{(x, y) \in R} \right\} = \Domain{\Restriction{R}[][B]} \]
 
 If $r = (A, B, R)$ is a binary relation, then the inverse image of $B$ under $r$, denoted $\InverseImage{r}{B}$, is just $\InverseImage{r}{B} \defeq \InverseImage{R}{B}$.
 \end{definition}
@@ -529,52 +540,52 @@ This equals $(A,D,\Composition{S}{R})$ since:
 \begin{proposition}[Unification via Composition]
 Let $R$ be a graph of a binary relation and let $A, B$ be sets. Then:
 \begin{enumerate}
-    \item $\Restriction{R}[A] = \Composition{R}{\text{Id}_A}$
-    \item $\Restriction{R}[][B] = \Composition{\text{Id}_B}{R}$
-    \item $\DirectImage{R}{A} = \Range{\Composition{R}{\text{Id}_A}}$
-    \item $\InverseImage{R}{B} = \Domain{\Composition{\text{Id}_B}{R}}$
+    \item $\Restriction{R}[A] = \Composition{R}{\Identity{A}}$
+    \item $\Restriction{R}[][B] = \Composition{\Identity{B}}{R}$
+    \item $\DirectImage{R}{A} = \Range{\Composition{R}{\Identity{A}}}$
+    \item $\InverseImage{R}{B} = \Domain{\Composition{\Identity{B}}{R}}$
 \end{enumerate}
 \end{proposition}
 
 \begin{proof}
 \textbf{(1) Restriction}: 
-\begin{align}
-\Composition{R}{\text{Id}_A} &= \left\{ (x, z) \mid \Exists{y}{(x, y) \in \text{Id}_A \text{ and } (y, z) \in R} \right\} \\
-&= \left\{ (x, z) \mid \Exists{y \in A}{x = y \text{ and } (y, z) \in R} \right\} \\
-&= \left\{ (x, z) \mid x \in A \text{ and } (x, z) \in R \right\} \\
+\begin{align*}
+\Composition{R}{\Identity{A}} &= \left\{ (x, z) \mid \Exists vp{y}{(x, y) \in \Identity{A} \tand (y, z) \in R} \right\} \\
+&= \left\{ (x, z) \mid \Exists :{y \in A}{x = y \tand (y, z) \in R} \right\} \\
+&= \left\{ (x, z) \mid x \in A \tand (x, z) \in R \right\} \\
 &= \Restriction{R}[A]
-\end{align}
+\end{align*}
 
 \textbf{(2) Corestriction}: 
-\begin{align}
-\Composition{\text{Id}_B}{R} &= \left\{ (x, z) \mid \Exists{y}{(x, y) \in R \text{ and } (y, z) \in \text{Id}_B} \right\} \\
-&= \left\{ (x, z) \mid \Exists{y \in B}{(x, y) \in R \text{ and } y = z} \right\} \\
-&= \left\{ (x, y) \mid (x, y) \in R \text{ and } y \in B \right\} \\
+\begin{align*}
+\Composition{\Identity{B}}{R} &= \left\{ (x, z) \mid \Exists vp{y}{(x, y) \in R \tand (y, z) \in \Identity{B}} \right\} \\
+&= \left\{ (x, z) \mid \Exists :{y \in B}{(x, y) \in R \tand y = z} \right\} \\
+&= \left\{ (x, y) \mid (x, y) \in R \tand y \in B \right\} \\
 &= \Restriction{R}[][B]
-\end{align}
+\end{align*}
 
 \textbf{(3) Direct Image}: From property (1):
-\begin{align}
-\DirectImage{R}{A} &= \left\{ y \mid \Exists{x \in A}{(x, y) \in R} \right\} \\
+\begin{align*}
+\DirectImage{R}{A} &= \left\{ y \mid \Exists :{x \in A}{(x, y) \in R} \right\} \\
 &= \Range{\Restriction{R}[A]} \\
-&= \Range{\Composition{R}{\text{Id}_A}}
-\end{align}
+&= \Range{\Composition{R}{\Identity{A}}}
+\end{align*}
 
 \textbf{(4) Inverse Image}: From property (2):
-\begin{align}
-\InverseImage{R}{B} &= \left\{ x \mid \Exists{y \in B}{(x, y) \in R} \right\} \\
+\begin{align*}
+\InverseImage{R}{B} &= \left\{ x \mid \Exists :{y \in B}{(x, y) \in R} \right\} \\
 &= \Domain{\Restriction{R}[][B]} \\
-&= \Domain{\Composition{\text{Id}_B}{R}}
-\end{align}
+&= \Domain{\Composition{\Identity{B}}{R}}
+\end{align*}
 \end{proof}
 
 \begin{corollary}[Duality via Converse]
 The operations of restriction and corestriction are dual via converse, as are direct and inverse images:
 \begin{enumerate}
-    \item $\Restriction{\ConverseRel{R}}[B] = \ConverseRel{(\Restriction{R}[][B])}$
-    \item $\Restriction{\ConverseRel{R}}[][A] = \ConverseRel{(\Restriction{R}[A])}$
-    \item $\Restriction{R}[][B] = \ConverseRel{(\Restriction{\ConverseRel{R}}[B])}$
-    \item $\Restriction{R}[A] = \ConverseRel{(\Restriction{\ConverseRel{R}}[][A])}$
+    \item $\Restriction{\ConverseRel{R}}[B] = \ConverseRel p{\Restriction{R}[][B]}$
+    \item $\Restriction{\ConverseRel{R}}[][A] = \ConverseRel p{\Restriction{R}[A]}$
+    \item $\Restriction{R}[][B] = \ConverseRel p{\Restriction{\ConverseRel{R}}[B]}$
+    \item $\Restriction{R}[A] = \ConverseRel p{\Restriction{\ConverseRel{R}}[][A]}$
     \item $\DirectImage{\ConverseRel{R}}{A} = \InverseImage{R}{A}$
     \item $\InverseImage{\ConverseRel{R}}{B} = \DirectImage{R}{B}$
     \item $\DirectImage{R}{A} = \InverseImage{\ConverseRel{R}}{A}$
@@ -586,38 +597,38 @@ The operations of restriction and corestriction are dual via converse, as are di
 These follow directly from the definitions and properties of converse operations:
 
 \textbf{(1)}: By definition of restriction and converse:
-\begin{align}
+\begin{align*}
 \Restriction{\ConverseRel{R}}[B] &= \left\{ (x, y) \in \ConverseRel{R} \mid x \in B \right\} \\
-&= \left\{ (x, y) \mid (y, x) \in R \text{ and } x \in B \right\} \\
-&= \ConverseRel{\left\{ (y, x) \mid (y, x) \in R \text{ and } x \in B \right\}} \\
-&= \ConverseRel{(\Restriction{R}[][B])}
-\end{align}
+&= \left\{ (x, y) \mid (y, x) \in R \tand x \in B \right\} \\
+&= \ConverseRel{\left\{ (y, x) \mid (y, x) \in R \tand x \in B \right\}} \\
+&= \ConverseRel p{\Restriction{R}[][B]}
+\end{align*}
 
 \textbf{(2)}: By definition of corestriction and converse:
-\begin{align}
+\begin{align*}
 \Restriction{\ConverseRel{R}}[][A] &= \left\{ (x, y) \in \ConverseRel{R} \mid y \in A \right\} \\
-&= \left\{ (x, y) \mid (y, x) \in R \text{ and } y \in A \right\} \\
-&= \ConverseRel{\left\{ (y, x) \mid (y, x) \in R \text{ and } y \in A \right\}} \\
-&= \ConverseRel{(\Restriction{R}[A])}
-\end{align}
+&= \left\{ (x, y) \mid (y, x) \in R \tand y \in A \right\} \\
+&= \ConverseRel{\left\{ (y, x) \mid (y, x) \in R \tand y \in A \right\}} \\
+&= \ConverseRel p{\Restriction{R}[A]}
+\end{align*}
 
-\textbf{(3)} and \textbf{(4)}: These follow from (1) and (2) by applying converse to both sides and using the involution property $\ConverseRel{(\ConverseRel{R})} = R$.
+\textbf{(3)} and \textbf{(4)}: These follow from (1) and (2) by applying converse to both sides and using the involution property $\ConverseRel p{\ConverseRel{R}} = R$.
 
 \textbf{(5)}: By definition:
-\begin{align}
-\DirectImage{\ConverseRel{R}}{A} &= \left\{ y \mid \Exists{x \in A}{(x, y) \in \ConverseRel{R}} \right\} \\
-&= \left\{ y \mid \Exists{x \in A}{(y, x) \in R} \right\} \\
+\begin{align*}
+\DirectImage{\ConverseRel{R}}{A} &= \left\{ y \mid \Exists :{x \in A}{(x, y) \in \ConverseRel{R}} \right\} \\
+&= \left\{ y \mid \Exists :{x \in A}{(y, x) \in R} \right\} \\
 &= \InverseImage{R}{A}
-\end{align}
+\end{align*}
 
 \textbf{(6)}: By definition:
-\begin{align}
-\InverseImage{\ConverseRel{R}}{B} &= \left\{ x \mid \Exists{y \in B}{(x, y) \in \ConverseRel{R}} \right\} \\
-&= \left\{ x \mid \Exists{y \in B}{(y, x) \in R} \right\} \\
+\begin{align*}
+\InverseImage{\ConverseRel{R}}{B} &= \left\{ x \mid \Exists :{y \in B}{(x, y) \in \ConverseRel{R}} \right\} \\
+&= \left\{ x \mid \Exists :{y \in B}{(y, x) \in R} \right\} \\
 &= \DirectImage{R}{B}
-\end{align}
+\end{align*}
 
-\textbf{(7)} and \textbf{(8)}: These follow from (5) and (6) by applying converse to both sides and using the involution property $\ConverseRel{(\ConverseRel{R})} = R$.
+\textbf{(7)} and \textbf{(8)}: These follow from (5) and (6) by applying converse to both sides and using the involution property $\ConverseRel p{\ConverseRel{R}} = R$.
 \end{proof}
 
 \begin{remark}
@@ -625,6 +636,46 @@ This proposition shows that restriction, corestriction, direct images, and inver
 
 The corollary further shows the elegant duality between these operations via the converse operation, illustrating the deep symmetries inherent in the theory of binary relations. Specifically, corestriction is the restriction of the converse and dually, while direct image is the inverse image of the converse and dually.
 \end{remark}
+
+\begin{corollary}[Properties of Domain and Range]
+Let $\{R_i\}_{i \in I}$ be a family of graphs of binary relations. Then:
+\begin{enumerate}
+    \item \textbf{Distributivity over union}:
+        \begin{itemize}
+            \item $\Domain{\bigcup_{i \in I} R_i} = \bigcup_{i \in I} \Domain{R_i}$
+            \item $\Range{\bigcup_{i \in I} R_i} = \bigcup_{i \in I} \Range{R_i}$
+        \end{itemize}
+    \item \textbf{Subdistributivity over intersection}:
+        \begin{itemize}
+            \item $\Domain{\bigcap_{i \in I} R_i} \subseteq \bigcap_{i \in I} \Domain{R_i}$
+            \item $\Range{\bigcap_{i \in I} R_i} \subseteq \bigcap_{i \in I} \Range{R_i}$
+        \end{itemize}
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+\textbf{(1) Distributivity over union}:
+\begin{align*}
+x \in \Domain{\bigcup_{i \in I} R_i} 
+&\iff \Exists :p{y}{(x, y) \in \bigcup_{i \in I} R_i} \\
+&\iff \Exists :p{y}{\Exists :{i \in I}{(x, y) \in R_i}} \\
+&\iff \Exists :{i \in I}{\Exists :p{y}{(x, y) \in R_i}} \\
+&\iff \Exists :{i \in I}{x \in \Domain{R_i}} \\
+&\iff x \in \bigcup_{i \in I} \Domain{R_i}
+\end{align*}
+The proof for range follows from $\Range{\bigcup_{i \in I} R_i} = \Domain{\ConverseRel{\bigcup_{i \in I} R_i}} = \Domain{\bigcup_{i \in I} \ConverseRel{R_i}} = \bigcup_{i \in I} \Domain{\ConverseRel{R_i}} = \bigcup_{i \in I} \Range{R_i}$.
+
+\textbf{(2) Subdistributivity over intersection}:
+\begin{align*}
+x \in \Domain{\bigcap_{i \in I} R_i} 
+&\iff \Exists :p{y}{(x, y) \in \bigcap_{i \in I} R_i} \\
+&\iff \Exists :p{y}{\Forall :{i \in I}{(x, y) \in R_i}} \\
+&\implies \Forall :{i \in I}{\Exists :p{y}{(x, y) \in R_i}} \\
+&\iff \Forall :{i \in I}{x \in \Domain{R_i}} \\
+&\iff x \in \bigcap_{i \in I} \Domain{R_i}
+\end{align*}
+The proof for range follows from $\Range{\bigcap_{i \in I} R_i} = \Domain{\ConverseRel{\bigcap_{i \in I} R_i}} = \Domain{\bigcap_{i \in I} \ConverseRel{R_i}} \subseteq \bigcap_{i \in I} \Domain{\ConverseRel{R_i}} = \bigcap_{i \in I} \Range{R_i}$.
+\end{proof}
 
 \begin{corollary}[Properties of Direct and Inverse Images]
 Let $R$ and $S$ be graphs of binary relations, and let $A, B$ be sets. Then:
@@ -671,18 +722,18 @@ Let $R$ and $S$ be graphs of binary relations, and let $A, B$ be sets. Then:
 All properties follow from the representation of images as compositions with identity relations and the algebraic properties of composition.
 
 \textbf{(1) Monotonicity in the relation}:
-From the representation $\DirectImage{R}{A} = \Range{\Composition{R}{\text{Id}_A}}$ and the right monotonicity of composition, if $R \subseteq S$ then $\Composition{R}{\text{Id}_A} \subseteq \Composition{S}{\text{Id}_A}$, so their ranges satisfy $\DirectImage{R}{A} \subseteq \DirectImage{S}{A}$. Similarly for inverse images using $\InverseImage{R}{B} = \Domain{\Composition{\text{Id}_B}{R}}$ and left monotonicity.
+From the representation $\DirectImage{R}{A} = \Range{\Composition{R}{\Identity{A}}}$ and the right monotonicity of composition, if $R \subseteq S$ then $\Composition{R}{\Identity{A}} \subseteq \Composition{S}{\Identity{A}}$, so their ranges satisfy $\DirectImage{R}{A} \subseteq \DirectImage{S}{A}$. Similarly for inverse images using $\InverseImage{R}{B} = \Domain{\Composition{\Identity{B}}{R}}$ and left monotonicity.
 
 \textbf{(2) Monotonicity in the set}:
-If $A_1 \subseteq A_2$, then $\text{Id}_{A_1} \subseteq \text{Id}_{A_2}$. By left monotonicity of composition, $\Composition{R}{\text{Id}_{A_1}} \subseteq \Composition{R}{\text{Id}_{A_2}}$, so their ranges satisfy $\DirectImage{R}{A_1} \subseteq \DirectImage{R}{A_2}$. Similarly for inverse images using right monotonicity.
+If $A_1 \subseteq A_2$, then $\Identity{A_1} \subseteq \Identity{A_2}$. By left monotonicity of composition, $\Composition{R}{\Identity{A_1}} \subseteq \Composition{R}{\Identity{A_2}}$, so their ranges satisfy $\DirectImage{R}{A_1} \subseteq \DirectImage{R}{A_2}$. Similarly for inverse images using right monotonicity.
 
 \textbf{(3) Distributivity over union of sets}:
 \begin{align*}
 \DirectImage{R}{\left( \bigcup_{i \in I} A_i \right)} 
-&= \Range{\Composition{R}{\text{Id}_{\bigcup_{i} A_i}}} \\
-&= \Range{\Composition{R}{\left( \bigcup_{i} \text{Id}_{A_i} \right)}} \\
-&= \Range{\bigcup_{i} \Composition{R}{\text{Id}_{A_i}}} \\
-&= \bigcup_{i} \Range{\Composition{R}{\text{Id}_{A_i}}} \\
+&= \Range{\Composition{R}{\Identity{\bigcup_{i} A_i}}} \\
+&= \Range{\Composition{R}{\left( \bigcup_{i} \Identity{A_i} \right)}} \\
+&= \Range{\bigcup_{i} \Composition{R}{\Identity{A_i}}} \\
+&= \bigcup_{i} \Range{\Composition{R}{\Identity{A_i}}} \\
 &= \bigcup_{i} \DirectImage{R}{A_i}
 \end{align*}
 Similarly for inverse images using left distributivity of composition.
@@ -690,10 +741,10 @@ Similarly for inverse images using left distributivity of composition.
 \textbf{(4) Subdistributivity over intersection of sets}:
 \begin{align*}
 \DirectImage{R}{\left( \bigcap_{i \in I} A_i \right)} 
-&= \Range{\Composition{R}{\text{Id}_{\bigcap_{i} A_i}}} \\
-&= \Range{\Composition{R}{\left( \bigcap_{i} \text{Id}_{A_i} \right)}} \\
-&\subseteq \Range{\bigcap_{i} \Composition{R}{\text{Id}_{A_i}}} \\
-&\subseteq \bigcap_{i} \Range{\Composition{R}{\text{Id}_{A_i}}} \\
+&= \Range{\Composition{R}{\Identity{\bigcap_{i} A_i}}} \\
+&= \Range{\Composition{R}{\left( \bigcap_{i} \Identity{A_i} \right)}} \\
+&\subseteq \Range{\bigcap_{i} \Composition{R}{\Identity{A_i}}} \\
+&\subseteq \bigcap_{i} \Range{\Composition{R}{\Identity{A_i}}} \\
 &= \bigcap_{i} \DirectImage{R}{A_i}
 \end{align*}
 Similarly for inverse images using left subdistributivity of composition.
@@ -701,9 +752,9 @@ Similarly for inverse images using left subdistributivity of composition.
 \textbf{(5) Distributivity over union of relations}:
 \begin{align*}
 \DirectImage{\left( \bigcup_{i \in I} R_i \right)}{A} 
-&= \Range{\Composition{\left( \bigcup_{i} R_i \right)}{\text{Id}_A}} \\
-&= \Range{\bigcup_{i} \Composition{R_i}{\text{Id}_A}} \\
-&= \bigcup_{i} \Range{\Composition{R_i}{\text{Id}_A}} \\
+&= \Range{\Composition{\left( \bigcup_{i} R_i \right)}{\Identity{A}}} \\
+&= \Range{\bigcup_{i} \Composition{R_i}{\Identity{A}}} \\
+&= \bigcup_{i} \Range{\Composition{R_i}{\Identity{A}}} \\
 &= \bigcup_{i} \DirectImage{R_i}{A}
 \end{align*}
 Similarly for inverse images using right distributivity.
@@ -711,9 +762,9 @@ Similarly for inverse images using right distributivity.
 \textbf{(6) Subdistributivity over intersection of relations}:
 \begin{align*}
 \DirectImage{\left( \bigcap_{i \in I} R_i \right)}{A} 
-&= \Range{\Composition{\left( \bigcap_{i} R_i \right)}{\text{Id}_A}} \\
-&\subseteq \Range{\bigcap_{i} \Composition{R_i}{\text{Id}_A}} \\
-&\subseteq \bigcap_{i} \Range{\Composition{R_i}{\text{Id}_A}} \\
+&= \Range{\Composition{\left( \bigcap_{i} R_i \right)}{\Identity{A}}} \\
+&\subseteq \Range{\bigcap_{i} \Composition{R_i}{\Identity{A}}} \\
+&\subseteq \bigcap_{i} \Range{\Composition{R_i}{\Identity{A}}} \\
 &= \bigcap_{i} \DirectImage{R_i}{A}
 \end{align*}
 Similarly for inverse images using right subdistributivity.
@@ -722,13 +773,15 @@ Similarly for inverse images using right subdistributivity.
 From the antimonotonicity of composition:
 \begin{align*}
 \DirectImage{\ComplementRel{R}}{A} 
-&= \Range{\Composition{\ComplementRel{R}}{\text{Id}_A}} \\
-&\subseteq \Range{\ComplementRel p{\Composition{R}{\text{Id}_A}}} \\
-&\subseteq \ComplementRel{\Range{\Composition{R}{\text{Id}_A}}} \\
+&= \Range{\Composition{\ComplementRel{R}}{\Identity{A}}} \\
+&\subseteq \Range{\ComplementRel p{\Composition{R}{\Identity{A}}}} \\
+&\subseteq \ComplementRel{\Range{\Composition{R}{\Identity{A}}}} \\
 &= \ComplementRel{\DirectImage{R}{A}}
 \end{align*}
 Similarly for inverse images using the other antimonotonicity property of composition. Note that the last inclusion holds because for any set $X$, $\Range{\ComplementRel{X}} \subseteq \ComplementRel{\Range{X}}$ when the complement is taken relative to a universal set.
 \end{proof}
+
+
 
 \begin{proposition}[Properties of Images for Binary Relations]
 Let $r = (A, B, R)$ and $s = (A, B, S)$ be binary relations with the same domain and codomain. Then:
@@ -779,8 +832,8 @@ Let $r = (A, B, R)$. Then $\ComplementRel{r} = (A, B, (A \times B) \setminus R)$
 For direct image:
 \begin{align*}
 \DirectImage{\ComplementRel{r}}{A} 
-&= \left\{ y \in B \mid \Exists{x \in A}{(x, y) \in (A \times B) \setminus R} \right\} \\
-&= \left\{ y \in B \mid \Exists{x \in A}{(x, y) \notin R} \right\} \\
+&= \left\{ y \in B \mid \Exists :{x \in A}{(x, y) \in (A \times B) \setminus R} \right\} \\
+&= \left\{ y \in B \mid \Exists :{x \in A}{(x, y) \notin R} \right\} \\
 &\subseteq \left\{ y \in B \mid y \notin \DirectImage{r}{A} \right\} \\
 &= B \setminus \DirectImage{r}{A}
 \end{align*}
@@ -788,9 +841,31 @@ For direct image:
 Similarly for inverse image:
 \begin{align*}
 \InverseImage{\ComplementRel{r}}{B} 
-&= \left\{ x \in A \mid \Exists{y \in B}{(x, y) \in (A \times B) \setminus R} \right\} \\
-&= \left\{ x \in A \mid \Exists{y \in B}{(x, y) \notin R} \right\} \\
+&= \left\{ x \in A \mid \Exists :{y \in B}{(x, y) \in (A \times B) \setminus R} \right\} \\
+&= \left\{ x \in A \mid \Exists :{y \in B}{(x, y) \notin R} \right\} \\
 &\subseteq \left\{ x \in A \mid x \notin \InverseImage{r}{B} \right\} \\
 &= A \setminus \InverseImage{r}{B}
 \end{align*}
 \end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\input{Document/SetTheory/BinaryRelations/HeterogeneousRelations.tex}
+
+\input{Document/SetTheory/BinaryRelations/HomogeneousRelations.tex}
+

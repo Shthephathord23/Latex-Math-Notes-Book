@@ -26,6 +26,9 @@
 % \theoremstyle{break}
 \newtheorem{corollary}[num]{Corollary}
 
+% \theoremstyle{break}
+\newtheorem{lemma}[num]{Lemma}
+
 \theoremstyle{definition}
 \newtheorem{example}[num]{Example}
 
@@ -58,11 +61,11 @@
 
 % Scalable indentation for all theorem environments
 % Define a list of theorem environments that should have indentation
-\newcommand{\theoremenvs}{definition,proposition,theorem,corollary,example}
+% \newcommand{\theoremenvs}{definition,proposition,theorem,corollary,example}
 
 % Apply indentation to each environment in the list
-\makeatletter
-\@for\next:=\theoremenvs\do{%
-  \AtBeginEnvironment{\next}{\hspace{2em}\ignorespaces}%
-}
-\makeatother
+% \makeatletter
+% \@for\next:=\theoremenvs\do{%
+%   \AtBeginEnvironment{\next}{\hspace{2em}\ignorespaces}%
+% }
+% \makeatother
