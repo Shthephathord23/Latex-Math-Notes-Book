@@ -4,9 +4,9 @@
     Let $A$ be an integral domain and let $U(A) = \left\{ a \in A \mid \Exists :{b \in A}{ab = 1} \right\}$ be the set of invertible elements (units).
     
     \begin{enumerate}
-        \item An element $p \in A$ is called \textbf{prime} if $p \notin U(A) \cup {0}$ and \[\Forall :{a, b \in A}{p \mid ab \implies p \mid a \tor p \mid b}\]
+        \item An element $p \in A$ is called \textbf{prime} if $p \notin U(A) \cup {0}$ and \[\Forall :{a, b \in A}{p \mid ab \implies p \mid a \LogicOr p \mid b}\]
         
-        \item An element $r \in A$ is called \textbf{irreducible} if $r \notin U(A) \cup {0}$ and \[\Forall :{a, b \in A}{r = ab \implies a \in U(A) \tor b \in U(A)}\]
+        \item An element $r \in A$ is called \textbf{irreducible} if $r \notin U(A) \cup {0}$ and \[\Forall :{a, b \in A}{r = ab \implies a \in U(A) \LogicOr b \in U(A)}\]
     \end{enumerate}
     
     In other words, a prime element divides a product only if it divides at least one of the factors, while an irreducible element cannot be written as a product of two non-units.
@@ -23,7 +23,7 @@
 \begin{proof}[Proof of Remark 1]
     Suppose $a \mid r$ where $r$ is irreducible. Then $\Exists :{b \in A}{r = ab}$.
     
-    Since $r$ is irreducible, by definition we have $a \in U(A) \tor b \in U(A)$.
+    Since $r$ is irreducible, by definition we have $a \in U(A) \LogicOr b \in U(A)$.
     
     \textbf{Case 1:} If $a \in U(A)$, then $a$ is associated with $1$, and we are done.
     
@@ -38,9 +38,9 @@
 \begin{proof}[Proof of Remark 2]
     Let $p$ be a prime element. We need to show that $p$ is irreducible.
     
-    By definition, $p \notin U(A) \cup \{0\}$. Now suppose $p = ab$ for some $a, b \in A$. We need to show that $a \in U(A) \tor b \in U(A)$.
+    By definition, $p \notin U(A) \cup \{0\}$. Now suppose $p = ab$ for some $a, b \in A$. We need to show that $a \in U(A) \LogicOr b \in U(A)$.
     
-    Since $p = ab$, we have $p \mid ab$. Since $p$ is prime, by definition $p \mid a \tor p \mid b$.
+    Since $p = ab$, we have $p \mid ab$. Since $p$ is prime, by definition $p \mid a \LogicOr p \mid b$.
     
     \textbf{Case 1:} Suppose $p \mid a$. Then $\Exists :{c \in A}{a = pc}$. Substituting into $p = ab$:
     \[p = ab = (pc)b = p(cb)\]
@@ -49,7 +49,7 @@
     
     \textbf{Case 2:} Suppose $p \mid b$. By symmetric reasoning (with roles of $a$ and $b$ reversed), we obtain $a \in U(A)$.
     
-    In either case, $a \in U(A) \tor b \in U(A)$, which shows that $p$ is irreducible.
+    In either case, $a \in U(A) \LogicOr b \in U(A)$, which shows that $p$ is irreducible.
 \end{proof}
 
 \begin{example}
@@ -135,7 +135,7 @@
 \begin{proof}
     We already know from Remark 2 that every prime element is irreducible in any integral domain. Thus it suffices to show that in a GCD domain, every irreducible element is prime.
     
-    Let $r$ be an irreducible element in $A$. We need to show that $r$ is prime, i.e., $\Forall :{a, b \in A}{r \mid ab \implies r \mid a \tor r \mid b}$.
+    Let $r$ be an irreducible element in $A$. We need to show that $r$ is prime, i.e., $\Forall :{a, b \in A}{r \mid ab \implies r \mid a \LogicOr r \mid b}$.
     
     Suppose $r \mid ab$ for some $a, b \in A$. Since $A$ is a GCD domain, $\gcd(r, a)$ exists. Let $d = \gcd(r, a)$.
     
@@ -153,5 +153,5 @@
     
     By the lemma, since $\text{lcm}(r, a) = ra$ and $r \mid ab$, we conclude that $r \mid b$.
     
-    In either case, $r \mid a \tor r \mid b$, which shows that $r$ is prime.
+    In either case, $r \mid a \LogicOr r \mid b$, which shows that $r$ is prime.
 \end{proof}

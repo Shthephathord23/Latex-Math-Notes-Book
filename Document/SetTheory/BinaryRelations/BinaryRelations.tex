@@ -210,15 +210,15 @@ Similarly, $\Range{\ConverseRel{R}} = \Domain{R}$.
 \textbf{(6) Identity}: For any $(x, y)$:
 \begin{align*}
 (x, y) \in \ConverseRel p{\Identity{A}} &\Leftrightarrow (y, x) \in \Identity{A} \\
-&\Leftrightarrow y = x \tand y \in A \\
-&\Leftrightarrow x = y \tand x \in A \\
+&\Leftrightarrow y = x \LogicAnd y \in A \\
+&\Leftrightarrow x = y \LogicAnd x \in A \\
 &\Leftrightarrow (x, y) \in \Identity{A}
 \end{align*}
 
 \textbf{(7) Empty and Universal}: 
 For the empty relation: $(x, y) \in \ConverseRel{\emptyset} \Leftrightarrow (y, x) \in \emptyset \Leftrightarrow \text{false} \Leftrightarrow (x, y) \in \emptyset$.
 
-For the universal relation: $(x, y) \in \ConverseRel p{A \times B} \Leftrightarrow (y, x) \in A \times B \Leftrightarrow y \in A \tand x \in B \Leftrightarrow (x, y) \in B \times A$.
+For the universal relation: $(x, y) \in \ConverseRel p{A \times B} \Leftrightarrow (y, x) \in A \times B \Leftrightarrow y \in A \LogicAnd x \in B \Leftrightarrow (x, y) \in B \times A$.
 \end{proof}
 
 \begin{proposition}[Properties of Converse for Binary Relations]
@@ -251,7 +251,7 @@ Notice that $\Domain{R} = \left\{ 1, 2 \right\} = \Range{\ConverseRel{R}}$ and $
 \begin{definition}[Composition of graphs of binary relations]
 Let $R$ and $S$ be graphs of binary relations. The \textbf{composition} of $R$ and $S$, denoted $\Composition{S}{R}$, is defined as:
 \[
-\Composition{S}{R} \defeq \left\{ (a, c) \mid \Exists vp{b}{(a, b) \in R \tand (b, c) \in S} \right\}
+\Composition{S}{R} \defeq \left\{ (a, c) \mid \Exists vp{b}{(a, b) \in R \LogicAnd (b, c) \in S} \right\}
 \]
 \end{definition}
 
@@ -281,7 +281,7 @@ Let $R$, $S$, and $T$ be graphs of binary relations. Then:
 \begin{enumerate}
     \item $\Domain{\Composition{S}{R}} \subseteq \Domain{R}$
     \item $\Range{\Composition{S}{R}} \subseteq \Range{S}$
-    \item $\Composition{S}{R} = \{(a,c) \mid \Exists :  {b \in \Range{R} \cap \Domain{S}}{(a,b) \in R \tand (b,c) \in S}\}$
+    \item $\Composition{S}{R} = \{(a,c) \mid \Exists :  {b \in \Range{R} \cap \Domain{S}}{(a,b) \in R \LogicAnd (b,c) \in S}\}$
     \item \textbf{Associativity}: $\Composition{(\Composition{T}{S})}{R} = \Composition{T}{(\Composition{S}{R})}$
     \item \textbf{Identity}: $\Composition{\Identity{B}}{R} = R = \Composition{R}{\Identity{A}} \text{ when } R \subseteq A \times B$
     \item \textbf{Converse of Composition}: $\ConverseRel p{\Composition{S}{R}} = \Composition{\ConverseRel{R}}{\ConverseRel{S}}$
@@ -289,17 +289,17 @@ Let $R$, $S$, and $T$ be graphs of binary relations. Then:
 \end{proposition}
 
 \begin{proof}
-\textbf{(1)} Let $a \in \Domain{\Composition{S}{R}}$. Then $\Exists{c}{(a,c) \in \Composition{S}{R}}$, so $\Exists{b}{(a,b) \in R \tand (b,c) \in S}$. Thus $a \in \Domain{R}$.
+\textbf{(1)} Let $a \in \Domain{\Composition{S}{R}}$. Then $\Exists{c}{(a,c) \in \Composition{S}{R}}$, so $\Exists{b}{(a,b) \in R \LogicAnd (b,c) \in S}$. Thus $a \in \Domain{R}$.
 
-\textbf{(2)} Let $c \in \Range{\Composition{S}{R}}$. Then $\Exists{a}{(a,c) \in \Composition{S}{R}}$, so $\Exists{b}{(a,b) \in R \tand (b,c) \in S}$. Thus $c \in \Range{S}$.
+\textbf{(2)} Let $c \in \Range{\Composition{S}{R}}$. Then $\Exists{a}{(a,c) \in \Composition{S}{R}}$, so $\Exists{b}{(a,b) \in R \LogicAnd (b,c) \in S}$. Thus $c \in \Range{S}$.
 
 \textbf{(3)} By definition:
 \[
-\Composition{S}{R} = \left\{ (a,c) \mid \Exists vp{b}{(a,b) \in R \tand (b,c) \in S} \right\}
+\Composition{S}{R} = \left\{ (a,c) \mid \Exists vp{b}{(a,b) \in R \LogicAnd (b,c) \in S} \right\}
 \]
 If $(a,b) \in R$ then $b \in \Range{R}$, and if $(b,c) \in S$ then $b \in \Domain{S}$. Thus:
 \[
-\Exists vp{b}{(a,b) \in R \tand (b,c) \in S} \Leftrightarrow \Exists :{b \in \Range{R} \cap \Domain{S}}{(a,b) \in R \tand (b,c) \in S}
+\Exists vp{b}{(a,b) \in R \LogicAnd (b,c) \in S} \Leftrightarrow \Exists :{b \in \Range{R} \cap \Domain{S}}{(a,b) \in R \LogicAnd (b,c) \in S}
 \]
 Therefore the equality holds.
 
@@ -307,10 +307,10 @@ Therefore the equality holds.
 For any $(a,d)$:
 \begin{align*}
 (a,d) \in \Composition{(\Composition{T}{S})}{R} 
-&\Leftrightarrow \Exists vp{b}{(a,b) \in R \tand (b,d) \in \Composition{T}{S}} \\
-&\Leftrightarrow \Exists vp{b}{(a,b) \in R \tand \Exists vp{c}{(b,c) \in S \tand (c,d) \in T}} \\
-&\Leftrightarrow \Exists vp{c}{\Exists vp{b}{(a,b) \in R \tand (b,c) \in S} \tand (c,d) \in T} \\
-&\Leftrightarrow \Exists vp{c}{(a,c) \in \Composition{S}{R} \tand (c,d) \in T} \\
+&\Leftrightarrow \Exists vp{b}{(a,b) \in R \LogicAnd (b,d) \in \Composition{T}{S}} \\
+&\Leftrightarrow \Exists vp{b}{(a,b) \in R \LogicAnd \Exists vp{c}{(b,c) \in S \LogicAnd (c,d) \in T}} \\
+&\Leftrightarrow \Exists vp{c}{\Exists vp{b}{(a,b) \in R \LogicAnd (b,c) \in S} \LogicAnd (c,d) \in T} \\
+&\Leftrightarrow \Exists vp{c}{(a,c) \in \Composition{S}{R} \LogicAnd (c,d) \in T} \\
 &\Leftrightarrow (a,d) \in \Composition{T}{(\Composition{S}{R})}
 \end{align*}
 
@@ -318,8 +318,8 @@ For any $(a,d)$:
 First part: Assume $R \subseteq A \times B$. For any $(a,b)$:
 \begin{align*}
 (a,b) \in \Composition{\Identity{A}}{R} 
-&\Leftrightarrow \Exists vp{x}{(a,x) \in \Identity{A} \tand (x,b) \in R} \\
-&\Leftrightarrow \Exists :p{x \in A}{a = x \tand (x,b) \in R} \\
+&\Leftrightarrow \Exists vp{x}{(a,x) \in \Identity{A} \LogicAnd (x,b) \in R} \\
+&\Leftrightarrow \Exists :p{x \in A}{a = x \LogicAnd (x,b) \in R} \\
 &\Leftrightarrow (a,b) \in R
 \end{align*}
 Similarly for $\Composition{R}{\Identity{A}} = R$.
@@ -329,8 +329,8 @@ For any $(a,c)$:
 \begin{align*}
 (a,c) \in \ConverseRel p{\Composition{S}{R}}
 &\Leftrightarrow (c,a) \in \Composition{S}{R} \\
-&\Leftrightarrow \Exists vp{b}{(c,b) \in R \tand (b,a) \in S} \\
-&\Leftrightarrow \Exists vp{b}{(b,c) \in \ConverseRel{R} \tand (a,b) \in \ConverseRel{S}} \\
+&\Leftrightarrow \Exists vp{b}{(c,b) \in R \LogicAnd (b,a) \in S} \\
+&\Leftrightarrow \Exists vp{b}{(b,c) \in \ConverseRel{R} \LogicAnd (a,b) \in \ConverseRel{S}} \\
 &\Leftrightarrow (a,c) \in \Composition{\ConverseRel{R}}{\ConverseRel{S}}
 \end{align*}
 \end{proof}
@@ -390,9 +390,9 @@ Let $R, S, T$ be graphs of binary relations, and let $\{R_i\}_{i \in I}$ and $\{
 For left distributivity:
 \begin{align*}
 (a,c) \in \Composition{S}{\left( \bigcup_{i \in I} R_i \right)} 
-&\Leftrightarrow \Exists vp{b}{(a,b) \in \bigcup_{i \in I} R_i \tand (b,c) \in S} \\
-&\Leftrightarrow \Exists vp{b}{\left( \Exists :{i \in I}{(a,b) \in R_i} \right) \tand (b,c) \in S} \\
-&\Leftrightarrow \Exists :{i \in I}{\Exists vp{b}{(a,b) \in R_i \tand (b,c) \in S}} \\
+&\Leftrightarrow \Exists vp{b}{(a,b) \in \bigcup_{i \in I} R_i \LogicAnd (b,c) \in S} \\
+&\Leftrightarrow \Exists vp{b}{\left( \Exists :{i \in I}{(a,b) \in R_i} \right) \LogicAnd (b,c) \in S} \\
+&\Leftrightarrow \Exists :{i \in I}{\Exists vp{b}{(a,b) \in R_i \LogicAnd (b,c) \in S}} \\
 &\Leftrightarrow \Exists :{i \in I}{(a,c) \in \Composition{S}{R_i}} \\
 &\Leftrightarrow (a,c) \in \bigcup_{i \in I} \Composition{S}{R_i}
 \end{align*}
@@ -404,9 +404,9 @@ Right distributivity follows similarly.
 For left subdistributivity:
 \begin{align*}
 (a,c) \in \Composition{S}{\left( \bigcap_{i \in I} R_i \right)} 
-&\Leftrightarrow \Exists vp{b}{(a,b) \in \bigcap_{i \in I} R_i \tand (b,c) \in S} \\
-&\Leftrightarrow \Exists vp{b}{\left( \Forall :{i \in I}{(a,b) \in R_i} \right) \tand (b,c) \in S} \\
-&\Rightarrow \Forall :{i \in I}{\Exists vp{b}{(a,b) \in R_i \tand (b,c) \in S}} \\
+&\Leftrightarrow \Exists vp{b}{(a,b) \in \bigcap_{i \in I} R_i \LogicAnd (b,c) \in S} \\
+&\Leftrightarrow \Exists vp{b}{\left( \Forall :{i \in I}{(a,b) \in R_i} \right) \LogicAnd (b,c) \in S} \\
+&\Rightarrow \Forall :{i \in I}{\Exists vp{b}{(a,b) \in R_i \LogicAnd (b,c) \in S}} \\
 &\Leftrightarrow \Forall :{i \in I}{(a,c) \in \Composition{S}{R_i}} \\
 &\Leftrightarrow (a,c) \in \bigcap_{i \in I} \Composition{S}{R_i}
 \end{align*}
@@ -418,16 +418,16 @@ Right subdistributivity follows similarly. Note that equality doesn't hold in ge
 If $R_1 \subseteq R_2$:
 \begin{align*}
 (a,c) \in \Composition{S}{R_1} 
-&\Leftrightarrow \Exists vp{b}{(a,b) \in R_1 \tand (b,c) \in S} \\
-&\Rightarrow \Exists vp{b}{(a,b) \in R_2 \tand (b,c) \in S} \quad (\text{since } R_1 \subseteq R_2) \\
+&\Leftrightarrow \Exists vp{b}{(a,b) \in R_1 \LogicAnd (b,c) \in S} \\
+&\Rightarrow \Exists vp{b}{(a,b) \in R_2 \LogicAnd (b,c) \in S} \quad (\text{since } R_1 \subseteq R_2) \\
 &\Leftrightarrow (a,c) \in \Composition{S}{R_2}
 \end{align*}
 
 If $S_1 \subseteq S_2$:
 \begin{align*}
 (a,c) \in \Composition{S_1}{R} 
-&\Leftrightarrow \Exists vp{b}{(a,b) \in R \tand (b,c) \in S_1} \\
-&\Rightarrow \Exists vp{b}{(a,b) \in R \tand (b,c) \in S_2} \quad (\text{since } S_1 \subseteq S_2) \\
+&\Leftrightarrow \Exists vp{b}{(a,b) \in R \LogicAnd (b,c) \in S_1} \\
+&\Rightarrow \Exists vp{b}{(a,b) \in R \LogicAnd (b,c) \in S_2} \quad (\text{since } S_1 \subseteq S_2) \\
 &\Leftrightarrow (a,c) \in \Composition{S_2}{R}
 \end{align*}
 
@@ -436,8 +436,8 @@ If $S_1 \subseteq S_2$:
 For the first part:
 \begin{align*}
 (a,c) \in \Composition{\ComplementRel {S}}{R} 
-&\Leftrightarrow \Exists vp{b}{(a,b) \in R \tand (b,c) \in \ComplementRel {S}} \\
-&\Leftrightarrow \Exists vp{b}{(a,b) \in R \tand (b,c) \notin S} \\
+&\Leftrightarrow \Exists vp{b}{(a,b) \in R \LogicAnd (b,c) \in \ComplementRel {S}} \\
+&\Leftrightarrow \Exists vp{b}{(a,b) \in R \LogicAnd (b,c) \notin S} \\
 &\Rightarrow \neg \Forall vp{b}{(a,b) \in R \Rightarrow (b,c) \in S} \\
 &\Leftrightarrow (a,c) \notin \Composition{S}{R} \\
 &\Leftrightarrow (a,c) \in \ComplementRel p{\Composition{S}{R}}
@@ -446,8 +446,8 @@ For the first part:
 For the second part:
 \begin{align*}
 (a,c) \in \Composition{S}{\ComplementRel {R}} 
-&\Leftrightarrow \Exists vp{b}{(a,b) \in \ComplementRel {R} \tand (b,c) \in S} \\
-&\Leftrightarrow \Exists vp{b}{(a,b) \notin R \tand (b,c) \in S} \\
+&\Leftrightarrow \Exists vp{b}{(a,b) \in \ComplementRel {R} \LogicAnd (b,c) \in S} \\
+&\Leftrightarrow \Exists vp{b}{(a,b) \notin R \LogicAnd (b,c) \in S} \\
 &\Rightarrow \neg \Forall vp{b}{(b,c) \in S \Rightarrow (a,b) \in R} \\
 &\Leftrightarrow (a,c) \notin \Composition{S}{R} \\
 &\Leftrightarrow (a,c) \in \ComplementRel p{\Composition{S}{R}}
@@ -510,7 +510,7 @@ If $r = (A, B, R)$ is a binary relation, then the corestriction of $R$ to $B' \s
 
 \begin{remark}
     The notation works to both restrict and corestrict at the same time.
-    \[ \Restriction{R}[A][B] \defeq \left\{ (x, y) \in R \mid x \in A \tand y \in B \right\} = R \cap (A \times B) \]
+    \[ \Restriction{R}[A][B] \defeq \left\{ (x, y) \in R \mid x \in A \LogicAnd y \in B \right\} = R \cap (A \times B) \]
 
     If $r = (A, B, R)$ is a binary relation and $A' \subseteq A$ and $B' \subseteq B$, denoted $\Restriction{r}[A'][B']$, is just $(A', B', \Restriction{R}[A'][B'])$.
 \end{remark}
@@ -550,17 +550,17 @@ Let $R$ be a graph of a binary relation and let $A, B$ be sets. Then:
 \begin{proof}
 \textbf{(1) Restriction}: 
 \begin{align*}
-\Composition{R}{\Identity{A}} &= \left\{ (x, z) \mid \Exists vp{y}{(x, y) \in \Identity{A} \tand (y, z) \in R} \right\} \\
-&= \left\{ (x, z) \mid \Exists :{y \in A}{x = y \tand (y, z) \in R} \right\} \\
-&= \left\{ (x, z) \mid x \in A \tand (x, z) \in R \right\} \\
+\Composition{R}{\Identity{A}} &= \left\{ (x, z) \mid \Exists vp{y}{(x, y) \in \Identity{A} \LogicAnd (y, z) \in R} \right\} \\
+&= \left\{ (x, z) \mid \Exists :{y \in A}{x = y \LogicAnd (y, z) \in R} \right\} \\
+&= \left\{ (x, z) \mid x \in A \LogicAnd (x, z) \in R \right\} \\
 &= \Restriction{R}[A]
 \end{align*}
 
 \textbf{(2) Corestriction}: 
 \begin{align*}
-\Composition{\Identity{B}}{R} &= \left\{ (x, z) \mid \Exists vp{y}{(x, y) \in R \tand (y, z) \in \Identity{B}} \right\} \\
-&= \left\{ (x, z) \mid \Exists :{y \in B}{(x, y) \in R \tand y = z} \right\} \\
-&= \left\{ (x, y) \mid (x, y) \in R \tand y \in B \right\} \\
+\Composition{\Identity{B}}{R} &= \left\{ (x, z) \mid \Exists vp{y}{(x, y) \in R \LogicAnd (y, z) \in \Identity{B}} \right\} \\
+&= \left\{ (x, z) \mid \Exists :{y \in B}{(x, y) \in R \LogicAnd y = z} \right\} \\
+&= \left\{ (x, y) \mid (x, y) \in R \LogicAnd y \in B \right\} \\
 &= \Restriction{R}[][B]
 \end{align*}
 
@@ -599,16 +599,16 @@ These follow directly from the definitions and properties of converse operations
 \textbf{(1)}: By definition of restriction and converse:
 \begin{align*}
 \Restriction{\ConverseRel{R}}[B] &= \left\{ (x, y) \in \ConverseRel{R} \mid x \in B \right\} \\
-&= \left\{ (x, y) \mid (y, x) \in R \tand x \in B \right\} \\
-&= \ConverseRel{\left\{ (y, x) \mid (y, x) \in R \tand x \in B \right\}} \\
+&= \left\{ (x, y) \mid (y, x) \in R \LogicAnd x \in B \right\} \\
+&= \ConverseRel{\left\{ (y, x) \mid (y, x) \in R \LogicAnd x \in B \right\}} \\
 &= \ConverseRel p{\Restriction{R}[][B]}
 \end{align*}
 
 \textbf{(2)}: By definition of corestriction and converse:
 \begin{align*}
 \Restriction{\ConverseRel{R}}[][A] &= \left\{ (x, y) \in \ConverseRel{R} \mid y \in A \right\} \\
-&= \left\{ (x, y) \mid (y, x) \in R \tand y \in A \right\} \\
-&= \ConverseRel{\left\{ (y, x) \mid (y, x) \in R \tand y \in A \right\}} \\
+&= \left\{ (x, y) \mid (y, x) \in R \LogicAnd y \in A \right\} \\
+&= \ConverseRel{\left\{ (y, x) \mid (y, x) \in R \LogicAnd y \in A \right\}} \\
 &= \ConverseRel p{\Restriction{R}[A]}
 \end{align*}
 

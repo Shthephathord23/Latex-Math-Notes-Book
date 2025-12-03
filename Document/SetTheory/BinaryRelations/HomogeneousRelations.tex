@@ -35,25 +35,25 @@ Equivalently, $R \cap \ConverseRel{R} = \emptyset$.
 
 \begin{definition}[Antisymmetric Relation]
 A homogeneous relation $r = (A, A, R)$ is \textbf{antisymmetric} if whenever $a$ is related to $b$ and $b$ is related to $a$, then $a = b$:
-\[ \Forall :{a, b \in A}{(a, b) \in R \tand (b, a) \in R \implies a = b} \]
+\[ \Forall :{a, b \in A}{(a, b) \in R \LogicAnd (b, a) \in R \implies a = b} \]
 Equivalently, $R \cap \ConverseRel{R} \subseteq \Identity{A}$.
 \end{definition}
 
 \begin{definition}[Transitive Relation]
 A homogeneous relation $r = (A, A, R)$ is \textbf{transitive} if whenever $a$ is related to $b$ and $b$ is related to $c$, then $a$ is related to $c$:
-\[ \Forall :{a, b, c \in A}{(a, b) \in R \tand (b, c) \in R \implies (a, c) \in R} \]
+\[ \Forall :{a, b, c \in A}{(a, b) \in R \LogicAnd (b, c) \in R \implies (a, c) \in R} \]
 Equivalently, $\Composition{R}{R} \subseteq R$.
 \end{definition}
 
 \begin{definition}[Connected Relation]
 A homogeneous relation $r = (A, A, R)$ is \textbf{connected} (or \textbf{complete}) if for any two distinct elements, at least one is related to the other:
-\[ \Forall :{a, b \in A}{a \neq b \implies (a, b) \in R \tor (b, a) \in R} \]
+\[ \Forall :{a, b \in A}{a \neq b \implies (a, b) \in R \LogicOr (b, a) \in R} \]
 Equivalently, $R \cup \ConverseRel{R} \cup \Identity{A} = A \times A$.
 \end{definition}
 
 \begin{definition}[Strongly Connected Relation]
 A homogeneous relation $r = (A, A, R)$ is \textbf{strongly connected} (or \textbf{total}) if for any two elements (not necessarily distinct), at least one is related to the other:
-\[ \Forall :{a, b \in A}{(a, b) \in R \tor (b, a) \in R} \]
+\[ \Forall :{a, b \in A}{(a, b) \in R \LogicOr (b, a) \in R} \]
 Equivalently, $R \cup \ConverseRel{R} = A \times A$.
 \end{definition}
 
@@ -93,7 +93,7 @@ A homogeneous relation $r = (A, A, R)$ is a \textbf{preorder relation} if it is 
 A homogeneous relation $r = (A, A, R)$ is an \textbf{equivalence relation} if it is reflexive, symmetric, and transitive.
 \end{definition}
 
-\begin{definition}[Partial Order]
+\begin{definition}[(Non-Strict) Partial Order]
 A homogeneous relation $r = (A, A, R)$ is a \textbf{partial order} if it is reflexive, antisymmetric, and transitive.
 \end{definition}
 
@@ -103,10 +103,6 @@ A homogeneous relation $r = (A, A, R)$ is a \textbf{strict partial order} if it 
 
 \begin{definition}[Total Order]
 A homogeneous relation $r = (A, A, R)$ is a \textbf{total order} (or \textbf{linear order}) if it is a partial order that is also connected. Equivalently, it is reflexive, antisymmetric, transitive, and connected.
-\end{definition}
-
-\begin{definition}[Strict Total Order]
-A homogeneous relation $r = (A, A, R)$ is a \textbf{strict total order} if it is a strict partial order that is also trichotomous. Equivalently, it is irreflexive, asymmetric, transitive, and trichotomous.
 \end{definition}
 
 \begin{remark}
@@ -119,5 +115,140 @@ These definitions form a hierarchy of increasingly structured relations:
 \end{itemize}
 \end{remark}
 
+\section{Properties of Homogeneous Relations}
+
+\begin{proposition}[Asymmetry Implies Irreflexivity]
+Let $r = (A, A, R)$ be an asymmetric relation. Then $r$ is irreflexive.
+\end{proposition}
+
+\begin{proof}
+Suppose for contradiction that there exists $a \in A$ such that $(a, a) \in R$. By asymmetry, since $(a, a) \in R$, we must have $(a, a) \notin R$, which is a contradiction. Therefore, $r$ is irreflexive.
+\end{proof}
+
+\begin{proposition}[Irreflexivity and Asymmetry for Transitive Relations]
+Let $r = (A, A, R)$ be a transitive relation. Then $r$ is irreflexive if and only if $r$ is asymmetric.
+\end{proposition}
+
+\begin{proof}
+($\Leftarrow$) This direction follows from the previous proposition and does not require transitivity.
+
+($\Rightarrow$) Assume $r$ is transitive and irreflexive. We prove that $r$ is asymmetric.
+
+Suppose $(a, b) \in R$. We need to show $(b, a) \notin R$.
+
+Suppose for contradiction that $(b, a) \in R$. Since $r$ is transitive and we have both $(a, b) \in R$ and $(b, a) \in R$, we obtain $(a, a) \in R$. But this contradicts irreflexivity. Therefore, $(b, a) \notin R$, and thus $r$ is asymmetric.
+\end{proof}
+
+\begin{remark}
+These propositions reveal an important relationship:
+\begin{itemize}
+    \item Asymmetry always implies irreflexivity (no additional assumptions needed)
+    \item For transitive relations, irreflexivity implies asymmetry (transitivity is essential here)
+    \item Therefore, for transitive relations, irreflexivity and asymmetry are equivalent properties
+\end{itemize}
+
+This establishes that the definition of a strict partial order (irreflexive, asymmetric, transitive) has some redundancy—we could equivalently define it as irreflexive and transitive, or as asymmetric and transitive.
+\end{remark}
+
+\begin{remark}[Weakening Partial Orders]
+
+\begin{enumerate}
+    \item A (non-strict) partial order can be weakened to a preorder by removing the antisymmetry requirement. That is, if $r$ is reflexive, antisymmetric, and transitive, then removing antisymmetry yields a preorder (reflexive and transitive).
+    
+    \item A strict partial order cannot be weakened in an analogous way. Removing asymmetry from an irreflexive, asymmetric, transitive relation yields an irreflexive, transitive relation, which is not a standard structure like a preorder.
+\end{enumerate}
+
+This illustrates a fundamental difference between strict and non-strict partial orders: (non-strict) partial orders fit into a natural hierarchy
+\[
+\text{Partial Order} \xrightarrow{\text{drop antisymmetry}} \text{Preorder}
+\]
+while strict partial orders do not admit such a natural weakening to a well-known structure.
+\end{remark}
+
+\subsection{Preorders and Induced Equivalence Relations}
+
+A preorder is a weaker structure than a partial order, lacking antisymmetry. However, every preorder naturally induces an equivalence relation that captures when two elements are "equivalent" with respect to the ordering.
+
+\begin{proposition}[Equivalence Relation Induced by a Preorder]
+Let $r_{\leq} = (A, A, R_{\leq})$ be a preorder. Define the relation $R_{\sim} = \{(a, b) \in A \times A \mid (a, b) \in R_{\leq}\LogicAnd(b, a) \in R_{\leq}\}$, and let $r_{\sim} = (A, A, R_{\sim})$. Then $r_{\sim}$ is an equivalence relation.
+
+In other words, if we define $a \sim b$ to mean $a \leq b\LogicAnd b \leq a$, then $\sim$ is an equivalence relation.
+\end{proposition}
+
+\begin{proof}
+We need to verify that $r_{\sim}$ is reflexive, symmetric, and transitive.
+
+\textbf{Reflexivity:} For any $a \in A$, since $r_{\leq}$ is reflexive, we have $(a, a) \in R_{\leq}$. Therefore, $(a, a) \in R_{\leq}$ and $(a, a) \in R_{\leq}$, which means $(a, a) \in R_{\sim}$.
+
+\textbf{Symmetry:} Suppose $(a, b) \in R_{\sim}$. Then $(a, b) \in R_{\leq}$ and $(b, a) \in R_{\leq}$. By symmetry of the definition, we also have $(b, a) \in R_{\leq}$ and $(a, b) \in R_{\leq}$, which means $(b, a) \in R_{\sim}$.
+
+\textbf{Transitivity:} Suppose $(a, b) \in R_{\sim}$ and $(b, c) \in R_{\sim}$. Then:
+\begin{itemize}
+    \item $(a, b) \in R_{\leq}$ and $(b, a) \in R_{\leq}$
+    \item $(b, c) \in R_{\leq}$ and $(c, b) \in R_{\leq}$
+\end{itemize}
+
+Since $r_{\leq}$ is transitive, from $(a, b) \in R_{\leq}$ and $(b, c) \in R_{\leq}$, we obtain $(a, c) \in R_{\leq}$.
+
+Similarly, from $(c, b) \in R_{\leq}$ and $(b, a) \in R_{\leq}$, we obtain $(c, a) \in R_{\leq}$.
+
+Therefore, $(a, c) \in R_{\leq}$ and $(c, a) \in R_{\leq}$, which means $(a, c) \in R_{\sim}$.
+\end{proof}
+
+
+\subsection{Relationship Between Strict and Non-Strict Partial Orders}
+
+There is a natural correspondence between strict and non-strict partial orders on a set. We explore this bidirectional relationship.
+
+\begin{proposition}[From Non-Strict to Strict Partial Order]
+Let $r_{\leq} = (A, A, R_{\leq})$ be a (non-strict) partial order. Define $R_{\le} = R_{\leq} \setminus \Identity{A} = \{(a, b) \in R_{\leq} \mid a \neq b\}$ and let $r_{\le} = (A, A, R_{\le})$. Then $r_{\le}$ is a strict partial order.
+
+In other words, if $a \leq b$ denotes $(a, b) \in R_{\leq}$, and we define $a < b$ to mean $a \leq b \LogicAnd a \neq b$, then $<$ is a strict partial order.
+\end{proposition}
+
+\begin{proof}
+By definition, $R_{\le}$ excludes all diagonal elements from $R_{\leq}$, so it is irreflexive. We need to verify that $r_{\le}$ is also transitive (which by our previous proposition will guarantee it is also asymmetric, completing the proof).
+
+\textbf{Transitivity:} Suppose $(a, b) \in R_{\le}$ and $(b, c) \in R_{\le}$. Then $(a, b) \in R_{\leq}$, $(b, c) \in R_{\leq}$, $a \neq b$, and $b \neq c$.
+
+Since $R_{\leq}$ is transitive, $(a, c) \in R_{\leq}$. We need to show $a \neq c$ to conclude $(a, c) \in R_{\le}$.
+
+Suppose for contradiction that $a = c$. Then $(a, b) \in R_{\leq}$ and $(b, a) \in R_{\leq}$ (since $(b, c) = (b, a)$). By antisymmetry of $R_{\leq}$, we have $a = b$. But this contradicts $a \neq b$. Therefore, $a \neq c$, and thus $(a, c) \in R_{\le}$.
+
+Since $r_{\le}$ is irreflexive and transitive, by our earlier proposition it is also asymmetric. Therefore, $r_{\le}$ is a strict partial order.
+\end{proof}
+
+\begin{proposition}[From Strict to Non-Strict Partial Order]
+Let $r_{\le} = (A, A, R_{\le})$ be a strict partial order. Define $R_{\leq} = R_{\le} \cup \Identity{A}$ and let $r_{\leq} = (A, A, R_{\leq})$. Then $r_{\leq}$is a (non-strict) partial order.
+
+In other words, if $a < b$ denotes $(a, b) \in R_{\le}$, and we define $a \leq b$ to mean $a < b \LogicOr a = b$, then $r_\leq$ is a (non-strict) partial order.
+\end{proposition}
+
+\begin{proof}
+We need to verify that $r_{\leq}$ is reflexive, antisymmetric, and transitive.
+
+\textbf{Reflexivity:} For any $a \in A$, we have $(a, a) \in \Identity{A} \subseteq R_{\leq}$.
+
+\textbf{Antisymmetry:} Suppose $(a, b) \in R_{\leq}$ and $(b, a) \in R_{\leq}$. We need to show $a = b$.
+
+If either $(a, b) \in \Identity{A}$ or $(b, a) \in \Identity{A}$, then $a = b$. Otherwise, both $(a, b) \in R$ and $(b, a) \in R$, which contradicts the asymmetry of $R$. Therefore, $a = b$.
+
+\textbf{Transitivity:} Suppose $(a, b) \in R_{\leq}$ and $(b, c) \in R_{\leq}$. We analyze by cases:
+\begin{itemize}
+    \item If $(a, b) \in \Identity{A}$, then $a = b$, so $(a, c) = (b, c) \in R_{\leq}$.
+    \item If $(b, c) \in \Identity{A}$, then $b = c$, so $(a, c) = (a, b) \in R_{\leq}$.
+    \item If $(a, b) \in R$ and $(b, c) \in R$, then by transitivity of $R$, we have $(a, c) \in R \subseteq R_{\leq}$.
+\end{itemize}
+
+In all cases, $(a, c) \in R_{\leq}$.
+\end{proof}
+
+\begin{remark}
+These two propositions establish a bijective correspondence between strict and (non-strict) partial orders on a set. Given either one, we can uniquely recover the other. Moreover, these transformations are inverses:
+\begin{itemize}
+    \item Starting with a (non-strict) partial order $\leq$, constructing $<$, and then reconstructing the partial order gives back $\leq$.
+    \item Starting with a strict partial order $<$, constructing $\leq$, and then reconstructing the strict order gives back $<$.
+\end{itemize}
+\end{remark}
 
 

@@ -11,7 +11,7 @@ We classify binary relations based on how they relate elements from their domain
 
 \begin{definition}[Univalent Relation]
 Let $r = (A, B, R)$ be a binary relation. We say $r$ is \textbf{univalent} (or \textbf{right-unique}) if every element in the domain is related to at most one element in the codomain:
-\[ \Forall :{a \in A}{\Forall :{b_1, b_2 \in B}{(a, b_1) \in R \tand (a, b_2) \in R \implies b_1 = b_2}} \]
+\[ \Forall :{a \in A}{\Forall :{b_1, b_2 \in B}{(a, b_1) \in R \LogicAnd (a, b_2) \in R \implies b_1 = b_2}} \]
 Equivalently, if $(a, b_1) \in R$ and $(a, b_2) \in R$, then $b_1 = b_2$. \\
 If $r = (A, B, R)$ we also say the graph of binary relations $R$ is univalent.
 \end{definition}
@@ -24,7 +24,7 @@ Equivalently, $\Domain{R} = A$.
 
 \begin{definition}[Injective Relation]
 Let $r = (A, B, R)$ be a binary relation. We say $r$ is \textbf{injective} (or \textbf{left-unique}) if every element in the codomain is related to at most one element in the domain:
-\[ \Forall :{b \in B}{\Forall :{a_1, a_2 \in A}{(a_1, b) \in R \tand (a_2, b) \in R \implies a_1 = a_2}} \]
+\[ \Forall :{b \in B}{\Forall :{a_1, a_2 \in A}{(a_1, b) \in R \LogicAnd (a_2, b) \in R \implies a_1 = a_2}} \]
 Equivalently, if $(a_1, b) \in R$ and $(a_2, b) \in R$, then $a_1 = a_2$.
 \end{definition}
 
@@ -97,10 +97,10 @@ Let $r = (A, B, R)$ be a binary relation. Then:
 
 \begin{proof}
 \textbf{(1)} $r$ is injective means:
-\[ \Forall :{b \in B}{\Forall :{a_1, a_2 \in A}{(a_1, b) \in R \tand (a_2, b) \in R \implies a_1 = a_2}} \]
+\[ \Forall :{b \in B}{\Forall :{a_1, a_2 \in A}{(a_1, b) \in R \LogicAnd (a_2, b) \in R \implies a_1 = a_2}} \]
 
 This is equivalent to:
-\[ \Forall :{b \in B}{\Forall :{a_1, a_2 \in A}{(b, a_1) \in \ConverseRel{R} \tand (b, a_2) \in \ConverseRel{R} \implies a_1 = a_2}} \]
+\[ \Forall :{b \in B}{\Forall :{a_1, a_2 \in A}{(b, a_1) \in \ConverseRel{R} \LogicAnd (b, a_2) \in \ConverseRel{R} \implies a_1 = a_2}} \]
 
 which means $\ConverseRel{r}$ is univalent.
 
@@ -139,7 +139,7 @@ This duality principle allows us to prove half as many theorems while obtaining 
 \begin{proof}
 \textbf{(1) Univalent}: 
 
-($\Rightarrow$) Assume $r$ is univalent. Let $(b_1, b_2) \in \Composition{R}{\ConverseRel{R}}$. Then $\Exists :p{a \in A}{(b_1, a) \in \ConverseRel{R} \tand (a, b_2) \in R}$, which means $\Exists :p{a \in A}{(a, b_1) \in R \tand (a, b_2) \in R}$. Since $r$ is univalent, we have $b_1 = b_2$. Therefore $(b_1, b_2) = (b_1, b_1) \in \Identity{B}$, so $\Composition{R}{\ConverseRel{R}} \subseteq \Identity{B}$.
+($\Rightarrow$) Assume $r$ is univalent. Let $(b_1, b_2) \in \Composition{R}{\ConverseRel{R}}$. Then $\Exists :p{a \in A}{(b_1, a) \in \ConverseRel{R} \LogicAnd (a, b_2) \in R}$, which means $\Exists :p{a \in A}{(a, b_1) \in R \LogicAnd (a, b_2) \in R}$. Since $r$ is univalent, we have $b_1 = b_2$. Therefore $(b_1, b_2) = (b_1, b_1) \in \Identity{B}$, so $\Composition{R}{\ConverseRel{R}} \subseteq \Identity{B}$.
 
 ($\Leftarrow$) Assume $\Composition{R}{\ConverseRel{R}} \subseteq \Identity{B}$. Suppose $(a, b_1) \in R$ and $(a, b_2) \in R$. Then $(b_1, a) \in \ConverseRel{R}$ and $(a, b_2) \in R$, so $(b_1, b_2) \in \Composition{R}{\ConverseRel{R}}$. Since $\Composition{R}{\ConverseRel{R}} \subseteq \Identity{B}$, we have $(b_1, b_2) \in \Identity{B}$, which means $b_1 = b_2$. Therefore $r$ is univalent.
 
@@ -147,11 +147,11 @@ This duality principle allows us to prove half as many theorems while obtaining 
 
 ($\Rightarrow$) Assume $r$ is total. Let $a \in A$ be arbitrary. Since $r$ is total, $\Exists :p{b \in B}{(a, b) \in R}$. Then $(a, b) \in R$ and $(b, a) \in \ConverseRel{R}$, so $(a, a) \in \Composition{\ConverseRel{R}}{R}$. Since $a$ was arbitrary, $(a, a) \in \Composition{\ConverseRel{R}}{R}$ for all $a \in A$. Therefore $\Identity{A} \subseteq \Composition{\ConverseRel{R}}{R}$.
 
-($\Leftarrow$) Assume $\Composition{\ConverseRel{R}}{R} \supseteq \Identity{A}$. Let $a \in A$ be arbitrary. Then $(a, a) \in \Identity{A} \subseteq \Composition{\ConverseRel{R}}{R}$. By definition of composition, $\Exists :p{b \in B}{(a, b) \in R \tand (b, a) \in \ConverseRel{R}}$. Since $(b, a) \in \ConverseRel{R}$ is equivalent to $(a, b) \in R$, the first condition already gives us $(a, b) \in R$ for some $b \in B$. Therefore $r$ is total.
+($\Leftarrow$) Assume $\Composition{\ConverseRel{R}}{R} \supseteq \Identity{A}$. Let $a \in A$ be arbitrary. Then $(a, a) \in \Identity{A} \subseteq \Composition{\ConverseRel{R}}{R}$. By definition of composition, $\Exists :p{b \in B}{(a, b) \in R \LogicAnd (b, a) \in \ConverseRel{R}}$. Since $(b, a) \in \ConverseRel{R}$ is equivalent to $(a, b) \in R$, the first condition already gives us $(a, b) \in R$ for some $b \in B$. Therefore $r$ is total.
 
 \textbf{(3) Injective}:
 
-($\Rightarrow$) Assume $r$ is injective. Let $(a_1, a_2) \in \Composition{\ConverseRel{R}}{R}$. Then $\Exists :p{b \in B}{(a_1, b) \in R \tand (b, a_2) \in \ConverseRel{R}}$, which means $\Exists :p{b \in B}{(a_1, b) \in R \tand (a_2, b) \in R}$. Since $r$ is injective, we have $a_1 = a_2$. Therefore $(a_1, a_2) = (a_1, a_1) \in \Identity{A}$, so $\Composition{\ConverseRel{R}}{R} \subseteq \Identity{A}$.
+($\Rightarrow$) Assume $r$ is injective. Let $(a_1, a_2) \in \Composition{\ConverseRel{R}}{R}$. Then $\Exists :p{b \in B}{(a_1, b) \in R \LogicAnd (b, a_2) \in \ConverseRel{R}}$, which means $\Exists :p{b \in B}{(a_1, b) \in R \LogicAnd (a_2, b) \in R}$. Since $r$ is injective, we have $a_1 = a_2$. Therefore $(a_1, a_2) = (a_1, a_1) \in \Identity{A}$, so $\Composition{\ConverseRel{R}}{R} \subseteq \Identity{A}$.
 
 ($\Leftarrow$) Assume $\Composition{\ConverseRel{R}}{R} \subseteq \Identity{A}$. Suppose $(a_1, b) \in R$ and $(a_2, b) \in R$. Then $(a_1, b) \in R$ and $(b, a_2) \in \ConverseRel{R}$, so $(a_1, a_2) \in \Composition{\ConverseRel{R}}{R}$. Since $\Composition{\ConverseRel{R}}{R} \subseteq \Identity{A}$, we have $(a_1, a_2) \in \Identity{A}$, which means $a_1 = a_2$. Therefore $r$ is injective.
 
@@ -159,7 +159,7 @@ This duality principle allows us to prove half as many theorems while obtaining 
 
 ($\Rightarrow$) Assume $r$ is surjective. Let $b \in B$ be arbitrary. Since $r$ is surjective, $\Exists :p{a \in A}{(a, b) \in R}$. Then $(a, b) \in R$ and $(b, a) \in \ConverseRel{R}$, so $(b, b) \in \Composition{R}{\ConverseRel{R}}$. Since $b$ was arbitrary, $(b, b) \in \Composition{R}{\ConverseRel{R}}$ for all $b \in B$. Therefore $\Identity{B} \subseteq \Composition{R}{\ConverseRel{R}}$.
 
-($\Leftarrow$) Assume $\Composition{R}{\ConverseRel{R}} \supseteq \Identity{B}$. Let $b \in B$ be arbitrary. Then $(b, b) \in \Identity{B} \subseteq \Composition{R}{\ConverseRel{R}}$. By definition of composition, $\Exists :p{a \in A}{(b, a) \in \ConverseRel{R} \tand (a, b) \in R}$. Since $(b, a) \in \ConverseRel{R}$ is equivalent to $(a, b) \in R$, the second condition already gives us $(a, b) \in R$ for some $a \in A$. Therefore $r$ is surjective.
+($\Leftarrow$) Assume $\Composition{R}{\ConverseRel{R}} \supseteq \Identity{B}$. Let $b \in B$ be arbitrary. Then $(b, b) \in \Identity{B} \subseteq \Composition{R}{\ConverseRel{R}}$. By definition of composition, $\Exists :p{a \in A}{(b, a) \in \ConverseRel{R} \LogicAnd (a, b) \in R}$. Since $(b, a) \in \ConverseRel{R}$ is equivalent to $(a, b) \in R$, the second condition already gives us $(a, b) \in R$ for some $a \in A$. Therefore $r$ is surjective.
 \end{proof}
 
 \begin{remark}
@@ -203,7 +203,7 @@ This follows from (1) by duality. $r$ is surjective $\iff \ConverseRel{r}$ is to
 
 We prove the equivalences in a cycle: univalent $\implies$ composition $\implies$ domain-intersection $\implies$ arbitrary intersection $\implies$ binary intersection $\implies$ univalent.
 
-\textit{(Univalent $\implies$ Composition):} Assume $r$ is univalent. We always have $\Composition{(\bigcap_{i \in I} s_i)}{r} \subseteq \bigcap_{i \in I} \Composition{s_i}{r}$. For the reverse inclusion, let $(x, z) \in \bigcap_{i \in I} \Composition{s_i}{r}$. Then $\Forall :{i \in I}{(x, z) \in \Composition{s_i}{r}}$, so $\Forall :{i \in I}{\Exists :p{y}{(x, y) \in R \tand (y, z) \in S_i}}$. 
+\textit{(Univalent $\implies$ Composition):} Assume $r$ is univalent. We always have $\Composition{(\bigcap_{i \in I} s_i)}{r} \subseteq \bigcap_{i \in I} \Composition{s_i}{r}$. For the reverse inclusion, let $(x, z) \in \bigcap_{i \in I} \Composition{s_i}{r}$. Then $\Forall :{i \in I}{(x, z) \in \Composition{s_i}{r}}$, so $\Forall :{i \in I}{\Exists :p{y}{(x, y) \in R \LogicAnd (y, z) \in S_i}}$. 
 
 Since $r$ is univalent, for a given $x$, the $y$ such that $(x, y) \in R$ is unique (if it exists). Let this unique element be $y$. Then we must have $(y, z) \in S_i$ for all $i \in I$, so $(y, z) \in \bigcap_{i \in I} S_i$. Thus $(x, z) \in \Composition{(\bigcap_{i \in I} s_i)}{r}$.
 
@@ -222,7 +222,7 @@ We always have $\Domain{\bigcap_{i \in I} \Composition{s_i}{r}} \subseteq \bigca
 
 \textit{(Arbitrary Intersection $\implies$ Binary Intersection):} Trivial, take $I = \{1, 2\}$.
 
-\textit{(Binary Intersection $\implies$ Univalent):} Assume $\InverseImage{r}{B_1 \cap B_2} = \InverseImage{r}{B_1} \cap \InverseImage{r}{B_2}$ for all $B_1, B_2$. Suppose $r$ is not univalent. Then $\Exists :p{x, y_1, y_2}{(x, y_1) \in R \tand (x, y_2) \in R \tand y_1 \neq y_2}$. 
+\textit{(Binary Intersection $\implies$ Univalent):} Assume $\InverseImage{r}{B_1 \cap B_2} = \InverseImage{r}{B_1} \cap \InverseImage{r}{B_2}$ for all $B_1, B_2$. Suppose $r$ is not univalent. Then $\Exists :p{x, y_1, y_2}{(x, y_1) \in R \LogicAnd (x, y_2) \in R \LogicAnd y_1 \neq y_2}$. 
 
 Let $B_1 = \{y_1\}$ and $B_2 = \{y_2\}$. Then $B_1 \cap B_2 = \emptyset$, so $\InverseImage{r}{B_1 \cap B_2} = \emptyset$. But $x \in \InverseImage{r}{B_1}$ and $x \in \InverseImage{r}{B_2}$, so $x \in \InverseImage{r}{B_1} \cap \InverseImage{r}{B_2}$. Contradiction.
 
@@ -327,7 +327,7 @@ Let $r = (A, B, R)$ and $s = (B, C, S)$ be binary relations. Then:
 \begin{proof}
 \textbf{(1) Totality}:
 
-Assume $\Composition{s}{r}$ is total. Let $a \in A$ be arbitrary. Since $\Composition{s}{r}$ is total, $\Exists :{c \in C}{(a, c) \in \Composition{S}{R}}$. By definition of composition, $\Exists :{b \in B}{(a, b) \in R \tand (b, c) \in S}$. Thus $\Exists :{b \in B}{(a, b) \in R}$, so $r$ is total.
+Assume $\Composition{s}{r}$ is total. Let $a \in A$ be arbitrary. Since $\Composition{s}{r}$ is total, $\Exists :{c \in C}{(a, c) \in \Composition{S}{R}}$. By definition of composition, $\Exists :{b \in B}{(a, b) \in R \LogicAnd (b, c) \in S}$. Thus $\Exists :{b \in B}{(a, b) \in R}$, so $r$ is total.
 
 \textbf{(2) Surjectivity}:
 
