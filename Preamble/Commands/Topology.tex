@@ -1,0 +1,27 @@
+% Preamble/Commands/Topology.tex
+
+
+\NewDocumentCommand{\Interior}{m}
+{
+    {#1}^{\circ}
+}
+
+\NewDocumentCommand{\Closure}{m}
+{
+    \overline{#1}
+}
+
+\NewDocumentCommand{\Boundary}{m}
+{
+    \partial #1
+}
+
+\NewDocumentCommand{\Ball}{mm}
+{
+    B_{#1}(#2)
+}
+
+\NewDocumentCommand{\ClosedBall}{mm}
+{
+    \overline{B}_{#1}(#2)
+}

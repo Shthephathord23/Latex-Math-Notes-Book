@@ -1,0 +1,11 @@
+PWD /Users/gsg/Desktop/Latex/Math
+INPUT /usr/local/texlive/2025/texmf.cnf
+INPUT /usr/local/texlive/2025/texmf-dist/web2c/texmf.cnf
+INPUT /usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt
+INPUT Document/UniBuc FMI/UniBuc.tex
+OUTPUT UniBuc.log
+INPUT ./Document/UniBuc FMI/Algebra III/Algebra3.tex
+INPUT ./Document/UniBuc FMI/Algebra III/Algebra3.tex
+INPUT Document/UniBuc FMI/Algebra III/Algebra3.tex
+INPUT /usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map
+INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm

@@ -1,0 +1,158 @@
+% Preamble/Commands/MeasureTheory.tex
+
+\NewDocumentCommand{\GenSigmaAlg}{m}
+{
+    \sigma(#1)
+}
+
+\NewDocumentCommand{\GenPi}{m}
+{
+    \pi(#1)
+}
+
+\NewDocumentCommand{\GenLambda}{m}
+{
+    \lambda(#1)
+}
+
+\NewDocumentCommand{\GenMonotone}{m}
+{
+    \mathcal{N}(#1)
+}
+
+\NewDocumentCommand{\BorelAlg}{m}
+{
+    \mathcal{B}(#1)
+}
+
+
+
+\NewDocumentCommand{\OuterMeasure}{m}
+{
+    #1^*
+}
+
+
+
+\NewDocumentCommand{\LowerInt}{}
+{
+    \underline{\int}
+}
+
+\NewDocumentCommand{\UpperInt}{}
+{
+    \overline{\int}
+}
+
+
+\NewDocumentCommand{\LowerSigmaInt}{}
+{
+    \underline{\int}^\sigma
+}
+
+
+\NewDocumentCommand{\UpperSigmaInt}{}
+{
+    \overline{\int}^\sigma
+}
+
+
+
+
+
+\NewDocumentCommand{\LowerRiemann}{}
+{
+    \underline{\int}
+}
+
+\NewDocumentCommand{\UpperRiemann}{}
+{
+    \overline{\int}
+}
+
+\NewDocumentCommand{\LowerSum}{m m}
+{
+    \underline{S}(#1, #2)
+}
+
+\NewDocumentCommand{\UpperSum}{m m}
+{
+    \overline{S}(#1, #2)
+}
+
+
+
+
+\NewDocumentCommand{\JordanInner}{m}
+{
+    m_*(#1)
+}
+
+\NewDocumentCommand{\JordanOuter}{m}
+{
+    m^*(#1)
+}
+
+\NewDocumentCommand{\Jordan}{m}
+{
+    m(#1)
+}
+
+
+
+
+\NewDocumentCommand{\MeasureCompletion}{m}
+{
+    \overline{#1}
+}
+
+
+\NewDocumentCommand{\NullSets}{m}
+{
+    \mathcal{N}_{#1}
+}
+
+\NewDocumentCommand{\Lebesgue}{m}
+{
+    \lambda(#1)
+}
+
+\NewDocumentCommand{\LebesgueOuter}{m}
+{
+    \lambda^*(#1)
+}
+
+\NewDocumentCommand{\LebesgueInner}{m}
+{
+    \lambda_*(#1)
+}
+
+
+\NewDocumentCommand{\LpFunc}{m}
+{
+    \mathcal{L}^{#1}
+}
+
+\NewDocumentCommand{\Lp}{m}
+{
+    L^{#1}
+}
+
+\NewDocumentCommand{\LpNorm}{m m}
+{
+    \left\| #1 \right\|_{#2}
+}
+
+
+
+
+\NewDocumentCommand{\ConvMeasure}{}
+{
+    \xrightarrow{\mu}
+}
+
+
+\NewDocumentCommand{\almosteverywhere}{}
+{
+    \ensuremath{\mathrm{a.e.}}
+}
