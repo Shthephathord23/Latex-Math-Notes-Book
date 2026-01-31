@@ -1,0 +1,87 @@
+% Document/LinearAlgebra/VectorSpaces/HomAndDual/Compendium.tex
+% Chapter 4 Compendium
+
+\newpage
+\section{Chapter Compendium}
+
+\begin{compendium}[Products and Coproducts]
+    \textbf{Product}: $\DirectProd{i \in I}{V_i}$ with projections $\pi_j$
+    
+    \textbf{Coproduct}: $\ExtDirectSum{i \in I}{V_i}$ = finite-support, with injections $\iota_j$
+    
+    \textbf{Finite $I$}: product = coproduct (biproduct)
+    
+    \textbf{Dimensions}: $\Dim{\ExtDirectSum{}{V_i}} = \sum \Dim{V_i}$
+    
+    \textbf{Infinite $I$}: $\Dim{\DirectProd{}{V_i}} = \prod \Card{V_i}$ (for non-trivial factors)
+\end{compendium}
+
+\begin{compendium}[Hom-Product Isomorphisms]
+    $\Hom[K]{\ExtDirectSum{}{U_i}}{V} \cong \DirectProd{}{\Hom[K]{U_i}{V}}$ (contravariant)
+    
+    $\Hom[K]{U}{\DirectProd{}{V_i}} \cong \DirectProd{}{\Hom[K]{U}{V_i}}$ (covariant)
+    
+    $\Hom[K]{U}{\ExtDirectSum{}{V_i}} \cong \ExtDirectSum{}{\Hom[K]{U}{V_i}}$ (finite-dim $U$)
+\end{compendium}
+
+\begin{compendium}[Hom Spaces and $K$-Algebras]
+    $\Hom[K]{U}{V}$ is a $K$-vector space (all 10 axioms verified pointwise)
+    
+    $K$-algebra: vector space + ring with compatibility $a(xy) = (ax)y = x(ay)$
+    
+    $\End[K]{V}$: unital associative $K$-algebra, non-commutative when $\Dim{V} \geq 2$
+    
+    Non-commutativity: explicit $S, T$ with $S(v_1)=v_2$, $T(v_2)=v_1 \Rightarrow ST \neq TS$
+    
+    $\Hom[K]{K}{V} \cong V$; \quad $\Hom[K]{K}{K} \cong K$
+\end{compendium}
+
+\begin{compendium}[Hom Dimension (Finite $\Dim{V}$)]
+    \textbf{Full Chain}:
+    \[\Hom{U}{V} \cong \DirectProd{B_U}{\Hom{K}{K^{(B_V)}}} \cong \DirectProd{B_U}{\ExtDirectSum{B_V}{K}} \cong \DirectProd{B_U}{K^{(\Dim{V})}}\]
+    
+    \textbf{Dimension}: $\Card{K^{(\Dim{V})}}^{\Dim{U}}$; finite case: $\Dim{\Hom{U}{V}} = m \cdot n$
+\end{compendium}
+
+\begin{compendium}[Dual Space]
+    $\Dual{V} = \Hom[K]{V}{K} \cong \DirectProd{B}{K^{(1)}} = K^B$
+    
+    $\Dim{\Dual{V}} = \Dim{V}$ (finite); \quad $\Dim{\Dual{V}} = \Card{K}^\kappa > \kappa$ (infinite, Cantor)
+    
+    Dual basis: $b^i(b_j) = \delta_{ij}$; spans $\Dual{V}$ iff finite-dim
+    
+    \textbf{Not in span example}: $\mathrm{ev}_1 \notin \Span{\{\delta_n\}}$ on $K[X]$
+    
+    $V \cong \Dual{V}$ non-canonical (basis-dependent)
+\end{compendium}
+
+\begin{compendium}[Annihilators]
+    $\Ann{S} = \Set{\varphi \in \Dual{V} \mid \varphi|_S = 0}$
+    
+    $\Ann{S} = \Ann{\Span{S}}$; \quad $\Ann{\{0\}} = \Dual{V}$; \quad $\Ann{V} = \{0\}$
+    
+    $\Dim{\Ann{U}} + \Dim{U} = \Dim{V}$ (finite-dim)
+    
+    $\Ann{U} \cong \Dual{\QuotientSpace{V}{U}}$ (finite-dim)
+\end{compendium}
+
+\begin{compendium}[Hyperplanes]
+    Equivalent characterizations:
+    \begin{enumerate}
+        \item[(i)] $\Dim{\QuotientSpace{V}{H}} = 1$
+        \item[(ii)] $\Exists{\text{1-dim } L}{H \DirectSum L = V}$
+        \item[(iii)] $H = \Ker{f}$ for nonzero $f \in \Dual{V}$
+        \item[(iv)] $\Dim{\Ann{H}} = 1$
+    \end{enumerate}
+    Finite-dim only: $\Dim{H} = \Dim{V} - 1$
+\end{compendium}
+
+\begin{compendium}[Dual Map and Bidual]
+    $\DualMap{T}: \Dual{V} \to \Dual{U}$, \quad $\DualMap{T}(\varphi) = \Composition{\varphi}{T}$ (contravariant)
+    
+    $\DualMap{T}$ inj $\Leftrightarrow$ $T$ surj; \quad $\DualMap{T}$ surj $\Leftrightarrow$ $T$ inj (all dimensions)
+    
+    $\eta_V: V \hookrightarrow \Dual{\Dual{V}}$ canonical; iso iff $\Dim{V} \in \bb{N}$
+    
+    Naturality: $\DualMap{\DualMap{T}} \circ \eta_U = \eta_V \circ T$
+\end{compendium}

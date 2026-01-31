@@ -1,0 +1,420 @@
+\chapter{Contents}
+
+\section{Contentable Spaces}
+
+\begin{definition}[Contentable Space]
+    A \textbf{contentable space} is a pair $(X, \mathcal{A})$ where $X$ is a set 
+    and $\mathcal{A}$ is an algebra on $X$.
+\end{definition}
+
+\begin{intuition}
+    A contentable space is the natural domain for defining finitely additive measures (contents). 
+    The algebra structure provides closure under finite set operations, which is sufficient 
+    for defining finite additivity. This is analogous to how a measurable space 
+    (set + $\sigma$-algebra) is the natural domain for $\sigma$-additive measures.
+\end{intuition}
+
+\medskip
+\begin{definition}[Contentable Subspace]
+    Let $(X, \mathcal{A})$ be a contentable space and $Y \subseteq X$. 
+    The \textbf{contentable subspace} induced on $Y$ is $(Y, \mathcal{A}_Y)$ where:
+    \[
+        \mathcal{A}_Y = \{ A \cap Y \mid A \in \mathcal{A} \}
+    \]
+\end{definition}
+
+\begin{proposition}
+    If $(X, \mathcal{A})$ is a contentable space and $Y \subseteq X$, then 
+    $\mathcal{A}_Y$ is an algebra on $Y$.
+\end{proposition}
+
+\begin{proof}
+    \textbf{Contains $\emptyset$:} $\emptyset = \emptyset \cap Y \in \mathcal{A}_Y$.
+
+    \textbf{Contains $Y$:} $Y = X \cap Y \in \mathcal{A}_Y$.
+
+    \textbf{Closure under complements:} Let $A \cap Y \in \mathcal{A}_Y$ with $A \in \mathcal{A}$. 
+    Then $Y \setminus (A \cap Y) = (X \setminus A) \cap Y$. 
+    Since $\mathcal{A}$ is an algebra, $X \setminus A \in \mathcal{A}$, so 
+    $(X \setminus A) \cap Y \in \mathcal{A}_Y$.
+
+    \textbf{Closure under unions:} Let $A_1 \cap Y, A_2 \cap Y \in \mathcal{A}_Y$. 
+    Then $(A_1 \cap Y) \cup (A_2 \cap Y) = (A_1 \cup A_2) \cap Y \in \mathcal{A}_Y$.
+\end{proof}
+
+\bigskip
+\section{Definition of Content}
+
+\begin{definition}[Content / Premeasure]
+    Let $(X, \mathcal{A})$ be a contentable space. A function $\mu: \mathcal{A} \to [0, \infty]$ 
+    is a \textbf{content} (also called a \textbf{finitely additive measure} or \textbf{premeasure}) if:
+    \begin{enumerate}
+        \item $\mu(\emptyset) = 0$
+        \item \textbf{Finite additivity:} If $A, B \in \mathcal{A}$ are disjoint, then 
+            $\mu(A \cup B) = \mu(A) + \mu(B)$
+    \end{enumerate}
+\end{definition}
+
+\begin{intuition}
+    A content assigns ``sizes'' to sets in a way that respects finite disjoint unions. 
+    This is the precursor to a measure, but lacks the crucial $\sigma$-additivity needed 
+    for countable operations. Contents arise naturally:
+    \begin{itemize}
+        \item Jordan content on elementary sets measures ``nice'' bounded subsets of $\bb{R}^n$.
+        \item Every measure restricted to an algebra is a content.
+    \end{itemize}
+    The properties of contents (monotonicity, subadditivity) follow from finite additivity alone.
+\end{intuition}
+
+
+\begin{proposition}[Properties of Contents]
+Let $\mu$ be a content on an algebra $\mathcal{A}$. Then:
+\begin{enumerate}
+    \item \textbf{Monotonicity:} $A \subseteq B \implies \mu(A) \leq \mu(B)$
+    \item \textbf{Subtractivity:} If $A \subseteq B$ and $\mu(A) < \infty$, then $\mu(B \setminus A) = \mu(B) - \mu(A)$
+    \item \textbf{Finite subadditivity:} $\mu(A \cup B) \leq \mu(A) + \mu(B)$
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{Property 1 (Monotonicity):} Let $A \subseteq B$. We can write $B$ as a disjoint union:
+\[ B = A \cup (B \setminus A) \]
+By finite additivity: $\mu(B) = \mu(A) + \mu(B \setminus A)$. Since $\mu(B \setminus A) \geq 0$, we have $\mu(B) \geq \mu(A)$.
+
+\medskip
+\textbf{Property 2 (Subtractivity):} Let $A \subseteq B$ with $\mu(A) < \infty$. From the disjoint decomposition $B = A \cup (B \setminus A)$:
+\[ \mu(B) = \mu(A) + \mu(B \setminus A) \]
+Since $\mu(A) < \infty$, we can subtract: $\mu(B \setminus A) = \mu(B) - \mu(A)$.
+
+\medskip
+\textbf{Property 3 (Finite subadditivity):} Write $A \cup B$ as the disjoint union:
+\[ A \cup B = A \cup (B \setminus A) \]
+By finite additivity: $\mu(A \cup B) = \mu(A) + \mu(B \setminus A)$. By monotonicity (since $B \setminus A \subseteq B$): $\mu(B \setminus A) \leq \mu(B)$. Thus:
+\[ \mu(A \cup B) \leq \mu(A) + \mu(B) \]
+\end{proof}
+
+\section{Jordan Content on $\bb{R}^n$}
+
+\begin{goal}
+Our goal is to define a notion of ``size'' or ``content'' for bounded subsets of $\bb{R}^n$ that:
+\begin{itemize}
+    \item Assigns rectangles their expected volume
+    \item Is finitely additive on disjoint sets
+    \item Can measure sets more general than rectangles
+\end{itemize}
+The Jordan content accomplishes this for ``nice'' sets---those whose boundary is negligible. This motivates the later development of Lebesgue measure, which can handle more pathological sets.
+\end{goal}
+
+\begin{definition}[Rectangle]
+A \textbf{rectangle} (or \textbf{box}) in $\bb{R}^n$ is a set of the form:
+\[ R = [a_1, b_1] \times [a_2, b_2] \times \cdots \times [a_n, b_n] \]
+The \textbf{volume} of $R$ is $\text{vol}(R) = \prod_{i=1}^n (b_i - a_i)$.
+\end{definition}
+
+\begin{definition}[Elementary Set]
+An \textbf{elementary set} is a finite union of rectangles. The collection of elementary sets is denoted $\mathcal{E}$.
+\end{definition}
+
+\begin{proposition}[Elementary Sets Form an Algebra]
+$\mathcal{E}$ is an algebra on $\bb{R}^n$ (within any fixed bounding rectangle).
+\end{proposition}
+
+\begin{proof}
+\textbf{Contains $\emptyset$:} The empty union is $\emptyset \in \mathcal{E}$.
+
+\textbf{Closure under complements:} Let $E = \bigcup_{i=1}^k R_i$ be an elementary set. Then:
+\[ E^c = \left(\bigcup_{i=1}^k R_i\right)^c = \bigcap_{i=1}^k R_i^c \]
+Each $R_i^c$ (within a bounding box) is a finite union of rectangles (obtained by removing a rectangle from a box). The intersection of finitely many such sets is again a finite union of rectangles.
+
+\textbf{Closure under finite unions:} By definition, finite unions of elementary sets are finite unions of rectangles, hence elementary.
+\end{proof}
+
+\begin{proposition}
+Every elementary set can be written as a finite disjoint union of rectangles.
+\end{proposition}
+
+\begin{proof}
+Proceed by induction on the number of rectangles in the union. Base case is trivial.
+
+For the inductive step, let $E = R \cup E'$ where $E'$ is a disjoint union of rectangles $R_1, \ldots, R_k$.
+
+Decompose $R$ into disjoint pieces: $R = (R \setminus \bigcup R_i) \cup \bigcup (R \cap R_i)$.
+
+Each $R \cap R_i$ is a rectangle (intersection of rectangles). The set $R \setminus \bigcup R_i$ can be written as a finite disjoint union of rectangles by slicing along the faces of each $R_i$.
+\end{proof}
+
+\begin{definition}[Jordan Content]
+The \textbf{Jordan content} $c$ on $\mathcal{E}$ is defined by:
+\[ c(E) = \sum_{i=1}^k \text{vol}(R_i) \]
+where $E = \bigcup_{i=1}^k R_i$ is a disjoint decomposition into rectangles.
+\end{definition}
+
+\begin{proposition}
+Jordan content is well-defined and is a content on $\mathcal{E}$.
+\end{proposition}
+
+\begin{proof}
+\textbf{Well-defined:} If $E = \bigcup R_i = \bigcup S_j$ are two disjoint decompositions, then $R_i = \bigcup_j (R_i \cap S_j)$. Since volume is additive on disjoint rectangles:
+\[ \sum \text{vol}(R_i) = \sum_i \sum_j \text{vol}(R_i \cap S_j) = \sum_j \sum_i \text{vol}(R_i \cap S_j) = \sum \text{vol}(S_j) \]
+
+\textbf{Content:} $c(\emptyset) = 0$ (empty sum). For disjoint $E, F \in \mathcal{E}$, write $E = \bigcup R_i$, $F = \bigcup S_j$. Then $E \cup F = (\bigcup R_i) \cup (\bigcup S_j)$, so $c(E \cup F) = c(E) + c(F)$.
+\end{proof}
+
+\section{Inner and Outer Content}
+
+\begin{definition}[Outer Content (Axiomatic)]
+    An \textbf{outer content} on $\Powerset{X}$ is a function $\mu^*: \Powerset{X} \to [0, \infty]$ satisfying:
+    \begin{enumerate}
+        \item[(O1)] $\mu^*(\emptyset) = 0$
+        \item[(O2)] \textbf{Monotonicity:} $A \subseteq B \implies \mu^*(A) \leq \mu^*(B)$
+        \item[(O3)] \textbf{Finite subadditivity:} $\mu^*(A \cup B) \leq \mu^*(A) + \mu^*(B)$
+    \end{enumerate}
+\end{definition}
+
+\begin{proposition}[Subadditivity on Disjoint Sets]
+For an outer content $\mu^*$, the following are equivalent:
+\begin{enumerate}
+    \item $\mu^*(A \cup B) \leq \mu^*(A) + \mu^*(B)$ for all $A, B$
+    \item $\mu^*(A \cup B) \leq \mu^*(A) + \mu^*(B)$ for all disjoint $A, B$
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+$(1) \Rightarrow (2)$: Immediate.
+
+$(2) \Rightarrow (1)$: Let $A, B$ be arbitrary. Then $A \cup B = A \cup (B \setminus A)$ where $A$ and $B \setminus A$ are disjoint. By hypothesis:
+\[ \mu^*(A \cup B) = \mu^*(A \cup (B \setminus A)) \leq \mu^*(A) + \mu^*(B \setminus A) \]
+By monotonicity, $\mu^*(B \setminus A) \leq \mu^*(B)$. Thus $\mu^*(A \cup B) \leq \mu^*(A) + \mu^*(B)$.
+\end{proof}
+
+\bigskip
+\begin{definition}[Inner Content (Axiomatic)]
+    An \textbf{inner content} on $\Powerset{X}$ is a function $\mu_*: \Powerset{X} \to [0, \infty]$ satisfying:
+    \begin{enumerate}
+        \item[(I1)] $\mu_*(\emptyset) = 0$
+        \item[(I2)] \textbf{Monotonicity:} $A \subseteq B \implies \mu_*(A) \leq \mu_*(B)$
+        \item[(I3)] \textbf{Finite superadditivity on disjoint sets:} If $A \cap B = \emptyset$, then 
+            $\mu_*(A \cup B) \geq \mu_*(A) + \mu_*(B)$
+    \end{enumerate}
+\end{definition}
+
+\begin{remark}
+The asymmetry between outer and inner content reflects their definitions via infima and suprema:
+\begin{itemize}
+    \item Outer content uses $\inf$ of covers, leading to subadditivity: covering $A \cup B$ separately may use more total volume.
+    \item Inner content uses $\sup$ of inscribed sets, leading to superadditivity: disjoint inscribed sets can be combined.
+\end{itemize}
+\end{remark}
+
+\subsection{Jordan Inner and Outer Content}
+
+\begin{definition}[Jordan Outer Content]
+    For any bounded $A \subseteq \bb{R}^n$, the \textbf{Jordan outer content} is:
+    \[
+        \JordanOuter{A} = \inf \{ \Jordan{E} \mid E \in \mathcal{E}, A \subseteq E \}
+    \]
+\end{definition}
+
+\medskip
+\begin{definition}[Jordan Inner Content]
+    For any bounded $A \subseteq \bb{R}^n$, the \textbf{Jordan inner content} is:
+    \[
+        \JordanInner{A} = \sup \{ \Jordan{E} \mid E \in \mathcal{E}, E \subseteq A \}
+    \]
+\end{definition}
+
+\bigskip
+\begin{proposition}[Jordan Contents Satisfy the Axioms]
+    The Jordan outer content $\JordanOuter{\cdot}$ satisfies (O1)--(O3), and the Jordan inner content $\JordanInner{\cdot}$ satisfies (I1)--(I3).
+\end{proposition}
+
+\begin{proof}
+    \textbf{Outer content axioms:}
+
+    \textbf{(O1)} $\JordanOuter{\emptyset} = \inf\{\Jordan{E} \mid \emptyset \subseteq E\} = \Jordan{\emptyset} = 0$.
+
+    \textbf{(O2)} If $A \subseteq B$, then any cover of $B$ is a cover of $A$. 
+    Thus $\JordanOuter{A} \leq \JordanOuter{B}$.
+
+    \textbf{(O3)} If $A \subseteq E_1$ and $B \subseteq E_2$, then $A \cup B \subseteq E_1 \cup E_2$ and 
+    $\Jordan{E_1 \cup E_2} \leq \Jordan{E_1} + \Jordan{E_2}$ (finite subadditivity of Jordan content). 
+    Taking infima gives $\JordanOuter{A \cup B} \leq \JordanOuter{A} + \JordanOuter{B}$.
+
+    \bigskip
+    \textbf{Inner content axioms:}
+
+    \textbf{(I1)} $\JordanInner{\emptyset} = \sup\{\Jordan{E} \mid E \subseteq \emptyset\} = \Jordan{\emptyset} = 0$.
+
+    \textbf{(I2)} If $A \subseteq B$, then any set contained in $A$ is also contained in $B$. 
+    Thus $\JordanInner{A} \leq \JordanInner{B}$.
+
+    \textbf{(I3)} Let $A \cap B = \emptyset$. If $E_1 \subseteq A$ and $E_2 \subseteq B$, then 
+    $E_1 \cap E_2 = \emptyset$ and $E_1 \cup E_2 \subseteq A \cup B$. 
+    Thus $\Jordan{E_1} + \Jordan{E_2} = \Jordan{E_1 \cup E_2} \leq \JordanInner{A \cup B}$. 
+    Taking suprema over $E_1$ and $E_2$ gives 
+    $\JordanInner{A} + \JordanInner{B} \leq \JordanInner{A \cup B}$.
+\end{proof}
+
+\medskip
+\begin{proposition}[Properties of Jordan Contents]
+    For bounded sets $A, B \subseteq \bb{R}^n$:
+    \begin{enumerate}
+        \item $\JordanInner{A} \leq \JordanOuter{A}$
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    For any $E_1 \subseteq A \subseteq E_2$ with $E_1, E_2 \in \mathcal{E}$, we have 
+    $\Jordan{E_1} \leq \Jordan{E_2}$ (monotonicity of Jordan content). 
+    Taking supremum over $E_1$ and infimum over $E_2$ gives 
+    $\JordanInner{A} \leq \JordanOuter{A}$.
+\end{proof}
+
+\bigskip
+\begin{definition}[Jordan Measurable]
+    A bounded set $A$ is \textbf{Jordan measurable} if $\JordanInner{A} = \JordanOuter{A}$. 
+    The common value is the \textbf{Jordan content} $\Jordan{A}$.
+\end{definition}
+
+\medskip
+\begin{theorem}[Characterization of Jordan Measurability]
+    A bounded set $A$ is Jordan measurable if and only if for every $\epsilon > 0$, 
+    there exist elementary sets $E_1 \subseteq A \subseteq E_2$ with 
+    $\Jordan{E_2 \setminus E_1} < \epsilon$.
+\end{theorem}
+
+\begin{proof}
+    ($\Rightarrow$) Given $\epsilon > 0$, by definition of sup and inf, there exist 
+    $E_1 \subseteq A$ with $\Jordan{E_1} > \JordanInner{A} - \epsilon/2$ and 
+    $E_2 \supseteq A$ with $\Jordan{E_2} < \JordanOuter{A} + \epsilon/2$. 
+    Since $\JordanInner{A} = \JordanOuter{A}$:
+    \[
+        \Jordan{E_2 \setminus E_1} = \Jordan{E_2} - \Jordan{E_1} < \epsilon
+    \]
+
+    ($\Leftarrow$) We have $\JordanInner{A} \geq \Jordan{E_1}$ and 
+    $\JordanOuter{A} \leq \Jordan{E_2}$. Thus:
+    \[
+        \JordanOuter{A} - \JordanInner{A} \leq \Jordan{E_2} - \Jordan{E_1} 
+        = \Jordan{E_2 \setminus E_1} < \epsilon
+    \]
+    Since $\epsilon$ is arbitrary, $\JordanInner{A} = \JordanOuter{A}$.
+\end{proof}
+
+\bigskip
+\begin{theorem}[Boundary Characterization]
+    A bounded set $A$ is Jordan measurable if and only if $\JordanOuter{\Boundary{A}} = 0$.
+\end{theorem}
+
+\begin{proof}
+    Note that $\Boundary{A} = \Closure{A} \setminus \Interior{A}$, where $\Closure{A}$ 
+    is the closure and $\Interior{A}$ is the interior.
+
+    \medskip
+    ($\Rightarrow$) Assume $A$ is Jordan measurable. For any $\epsilon > 0$, there 
+    exist elementary sets $E_1 \subseteq A \subseteq E_2$ with 
+    $\Jordan{E_2 \setminus E_1} < \epsilon$.
+
+    Since $E_1 \subseteq A$, we have $\Interior{E_1} \subseteq \Interior{A}$. 
+    Since $A \subseteq E_2$, we have $\Closure{A} \subseteq \Closure{E_2}$.
+
+    Thus $\Boundary{A} \subseteq \Closure{E_2} \setminus \Interior{E_1} \subseteq E_2 \setminus E_1$ 
+    (for appropriate elementary sets).
+
+    So $\JordanOuter{\Boundary{A}} \leq \Jordan{E_2 \setminus E_1} < \epsilon$. 
+    Since $\epsilon$ is arbitrary, $\JordanOuter{\Boundary{A}} = 0$.
+
+    \medskip
+    ($\Leftarrow$) Assume $\JordanOuter{\Boundary{A}} = 0$. For any $\epsilon > 0$, 
+    cover $\Boundary{A}$ by an elementary set $E$ with $\Jordan{E} < \epsilon$.
+
+    Take $E_1 = \Closure{\Interior{A} \setminus E}$ (elementary approximation of interior) 
+    and $E_2 = \Closure{A} \cup E$.
+
+    Then $E_1 \subseteq A \subseteq E_2$ and $\Jordan{E_2 \setminus E_1} \leq \Jordan{E} < \epsilon$.
+\end{proof}
+
+
+\bigskip
+\begin{proposition}[Jordan Measurable Sets Form an Algebra]
+The collection $\mathcal{J}$ of Jordan measurable bounded sets forms an algebra on $\bb{R}^n$ (within any fixed bounding rectangle).
+\end{proposition}
+
+\begin{proof}
+\textbf{Contains $\emptyset$:} $\JordanInner{\emptyset} = 0 = \JordanOuter{\emptyset}$, so $\emptyset \in \mathcal{J}$.
+
+\medskip
+\textbf{Closure under complements:} Let $A \in \mathcal{J}$ be bounded within a rectangle $R$. Then $A^c \cap R$ is bounded. We claim $A^c \cap R \in \mathcal{J}$.
+
+For any $\epsilon > 0$, there exist elementary sets $E_1 \subseteq A \subseteq E_2$ with $\Jordan{E_2 \setminus E_1} < \epsilon$. Then $E_2^c \subseteq A^c \subseteq E_1^c$, so:
+\[ \JordanOuter{A^c \cap R} - \JordanInner{A^c \cap R} \leq \Jordan{(E_1^c \cap R) \setminus (E_2^c \cap R)} = \Jordan{E_2 \setminus E_1} < \epsilon \]
+Since $\epsilon$ is arbitrary, $A^c \cap R \in \mathcal{J}$.
+
+\medskip
+\textbf{Closure under finite unions:} Let $A, B \in \mathcal{J}$. We use the boundary characterization. Since $\Boundary{A \cup B} \subseteq \Boundary{A} \cup \Boundary{B}$:
+\[ \JordanOuter{\Boundary{A \cup B}} \leq \JordanOuter{\Boundary{A}} + \JordanOuter{\Boundary{B}} = 0 + 0 = 0 \]
+Thus $A \cup B \in \mathcal{J}$.
+\end{proof}
+
+\bigskip
+\begin{proposition}[Null Sets are Jordan Measurable]
+If $\JordanOuter{A} = 0$, then $A$ is Jordan measurable with $\Jordan{A} = 0$.
+\end{proposition}
+
+\begin{proof}
+We have $0 \leq \JordanInner{A} \leq \JordanOuter{A} = 0$. Thus $\JordanInner{A} = \JordanOuter{A} = 0$, so $A$ is Jordan measurable with $\Jordan{A} = 0$.
+\end{proof}
+
+\bigskip
+\begin{corollary}[Subsets of Null Sets]
+If $\JordanOuter{B} = 0$ and $A \subseteq B$, then $A$ is Jordan measurable with $\Jordan{A} = 0$.
+\end{corollary}
+
+\begin{proof}
+By monotonicity of outer content, $\JordanOuter{A} \leq \JordanOuter{B} = 0$. Thus $\JordanOuter{A} = 0$, and by the previous proposition, $A$ is Jordan measurable with $\Jordan{A} = 0$.
+\end{proof}
+
+\bigskip
+\begin{compendium}
+
+\textbf{Contentable Spaces:} A pair $(X, \mathcal{A})$ where $\mathcal{A}$ is an algebra on $X$.
+
+\textbf{Content:} A function $\mu: \mathcal{A} \to [0, \infty]$ with $\mu(\emptyset) = 0$ and finite additivity.
+
+\textbf{Content Properties:}
+\begin{itemize}
+    \item Monotonicity: $A \subseteq B \implies \mu(A) \leq \mu(B)$
+    \item Subtractivity: $A \subseteq B$, $\mu(A) < \infty \implies \mu(B \setminus A) = \mu(B) - \mu(A)$
+    \item Finite subadditivity: $\mu(A \cup B) \leq \mu(A) + \mu(B)$
+\end{itemize}
+
+\textbf{Outer Content Axioms (O1--O3):}
+\begin{enumerate}
+    \item[(O1)] $\mu^*(\emptyset) = 0$
+    \item[(O2)] Monotonicity
+    \item[(O3)] Finite subadditivity
+\end{enumerate}
+
+\textbf{Inner Content Axioms (I1--I3):}
+\begin{enumerate}
+    \item[(I1)] $\mu_*(\emptyset) = 0$
+    \item[(I2)] Monotonicity
+    \item[(I3)] Superadditivity on disjoint sets
+\end{enumerate}
+
+\textbf{Jordan Content:}
+\begin{itemize}
+    \item Outer: $\JordanOuter{A} = \inf\{\Jordan{E} \mid A \subseteq E \in \mathcal{E}\}$
+    \item Inner: $\JordanInner{A} = \sup\{\Jordan{E} \mid E \subseteq A, E \in \mathcal{E}\}$
+    \item Measurable: $\JordanInner{A} = \JordanOuter{A}$
+\end{itemize}
+
+\textbf{Key Theorems:}
+\begin{itemize}
+    \item $A$ is Jordan measurable $\iff$ $\JordanOuter{\Boundary{A}} = 0$
+    \item Jordan measurable sets form an algebra
+    \item Null sets and their subsets are Jordan measurable
+\end{itemize}
+
+\end{compendium}
+

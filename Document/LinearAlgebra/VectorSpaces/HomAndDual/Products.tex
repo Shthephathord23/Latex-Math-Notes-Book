@@ -1,0 +1,927 @@
+% Document/LinearAlgebra/VectorSpaces/HomAndDual/Products.tex
+% Phase 13: External Direct Sum and Product
+
+\newpage
+\section{Direct Products and Coproducts}
+
+\begin{remark}[Categorical Perspective]
+    In category theory, products and coproducts are defined by \textbf{universal properties},
+    not by explicit constructions. The construction then follows as the unique (up to isomorphism)
+    object satisfying the universal property. We follow this approach here.
+\end{remark}
+
+\subsection{The Categorical Product}
+
+\begin{definition}[Categorical Product]
+\label{def:categorical-product}
+    Let $(V_i)_{i \in I}$ be a family of $K$-vector spaces. A \textbf{product} of this family
+    is a pair $\left(P, (\pi_j)_{j \in I}\right)$ where $P$ is a $K$-vector space and
+    $\pi_j: P \to V_j$ are linear maps (called \textbf{projections}), satisfying:
+    
+    \textbf{Universal Property}: For any $K$-vector space $W$ and family of linear maps 
+    $(f_j: W \to V_j)_{j \in I}$, there exists a \textbf{unique} linear map 
+    $f: W \to P$ such that $\pi_j \circ f = f_j$ for all $j \in I$.
+    
+    \begin{center}
+    \begin{tikzcd}
+        & W \arrow[dl, "f_j"'] \arrow[d, dashed, "\exists! f"] \arrow[dr, "f_k"] & \\
+        V_j & P \arrow[l, "\pi_j"] \arrow[r, "\pi_k"'] & V_k
+    \end{tikzcd}
+    \end{center}
+\end{definition}
+
+\begin{remark}[Uniqueness up to Isomorphism]
+    A standard categorical argument shows that if $(P, (\pi_j))$ and $(P', (\pi'_j))$ both
+    satisfy the product universal property, then there exists a unique isomorphism $\phi: P \to P'$
+    with $\pi'_j \circ \phi = \pi_j$ for all $j$. We omit the proof as it is a general
+    categorical fact.
+\end{remark}
+
+\begin{theorem}[Construction of Product]
+\label{thm:product-construction}
+    The product is realized by the set of choice functions:
+    \[
+        \DirectProd{i \in I}{V_i} = \Set{f: I \to \BigUnion[i \in I] V_i \mid \Forall :{i \in I}{f(i) \in V_i}}
+    \]
+    with pointwise operations $(f + g)(i) = f(i) + g(i)$, $(af)(i) = a \cdot f(i)$,
+    and projections $\pi_j(f) = f(j)$.
+    
+    We often write $f$ as a tuple $(v_i)_{i \in I}$ where $v_i = f(i)$.
+\end{theorem}
+
+\begin{proof}
+    \textbf{Vector space structure}:
+    We verify that $\DirectProd{}{V_i}$ is a $K$-vector space with pointwise operations.
+    
+    \textit{Contains zero}: Define $0: I \to \BigUnion[]{V_i}$ by $0(i) = 0_{V_i}$.
+    This satisfies $0(i) \in V_i$ for all $i$, so $0 \in \DirectProd{}{V_i}$.
+    
+    \textit{Closure under addition}: For $f, g \in \DirectProd{}{V_i}$, define $(f+g)(i) = f(i) + g(i)$.
+    Since $f(i), g(i) \in V_i$ and $V_i$ is a vector space, $f(i) + g(i) \in V_i$.
+    Thus $f + g \in \DirectProd{}{V_i}$.
+    
+    \textit{Closure under scalar multiplication}: For $a \in K$ and $f \in \DirectProd{}{V_i}$,
+    define $(af)(i) = a \cdot f(i)$. Since $f(i) \in V_i$ and $V_i$ is a vector space,
+    $a \cdot f(i) \in V_i$. Thus $af \in \DirectProd{}{V_i}$.
+    
+    \textit{Additive inverse}: For $f \in \DirectProd{}{V_i}$, define $(-f)(i) = -f(i)$.
+    Then $(f + (-f))(i) = f(i) + (-f(i)) = 0_{V_i} = 0(i)$, so $f + (-f) = 0$.
+    
+    \textit{Remaining axioms}: Commutativity, associativity, distributivity, and scalar
+    identity all follow pointwise from the corresponding properties in each $V_i$.
+    
+    \textbf{Projections are linear}:
+    For $f, g \in \DirectProd{}{V_i}$ and $a, b \in K$:
+    \begin{align*}
+        \pi_j(af + bg) &= (af + bg)(j) \\
+        &= a \cdot f(j) + b \cdot g(j) \\
+        &= a \cdot \pi_j(f) + b \cdot \pi_j(g)
+    \end{align*}
+    Thus $\pi_j$ is linear.
+    
+    \textbf{Projections are surjective}:
+    For any $v \in V_j$, we construct $f \in \DirectProd{}{V_i}$ with $\pi_j(f) = v$.
+    Define $f: I \to \BigUnion[]{V_i}$ by:
+    \[
+        f(i) = \begin{cases} v & \text{if } i = j \\ 0_{V_i} & \text{otherwise} \end{cases}
+    \]
+    This satisfies $f(i) \in V_i$ for all $i$, so $f \in \DirectProd{}{V_i}$.
+    Moreover, $\pi_j(f) = f(j) = v$. Thus $\pi_j$ is surjective.
+    
+    \textbf{Universal property}:
+    Given a family of linear maps $(f_j: W \to V_j)_{j \in I}$, we construct the unique
+    linear map $\Phi: W \to \DirectProd{}{V_i}$ satisfying $\pi_j \circ \Phi = f_j$ for all $j$.
+    
+    \textit{Definition}: For $w \in W$, define $\Phi(w): I \to \BigUnion[]{V_i}$ by $\Phi(w)(j) = f_j(w)$.
+    Since $f_j(w) \in V_j$ for all $j$, we have $\Phi(w) \in \DirectProd{}{V_i}$.
+    
+    \textit{Linearity}: For $w_1, w_2 \in W$ and $a, b \in K$:
+    \begin{align*}
+        \Phi(aw_1 + bw_2)(j) &= f_j(aw_1 + bw_2) \\
+        &= a \cdot f_j(w_1) + b \cdot f_j(w_2) \quad \text{(since $f_j$ is linear)} \\
+        &= a \cdot \Phi(w_1)(j) + b \cdot \Phi(w_2)(j) \\
+        &= (a \cdot \Phi(w_1) + b \cdot \Phi(w_2))(j)
+    \end{align*}
+    Since this holds for all $j$, we have $\Phi(aw_1 + bw_2) = a\Phi(w_1) + b\Phi(w_2)$.
+    Thus $\Phi$ is linear.
+    
+    \textit{Factorization}: For any $w \in W$ and $j \in I$:
+    \[
+        (\pi_j \circ \Phi)(w) = \pi_j(\Phi(w)) = \Phi(w)(j) = f_j(w)
+    \]
+    Thus $\pi_j \circ \Phi = f_j$ for all $j$.
+    
+    \textit{Uniqueness}: Suppose $\Psi: W \to \DirectProd{}{V_i}$ is another linear map
+    satisfying $\pi_j \circ \Psi = f_j$ for all $j$. For any $w \in W$ and $j \in I$:
+    \[
+        \Psi(w)(j) = \pi_j(\Psi(w)) = (\pi_j \circ \Psi)(w) = f_j(w) = \Phi(w)(j)
+    \]
+    Since $\Psi(w)$ and $\Phi(w)$ agree on all components $j$, they are equal as functions.
+    Thus $\Psi(w) = \Phi(w)$ for all $w$, so $\Psi = \Phi$.
+\end{proof}
+
+\subsection{The Categorical Coproduct}
+
+\begin{definition}[Categorical Coproduct]
+\label{def:categorical-coproduct}
+    A \textbf{coproduct} of $(V_i)_{i \in I}$ is a pair $\left(C, (\iota_j)_{j \in I}\right)$
+    where $C$ is a $K$-vector space and $\iota_j: V_j \to C$ are linear maps 
+    (called \textbf{injections}), satisfying:
+    
+    \textbf{Universal Property}: For any $K$-vector space $W$ and family of linear maps 
+    $(g_j: V_j \to W)_{j \in I}$, there exists a \textbf{unique} linear map 
+    $g: C \to W$ such that $g \circ \iota_j = g_j$ for all $j \in I$.
+    
+    \begin{center}
+    \begin{tikzcd}
+        V_j \arrow[r, "\iota_j"] \arrow[dr, "g_j"'] & 
+        C \arrow[d, dashed, "\exists! g"] & 
+        V_k \arrow[l, "\iota_k"'] \arrow[dl, "g_k"] \\
+        & W &
+    \end{tikzcd}
+    \end{center}
+\end{definition}
+
+\begin{remark}[Uniqueness up to Isomorphism]
+    Similarly to products, if $(C, (\iota_j))$ and $(C', (\iota'_j))$ both satisfy the 
+    coproduct universal property, then there exists a unique isomorphism $\psi: C \to C'$
+    with $\psi \circ \iota_j = \iota'_j$ for all $j$. This is a general categorical fact.
+\end{remark}
+
+\begin{theorem}[Construction of Coproduct]
+\label{thm:coproduct-construction}
+    The coproduct (external direct sum) is realized by functions with finite support:
+    \[
+        \ExtDirectSum{i \in I}{V_i} = \Set{f: I \to \BigUnion[i \in I] V_i \mid f(i) \in V_i \LogicAnd 
+            \InverseImage{f}{\BigUnion[i \in I] (V_i \setminus \{0\})} \text{ is finite}}
+    \]
+    Equivalently, the set of all $(v_i)_{i \in I}$ such that $\Set{i \in I \mid v_i \neq 0}$ is finite.
+    
+    The injection $\iota_j(v)$ is the function with $\iota_j(v)(j) = v$ and $\iota_j(v)(i) = 0$ for $i \neq j$.
+\end{theorem}
+
+\begin{proof}
+    \textbf{Subspace of product}:
+    We verify that $\ExtDirectSum{}{V_i}$ is a subspace of $\DirectProd{}{V_i}$.
+    
+    \textit{Contains zero}: The zero function $0(i) = 0_{V_i}$ has empty support.
+    
+    \textit{Closure under addition}: Let $f, g \in \ExtDirectSum{}{V_i}$ with finite supports $F, G$.
+    Then $(f + g)(i) = f(i) + g(i)$, and $(f + g)(i) \neq 0$ implies $f(i) \neq 0$ or $g(i) \neq 0$,
+    so the support of $f + g$ is contained in $F \cup G$, which is finite.
+    
+    \textit{Closure under scalar multiplication}: For $a \in K$ and $f$ with support $F$,
+    $(af)(i) = a \cdot f(i)$. If $a \neq 0$, then $(af)(i) \neq 0$ iff $f(i) \neq 0$, so
+    the support of $af$ equals $F$. If $a = 0$, then $af = 0$ has empty support.
+    
+    \textbf{Injections are linear}:
+    For $v, w \in V_j$ and $a, b \in K$, we verify:
+    \begin{align*}
+        \iota_j(av + bw)(i) &= \begin{cases} av + bw & \text{if } i = j \\ 0 & \text{otherwise} \end{cases} \\
+        (a \cdot \iota_j(v) + b \cdot \iota_j(w))(i) &= a \cdot \iota_j(v)(i) + b \cdot \iota_j(w)(i) \\
+        &= \begin{cases} av + bw & \text{if } i = j \\ 0 & \text{otherwise} \end{cases}
+    \end{align*}
+    Thus $\iota_j(av + bw) = a \cdot \iota_j(v) + b \cdot \iota_j(w)$, proving linearity.
+    
+    \textbf{Injections are injective}:
+    Suppose $\iota_j(v) = 0$, i.e., the zero function. Then:
+    \[
+        v = \iota_j(v)(j) = 0(j) = 0_{V_j}
+    \]
+    Thus $\Ker{\iota_j} = \{0\}$, proving injectivity.
+    
+    \textbf{Universal property}:
+    Given $(g_j: V_j \to W)_{j \in I}$, for $f \in \ExtDirectSum{}{V_i}$ with finite support 
+    $F = \Set{j \in I \mid f(j) \neq 0}$, define:
+    \[
+        g(f) = \sum_{j \in F} g_j(f(j))
+    \]
+    
+    \textit{Well-defined}: The support $F$ is finite, so the sum has finitely many terms.
+    
+    \textit{Linearity}: Let $f, h \in \ExtDirectSum{}{V_i}$ with supports $F, G$, and let $a, b \in K$.
+    Then $af + bh$ has support $\subseteq F \cup G$. For any $j \in F \cup G$:
+    \begin{align*}
+        g(af + bh) &= \sum_{j \in F \cup G} g_j((af + bh)(j)) \\
+        &= \sum_{j \in F \cup G} g_j(af(j) + bh(j)) \\
+        &= \sum_{j \in F \cup G} \left( a \cdot g_j(f(j)) + b \cdot g_j(h(j)) \right) \\
+        &= a \sum_{j \in F \cup G} g_j(f(j)) + b \sum_{j \in F \cup G} g_j(h(j)) \\
+        &= a \cdot g(f) + b \cdot g(h)
+    \end{align*}
+    where we used that $g_j(f(j)) = g_j(0) = 0$ for $j \notin F$ (since $g_j$ is linear).
+    
+    \textit{Factorization}: For $v \in V_j$, the function $\iota_j(v)$ has support $\{j\}$ (assuming $v \neq 0$):
+    \[
+        g(\iota_j(v)) = \sum_{k \in \{j\}} g_k(\iota_j(v)(k)) = g_j(v)
+    \]
+    Thus $g \circ \iota_j = g_j$ for all $j$.
+    
+    \textit{Uniqueness}: Suppose $h: \ExtDirectSum{}{V_i} \to W$ satisfies $h \circ \iota_j = g_j$ for all $j$.
+    For $f \in \ExtDirectSum{}{V_i}$ with support $F$, we can write $f = \sum_{j \in F} \iota_j(f(j))$
+    (this is a finite sum since $F$ is finite). By linearity of $h$:
+    \[
+        h(f) = h\left(\sum_{j \in F} \iota_j(f(j))\right) = \sum_{j \in F} h(\iota_j(f(j))) 
+        = \sum_{j \in F} g_j(f(j)) = g(f)
+    \]
+    Thus $h = g$, proving uniqueness.
+\end{proof}
+
+\begin{example}[Constant Family: $V_i = V$ for all $i$]
+\label{ex:constant-family}
+    When all factors are the same space $V$, the product and coproduct have special notation:
+    \[
+        \DirectProd{i \in I}{V} = V^I, \qquad \ExtDirectSum{i \in I}{V} = V^{(I)}
+    \]
+    
+    \textbf{Product $V^I$}: The set of all functions $f: I \to V$, with pointwise operations.
+    This is the space of $I$-indexed \textit{sequences} in $V$.
+    
+    \textbf{Coproduct $V^{(I)}$}: The set of all functions $f: I \to V$ with finite support.
+    This is the space of $I$-indexed sequences in $V$ with only finitely many non-zero terms.
+\end{example}
+
+\begin{proof}[Proof of Example~\ref{ex:constant-family}]
+    \textbf{Product $V^I$}:
+    By Theorem~\ref{thm:product-construction}:
+    \[
+        \DirectProd{i \in I}{V} = \Set{f: I \to \BigUnion[i \in I] V \mid \Forall :{i \in I}{f(i) \in V}}
+    \]
+    Since each $V_i = V$, the disjoint union $\BigUnion[i \in I] V = V$ (all copies are the same).
+    Thus the condition $f(i) \in V$ is automatic for any function $f: I \to V$.
+    Hence $\DirectProd{i \in I}{V} = \Set{f: I \to V} = V^I$.
+    
+    \textbf{Coproduct $V^{(I)}$}:
+    By Theorem~\ref{thm:coproduct-construction}:
+    \[
+        \ExtDirectSum{i \in I}{V} = \Set{f \in V^I \mid \Set{i \in I \mid f(i) \neq 0} \text{ is finite}}
+    \]
+    This is precisely the definition of $V^{(I)}$: functions from $I$ to $V$ with finite support.
+\end{proof}
+
+\newpage
+\subsection{Finite Case: Biproduct Structure}
+
+\begin{theorem}[Finite Case: Product Equals Coproduct]
+\label{thm:finite-prod-coprod}
+    If $\Card{I} \in \bb{N}$, then $\DirectProd{i \in I}{V_i} \cong \ExtDirectSum{i \in I}{V_i}$.
+    In fact, the two constructions coincide as sets: every tuple has finite support.
+    
+    \begin{center}
+    \begin{tikzcd}[column sep=large, row sep=large]
+        V_j \arrow[r, "\iota_j"] \arrow[d, equal] & 
+        \ExtDirectSum{}{V_i} \arrow[r, shift left, "\phi"] & 
+        \DirectProd{}{V_i} \arrow[l, shift left, "\psi"] \arrow[r, "\pi_k"] & 
+        V_k \arrow[d, equal] \\
+        V_j \arrow[rrr, "\delta_{jk}"'] & & & V_k
+    \end{tikzcd}
+    \end{center}
+    
+    The diagram commutes: $\pi_k \circ \phi \circ \iota_j = \delta_{jk}$, and $\phi, \psi$ are inverse isomorphisms.
+\end{theorem}
+
+\begin{proof}[Proof (Categorical)]
+    We give a purely categorical proof that works in any additive category.
+    
+    \textbf{Step 1: $K\text{-Vect}$ is an additive category.}
+    An \textit{additive category} is a category where:
+    \begin{enumerate}
+        \item There exists a \textit{zero object} $0$ (both initial and terminal)
+        \item Every hom-set $\Hom{X}{Y}$ is an abelian group under addition
+        \item Composition distributes over addition: $(f + g) \circ h = f \circ h + g \circ h$
+              and $h \circ (f + g) = h \circ f + h \circ g$
+    \end{enumerate}
+    $K\text{-Vect}$ satisfies these: the trivial space $\{0\}$ is the zero object, morphisms can
+    be added pointwise, and composition is bilinear.
+    
+    \textbf{Step 2: Existence of zero morphisms.}
+    For any $V, W$, the \textit{zero morphism} $0_{VW}: V \to W$ is the unique composition
+    $V \to 0 \to W$. In $K\text{-Vect}$, this is the zero linear map $0_{VW}(v) = 0_W$.
+    
+    \textbf{Step 3: Define the canonical morphism $\phi$.}
+    We construct $\phi: \ExtDirectSum{j=1}{n}{V_j} \to \DirectProd{i=1}{n}{V_i}$ using 
+    both universal properties.
+    
+    \textit{Step 3a}: By the coproduct universal property, to define $\phi$ it suffices to specify 
+    the compositions $\phi \circ \iota_j: V_j \to \DirectProd{}{V_i}$ for each $j \in \{1, \ldots, n\}$.
+    
+    \textit{Step 3b}: By the product universal property, each $\phi \circ \iota_j$ is uniquely
+    determined by specifying $\pi_i \circ (\phi \circ \iota_j): V_j \to V_i$ for each $i$.
+    
+    \textit{Step 3c}: We define these component maps as the Kronecker delta:
+    \[
+        \pi_i \circ \phi \circ \iota_j = \delta_{ij} = 
+        \begin{cases}
+            \Identity{V_i} & \text{if } i = j \\
+            0_{V_j V_i} & \text{if } i \neq j
+        \end{cases}
+    \]
+    This uniquely determines $\phi \circ \iota_j$ for each $j$, which in turn uniquely
+    determines $\phi$ by the coproduct universal property.
+    
+    \textbf{Step 4: Construct the inverse $\psi$.}
+    In an additive category, we can sum morphisms with common domain and codomain.
+    Define:
+    \[
+        \psi = \sum_{k=1}^{n} \iota_k \circ \pi_k: \DirectProd{}{V_i} \to \ExtDirectSum{}{V_j}
+    \]
+    
+    \textit{Why well-defined}: Each $\iota_k \circ \pi_k: \DirectProd{}{V_i} \to \ExtDirectSum{}{V_j}$
+    is a morphism in $\Hom{\DirectProd{}{V_i}}{\ExtDirectSum{}{V_j}}$. The sum of $n$ morphisms
+    is well-defined in an additive category. This requires $n$ to be finite.
+    
+    \textbf{Step 5: Verify $\psi \circ \phi = \Identity{\ExtDirectSum{}{V_i}}$.}
+    
+    \textit{Strategy}: By the uniqueness part of the coproduct universal property, it suffices
+    to show that $(\psi \circ \phi) \circ \iota_j = \iota_j$ for all $j$.
+    
+    \textit{Computation}: For each $j \in \{1, \ldots, n\}$:
+    \begin{align*}
+        (\psi \circ \phi) \circ \iota_j 
+        &= \psi \circ (\phi \circ \iota_j) && \text{(associativity)} \\
+        &= \left(\sum_{k=1}^{n} \iota_k \circ \pi_k\right) \circ (\phi \circ \iota_j) && \text{(definition of $\psi$)} \\
+        &= \sum_{k=1}^{n} \left(\iota_k \circ \pi_k \circ \phi \circ \iota_j\right) && \text{(distributivity in additive category)} \\
+        &= \sum_{k=1}^{n} \left(\iota_k \circ (\pi_k \circ \phi \circ \iota_j)\right) && \text{(associativity)} \\
+        &= \sum_{k=1}^{n} \iota_k \circ \delta_{kj} && \text{(Step 3c)} \\
+        &= \iota_j \circ \Identity{V_j} + \sum_{k \neq j} \iota_k \circ 0_{V_j V_k} && \text{(split sum)} \\
+        &= \iota_j + 0 = \iota_j && \text{($\iota_k \circ 0 = 0$ in additive category)}
+    \end{align*}
+    Thus $(\psi \circ \phi) \circ \iota_j = \iota_j$ for all $j$, so $\psi \circ \phi = \Identity{\ExtDirectSum{}{V_i}}$.
+    
+    \textbf{Step 6: Verify $\phi \circ \psi = \Identity{\DirectProd{}{V_i}}$.}
+    
+    \textit{Strategy}: By the uniqueness part of the product universal property, it suffices
+    to show that $\pi_i \circ (\phi \circ \psi) = \pi_i$ for all $i$.
+    
+    \textit{Computation}: For each $i \in \{1, \ldots, n\}$:
+    \begin{align*}
+        \pi_i \circ (\phi \circ \psi)
+        &= \pi_i \circ \phi \circ \left(\sum_{k=1}^{n} \iota_k \circ \pi_k\right) && \text{(definition of $\psi$)} \\
+        &= \sum_{k=1}^{n} \left(\pi_i \circ \phi \circ \iota_k \circ \pi_k\right) && \text{(distributivity)} \\
+        &= \sum_{k=1}^{n} \left((\pi_i \circ \phi \circ \iota_k) \circ \pi_k\right) && \text{(associativity)} \\
+        &= \sum_{k=1}^{n} \delta_{ik} \circ \pi_k && \text{(Step 3c)} \\
+        &= \Identity{V_i} \circ \pi_i + \sum_{k \neq i} 0_{V_k V_i} \circ \pi_k && \text{(split sum)} \\
+        &= \pi_i + 0 = \pi_i && \text{($0 \circ f = 0$)}
+    \end{align*}
+    Thus $\pi_i \circ (\phi \circ \psi) = \pi_i$ for all $i$, so $\phi \circ \psi = \Identity{\DirectProd{}{V_i}}$.
+    
+    \textbf{Conclusion}: Since $\phi$ has a two-sided inverse $\psi$, it is an isomorphism.
+    This result \textbf{requires finiteness} because:
+    \begin{itemize}
+        \item $\psi = \sum_{k=1}^{n} \iota_k \circ \pi_k$ is a finite sum of morphisms
+        \item For infinite $I$, we cannot form such a sum in general categories
+        \item In $K\text{-Vect}$ with infinite $I$: the image of $\psi$ would have finite support,
+              but $\DirectProd{}{V_i}$ contains elements with infinite support
+    \end{itemize}
+\end{proof}
+
+
+
+\newpage
+\subsection{Dimensions of Products and Coproducts}
+
+\begin{theorem}[Dimension of Product and Coproduct]
+\label{thm:prod-coprod-dim}
+    Let $(V_i)_{i \in I}$ be a family of $K$-vector spaces with $\Dim[K]{V_i} = d_i$.
+    
+    \begin{enumerate}
+        \item $\Dim[K]{\ExtDirectSum{i \in I}{V_i}} = \sum_{i \in I} d_i$ 
+              (sum of cardinals, finite for countable families with finite-dim factors)
+        \item For finite $I$ with $\Card{I} = n \in \bb{N}$: 
+              $\Dim[K]{\DirectProd{i=1}{n}{V_i}} = \sum_{i=1}^n d_i$
+        \item For infinite $I$: $\Dim[K]{\DirectProd{i \in I}{V_i}}$ can be strictly larger than
+              $\sum_{i \in I} d_i$
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    \textbf{(1)} For each $i$, let $B_i$ be a basis of $V_i$. Then
+    $\Set{\iota_i(b) \mid i \in I, b \in B_i}$ is a basis of $\ExtDirectSum{}{V_i}$.
+    
+    \textit{Linear independence}: If $\sum_{j \in F} \sum_{b \in F_j} a_{j,b} \iota_j(b) = 0$,
+    then projecting to each component shows $\sum_{b \in F_j} a_{j,b} b = 0$ in $V_j$.
+    By linear independence of $B_j$, all $a_{j,b} = 0$.
+    
+    \textit{Spanning}: Every $f \in \ExtDirectSum{}{V_i}$ with support $F$ can be written as
+    $\sum_{j \in F} \iota_j(f(j))$, and each $f(j) \in \Span[K]{B_j}$.
+    
+    \textbf{(2)} Follows from (1) since product = coproduct when $I$ is finite.
+    
+    \textbf{(3)} Consider $I = \bb{N}$ and $V_i = K$ for all $i$. Then
+    $\DirectProd{i \in \bb{N}}{K} = K^{\bb{N}}$ has dimension $\Card{K}^{\aleph_0}$, while
+    $\ExtDirectSum{i \in \bb{N}}{K} = K^{(\bb{N})}$ has dimension $\aleph_0$.
+\end{proof}
+
+\begin{remark}[Dimension Consequences for Constant Families]
+    For the constant family $V_i = V$ with $\Dim[K]{V} = d$:
+    \begin{enumerate}
+        \item $\Dim[K]{V^{(I)}} = d \cdot \Card{I}$ (sum of dimensions)
+        \item For finite $I$ with $\Card{I} = n$: $\Dim[K]{V^n} = nd$ and $V^n = V^{(n)}$
+        \item For infinite $I$: $\Dim[K]{V^I} > d \cdot \Card{I}$ (strict inequality)
+    \end{enumerate}
+    
+    \textbf{Special case $V = K$}:
+    $K^{(I)}$ has dimension $\Card{I}$ with basis $\Set{\delta_i}_{i \in I}$ (indicator functions).
+    $K^I$ has dimension $\Card{K}^{\Card{I}}$ when $I$ is infinite.
+    
+    \textbf{Infinite case}: For infinite $I$, product and coproduct are \textbf{not} isomorphic
+    because $\ExtDirectSum{}{V_i}$ has finite support while $\DirectProd{}{V_i}$ contains
+    elements with infinite support.
+\end{remark}
+
+\begin{theorem}[Dimension of Infinite Products]
+\label{thm:infinite-prod-dim}
+    Let $I$ be an infinite index set and $(V_i)_{i \in I}$ be a family of non-trivial $K$-vector spaces.
+    Then:
+    \[
+        \Dim[K]{\DirectProd{i \in I}{V_i}} = \Card{\DirectProd{i \in I}{V_i}} = \prod_{i \in I} \Card{V_i}
+    \]
+\end{theorem}
+
+\begin{proof}
+    Let $P = \DirectProd{i \in I}{V_i}$ and $d = \Dim[K]{P}$.
+    
+    \textbf{Step 1: Cardinality bounds.}
+    Since each $V_i$ is non-trivial, $\Card{V_i} \geq \Card{K} \geq 2$ (any field has at least 2 elements).
+    Thus:
+    \[
+        \Card{P} = \prod_{i \in I} \Card{V_i} \geq 2^{\Card{I}}
+    \]
+    Since $I$ is infinite, $\Card{I} \geq \aleph_0$, so $\Card{P} \geq 2^{\aleph_0}$ is infinite.
+    
+    For any infinite vector space $P$ over $K$:
+    \[
+        \Card{P} = \max(\Card{K}, d)
+    \]
+    This gives the upper bound: $d \leq \Card{P}$.
+    
+    \textbf{Step 2: Case A ($\Card{P} > \Card{K}$).}
+    If $\Card{P} > \Card{K}$, then from $\Card{P} = \max(\Card{K}, d)$ we get $d = \Card{P}$.
+    
+    \textbf{Step 3: Case B ($\Card{P} = \Card{K}$).}
+    We must show $d \geq \Card{K}$ by constructing a linearly independent set of size $\Card{K}$.
+    
+    \textit{Construction}: Since $I$ is infinite, there exists an injection $\nu: \bb{N} \hookrightarrow I$.
+    For each $\alpha \in K$, define $u_\alpha \in P$ by:
+    \[
+        u_\alpha(x) = \begin{cases}
+            \alpha^n & \text{if } x = \nu(n) \text{ for some } n \in \bb{N} \\
+            0 & \text{otherwise}
+        \end{cases}
+    \]
+    This is the ``geometric sequence in $K$'' embedded along the image of $\nu$.
+    Let $S = \Set{u_\alpha \mid \alpha \in K}$. Then $\Card{S} = \Card{K}$.
+    
+    \textit{Linear independence}: Suppose $\sum_{j=1}^m c_j u_{\alpha_j} = 0$ for distinct $\alpha_1, \ldots, \alpha_m$.
+    Evaluating at coordinates $\nu(0), \nu(1), \ldots, \nu(m-1)$:
+    \[
+        \sum_{j=1}^m c_j \alpha_j^n = 0 \quad \text{for } n = 0, 1, \ldots, m-1
+    \]
+    In matrix form: $\mathbf{V} \cdot \mathbf{c} = 0$ where $\mathbf{V}$ is the Vandermonde matrix 
+    with entries $\mathbf{V}_{nj} = \alpha_j^n$.
+    
+    The Vandermonde determinant is:
+    \[
+        \det(\mathbf{V}) = \prod_{1 \leq r < s \leq m} (\alpha_s - \alpha_r) \neq 0
+    \]
+    since the $\alpha_j$ are distinct. Thus $\mathbf{V}$ is invertible, so $\mathbf{c} = 0$.
+    
+    Therefore $S$ is linearly independent, giving $d \geq \Card{K}$.
+    
+    \textbf{Step 4: Conclusion.}
+    Combining $\Card{K} \leq d \leq \Card{P} = \Card{K}$, we get $d = \Card{P}$.
+    
+    In both cases, $\Dim[K]{P} = \Card{P} = \prod_{i \in I} \Card{V_i}$.
+\end{proof}
+
+\begin{corollary}[Dimension of Power Spaces]
+\label{cor:power-space-dim}
+    For a non-trivial $K$-vector space $V$ and infinite index set $I$:
+    \[
+        \Dim[K]{V^I} = \Card{V^I} = \Card{V}^{\Card{I}}
+    \]
+    In particular, for infinite $I$: $\Dim[K]{K^I} = \Card{K}^{\Card{I}}$.
+\end{corollary}
+
+\begin{proof}
+    Apply Theorem~\ref{thm:infinite-prod-dim} with $V_i = V$ for all $i \in I$.
+    Then $\prod_{i \in I} \Card{V_i} = \Card{V}^{\Card{I}}$.
+\end{proof}
+
+\begin{proposition}[Trivial Factors Do Not Contribute]
+\label{prop:trivial-factors}
+    Let $(V_i)_{i \in I}$ be a family of $K$-vector spaces and let $J = \Set{i \in I \mid V_i \neq \{0\}}$
+    be the set of indices with non-trivial factors. Then:
+    \begin{enumerate}
+        \item $\DirectProd{i \in I}{V_i} \cong \DirectProd{j \in J}{V_j}$ (natural isomorphism)
+        \item $\ExtDirectSum{i \in I}{V_i} \cong \ExtDirectSum{j \in J}{V_j}$ (natural isomorphism)
+    \end{enumerate}
+    In particular, trivial factors can be ``removed'' without changing the product or coproduct.
+\end{proposition}
+
+\begin{proof}
+    \textbf{(1) Product isomorphism}:
+    Define $\phi: \DirectProd{i \in I}{V_i} \to \DirectProd{j \in J}{V_j}$ by restriction:
+    \[
+        \phi(f) = f|_J \quad \text{(where $f|_J(j) = f(j)$ for $j \in J$)}
+    \]
+    
+    \textit{$\phi$ is well-defined and linear}: For $f \in \DirectProd{i \in I}{V_i}$, we have
+    $f(j) \in V_j$ for each $j \in J$, so $f|_J \in \DirectProd{j \in J}{V_j}$.
+    Linearity: $(af + bg)|_J = a(f|_J) + b(g|_J)$.
+    
+    \textit{$\phi$ is injective}: Suppose $\phi(f) = 0$, i.e., $f(j) = 0$ for all $j \in J$.
+    For $i \notin J$, we have $V_i = \{0\}$, so $f(i) = 0$ automatically.
+    Thus $f = 0$.
+    
+    \textit{$\phi$ is surjective}: Let $g \in \DirectProd{j \in J}{V_j}$.
+    Define $f \in \DirectProd{i \in I}{V_i}$ by:
+    \[
+        f(i) = \begin{cases}
+            g(i) & \text{if } i \in J \\
+            0 & \text{if } i \notin J \quad \text{(this is the only element of $V_i = \{0\}$)}
+        \end{cases}
+    \]
+    Then $\phi(f) = f|_J = g$.
+    
+    \textbf{(2) Coproduct isomorphism}:
+    Define $\psi: \ExtDirectSum{i \in I}{V_i} \to \ExtDirectSum{j \in J}{V_j}$ by restriction:
+    \[
+        \psi(f) = f|_J
+    \]
+    
+    \textit{$\psi$ is well-defined}: If $f$ has finite support $F \subseteq I$, then $f|_J$ has
+    support $F \cap J$, which is also finite.
+    For $i \in F \setminus J$: $f(i) \in V_i = \{0\}$, so $f(i) = 0$, contradicting $i \in F$.
+    Thus $F \subseteq J$, so $f|_J$ has the same non-zero values.
+    
+    \textit{$\psi$ is linear}: Same argument as for $\phi$.
+    
+    \textit{$\psi$ is an isomorphism}: Injectivity and surjectivity follow by the same arguments
+    as for $\phi$, since any element of the coproduct already has support in $J$.
+\end{proof}
+
+\begin{corollary}[Dimension with Potentially Trivial Factors]
+\label{cor:prod-dim-general}
+    Let $I$ be an index set and $(V_i)_{i \in I}$ be a family of $K$-vector spaces.
+    Let $J = \Set{i \in I \mid V_i \neq \{0\}}$. Then:
+    \begin{enumerate}
+        \item If $J = \emptyset$: $\DirectProd{i \in I}{V_i} = \ExtDirectSum{i \in I}{V_i} = \{0\}$.
+        \item If $J$ is finite: $\Dim[K]{\DirectProd{}{V_i}} = \Dim[K]{\ExtDirectSum{}{V_i}} = \sum_{j \in J} \Dim[K]{V_j}$.
+        \item If $J$ is infinite: $\Dim[K]{\DirectProd{}{V_i}} = \prod_{j \in J} \Card{V_j}$
+              and $\Dim[K]{\ExtDirectSum{}{V_i}} = \sum_{j \in J} \Dim[K]{V_j}$.
+    \end{enumerate}
+\end{corollary}
+
+\begin{proof}
+    Apply Proposition~\ref{prop:trivial-factors} to reduce to the non-trivial subfamily $(V_j)_{j \in J}$,
+    then apply Theorem~\ref{thm:prod-coprod-dim} (finite case) or Theorem~\ref{thm:infinite-prod-dim}
+    (infinite case).
+\end{proof}
+
+\newpage
+\section{Internal vs External Direct Sums}
+
+\begin{theorem}[Internal-External Equivalence]
+\label{thm:internal-external}
+    Let $(U_i)_{i \in I}$ be a family of subspaces of $V$. The following are equivalent:
+    \begin{enumerate}
+        \item The sum $\SubspaceSum{i \in I}{U_i}$ is a direct sum (internal)
+        \item The natural map $\phi: \ExtDirectSum{i \in I}{U_i} \to V$ defined by
+              $\phi((u_i)) = \sum_{i \in F} u_i$ is an isomorphism onto $\SubspaceSum{i \in I}{U_i}$
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    \textbf{Construction of $\phi$}:
+    Define the inclusions $\iota_j^V: U_j \hookrightarrow V$ for each $j \in I$.
+    By the coproduct universal property (Theorem~\ref{thm:coproduct-construction}), there exists
+    a unique linear map $\phi: \ExtDirectSum{i \in I}{U_i} \to V$ such that $\phi \circ \iota_j = \iota_j^V$
+    for all $j$. Explicitly, for $f \in \ExtDirectSum{}{U_i}$ with finite support $F$:
+    \[
+        \phi(f) = \sum_{j \in F} \iota_j^V(f(j)) = \sum_{j \in F} f(j) \in V
+    \]
+    
+    \textbf{$\phi$ is well-defined}:
+    Each $f(j) \in U_j \subseteq V$, so the sum $\sum_{j \in F} f(j)$ is a finite sum in $V$.
+    The result is independent of how we write $f$, since if $f = \sum_{j \in F} \iota_j(f(j))$,
+    then $\phi(f) = \sum_{j \in F} f(j)$ by the coproduct universal property.
+    
+    \textbf{$\phi$ is linear}:
+    This follows from the coproduct construction: $\phi$ is the unique map induced by the
+    linear inclusions $\iota_j^V$, hence $\phi$ is linear.
+    
+    Alternatively, for $f, g \in \ExtDirectSum{}{U_i}$ with supports $F, G$ and $a, b \in K$:
+    \begin{align*}
+        \phi(af + bg) &= \sum_{j \in F \cup G} (af + bg)(j) \\
+        &= \sum_{j \in F \cup G} (af(j) + bg(j)) \\
+        &= a \sum_{j \in F \cup G} f(j) + b \sum_{j \in F \cup G} g(j) \\
+        &= a \cdot \phi(f) + b \cdot \phi(g)
+    \end{align*}
+    
+    \textbf{Image of $\phi$}:
+    We claim $\Rng{\phi} = \SubspaceSum{i \in I}{U_i}$.
+    
+    \textit{$\Rng{\phi} \subseteq \SubspaceSum{}{U_i}$}: For any $f \in \ExtDirectSum{}{U_i}$,
+    $\phi(f) = \sum_{j \in F} f(j)$ where each $f(j) \in U_j$. Thus $\phi(f) \in \SubspaceSum{}{U_i}$.
+    
+    \textit{$\SubspaceSum{}{U_i} \subseteq \Rng{\phi}$}: Any $v \in \SubspaceSum{}{U_i}$ can be written
+    as $v = \sum_{j \in F} u_j$ for some finite $F$ and $u_j \in U_j$. Define $f \in \ExtDirectSum{}{U_i}$
+    by $f(j) = u_j$ for $j \in F$ and $f(i) = 0$ otherwise. Then $\phi(f) = v$.
+    
+    \textbf{(1) $\Rightarrow$ (2): Direct sum implies $\phi$ is an isomorphism}
+    
+    Assume $\SubspaceSum{}{U_i}$ is a direct sum, i.e., every $v \in \SubspaceSum{}{U_i}$ has
+    a \textbf{unique} representation as $v = \sum_{j \in F} u_j$ with $u_j \in U_j$.
+    
+    We already showed $\phi$ is linear and $\Rng{\phi} = \SubspaceSum{}{U_i}$ (surjective onto image).
+    It remains to show $\phi$ is injective.
+    
+    \textit{Injectivity}: Suppose $\phi(f) = 0$ for some $f \in \ExtDirectSum{}{U_i}$ with support $F$.
+    Then $\sum_{j \in F} f(j) = 0$ with $f(j) \in U_j$. By the unique representation property
+    (direct sum), the only way to write $0$ as a sum from the $U_j$ is with all summands zero.
+    Thus $f(j) = 0$ for all $j \in F$, which means $f = 0$.
+    Hence $\Ker{\phi} = \{0\}$, proving injectivity.
+    
+    \textbf{(2) $\Rightarrow$ (1): $\phi$ isomorphism implies direct sum}
+    
+    Assume $\phi: \ExtDirectSum{}{U_i} \to \SubspaceSum{}{U_i}$ is an isomorphism (in particular, injective).
+    
+    We must show that if $\sum_{j \in F} u_j = 0$ with $u_j \in U_j$ (all but finitely many zero),
+    then $u_j = 0$ for all $j$.
+    
+    Define $f \in \ExtDirectSum{}{U_i}$ by $f(j) = u_j$ for $j \in F$ and $f(i) = 0$ otherwise.
+    Then $\phi(f) = \sum_{j \in F} u_j = 0$.
+    
+    Since $\phi$ is injective, $\phi(f) = 0$ implies $f = 0$.
+    Thus $f(j) = u_j = 0$ for all $j \in F$.
+    
+    This proves the unique representation property, so $\SubspaceSum{}{U_i}$ is a direct sum.
+\end{proof}
+
+\begin{corollary}[Basis as Direct Sum]
+\label{cor:basis-direct-sum}
+    $(v_i)_{i \in I}$ is a basis for $V$ iff $V = \DirectSum{i \in I}{\Span[K]{\Set{v_i}}}$.
+\end{corollary}
+
+\newpage
+\section{Hom-Product Isomorphisms}
+
+\begin{theorem}[Contravariance in First Argument]
+\label{thm:hom-coprod}
+    For any family $(U_i)_{i \in I}$ and vector space $V$:
+    \[
+        \Hom[K]{\ExtDirectSum{i \in I}{U_i}}{V} \cong \DirectProd{i \in I}{\Hom[K]{U_i}{V}}
+    \]
+\end{theorem}
+
+\begin{proof}
+    \textbf{Definition of $\Phi$}:
+    Define $\Phi: \Hom[K]{\ExtDirectSum{}{U_i}}{V} \to \DirectProd{}{\Hom[K]{U_i}{V}}$ by
+    \[
+        \Phi(T) = (T \circ \iota_i)_{i \in I}
+    \]
+    For each $i$, $T \circ \iota_i: U_i \to V$ is a composition of linear maps, hence linear.
+    Thus $\Phi(T) \in \DirectProd{}{\Hom[K]{U_i}{V}}$.
+    
+    \textbf{$\Phi$ is well-defined}:
+    For any $T \in \Hom[K]{\ExtDirectSum{}{U_i}}{V}$, the tuple $(T \circ \iota_i)_{i \in I}$
+    is a function from $I$ to $\BigUnion[]{\Hom[K]{U_i}{V}}$ with $(T \circ \iota_i) \in \Hom[K]{U_i}{V}$
+    for each $i$. This is exactly the definition of an element in the product.
+    
+    \textbf{$\Phi$ is linear}:
+    For $S, T \in \Hom[K]{\ExtDirectSum{}{U_i}}{V}$ and $a, b \in K$:
+    \begin{align*}
+        \Phi(aS + bT) &= ((aS + bT) \circ \iota_i)_{i \in I} \\
+        &= (aS \circ \iota_i + bT \circ \iota_i)_{i \in I} && \text{(linearity of composition)} \\
+        &= a (S \circ \iota_i)_{i \in I} + b (T \circ \iota_i)_{i \in I} && \text{(pointwise operations)} \\
+        &= a \cdot \Phi(S) + b \cdot \Phi(T)
+    \end{align*}
+    
+    \textbf{$\Phi$ is injective}:
+    Suppose $\Phi(T) = 0$, i.e., $T \circ \iota_i = 0$ for all $i \in I$.
+    We must show $T = 0$.
+    
+    Let $f \in \ExtDirectSum{}{U_i}$ be arbitrary with finite support $F = \Set{j \in I \mid f(j) \neq 0}$.
+    By the coproduct construction, $f = \sum_{j \in F} \iota_j(f(j))$. Then:
+    \begin{align*}
+        T(f) &= T\left(\sum_{j \in F} \iota_j(f(j))\right) \\
+        &= \sum_{j \in F} T(\iota_j(f(j))) && \text{($T$ is linear)} \\
+        &= \sum_{j \in F} (T \circ \iota_j)(f(j)) && \text{(definition of composition)} \\
+        &= \sum_{j \in F} 0(f(j)) && \text{($T \circ \iota_j = 0$ by assumption)} \\
+        &= \sum_{j \in F} 0_V = 0_V
+    \end{align*}
+    Since $T(f) = 0$ for all $f \in \ExtDirectSum{}{U_i}$, we have $T = 0$.
+    Thus $\Ker{\Phi} = \{0\}$, proving injectivity.
+    
+    \textbf{$\Phi$ is surjective}:
+    Let $(f_i)_{i \in I} \in \DirectProd{}{\Hom[K]{U_i}{V}}$ be arbitrary.
+    By the coproduct universal property (Definition~\ref{def:categorical-coproduct}), there exists
+    a unique linear map $T: \ExtDirectSum{}{U_i} \to V$ such that $T \circ \iota_i = f_i$ for all $i$.
+    
+    Explicitly, for $g \in \ExtDirectSum{}{U_i}$ with support $F$:
+    \[
+        T(g) = \sum_{j \in F} f_j(g(j))
+    \]
+    
+    We verify $\Phi(T) = (f_i)_{i \in I}$:
+    \[
+        \Phi(T) = (T \circ \iota_i)_{i \in I} = (f_i)_{i \in I}
+    \]
+    since $T \circ \iota_i = f_i$ by construction. Thus $\Phi$ is surjective.
+    
+    \textbf{Conclusion}: $\Phi$ is a linear bijection, hence an isomorphism.
+\end{proof}
+
+\begin{theorem}[Covariance in Second Argument]
+\label{thm:hom-prod}
+    For any vector space $U$ and family $(V_i)_{i \in I}$:
+    \[
+        \Hom[K]{U}{\DirectProd{i \in I}{V_i}} \cong \DirectProd{i \in I}{\Hom[K]{U}{V_i}}
+    \]
+\end{theorem}
+
+\begin{proof}
+    \textbf{Definition of $\Psi$}:
+    Define $\Psi: \Hom[K]{U}{\DirectProd{}{V_i}} \to \DirectProd{}{\Hom[K]{U}{V_i}}$ by
+    \[
+        \Psi(T) = (\pi_i \circ T)_{i \in I}
+    \]
+    For each $i$, $\pi_i \circ T: U \to V_i$ is a composition of linear maps, hence linear.
+    Thus $\Psi(T) \in \DirectProd{}{\Hom[K]{U}{V_i}}$.
+    
+    \textbf{$\Psi$ is linear}:
+    For $S, T \in \Hom[K]{U}{\DirectProd{}{V_i}}$ and $a, b \in K$:
+    \begin{align*}
+        \Psi(aS + bT) &= (\pi_i \circ (aS + bT))_{i \in I} \\
+        &= (a \cdot (\pi_i \circ S) + b \cdot (\pi_i \circ T))_{i \in I} && \text{($\pi_i$ is linear)} \\
+        &= a (\pi_i \circ S)_{i \in I} + b (\pi_i \circ T)_{i \in I} && \text{(pointwise operations)} \\
+        &= a \cdot \Psi(S) + b \cdot \Psi(T)
+    \end{align*}
+    
+    \textbf{$\Psi$ is injective}:
+    Suppose $\Psi(T) = 0$, i.e., $\pi_i \circ T = 0$ for all $i \in I$.
+    We must show $T = 0$.
+    
+    Let $u \in U$ be arbitrary. We have $T(u) \in \DirectProd{}{V_i}$, so $T(u)$ is a function
+    from $I$ to $\BigUnion[]{V_i}$. For each $i \in I$:
+    \[
+        T(u)(i) = \pi_i(T(u)) = (\pi_i \circ T)(u) = 0(u) = 0_{V_i}
+    \]
+    Since $T(u)(i) = 0$ for all $i$, the function $T(u)$ is the zero function in $\DirectProd{}{V_i}$.
+    Thus $T(u) = 0$ for all $u \in U$, proving $T = 0$.
+    Hence $\Ker{\Psi} = \{0\}$, proving injectivity.
+    
+    \textbf{$\Psi$ is surjective}:
+    Let $(g_i)_{i \in I} \in \DirectProd{}{\Hom[K]{U}{V_i}}$ be arbitrary.
+    By the product universal property (Definition~\ref{def:categorical-product}), there exists
+    a unique linear map $T: U \to \DirectProd{}{V_i}$ such that $\pi_i \circ T = g_i$ for all $i$.
+    
+    Explicitly, for $u \in U$, define $T(u): I \to \BigUnion[]{V_i}$ by:
+    \[
+        T(u)(i) = g_i(u) \in V_i
+    \]
+    
+    \textit{$T$ is well-defined}: For each $u$, $T(u)$ is a function with $T(u)(i) \in V_i$,
+    so $T(u) \in \DirectProd{}{V_i}$.
+    
+    \textit{$T$ is linear}: For $u, v \in U$ and $a, b \in K$, and for each $i \in I$:
+    \begin{align*}
+        T(au + bv)(i) &= g_i(au + bv) = a \cdot g_i(u) + b \cdot g_i(v) \\
+        &= a \cdot T(u)(i) + b \cdot T(v)(i) = (aT(u) + bT(v))(i)
+    \end{align*}
+    Thus $T(au + bv) = aT(u) + bT(v)$.
+    
+    We verify $\Psi(T) = (g_i)_{i \in I}$:
+    \[
+        (\pi_i \circ T)(u) = \pi_i(T(u)) = T(u)(i) = g_i(u)
+    \]
+    Thus $\pi_i \circ T = g_i$ for all $i$, so $\Psi(T) = (g_i)_{i \in I}$.
+    
+    \textbf{Conclusion}: $\Psi$ is a linear bijection, hence an isomorphism.
+\end{proof}
+
+\begin{theorem}[Finite-Dimensional Covariance]
+\label{thm:hom-coprod-finite}
+    If $\Dim[K]{U} \in \bb{N}$, then:
+    \[
+        \Hom[K]{U}{\ExtDirectSum{i \in I}{V_i}} \cong \ExtDirectSum{i \in I}{\Hom[K]{U}{V_i}}
+    \]
+\end{theorem}
+
+\begin{proof}
+    Let $\Dim[K]{U} = n$ with basis $\mathcal{B} = (u_1, \ldots, u_n)$.
+    
+    \textbf{Definition of $\Theta$}:
+    Define $\Theta: \Hom[K]{U}{\ExtDirectSum{}{V_i}} \to \ExtDirectSum{}{\Hom[K]{U}{V_i}}$ by
+    \[
+        \Theta(T) = (\pi_i \circ T)_{i \in I}
+    \]
+    For each $i$, $\pi_i \circ T: U \to V_i$ is a composition of linear maps, hence linear.
+    
+    \textbf{$\Theta(T)$ has finite support (crucial for well-definedness)}:
+    For each basis vector $u_k$, we have $T(u_k) \in \ExtDirectSum{}{V_i}$, which has finite support
+    \[
+        F_k = \Set{i \in I \mid \pi_i(T(u_k)) \neq 0}
+    \]
+    The total support is $F = \bigcup_{k=1}^n F_k$, which is a finite union of finite sets, hence finite.
+    
+    For any $i \notin F$ and any $u = \sum_{k=1}^n a_k u_k \in U$:
+    \begin{align*}
+        (\pi_i \circ T)(u) &= \pi_i\left(T\left(\sum_{k=1}^n a_k u_k\right)\right) \\
+        &= \pi_i\left(\sum_{k=1}^n a_k T(u_k)\right) && \text{($T$ is linear)} \\
+        &= \sum_{k=1}^n a_k \cdot \pi_i(T(u_k)) && \text{($\pi_i$ is linear)} \\
+        &= \sum_{k=1}^n a_k \cdot 0 = 0 && \text{($i \notin F_k$ for all $k$)}
+    \end{align*}
+    Thus $\pi_i \circ T = 0$ for all $i \notin F$, so $\Theta(T) \in \ExtDirectSum{}{\Hom[K]{U}{V_i}}$.
+    
+    \textbf{$\Theta$ is linear}:
+    For $S, T \in \Hom[K]{U}{\ExtDirectSum{}{V_i}}$ and $a, b \in K$:
+    \begin{align*}
+        \Theta(aS + bT) &= (\pi_i \circ (aS + bT))_{i \in I} \\
+        &= (a \cdot (\pi_i \circ S) + b \cdot (\pi_i \circ T))_{i \in I} && \text{($\pi_i$ is linear)} \\
+        &= a (\pi_i \circ S)_{i \in I} + b (\pi_i \circ T)_{i \in I} && \text{(pointwise operations)} \\
+        &= a \cdot \Theta(S) + b \cdot \Theta(T)
+    \end{align*}
+    
+    \textbf{$\Theta$ is injective}:
+    Suppose $\Theta(T) = 0$, i.e., $\pi_i \circ T = 0$ for all $i \in I$.
+    We must show $T = 0$.
+    
+    Let $u \in U$ be arbitrary. We have $T(u) \in \ExtDirectSum{}{V_i}$.
+    For each $i \in I$:
+    \[
+        T(u)(i) = \pi_i(T(u)) = (\pi_i \circ T)(u) = 0(u) = 0_{V_i}
+    \]
+    Since $T(u)(i) = 0$ for all $i$, the function $T(u)$ is the zero function.
+    Thus $T(u) = 0$ for all $u \in U$, proving $T = 0$.
+    Hence $\Ker{\Theta} = \{0\}$, proving injectivity.
+    
+    \textbf{$\Theta$ is surjective}:
+    Let $(f_i)_{i \in I} \in \ExtDirectSum{}{\Hom[K]{U}{V_i}}$ with finite support $F$.
+    
+    Define $T: U \to \ExtDirectSum{}{V_i}$ by: for each $u \in U$,
+    \[
+        T(u)(i) = f_i(u) \in V_i
+    \]
+    
+    \textit{$T(u) \in \ExtDirectSum{}{}$}: The support of $T(u)$ is
+    $\Set{i \in I \mid f_i(u) \neq 0} \subseteq F$, which is finite.
+    
+    \textit{$T$ is linear}: For $u, v \in U$ and $a, b \in K$, and for each $i \in I$:
+    \begin{align*}
+        T(au + bv)(i) &= f_i(au + bv) = a \cdot f_i(u) + b \cdot f_i(v) \\
+        &= a \cdot T(u)(i) + b \cdot T(v)(i) = (aT(u) + bT(v))(i)
+    \end{align*}
+    Thus $T(au + bv) = aT(u) + bT(v)$.
+    
+    We verify $\Theta(T) = (f_i)_{i \in I}$:
+    \[
+        (\pi_i \circ T)(u) = \pi_i(T(u)) = T(u)(i) = f_i(u)
+    \]
+    Thus $\pi_i \circ T = f_i$ for all $i$, so $\Theta(T) = (f_i)_{i \in I}$.
+    
+    \textbf{Conclusion}: $\Theta$ is a linear bijection, hence an isomorphism.
+    
+    \textbf{Note}: This proof requires $\Dim[K]{U}$ to be finite because finite-dimensionality ensures
+    that $F = \bigcup_{k=1}^n F_k$ is a finite union. For infinite-dimensional $U$, this union
+    could be infinite, and $\Theta(T)$ might not have finite support.
+\end{proof}
+
+\begin{remark}[Categorical Interpretation]
+    These isomorphisms express that $\Hom[K]{-}{V}$ is contravariant (coproducts $\to$ products),
+    $\Hom[K]{U}{-}$ is covariant (products $\to$ products), and for finite-dimensional $U$,
+    $\Hom[K]{U}{-}$ also sends coproducts to coproducts.
+\end{remark}
+
+\newpage
+\section{Free Vector Space Characterizations}
+
+\begin{theorem}[Equivalent Characterizations]
+\label{thm:free-vs-equiv}
+    For a $K$-vector space $V$ with set $B \subseteq V$, the following are equivalent:
+    \begin{enumerate}
+        \item $B$ is a basis for $V$
+        \item The universal property: any $f: B \to W$ extends uniquely to $T: V \to W$
+        \item $V \cong \ExtDirectSum{b \in B}{\Span[K]{\Set{b}}}$
+        \item $V \cong K^{(B)}$
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    \textbf{(1) $\Leftrightarrow$ (2)}: Theorem~\ref{thm:vector-space-universal}.
+    
+    \textbf{(1) $\Rightarrow$ (3)}: By Theorem~\ref{thm:internal-external}, since 
+    $V = \DirectSum{b \in B}{\Span[K]{\Set{b}}}$ (internal).
+    
+    \textbf{(3) $\Rightarrow$ (4)}: Each $\Span[K]{\Set{b}} \cong K$, so
+    $\ExtDirectSum{b \in B}{\Span[K]{\Set{b}}} \cong \ExtDirectSum{b \in B}{K} = K^{(B)}$.
+    
+    \textbf{(4) $\Rightarrow$ (1)}: $K^{(B)}$ has basis $\Set{\delta_b}_{b \in B}$.
+    Any isomorphism $\psi: K^{(B)} \to V$ sends this to a basis of $V$.
+\end{proof}
+
+\begin{corollary}[Coordinate Representation]
+\label{cor:coordinate-rep}
+    For any basis $B$ of $V$, the coordinate map $\phi_B: V \to K^{(B)}$ is an isomorphism.
+    For $\Dim[K]{V} = n \in \bb{N}$: $V \cong K^n$.
+\end{corollary}

@@ -1,0 +1,701 @@
+\chapter{Measures}
+
+\section{Measurable Spaces}
+
+\begin{definition}[Measurable Space]
+    A \textbf{measurable space} is a pair $(X, \mathcal{M})$ where $X$ is a set 
+    and $\mathcal{M}$ is a $\sigma$-algebra on $X$.
+\end{definition}
+
+\begin{intuition}
+    A measurable space is the natural domain for defining $\sigma$-additive measures. 
+    The $\sigma$-algebra structure provides closure under countable set operations, 
+    which is essential for defining $\sigma$-additivity and proving convergence theorems.
+\end{intuition}
+
+\medskip
+\begin{definition}[Measurable Subspace]
+    Let $(X, \mathcal{M})$ be a measurable space and $Y \subseteq X$. 
+    The \textbf{measurable subspace} induced on $Y$ is $(Y, \mathcal{M}_Y)$ where:
+    \[
+        \mathcal{M}_Y = \{ A \cap Y \mid A \in \mathcal{M} \}
+    \]
+\end{definition}
+
+\begin{proposition}
+    If $(X, \mathcal{M})$ is a measurable space and $Y \subseteq X$, then 
+    $\mathcal{M}_Y$ is a $\sigma$-algebra on $Y$.
+\end{proposition}
+
+\begin{proof}
+    \textbf{Contains $\emptyset$:} $\emptyset = \emptyset \cap Y \in \mathcal{M}_Y$.
+
+    \textbf{Contains $Y$:} $Y = X \cap Y \in \mathcal{M}_Y$.
+
+    \textbf{Closure under complements:} Let $A \cap Y \in \mathcal{M}_Y$ with $A \in \mathcal{M}$. 
+    Then $Y \setminus (A \cap Y) = (X \setminus A) \cap Y$. 
+    Since $\mathcal{M}$ is a $\sigma$-algebra, $X \setminus A \in \mathcal{M}$, so 
+    $(X \setminus A) \cap Y \in \mathcal{M}_Y$.
+
+    \textbf{Closure under countable unions:} Let $(A_n \cap Y)_{n \in \bb{N}} \subseteq \mathcal{M}_Y$. 
+    Then:
+    \[
+        \bigcup_{n \in \bb{N}} (A_n \cap Y) = \left(\bigcup_{n \in \bb{N}} A_n\right) \cap Y \in \mathcal{M}_Y
+    \]
+    since $\bigcup_{n \in \bb{N}} A_n \in \mathcal{M}$.
+\end{proof}
+
+\bigskip
+\section{Definition of Measure}
+
+\begin{definition}[Measure]
+    Let $(X, \mathcal{M})$ be a measurable space. A function $\mu: \mathcal{M} \to [0, \infty]$ 
+    is a \textbf{measure} if:
+    \begin{enumerate}
+        \item $\mu(\emptyset) = 0$
+        \item \textbf{$\sigma$-additivity:} For any sequence of pairwise disjoint sets 
+            $(A_n)_{n \in \bb{N}} \subseteq \mathcal{M}$:
+            \[
+                \mu\left(\bigcup_{n \in \bb{N}} A_n\right) = \sum_{n \in \bb{N}} \mu(A_n)
+            \]
+    \end{enumerate}
+    The triple $(X, \mathcal{M}, \mu)$ is called a \textbf{measure space}.
+\end{definition}
+
+\bigskip
+\begin{proposition}[Properties of Measures]
+    Let $\mu$ be a measure on $(X, \mathcal{M})$. Then:
+    \begin{enumerate}
+        \item \textbf{Finite additivity:} $\mu$ is a content
+        \item \textbf{Monotonicity:} $A \subseteq B \implies \mu(A) \leq \mu(B)$
+        \item \textbf{$\sigma$-subadditivity:} $\mu(\bigcup_{n \in \bb{N}} A_n) \leq \sum_{n \in \bb{N}} \mu(A_n)$
+        \item \textbf{Continuity from below:} If $A_n \nearrow A$, then $\mu(A) = \lim_{n \to \infty} \mu(A_n)$
+        \item \textbf{Continuity from above:} If $A_n \searrow A$ and $\mu(A_k) < \infty$ for some $k$, 
+            then $\mu(A) = \lim_{n \to \infty} \mu(A_n)$
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    \textbf{(1) Finite additivity:} Take $A_3 = A_4 = \cdots = \emptyset$ in the $\sigma$-additivity.
+
+    \medskip
+    \textbf{(2) Monotonicity:} $\mu(B) = \mu(A) + \mu(B \setminus A) \geq \mu(A)$.
+
+    \medskip
+    \textbf{(3) $\sigma$-subadditivity:} By the Disjointification Lemma, define 
+    $B_1 = A_1$, $B_n = A_n \setminus \bigcup_{i=1}^{n-1} A_i$ for $n \geq 2$. 
+    Then $(B_n)_{n \in \bb{N}}$ are pairwise disjoint, $\bigcup_{n \in \bb{N}} A_n = \bigcup_{n \in \bb{N}} B_n$, 
+    and $B_n \subseteq A_n$ for all $n$. Thus:
+    \[
+        \mu\left(\bigcup_{n \in \bb{N}} A_n\right) = \mu\left(\bigcup_{n \in \bb{N}} B_n\right) 
+        = \sum_{n \in \bb{N}} \mu(B_n) \leq \sum_{n \in \bb{N}} \mu(A_n)
+    \]
+    where the last inequality uses monotonicity: $\mu(B_n) \leq \mu(A_n)$.
+
+    \medskip
+    \textbf{(4) Continuity from below:} By the Disjointification Lemma, define 
+    $B_1 = A_1$, $B_n = A_n \setminus A_{n-1}$ for $n \geq 2$. 
+    Then $(B_n)_{n \in \bb{N}}$ are pairwise disjoint and $A_N = \bigcup_{n=1}^N B_n$ for each $N$. 
+    Since $A = \bigcup_{n \in \bb{N}} A_n = \bigcup_{n \in \bb{N}} B_n$, by $\sigma$-additivity:
+    \[
+        \mu(A) = \sum_{n \in \bb{N}} \mu(B_n) = \lim_{N \to \infty} \sum_{n=1}^N \mu(B_n)
+    \]
+    Since $A_N = \bigcup_{n=1}^N B_n$ is a disjoint union, finite additivity gives 
+    $\sum_{n=1}^N \mu(B_n) = \mu(A_N)$. Therefore:
+    \[
+        \mu(A) = \lim_{N \to \infty} \mu(A_N)
+    \]
+
+    \medskip
+    \textbf{(5) Continuity from above:} WLOG assume $\mu(A_k) < \infty$ for some $k$ (by hypothesis). 
+    Define $C_n = A_k \setminus A_n$ for $n \geq k$. Then $C_n \nearrow A_k \setminus A$, so:
+    \[
+        \mu(A_k \setminus A) = \lim_{n \to \infty} \mu(C_n) = \lim_{n \to \infty} (\mu(A_k) - \mu(A_n))
+    \]
+    Thus $\mu(A) = \mu(A_k) - \mu(A_k \setminus A) = \lim \mu(A_n)$.
+\end{proof}
+
+\medskip
+\begin{example}
+    The finiteness condition in continuity from above is essential. 
+    Let $A_n = [n, \infty) \subseteq \bb{R}$ with Lebesgue measure. 
+    Then $A_n \searrow \emptyset$ but $\lambda(A_n) = \infty$ for all $n$.
+\end{example}
+
+\section{Outer Measures}
+
+\begin{definition}[Outer Measure]
+    A function $\mu^*: \Powerset{X} \to [0, \infty]$ is an \textbf{outer measure} if:
+    \begin{enumerate}
+        \item $\mu^*(\emptyset) = 0$
+        \item \textbf{Monotonicity:} $A \subseteq B \implies \mu^*(A) \leq \mu^*(B)$
+        \item \textbf{$\sigma$-subadditivity:} $\mu^*(\bigcup_{n \in \bb{N}} A_n) \leq \sum_{n \in \bb{N}} \mu^*(A_n)$
+    \end{enumerate}
+\end{definition}
+
+\medskip
+\begin{definition}[Lebesgue Outer Measure]
+    For $A \subseteq \bb{R}^n$:
+    \[
+        \lambda^*(A) = \inf \left\{ \sum_{k=1}^\infty \text{vol}(R_k) \mid 
+        A \subseteq \bigcup_{k=1}^\infty R_k, R_k \text{ open rectangles} \right\}
+    \]
+\end{definition}
+
+\medskip
+\begin{proposition}
+    $\lambda^*$ is an outer measure on $\bb{R}^n$.
+\end{proposition}
+
+\begin{proof}
+    \textbf{(1) $\lambda^*(\emptyset) = 0$:} Cover $\emptyset$ by rectangles of arbitrarily small total volume.
+
+    \medskip
+    \textbf{(2) Monotonicity:} If $A \subseteq B$, any cover of $B$ is a cover of $A$, 
+    so $\lambda^*(A) \leq \lambda^*(B)$.
+
+    \medskip
+    \textbf{(3) $\sigma$-subadditivity:} Let $(A_n)$ be a sequence. For each $n$, given $\epsilon > 0$, 
+    choose open rectangles $\{R_{n,k}\}_k$ covering $A_n$ with 
+    $\sum_k \text{vol}(R_{n,k}) < \lambda^*(A_n) + \epsilon/2^n$.
+
+    Then $\{R_{n,k}\}_{n,k}$ covers $\bigcup A_n$ and:
+    \[
+        \sum_{n,k} \text{vol}(R_{n,k}) < \sum_n (\lambda^*(A_n) + \epsilon/2^n) 
+        = \sum_n \lambda^*(A_n) + \epsilon
+    \]
+
+    Thus $\lambda^*(\bigcup A_n) \leq \sum \lambda^*(A_n) + \epsilon$. Since $\epsilon$ is arbitrary, done.
+\end{proof}
+
+\section{Complete Measures and Completion}
+
+\begin{definition}[Complete Measure Space]
+    A measure space $(X, \mathcal{M}, \mu)$ is \textbf{complete} if every subset of a null set 
+    is measurable:
+    \[
+        \mu(N) = 0 \text{ and } E \subseteq N \implies E \in \mathcal{M}
+    \]
+\end{definition}
+
+\bigskip
+\begin{theorem}[Characterization of Complete Measures]
+    Let $(X, \mathcal{M}, \mu)$ be a measure space. The following are equivalent:
+    \begin{enumerate}
+        \item $(X, \mathcal{M}, \mu)$ is complete
+        \item Every subset of a null set is measurable
+        \item If $A \subseteq E \subseteq B$ with $A, B \in \mathcal{M}$ and $\mu(B \setminus A) = 0$, 
+            then $E \in \mathcal{M}$
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    \textbf{(1) $\Leftrightarrow$ (2):} This is the definition of completeness.
+
+    \medskip
+    \textbf{(1) $\Rightarrow$ (3):} Suppose $(X, \mathcal{M}, \mu)$ is complete. 
+    Let $A \subseteq E \subseteq B$ with $\mu(B \setminus A) = 0$.
+    
+    We can write $E = A \cup (E \setminus A)$. Since $E \setminus A \subseteq B \setminus A$ 
+    and $\mu(B \setminus A) = 0$, by completeness $E \setminus A \in \mathcal{M}$.
+    
+    Since $A \in \mathcal{M}$ and $\mathcal{M}$ is closed under unions, 
+    $E = A \cup (E \setminus A) \in \mathcal{M}$.
+
+    \medskip
+    \textbf{(3) $\Rightarrow$ (1):} Let $N \in \mathcal{M}$ with $\mu(N) = 0$, and let $E \subseteq N$.
+    
+    Take $A = \emptyset$ and $B = N$. Then $\emptyset \subseteq E \subseteq N$ and 
+    $\mu(N \setminus \emptyset) = \mu(N) = 0$. By (3), $E \in \mathcal{M}$.
+\end{proof}
+
+\begin{remark}
+    Characterization (3) is called the ``squeezed set'' criterion: any set sandwiched between 
+    two measurable sets differing by a null set is itself measurable.
+\end{remark}
+
+\bigskip
+\begin{definition}[Completion of a Measure Space]
+    Let $(X, \mathcal{M}, \mu)$ be a measure space. Define the \textbf{completed $\sigma$-algebra}:
+    \[
+        \overline{\mathcal{M}}^\mu = \left\{ A \cup N \mid A \in \mathcal{M}, \,
+        \Exists :{M \in \mathcal{M}}{N \subseteq M \text{ and } \mu(M) = 0} \right\}
+    \]
+    Define the \textbf{completed measure} $\overline{\mu}: \overline{\mathcal{M}}^\mu \to [0, \infty]$ by:
+    \[
+        \overline{\mu}(A \cup N) = \mu(A)
+    \]
+\end{definition}
+
+\begin{proposition}[Equivalent Characterization of Completion]
+    \[
+        \overline{\mathcal{M}}^\mu = \left\{ E \subseteq X \mid 
+        \Exists :{A, B \in \mathcal{M}}{A \subseteq E \subseteq B \text{ and } \mu(B \setminus A) = 0} \right\}
+    \]
+\end{proposition}
+
+\begin{proof}
+    \textbf{($\subseteq$):} Let $E = A \cup N \in \overline{\mathcal{M}}^\mu$ where $A \in \mathcal{M}$ 
+    and $N \subseteq M$ for some null set $M \in \mathcal{M}$.
+    
+    Take the inner approximation $A \in \mathcal{M}$ and outer approximation $B = A \cup M \in \mathcal{M}$. 
+    Then $A \subseteq E = A \cup N \subseteq A \cup M = B$, and 
+    $\mu(B \setminus A) = \mu(M \setminus A) \leq \mu(M) = 0$.
+
+    \medskip
+    \textbf{($\supseteq$):} Let $A \subseteq E \subseteq B$ with $A, B \in \mathcal{M}$ and $\mu(B \setminus A) = 0$.
+    
+    Write $E = A \cup (E \setminus A)$. Note that $N = E \setminus A \subseteq B \setminus A$ where 
+    $\mu(B \setminus A) = 0$. Thus $E = A \cup N \in \overline{\mathcal{M}}^\mu$.
+\end{proof}
+
+\begin{proposition}[$\overline{\mu}$ is Well-Defined]
+    If $E = A_1 \cup N_1 = A_2 \cup N_2$ with $A_1, A_2 \in \mathcal{M}$ and $N_1, N_2$ subsets 
+    of null sets in $\mathcal{M}$, then $\mu(A_1) = \mu(A_2)$.
+\end{proposition}
+
+\begin{proof}
+    We have $A_1 \subseteq A_1 \cup N_1 = A_2 \cup N_2 \subseteq A_2 \cup M_2$ where $N_2 \subseteq M_2$ 
+    and $\mu(M_2) = 0$. Thus:
+    \[
+        A_1 \setminus A_2 \subseteq (A_2 \cup M_2) \setminus A_2 = M_2 \setminus A_2 \subseteq M_2
+    \]
+    Since $A_1 \setminus A_2 \in \mathcal{M}$ and $\mu(M_2) = 0$, monotonicity gives 
+    $\mu(A_1 \setminus A_2) = 0$.
+
+    By symmetry, $\mu(A_2 \setminus A_1) = 0$. Therefore:
+    \[
+        \mu(A_1) = \mu(A_1 \cap A_2) + \mu(A_1 \setminus A_2) = \mu(A_1 \cap A_2) = 
+        \mu(A_1 \cap A_2) + \mu(A_2 \setminus A_1) = \mu(A_2)
+    \]
+\end{proof}
+
+\begin{proposition}
+    $\overline{\mathcal{M}}^\mu$ is a $\sigma$-algebra and $\overline{\mu}$ is a measure.
+\end{proposition}
+
+\begin{proof}
+    \textbf{$\overline{\mathcal{M}}^\mu$ is a $\sigma$-algebra:}
+    
+    \textit{Contains $\emptyset$:} $\emptyset = \emptyset \cup \emptyset \in \overline{\mathcal{M}}^\mu$.
+    
+    \textit{Closure under complements:} If $E = A \cup N$ with $N \subseteq M$ (null), then 
+    $E^c = (A \cup N)^c = A^c \cap N^c$. One can verify $E^c = A^c \cap M^c \cup N'$ for 
+    appropriate $N' \subseteq M$.
+    
+    \textit{Closure under countable unions:} If $E_n = A_n \cup N_n$ with $N_n \subseteq M_n$, then 
+    $\bigcup_{n \in \bb{N}} E_n = \bigcup_{n \in \bb{N}} A_n \cup \bigcup_{n \in \bb{N}} N_n$ where 
+    $\bigcup_{n \in \bb{N}} N_n \subseteq \bigcup_{n \in \bb{N}} M_n$ is a subset of a null set.
+
+    \medskip
+    \textbf{$\overline{\mu}$ is a measure:}
+    
+    \textit{$\overline{\mu}(\emptyset) = 0$:} $\overline{\mu}(\emptyset) = \mu(\emptyset) = 0$.
+    
+    \textit{$\sigma$-additivity:} Let $(E_n)_{n \in \bb{N}}$ be pairwise disjoint sets in 
+    $\overline{\mathcal{M}}^\mu$ with $E_n = A_n \cup N_n$ where $N_n \subseteq M_n$ and $\mu(M_n) = 0$.
+    
+    Define $A'_1 = A_1$ and $A'_n = A_n \setminus \bigcup_{i=1}^{n-1} A_i$ for $n \geq 2$. 
+    Then $(A'_n)_{n \in \bb{N}}$ are pairwise disjoint and $A'_n \subseteq A_n$.
+    
+    Since $A_n \setminus A'_n \subseteq \bigcup_{i=1}^{n-1} A_i \cap A_n \subseteq \bigcup_{i=1}^{n-1} E_i \cap E_n 
+    \subseteq \bigcup_{i=1}^{n-1} N_i$ (using disjointness of $E_n$), and 
+    $\bigcup_{i=1}^{n-1} N_i \subseteq \bigcup_{i=1}^{n-1} M_i$ is null, we have $\mu(A_n \setminus A'_n) = 0$.
+    
+    Thus $\mu(A_n) = \mu(A'_n)$ and:
+    \[
+        \overline{\mu}\left(\bigcup_{n \in \bb{N}} E_n\right) = \mu\left(\bigcup_{n \in \bb{N}} A_n\right) 
+        = \mu\left(\bigcup_{n \in \bb{N}} A'_n\right) = \sum_{n \in \bb{N}} \mu(A'_n) 
+        = \sum_{n \in \bb{N}} \mu(A_n) = \sum_{n \in \bb{N}} \overline{\mu}(E_n)
+    \]
+\end{proof}
+
+\bigskip
+
+\begin{proposition}[Extension Property]
+    $\mathcal{M} \subseteq \overline{\mathcal{M}}^\mu$ and $\overline{\mu}|_{\mathcal{M}} = \mu$.
+\end{proposition}
+
+\begin{proof}
+    For any $A \in \mathcal{M}$, we have $A = A \cup \emptyset$ where $\emptyset \subseteq \emptyset$ 
+    and $\mu(\emptyset) = 0$. Thus $A \in \overline{\mathcal{M}}^\mu$.
+    
+    Moreover, $\overline{\mu}(A) = \overline{\mu}(A \cup \emptyset) = \mu(A)$.
+\end{proof}
+
+\begin{proposition}
+    $(X, \overline{\mathcal{M}}^\mu, \overline{\mu})$ is a complete measure space.
+\end{proposition}
+
+\begin{proof}
+    Let $E \subseteq N'$ where $\overline{\mu}(N') = 0$. Write $N' = A \cup N$ with $\mu(A) = 0$ 
+    and $N \subseteq M$ for some null $M \in \mathcal{M}$.
+    
+    Then $E \subseteq N' \subseteq A \cup M$ where $\mu(A \cup M) = 0$. 
+    So $E = \emptyset \cup E$ with $E \subseteq A \cup M$, thus $E \in \overline{\mathcal{M}}^\mu$.
+\end{proof}
+
+\bigskip
+\begin{theorem}[Minimality of Completion]
+    If $(X, \mathcal{N}, \nu)$ is a complete measure space with $\mathcal{M} \subseteq \mathcal{N}$ 
+    and $\nu|_{\mathcal{M}} = \mu$, then $(X, \overline{\mathcal{M}}^\mu, \overline{\mu})$ is a 
+    measurable subspace of $(X, \mathcal{N}, \nu)$.
+    
+    That is, $(X, \overline{\mathcal{M}}^\mu, \overline{\mu})$ is the smallest complete extension of 
+    $(X, \mathcal{M}, \mu)$.
+\end{theorem}
+
+\begin{proof}
+    We show $\overline{\mathcal{M}}^\mu \subseteq \mathcal{N}$ and $\nu|_{\overline{\mathcal{M}}^\mu} = \overline{\mu}$.
+    
+    Let $E = A \cup N \in \overline{\mathcal{M}}^\mu$ where $A \in \mathcal{M}$ and $N \subseteq M$ 
+    for some $M \in \mathcal{M}$ with $\mu(M) = 0$.
+    
+    Since $\mathcal{M} \subseteq \mathcal{N}$, we have $A, M \in \mathcal{N}$. 
+    Since $\nu|_{\mathcal{M}} = \mu$, we have $\nu(M) = \mu(M) = 0$.
+    
+    Since $(X, \mathcal{N}, \nu)$ is complete and $N \subseteq M$ with $\nu(M) = 0$, 
+    we have $N \in \mathcal{N}$. Therefore $E = A \cup N \in \mathcal{N}$.
+    
+    Since $A \cap N \subseteq N \subseteq M$ and $\nu(M) = 0$, completeness gives $A \cap N \in \mathcal{N}$ 
+    with $\nu(A \cap N) = 0$. Thus:
+    \[
+        \nu(E) = \nu(A \cup N) = \nu(A) + \nu(N \setminus A) = \nu(A) = \mu(A) = \overline{\mu}(E)
+    \]
+\end{proof}
+
+\begin{corollary}
+    If $(X, \mathcal{M}, \mu)$ is already complete, then it equals its completion:
+    \[
+        \overline{\mathcal{M}}^\mu = \mathcal{M} \quad \text{and} \quad \overline{\mu} = \mu
+    \]
+\end{corollary}
+
+\begin{proof}
+    We already have $\mathcal{M} \subseteq \overline{\mathcal{M}}^\mu$ by the extension property.
+    
+    For the reverse inclusion, let $E = A \cup N \in \overline{\mathcal{M}}^\mu$ with $N \subseteq M$ 
+    and $\mu(M) = 0$. Since $(X, \mathcal{M}, \mu)$ is complete and $N \subseteq M$ with $\mu(M) = 0$, 
+    we have $N \in \mathcal{M}$. Thus $E = A \cup N \in \mathcal{M}$.
+    
+    For $\overline{\mu} = \mu$: Let $A \in \mathcal{M}$. Then $A = A \cup \emptyset$ in the completion 
+    representation, so $\overline{\mu}(A) = \mu(A)$.
+\end{proof}
+
+
+
+\section{Carathéodory's Theorem}
+
+\begin{definition}[Carathéodory Measurability]
+A set $E \subseteq X$ is \textbf{$\mu^*$-measurable} if for every $A \subseteq X$:
+\[ \mu^*(A) = \mu^*(A \cap E) + \mu^*(A \cap E^c) \]
+\end{definition}
+
+\begin{intuition}
+The Carathéodory condition says: $E$ is measurable if it ``splits'' every test set $A$ additively. This is a strong requirement---by subadditivity, we always have $\mu^*(A) \leq \mu^*(A \cap E) + \mu^*(A \cap E^c)$. The condition demands equality for \emph{all} test sets $A$.
+
+Why this definition? It ensures:
+\begin{itemize}
+    \item Measurable sets form a $\sigma$-algebra (not obvious from simpler definitions)
+    \item The restriction of $\mu^*$ to measurable sets is automatically $\sigma$-additive
+    \item The construction is complete (subsets of null sets are measurable)
+\end{itemize}
+\end{intuition}
+
+\begin{theorem}[Carathéodory]
+Let $\mu^*$ be an outer measure on $X$. Let $\mathcal{M}(\mu^*)$ be the collection of $\mu^*$-measurable sets. Then:
+\begin{enumerate}
+    \item $\mathcal{M}(\mu^*)$ is a $\sigma$-algebra
+    \item $\mu^*|_{\mathcal{M}(\mu^*)}$ is a complete measure
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+We proceed in four steps to verify both claims.
+
+\textbf{Step 1: Closure under complements.}
+
+The Carathéodory condition is symmetric in $E$ and $E^c$: the equation $\mu^*(A) = \mu^*(A \cap E) + \mu^*(A \cap E^c)$ is unchanged when $E$ is replaced by $E^c$. Thus $E \in \mathcal{M}(\mu^*)$ iff $E^c \in \mathcal{M}(\mu^*)$.
+
+\medskip
+\textbf{Step 2: Closure under finite unions.}
+
+Let $E, F \in \mathcal{M}(\mu^*)$. We show $E \cup F \in \mathcal{M}(\mu^*)$.
+
+For any test set $A \subseteq X$, we must verify:
+\[ \mu^*(A) = \mu^*(A \cap (E \cup F)) + \mu^*(A \cap (E \cup F)^c) \]
+
+Since $E$ is measurable, we can split $A$:
+\[ \mu^*(A) = \mu^*(A \cap E) + \mu^*(A \cap E^c) \]
+
+Since $F$ is measurable, we can split $A \cap E^c$:
+\[ \mu^*(A \cap E^c) = \mu^*(A \cap E^c \cap F) + \mu^*(A \cap E^c \cap F^c) \]
+
+Substituting and using $(E \cup F)^c = E^c \cap F^c$:
+\[ \mu^*(A) = \mu^*(A \cap E) + \mu^*(A \cap E^c \cap F) + \mu^*(A \cap (E \cup F)^c) \]
+
+By subadditivity: $\mu^*(A \cap E) + \mu^*(A \cap E^c \cap F) \geq \mu^*(A \cap (E \cup F))$.
+
+Thus $\mu^*(A) \geq \mu^*(A \cap (E \cup F)) + \mu^*(A \cap (E \cup F)^c)$.
+
+The reverse inequality holds by subadditivity applied to $A = (A \cap (E \cup F)) \cup (A \cap (E \cup F)^c)$. Hence $E \cup F \in \mathcal{M}(\mu^*)$.
+
+\medskip
+\textbf{Step 3: Closure under countable unions and $\sigma$-additivity.}
+
+Let $(E_n)_{n \in \bb{N}}$ be pairwise disjoint sets in $\mathcal{M}(\mu^*)$. Define $F_n = \bigcup_{i=1}^n E_i$.
+
+\textit{Claim:} For any set $A$, we have $\mu^*(A \cap F_n) = \sum_{i=1}^n \mu^*(A \cap E_i)$.
+
+\textit{Proof by induction:} The base case $n=1$ is trivial. Assume the claim holds for $n$. Since $E_{n+1}$ is measurable and $E_{n+1} \cap F_n = \emptyset$ (disjointness):
+\[ \mu^*(A \cap F_{n+1}) = \mu^*(A \cap F_{n+1} \cap E_{n+1}) + \mu^*(A \cap F_{n+1} \cap E_{n+1}^c) \]
+
+Since $E_{n+1} \subseteq F_{n+1}$ and $F_n = F_{n+1} \cap E_{n+1}^c$:
+\[ \mu^*(A \cap F_{n+1}) = \mu^*(A \cap E_{n+1}) + \mu^*(A \cap F_n) = \mu^*(A \cap E_{n+1}) + \sum_{i=1}^n \mu^*(A \cap E_i) \]
+
+Now let $E = \bigcup_{n \in \bb{N}} E_n$. Since each $F_n \in \mathcal{M}(\mu^*)$ (by Step 2) and $F_n \subseteq E$:
+\[ \mu^*(A) = \mu^*(A \cap F_n) + \mu^*(A \cap F_n^c) \geq \sum_{i=1}^n \mu^*(A \cap E_i) + \mu^*(A \cap E^c) \]
+
+Taking $n \to \infty$:
+\[ \mu^*(A) \geq \sum_{i=1}^\infty \mu^*(A \cap E_i) + \mu^*(A \cap E^c) \geq \mu^*(A \cap E) + \mu^*(A \cap E^c) \]
+
+The reverse inequality holds by subadditivity. Thus $E \in \mathcal{M}(\mu^*)$.
+
+Setting $A = E$ (so $A \cap E^c = \emptyset$), we get $\mu^*(E) = \sum_{i=1}^\infty \mu^*(E_i)$, proving $\sigma$-additivity.
+
+\medskip
+\textbf{Step 4: Completeness.}
+
+Let $\mu^*(N) = 0$ and $E \subseteq N$. We show $E \in \mathcal{M}(\mu^*)$.
+
+For any test set $A$:
+\[ \mu^*(A \cap E) \leq \mu^*(E) \leq \mu^*(N) = 0 \]
+
+Thus $\mu^*(A \cap E) = 0$. By subadditivity:
+\[ \mu^*(A) \leq \mu^*(A \cap E) + \mu^*(A \cap E^c) = 0 + \mu^*(A \cap E^c) = \mu^*(A \cap E^c) \]
+
+But also $\mu^*(A \cap E^c) \leq \mu^*(A)$ by monotonicity. Thus $\mu^*(A) = \mu^*(A \cap E^c) = \mu^*(A \cap E) + \mu^*(A \cap E^c)$, so $E \in \mathcal{M}(\mu^*)$.
+\end{proof}
+
+\section{Lebesgue Measure}
+
+\begin{definition}
+The \textbf{Lebesgue measure} $\lambda$ on $\bb{R}^n$ is the restriction of $\lambda^*$ to $\mathcal{M}(\lambda^*)$, the Lebesgue measurable sets.
+\end{definition}
+
+\begin{theorem}
+Every Borel set is Lebesgue measurable: $\BorelAlg{\bb{R}^n} \subseteq \mathcal{M}(\lambda^*)$.
+
+For any rectangle $R$: $\lambda(R) = \text{vol}(R)$.
+\end{theorem}
+
+\begin{proof}
+\textbf{Step 1:} Open sets are measurable. Let $G$ be open. For any test set $A$:
+
+Since $\lambda^*$ is defined using open covers, for any $\epsilon > 0$ there exist open rectangles $\{R_k\}$ with $A \subseteq \bigcup R_k$ and $\sum \text{vol}(R_k) < \lambda^*(A) + \epsilon$.
+
+Using the fact that $G$ is open to split each $R_k$ appropriately, one shows:
+\[ \lambda^*(A \cap G) + \lambda^*(A \cap G^c) \leq \lambda^*(A) + \epsilon \]
+
+Since $\epsilon$ is arbitrary, $G \in \mathcal{M}(\lambda^*)$.
+
+\textbf{Step 2:} Since $\mathcal{M}(\lambda^*)$ is a $\sigma$-algebra containing all open sets, and $\BorelAlg{\bb{R}^n} = \GenSigmaAlg{\text{open sets}}$, we have $\BorelAlg{\bb{R}^n} \subseteq \mathcal{M}(\lambda^*)$.
+
+\textbf{Step 3:} For rectangles, $\lambda^*(R) \leq \text{vol}(R)$ by covering with $R$ itself. The reverse follows from $\sigma$-subadditivity and convergence arguments.
+\end{proof}
+
+\section{Regularity}
+
+\begin{theorem}[Outer Regularity]
+For any $A \subseteq \bb{R}^n$:
+\[ \lambda^*(A) = \inf \{ \lambda(G) \mid G \text{ open}, G \supseteq A \} \]
+\end{theorem}
+
+\begin{proof}
+Let $\alpha = \inf \{ \lambda(G) \mid G \text{ open}, G \supseteq A \}$.
+
+Since $\lambda^*(A) \leq \lambda(G)$ for any open $G \supseteq A$, we have $\lambda^*(A) \leq \alpha$.
+
+For the reverse: given $\epsilon > 0$, by definition of $\lambda^*$, there exist open rectangles $\{R_k\}$ with $A \subseteq \bigcup R_k$ and $\sum \text{vol}(R_k) < \lambda^*(A) + \epsilon$.
+
+Let $G = \bigcup R_k$, which is open. Then $\lambda(G) \leq \sum \text{vol}(R_k) < \lambda^*(A) + \epsilon$.
+
+Thus $\alpha \leq \lambda^*(A) + \epsilon$, so $\alpha = \lambda^*(A)$.
+\end{proof}
+
+\begin{theorem}[Inner Regularity]
+For any Lebesgue measurable $A$:
+\[ \lambda(A) = \sup \{ \lambda(K) \mid K \text{ compact}, K \subseteq A \} \]
+\end{theorem}
+
+\begin{proof}
+\textbf{Case 1:} $A$ bounded. Let $A \subseteq [-M, M]^n$.
+
+By outer regularity of $A^c \cap [-M,M]^n$, for any $\epsilon > 0$ there exists open $G \supseteq A^c \cap [-M,M]^n$ with $\lambda(G) < \lambda(A^c \cap [-M,M]^n) + \epsilon$.
+
+Let $K = [-M,M]^n \setminus G$. Then $K$ is closed and bounded (hence compact), $K \subseteq A$, and:
+\[ \lambda(K) = \lambda([-M,M]^n) - \lambda(G) > \lambda(A) - \epsilon \]
+
+\textbf{Case 2:} $A$ unbounded. Write $A = \bigcup_{n \in \bb{N}} (A \cap [-n,n]^n)$ and use continuity from below.
+\end{proof}
+
+\section{Completion}
+
+\begin{theorem}
+The Lebesgue measure is the completion of the Borel measure on $\bb{R}^n$.
+
+Equivalently: $A \in \mathcal{M}(\lambda^*)$ iff $A = B \cup N$ where $B \in \BorelAlg{\bb{R}^n}$ and $\lambda^*(N) = 0$.
+\end{theorem}
+
+\begin{proof}
+\textbf{($\Leftarrow$)} If $B \in \BorelAlg{\bb{R}^n}$ and $\lambda^*(N) = 0$, then $B$ is measurable (Borel $\subseteq$ Lebesgue) and $N$ is measurable by completeness of $\lambda$. Thus $B \cup N$ is measurable.
+
+\textbf{($\Rightarrow$)} Let $A \in \mathcal{M}(\lambda^*)$. By outer regularity, for each $n$ there exists open $G_n \supseteq A$ with $\lambda(G_n) < \lambda(A) + 1/n$.
+
+Let $B = \bigcap_{n \in \bb{N}} G_n$. Then $B \in \BorelAlg{\bb{R}^n}$, $A \subseteq B$, and $\lambda(B) = \lambda(A)$.
+
+Let $N = B \setminus A$. Then $\lambda(N) = \lambda(B) - \lambda(A) = 0$ and $A = B \setminus N$.
+
+Since $A \subseteq B$, we can write $A = (B \setminus N) = B \cap N^c$. Rearranging: $B = A \cup N$ where $\lambda^*(N) = 0$.
+\end{proof}
+
+\section{Uniqueness of Measures}
+
+\begin{intuition}
+    The $\pi$-$\lambda$ (Dynkin) theorem provides a powerful tool for proving that two measures 
+    agree on an entire $\sigma$-algebra: one only needs to verify agreement on a much smaller 
+    $\pi$-system that generates the $\sigma$-algebra.
+\end{intuition}
+
+\bigskip
+\begin{lemma}[Uniqueness for Finite Measures]
+    Let $\mu, \nu$ be finite measures on $(X, \mathcal{M})$ with $\mu(X) = \nu(X) < \infty$. 
+    If $\mathcal{P} \subseteq \mathcal{M}$ is a $\pi$-system with $\GenSigmaAlg{\mathcal{P}} = \mathcal{M}$ 
+    and $\mu(P) = \nu(P)$ for all $P \in \mathcal{P}$, then $\mu = \nu$.
+\end{lemma}
+
+\begin{proof}
+    Define:
+    \[
+        \mathcal{L} = \{ A \in \mathcal{M} \mid \mu(A) = \nu(A) \}
+    \]
+    We show $\mathcal{L}$ is a $\lambda$-system.
+
+    \medskip
+    \textbf{(1) $X \in \mathcal{L}$:} By hypothesis, $\mu(X) = \nu(X)$.
+
+    \medskip
+    \textbf{(2) Closure under proper differences:} Let $A, B \in \mathcal{L}$ with $A \subseteq B$.
+    
+    Since $\mu(B) = \nu(B) < \infty$ and $\mu(A) = \nu(A)$:
+    \[
+        \mu(B \setminus A) = \mu(B) - \mu(A) = \nu(B) - \nu(A) = \nu(B \setminus A)
+    \]
+    Thus $B \setminus A \in \mathcal{L}$.
+
+    \medskip
+    \textbf{(3) Closure under increasing unions:} Let $(A_n)_{n \in \bb{N}} \subseteq \mathcal{L}$ 
+    with $A_n \nearrow A$.
+    
+    By continuity from below:
+    \[
+        \mu(A) = \lim_{n \to \infty} \mu(A_n) = \lim_{n \to \infty} \nu(A_n) = \nu(A)
+    \]
+    Thus $A \in \mathcal{L}$.
+
+    \medskip
+    Since $\mathcal{P} \subseteq \mathcal{L}$ (by hypothesis) and $\mathcal{L}$ is a $\lambda$-system, 
+    the Dynkin $\pi$-$\lambda$ theorem gives:
+    \[
+        \mathcal{M} = \GenSigmaAlg{\mathcal{P}} = \GenLambda{\mathcal{P}} \subseteq \mathcal{L}
+    \]
+    Therefore $\mu = \nu$ on all of $\mathcal{M}$.
+\end{proof}
+
+\bigskip
+\begin{theorem}[Uniqueness for $\sigma$-Finite Measures]
+    Let $\mu, \nu$ be $\sigma$-finite measures on $(X, \mathcal{M})$. If $\mathcal{P} \subseteq \mathcal{M}$ 
+    is a $\pi$-system with $\GenSigmaAlg{\mathcal{P}} = \mathcal{M}$ and:
+    \begin{enumerate}
+        \item $\mu(P) = \nu(P)$ for all $P \in \mathcal{P}$
+        \item There exists an increasing sequence $(E_n)_{n \in \bb{N}} \subseteq \mathcal{P}$ 
+            with $E_n \nearrow X$ and $\mu(E_n) = \nu(E_n) < \infty$
+    \end{enumerate}
+    Then $\mu = \nu$.
+\end{theorem}
+
+\begin{proof}
+    For each $n \in \bb{N}$, define measures on $(E_n, \mathcal{M}_{E_n})$ by restriction:
+    \[
+        \mu_n(A) = \mu(A \cap E_n), \quad \nu_n(A) = \nu(A \cap E_n)
+    \]
+    
+    These are finite measures with $\mu_n(E_n) = \nu_n(E_n) < \infty$.
+    
+    The collection $\mathcal{P}_n = \{ P \cap E_n \mid P \in \mathcal{P} \}$ is a $\pi$-system 
+    on $E_n$ (since $E_n \in \mathcal{P}$), and $\GenSigmaAlg{\mathcal{P}_n} = \mathcal{M}_{E_n}$.
+    
+    For any $P \in \mathcal{P}$:
+    \[
+        \mu_n(P \cap E_n) = \mu(P \cap E_n) = \nu(P \cap E_n) = \nu_n(P \cap E_n)
+    \]
+    since $P \cap E_n \in \mathcal{P}$ (as $\mathcal{P}$ is a $\pi$-system containing $E_n$).
+    
+    By the finite measure lemma, $\mu_n = \nu_n$ on $\mathcal{M}_{E_n}$.
+    
+    \medskip
+    For any $A \in \mathcal{M}$, we have $A \cap E_n \nearrow A$. By continuity from below:
+    \[
+        \mu(A) = \lim_{n \to \infty} \mu(A \cap E_n) = \lim_{n \to \infty} \nu(A \cap E_n) = \nu(A)
+    \]
+\end{proof}
+
+\begin{corollary}[Uniqueness of Lebesgue Measure]
+    The Lebesgue measure on $\bb{R}^n$ is the unique $\sigma$-finite Borel measure satisfying 
+    $\lambda(R) = \text{vol}(R)$ for all rectangles $R$.
+\end{corollary}
+
+\begin{proof}
+    The rectangles form a $\pi$-system generating $\BorelAlg{\bb{R}^n}$. 
+    Take $E_n = [-n, n]^n$, which are rectangles with finite volume.
+    
+    Any two measures agreeing on rectangles agree on all Borel sets by the theorem.
+\end{proof}
+
+\bigskip
+\begin{compendium}
+
+\textbf{Measures:} A function $\mu: \mathcal{M} \to [0, \infty]$ is a measure if $\mu(\emptyset) = 0$ and 
+$\mu(\bigcup_n A_n) = \sum_n \mu(A_n)$ for disjoint sequences.
+
+\textbf{Key Properties:}
+\begin{itemize}
+    \item \textbf{Monotonicity:} $A \subseteq B \implies \mu(A) \leq \mu(B)$
+    \item \textbf{$\sigma$-subadditivity:} $\mu(\bigcup_n A_n) \leq \sum_n \mu(A_n)$
+    \item \textbf{Continuity from below:} $A_n \nearrow A \implies \mu(A_n) \to \mu(A)$
+    \item \textbf{Continuity from above:} $A_n \searrow A$, $\mu(A_k) < \infty$ $\implies \mu(A_n) \to \mu(A)$
+\end{itemize}
+
+\textbf{Outer Measures:} A function $\mu^*: \Powerset{X} \to [0, \infty]$ with $\mu^*(\emptyset) = 0$, 
+monotonicity, and $\sigma$-subadditivity. The Lebesgue outer measure is defined by:
+\[
+    \lambda^*(A) = \inf \left\{ \sum_k \text{vol}(R_k) \mid A \subseteq \bigcup_k R_k \right\}
+\]
+
+\textbf{Carathéodory Construction:} A set $E$ is $\mu^*$-measurable if for all $A$:
+$\mu^*(A) = \mu^*(A \cap E) + \mu^*(A \cap E^c)$. The measurable sets form a complete $\sigma$-algebra.
+
+\textbf{Completion:} $\overline{\mathcal{M}}^\mu = \{A \cup N \mid A \in \mathcal{M}, N \subseteq M, \mu(M) = 0\}$. 
+This is the smallest complete extension of $(X, \mathcal{M}, \mu)$.
+
+\textbf{Regularity:} For Lebesgue measure:
+\begin{itemize}
+    \item \textbf{Outer:} $\lambda^*(A) = \inf\{\lambda(G) \mid G \supseteq A, G \text{ open}\}$
+    \item \textbf{Inner:} $\lambda(A) = \sup\{\lambda(K) \mid K \subseteq A, K \text{ compact}\}$
+\end{itemize}
+
+\textbf{Uniqueness ($\pi$-$\lambda$ Theorem):} If $\sigma$-finite measures agree on a $\pi$-system $\mathcal{P}$ 
+with $\GenSigmaAlg{\mathcal{P}} = \mathcal{M}$, they agree on all of $\mathcal{M}$.
+
+\end{compendium}
+

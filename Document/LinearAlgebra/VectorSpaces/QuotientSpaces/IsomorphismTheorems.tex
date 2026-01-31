@@ -1,0 +1,315 @@
+% Document/LinearAlgebra/VectorSpaces/QuotientSpaces/IsomorphismTheorems.tex
+% Phase 12: All Four Isomorphism Theorems
+
+\newpage
+\section{Isomorphism Theorems}
+
+The isomorphism theorems provide fundamental structural relationships between vector spaces,
+their subspaces, and quotient spaces. All proofs use the universal property of quotient spaces
+(Theorem~\ref{thm:quotient-universal}).
+
+\subsection{First Isomorphism Theorem}
+
+\begin{center}
+\begin{tikzcd}
+U \arrow[r, "T"] \arrow[d, "\pi"'] & V \\
+\QuotientSpace{U}{\Ker{T}} \arrow[ru, "\cong"', "\tilde{T}"]
+\end{tikzcd}
+\end{center}
+
+\begin{theorem}[First Isomorphism Theorem]\label{thm:first-iso}
+    For any linear map $T: U \to V$:
+    \[
+        \QuotientSpace{U}{\Ker{T}} \cong \Rng{T}
+    \]
+\end{theorem}
+
+\begin{proof}
+    Apply the Universal Property (Theorem~\ref{thm:quotient-universal}) with $W = \Ker{T}$ and $X = V$.
+    
+    Since $\Ker{T} \subseteq \Ker{T}$, there exists a unique linear map 
+    $\tilde{T}: \QuotientSpace{U}{\Ker{T}} \to V$ such that $T = \Composition{\tilde{T}}{\pi}$.
+    
+    By part (4) of the universal property: $\tilde{T}$ is injective since $\Ker{T} = \Ker{T}$.
+    
+    The image of $\tilde{T}$ equals the image of $T$:
+    \[
+        \Rng{\tilde{T}} = \Set{\tilde{T}(\EquivClass{u}) \mid u \in U} = \Set{T(u) \mid u \in U} = \Rng{T}
+    \]
+    
+    Thus $\tilde{T}: \QuotientSpace{U}{\Ker{T}} \to \Rng{T}$ is a bijective linear map,
+    hence an isomorphism.
+\end{proof}
+
+\begin{corollary}[Rank-Nullity via First Isomorphism Theorem]\label{cor:rank-nullity-iso}
+    For any linear map $T: U \to V$:
+    \[
+        \Dim[K]{\Ker{T}} + \Dim[K]{\Rng{T}} = \Dim[K]{U}
+    \]
+    That is: $\Nullity{T} + \Rank{T} = \Dim[K]{U}$.
+\end{corollary}
+
+\begin{proof}
+    By the First Isomorphism Theorem: $\QuotientSpace{U}{\Ker{T}} \cong \Rng{T}$.
+    
+    Thus $\Dim[K]{\QuotientSpace{U}{\Ker{T}}} = \Dim[K]{\Rng{T}}$.
+    
+    By the Quotient Dimension Formula (Theorem~\ref{thm:quotient-dim}):
+    \[
+        \Dim[K]{\Ker{T}} + \Dim[K]{\QuotientSpace{U}{\Ker{T}}} = \Dim[K]{U}
+    \]
+    
+    Substituting: $\Dim[K]{\Ker{T}} + \Dim[K]{\Rng{T}} = \Dim[K]{U}$.
+\end{proof}
+
+\begin{remark}[Two Proofs of Rank-Nullity]
+    We now have two proofs of the Rank-Nullity Theorem:
+    \begin{enumerate}
+        \item \textbf{Direct proof} (Theorem~\ref{thm:rank-nullity}): Extend a basis of $\Ker{T}$
+              and show the images of the extension vectors form a basis of $\Rng{T}$.
+        \item \textbf{Via isomorphism theorem} (Corollary~\ref{cor:rank-nullity-iso}): Use
+              $\QuotientSpace{U}{\Ker{T}} \cong \Rng{T}$ and the quotient dimension formula.
+    \end{enumerate}
+    Both approaches are valuable and highlight different aspects of the structure.
+\end{remark}
+
+\subsection{Second Isomorphism Theorem}
+
+\begin{center}
+\begin{tikzcd}
+& U + W \arrow[d, "\pi_W"] \\
+U \arrow[ru, hook] \arrow[r, "\iota"] & \QuotientSpace{(U+W)}{W} \\
+U \Intersect W \arrow[u, hook] \arrow[r, "\pi_{U \cap W}"'] & \QuotientSpace{U}{(U \Intersect W)} \arrow[u, "\cong"']
+\end{tikzcd}
+\end{center}
+
+\begin{theorem}[Second Isomorphism Theorem]\label{thm:second-iso}
+    Let $U, W \Subspace[K] V$. Then:
+    \[
+        \QuotientSpace{(U + W)}{W} \cong \QuotientSpace{U}{(U \Intersect W)}
+    \]
+\end{theorem}
+
+\begin{proof}
+    Consider the composition:
+    \[
+        T: U \xhookrightarrow{\iota} U + W \xrightarrow{\pi_W} \QuotientSpace{(U+W)}{W}
+    \]
+    where $\iota$ is the inclusion and $\pi_W$ is the canonical projection.
+    
+    \textbf{$T$ is surjective:}
+    For any $\EquivClass{u + w} \in \QuotientSpace{(U+W)}{W}$ with $u \in U$ and $w \in W$:
+    \[
+        \EquivClass{u + w} = \EquivClass{u} + \EquivClass{w} = \EquivClass{u} + \EquivClass{0} = \EquivClass{u} = T(u)
+    \]
+    since $w \in W$ implies $\EquivClass{w} = \EquivClass{0}$.
+    
+    \textbf{$\Ker{T} = U \Intersect W$:}
+    \begin{align*}
+        u \in \Ker{T} &\Leftrightarrow \pi_W(\iota(u)) = \EquivClass{0} \\
+                      &\Leftrightarrow \EquivClass{u} = \EquivClass{0} \text{ in } \QuotientSpace{(U+W)}{W} \\
+                      &\Leftrightarrow u \in W \\
+                      &\Leftrightarrow u \in U \Intersect W
+    \end{align*}
+    
+    By the First Isomorphism Theorem:
+    \[
+        \QuotientSpace{U}{\Ker{T}} = \QuotientSpace{U}{(U \Intersect W)} \cong \Rng{T} = \QuotientSpace{(U+W)}{W}
+    \]
+\end{proof}
+
+\begin{corollary}[Grassmann Formula via Second Isomorphism Theorem]\label{cor:grassmann-iso}
+    Let $U, W \Subspace[K] V$. Then:
+    \[
+        \Dim[K]{U + W} + \Dim[K]{U \Intersect W} = \Dim[K]{U} + \Dim[K]{W}
+    \]
+    In finite dimensions: $\Dim[K]{U + W} = \Dim[K]{U} + \Dim[K]{W} - \Dim[K]{U \Intersect W}$.
+\end{corollary}
+
+\begin{proof}
+    By the Second Isomorphism Theorem: $\QuotientSpace{(U + W)}{W} \cong \QuotientSpace{U}{(U \Intersect W)}$.
+    
+    Thus $\Dim[K]{\QuotientSpace{(U + W)}{W}} = \Dim[K]{\QuotientSpace{U}{(U \Intersect W)}}$.
+    
+    By the Quotient Dimension Formula (applied twice):
+    \begin{align*}
+        \Dim[K]{W} + \Dim[K]{\QuotientSpace{(U + W)}{W}} &= \Dim[K]{U + W} \\
+        \Dim[K]{U \Intersect W} + \Dim[K]{\QuotientSpace{U}{(U \Intersect W)}} &= \Dim[K]{U}
+    \end{align*}
+    
+    Since the quotient dimensions are equal:
+    \begin{align*}
+        \Dim[K]{U + W} - \Dim[K]{W} &= \Dim[K]{U} - \Dim[K]{U \Intersect W}
+    \end{align*}
+    
+    Rearranging to additive form:
+    \[
+        \Dim[K]{U + W} + \Dim[K]{U \Intersect W} = \Dim[K]{U} + \Dim[K]{W}
+    \]
+\end{proof}
+
+\subsection{Third Isomorphism Theorem}
+
+\begin{center}
+\begin{tikzcd}
+V \arrow[r, "\pi_U"] \arrow[d, "\pi_W"'] & \QuotientSpace{V}{U} \arrow[d, "\bar{\pi}"] \\
+\QuotientSpace{V}{W} & \QuotientSpace{\QuotientSpace p{V}{U}}{\QuotientSpace p{W}{U}} \arrow[l, "\cong"']
+\end{tikzcd}
+\end{center}
+
+\begin{theorem}[Third Isomorphism Theorem]\label{thm:third-iso}
+    Let $U \subseteq W \subseteq V$ be subspaces. Then:
+    \[
+        \QuotientSpace{\QuotientSpace p{V}{U}}{\QuotientSpace p{W}{U}} \cong \QuotientSpace{V}{W}
+    \]
+    where $\QuotientSpace{W}{U} \Subspace[K] \QuotientSpace{V}{U}$ is identified with its image 
+    under the natural inclusion.
+\end{theorem}
+
+\begin{proof}
+    Note that $\QuotientSpace{W}{U} = \Set{\Coset{w}{U} \mid w \in W}$ is naturally a subspace of $\QuotientSpace{V}{U}$.
+    
+    Consider the canonical projection $\pi_W: V \to \QuotientSpace{V}{W}$.
+    
+    We apply the Universal Property to factor $\pi_W$ through $\QuotientSpace{V}{U}$.
+    
+    Since $U \subseteq W = \Ker{\pi_W}$, there exists a unique linear map 
+    $\bar{\pi}: \QuotientSpace{V}{U} \to \QuotientSpace{V}{W}$ with $\pi_W = \Composition{\bar{\pi}}{\pi_U}$.
+    
+    Explicitly: $\bar{\pi}(\Coset{v}{U}) = \Coset{v}{W}$ for all $v \in V$.
+    
+    \textbf{$\bar{\pi}$ is surjective:}
+    For any $\Coset{v}{W} \in \QuotientSpace{V}{W}$: $\bar{\pi}(\Coset{v}{U}) = \Coset{v}{W}$.
+    
+    \textbf{$\Ker{\bar{\pi}} = \QuotientSpace{W}{U}$:}
+    \begin{align*}
+        \Coset{v}{U} \in \Ker{\bar{\pi}} &\Leftrightarrow \bar{\pi}(\Coset{v}{U}) = \Coset{0}{W} \\
+                                          &\Leftrightarrow \Coset{v}{W} = \Coset{0}{W} \\
+                                          &\Leftrightarrow v \in W \\
+                                          &\Leftrightarrow \Coset{v}{U} \in \QuotientSpace{W}{U}
+    \end{align*}
+    
+    By the First Isomorphism Theorem applied to $\bar{\pi}$:
+    \[
+        \QuotientSpace{\QuotientSpace p{V}{U}}{\Ker{\bar{\pi}}} = \QuotientSpace{\QuotientSpace p{V}{U}}{\QuotientSpace p{W}{U}} \cong \Rng{\bar{\pi}} = \QuotientSpace{V}{W}
+    \]
+\end{proof}
+
+\begin{corollary}[Dimension Cancellation]\label{cor:dim-cancel}
+    Let $U \subseteq W \subseteq V$ be subspaces. Then:
+    \[
+        \Dim[K]{\QuotientSpace{V}{U}} = \Dim[K]{\QuotientSpace{V}{W}} + \Dim[K]{\QuotientSpace{W}{U}}
+    \]
+\end{corollary}
+
+\begin{proof}
+    By the Third Isomorphism Theorem: 
+    $\QuotientSpace{\QuotientSpace p{V}{U}}{\QuotientSpace p{W}{U}} \cong \QuotientSpace{V}{W}$.
+    
+    By the Quotient Dimension Formula:
+    \[
+        \Dim[K]{\QuotientSpace{W}{U}} + \Dim[K]{\QuotientSpace{\QuotientSpace p{V}{U}}{\QuotientSpace p{W}{U}}} = \Dim[K]{\QuotientSpace{V}{U}}
+    \]
+    
+    Since $\Dim[K]{\QuotientSpace{\QuotientSpace p{V}{U}}{\QuotientSpace p{W}{U}}} = \Dim[K]{\QuotientSpace{V}{W}}$:
+    \[
+        \Dim[K]{\QuotientSpace{W}{U}} + \Dim[K]{\QuotientSpace{V}{W}} = \Dim[K]{\QuotientSpace{V}{U}}
+    \]
+\end{proof}
+
+\begin{remark}[Intuition for Third Isomorphism Theorem]
+    The third isomorphism theorem says that ``quotients of quotients'' simplify.
+    Intuitively: if we first collapse $U$ to a point, then collapse the image of $W$,
+    we get the same result as collapsing $W$ directly.
+    
+    In finite dimensions with $\Dim[K]{V} = n$, $\Dim[K]{W} = m$, $\Dim[K]{U} = k$ (where $k \leq m \leq n$):
+    \begin{align*}
+        \Dim[K]{\QuotientSpace{V}{U}} &= n - k \\
+        \Dim[K]{\QuotientSpace{W}{U}} &= m - k \\
+        \Dim[K]{\QuotientSpace{\QuotientSpace p{V}{U}}{\QuotientSpace p{W}{U}}} &= (n-k) - (m-k) = n - m = \Dim[K]{\QuotientSpace{V}{W}}
+    \end{align*}
+\end{remark}
+
+\subsection{Fourth Isomorphism Theorem (Lattice Correspondence)}
+
+\begin{theorem}[Fourth Isomorphism Theorem]\label{thm:fourth-iso}
+    Let $W \Subspace[K] V$. There is a bijective correspondence between:
+    \begin{itemize}
+        \item Subspaces of $\QuotientSpace{V}{W}$
+        \item Subspaces of $V$ containing $W$
+    \end{itemize}
+    
+    The correspondence is given by:
+    \begin{align*}
+        \Phi: \Set{U \Subspace[K] V \mid W \subseteq U} &\to \Set{X \Subspace[K] \QuotientSpace{V}{W}} \\
+        U &\mapsto \QuotientSpace{U}{W} = \Set{\Coset{u}{W} \mid u \in U}
+    \end{align*}
+    with inverse:
+    \begin{align*}
+        \Psi: \Set{X \Subspace[K] \QuotientSpace{V}{W}} &\to \Set{U \Subspace[K] V \mid W \subseteq U} \\
+        X &\mapsto \InverseImage{\pi}{X} = \Set{v \in V \mid \Coset{v}{W} \in X}
+    \end{align*}
+    
+    Moreover, this correspondence preserves:
+    \begin{enumerate}
+        \item Inclusion: $U_1 \subseteq U_2$ iff $\Phi(U_1) \subseteq \Phi(U_2)$
+        \item Sum: $\Phi(U_1 + U_2) = \Phi(U_1) + \Phi(U_2)$
+        \item Intersection: $\Phi(U_1 \Intersect U_2) = \Phi(U_1) \Intersect \Phi(U_2)$
+        \item Quotient dimension: $\Dim[K]{\QuotientSpace{U}{W}} = \Dim[K]{\Phi(U)}$
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    \textbf{$\Phi$ is well-defined:}
+    If $U \Subspace[K] V$ with $W \subseteq U$, then $\QuotientSpace{U}{W} = \Set{\Coset{u}{W} \mid u \in U}$
+    is a subspace of $\QuotientSpace{V}{W}$.
+    Indeed: $\Coset{0}{W} \in \QuotientSpace{U}{W}$, and 
+    $a\Coset{u_1}{W} + b\Coset{u_2}{W} = \Coset{au_1 + bu_2}{W} \in \QuotientSpace{U}{W}$
+    for $u_1, u_2 \in U$ and $a, b \in K$.
+    
+    \textbf{$\Psi$ is well-defined:}
+    For any subspace $X \Subspace[K] \QuotientSpace{V}{W}$, the preimage 
+    $\InverseImage{\pi}{X}$ is a subspace of $V$ (Proposition~\ref{prop:image-preimage-subspace}).
+    
+    Since $\Coset{0}{W} \in X$ (because $X$ is a subspace), we have $W = \InverseImage{\pi}{\Set{\Coset{0}{W}}} \subseteq \InverseImage{\pi}{X}$.
+    Thus $W \subseteq \InverseImage{\pi}{X}$.
+    
+    \textbf{$\Psi \circ \Phi = \Identity{}$:}
+    For $U \Subspace[K] V$ with $W \subseteq U$:
+    \begin{align*}
+        \Psi(\Phi(U)) &= \Psi(\QuotientSpace{U}{W}) \\
+                      &= \Set{v \in V \mid \Coset{v}{W} \in \QuotientSpace{U}{W}} \\
+                      &= \Set{v \in V \mid \Exists :{u \in U}{\Coset{v}{W} = \Coset{u}{W}}} \\
+                      &= \Set{v \in V \mid \Exists :{u \in U}{v - u \in W}} \\
+                      &= \Set{v \in V \mid v \in U + W} \\
+                      &= U + W = U
+    \end{align*}
+    The last equality holds because $W \subseteq U$ implies $U + W = U$.
+    
+    \textbf{$\Phi \circ \Psi = \Identity{}$:}
+    For $X \Subspace[K] \QuotientSpace{V}{W}$:
+    \begin{align*}
+        \Phi(\Psi(X)) &= \Phi(\InverseImage{\pi}{X}) \\
+                      &= \Set{\Coset{v}{W} \mid v \in \InverseImage{\pi}{X}} \\
+                      &= \Set{\Coset{v}{W} \mid \Coset{v}{W} \in X} \\
+                      &= X
+    \end{align*}
+    
+    \textbf{Properties (1)-(4):}
+    (1) follows from the fact that $\Phi$ is a bijection.
+    (2) and (3) are verified by element-chasing using the definitions.
+    (4) follows from $\Phi(U) = \QuotientSpace{U}{W}$ by definition.
+\end{proof}
+
+\begin{remark}[Lattice Structure]
+    The fourth isomorphism theorem shows that the ``lattice'' of subspaces of $V$ containing $W$
+    is isomorphic to the lattice of subspaces of $\QuotientSpace{V}{W}$.
+    
+    Here, the lattice operations are:
+    \begin{itemize}
+        \item Join (supremum): $U_1 \vee U_2 = U_1 + U_2$
+        \item Meet (infimum): $U_1 \wedge U_2 = U_1 \Intersect U_2$
+    \end{itemize}
+    
+    This is particularly useful when analyzing quotient spaces by examining the subspace structure above $W$.
+\end{remark}

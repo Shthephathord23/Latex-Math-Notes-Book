@@ -11,7 +11,7 @@
   urlcolor=blue         % Color for URLs
 }
 
-\title{Big Boss}
+\title{Math}
 \author{Stefan Ghinescu}
 \date{July 2025}
 
@@ -27,5 +27,9 @@
 
 \include{Document/UniBuc FMI/UniBuc}
 
+% Bibliography - loads local .bib files from each subject folder
+\nocite{*}
+\bibliographystyle{alpha}
+\bibliography{Document/SetTheory/references,Document/LinearAlgebra/references,Document/UniBuc FMI/references}
 
 \end{document}

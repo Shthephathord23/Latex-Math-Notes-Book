@@ -1,0 +1,33 @@
+\begin{thebibliography}{Kun80}
+
+\bibitem[Axl15]{axler2015linear}
+Sheldon Axler.
+\newblock {\em Linear Algebra Done Right}.
+\newblock Springer, 3rd edition, 2015.
+
+\bibitem[Hal60]{halmos1960naive}
+Paul~R. Halmos.
+\newblock {\em Naive Set Theory}.
+\newblock Van Nostrand, 1960.
+
+\bibitem[HK71]{hoffman1971linear}
+Kenneth Hoffman and Ray Kunze.
+\newblock {\em Linear Algebra}.
+\newblock Prentice-Hall, 2nd edition, 1971.
+
+\bibitem[Jec03]{jech2003set}
+Thomas Jech.
+\newblock {\em Set Theory}.
+\newblock Springer, 3rd edition, 2003.
+
+\bibitem[Kun80]{kunen1980set}
+Kenneth Kunen.
+\newblock {\em Set Theory: An Introduction to Independence Proofs}.
+\newblock North-Holland, 1980.
+
+\bibitem[Lan87]{lang1987linear}
+Serge Lang.
+\newblock {\em Linear Algebra}.
+\newblock Springer, 3rd edition, 1987.
+
+\end{thebibliography}

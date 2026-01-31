@@ -11,3 +11,96 @@
     }
 }
 
+\NewDocumentCommand{\EquivClass}{m o}
+{
+    \IfValueTF{#2}
+    {
+        [#1]_{#2}
+    }
+    {
+        [#1]
+    }
+}
+
+\NewDocumentCommand{\Set}{m}
+{
+    \left\{ #1 \right\}
+}
+
+\NewDocumentCommand{\SubsetEq}{}
+{
+    \subseteq
+}
+
+\RenewDocumentCommand{\Subset}{}
+{
+    \subset
+}
+
+\NewDocumentCommand{\SupsetEq}{}
+{
+    \supseteq
+}
+
+\RenewDocumentCommand{\Supset}{}
+{
+    \supset
+}
+
+
+% BigUnion: \BigUnion for abstract union, \BigUnion[i \in I] for indexed
+\NewDocumentCommand{\BigUnion}{o}
+{
+    \IfValueTF{#1}
+    {
+        \bigcup_{#1}
+    }
+    {
+        \bigcup
+    }
+}
+
+\NewDocumentCommand{\Union}{}
+{
+    \cup
+}
+
+% BigIntersect: \BigIntersect for abstract intersection, \BigIntersect[i \in I] for indexed
+\NewDocumentCommand{\BigIntersect}{o}
+{
+    \IfValueTF{#1}
+    {
+        \bigcap_{#1}
+    }
+    {
+        \bigcap
+    }
+}
+
+\NewDocumentCommand{\Intersect}{}
+{
+    \cap
+}
+
+\NewDocumentCommand{\SetMinus}{m m}
+{
+    #1 \setminus #2
+}
+
+% Complement: \Complement{A} or \Complement{A}[U] for complement relative to U
+\NewDocumentCommand{\Complement}{m o}
+{
+    \IfValueTF{#2}
+    {
+        \mathcal{C}_{#2}(#1)
+    }
+    {
+        #1^c
+    }
+}
+
+% Cardinal: \Card{X} for |X|
+\NewDocumentCommand{\Card}{m}
+{
+    \left| #1 \right|
+}

@@ -1,71 +1,70 @@
 % Preamble/Theorems/Theorems.tex
 
+% Break style with line break and indentation after header
+% Note: For examples that START with a list, always include introductory text first
+
 \newtheoremstyle{break}
-  {\topsep}{\topsep}%
-  {\itshape}{}%
-  {\bfseries}{:}%
-  {\newline}{\hspace{\parindent}}%
+  {\topsep}{\topsep}%       space above and below
+  {}%                       body font
+  {}%                       indent amount (empty = no indent for header)
+  {\bfseries}{}%            head font, punctuation after head
+  {0pt}%                    space after head
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}:\hfill\null\\\hspace*{\parindent}}%  head spec
 \theoremstyle{break}
 
-% \swapnumbers
 \theoremstyle{break}
-
-% \theoremstyle{break}
 \newtheorem{num}{Numerotare}[section]
 
-% \theoremstyle{break}
+\theoremstyle{break}
 \newtheorem{definition}[num]{Definition}
-% \AfterEndEnvironment{definition}{\noindent\ignorespaces}
 
-% \theoremstyle{break}
+\theoremstyle{break}
 \newtheorem{proposition}[num]{Proposition}
 
-% \theoremstyle{break}
+\theoremstyle{break}
 \newtheorem{theorem}[num]{Theorem}
 
-% \theoremstyle{break}
+\theoremstyle{break}
 \newtheorem{corollary}[num]{Corollary}
 
-% \theoremstyle{break}
+\theoremstyle{break}
 \newtheorem{lemma}[num]{Lemma}
 
-\theoremstyle{definition}
+\theoremstyle{break}
 \newtheorem{example}[num]{Example}
 
-\theoremstyle{remark}
+\theoremstyle{break}
 \newtheorem*{remark}{Remark}
+
+\theoremstyle{break}
+\newtheorem*{goal}{Goal}
+
+\theoremstyle{break}
+\newtheorem*{intuition}{Intuition}
+
+% Compendium style for chapter summaries - key results without proofs
+\newtheoremstyle{compendium}
+  {\topsep}{\topsep}%
+  {\small}%
+  {}%
+  {\bfseries\scshape}{}%
+  {0pt}%
+  {\thmname{#1}\thmnote{ --- #3}:\hfill\null\\\hspace*{\parindent}}%
+\theoremstyle{compendium}
+\newtheorem*{compendium}{Chapter Compendium}
 
 \renewcommand{\qedsymbol}{QED}
 
-% \makeatletter
-% \renewenvironment{proof}[1][\proofname]
-% {
-%     \par \pushQED{\qed}
-%     \normalfont \topsep6\p@\@plus6\p@\relax
-%     \trivlist
-%     \item[\hskip\labelsep
-%         \upshape
-%       #1\@addpunct{:}]\ignorespaces
-% }
-% {
-%     \popQED\endtrivlist\@endpefalse
-% }
-% \makeatother
-
-% \AtBeginEnvironment{definition}{\par\noindent\hspace{10em}\ignorespaces}
-% \AtBeginEnvironment{proposition}{\par\noindent\hspace{2em}\ignorespaces}
-% \AtBeginEnvironment{theorem}{\par\noindent\hspace{2em}\ignorespaces}
-% \AtBeginEnvironment{corollary}{\par\noindent\hspace{2em}\ignorespaces}
-% \AtBeginEnvironment{example}{\par\noindent\hspace{2em}\ignorespaces}
-
-
-% Scalable indentation for all theorem environments
-% Define a list of theorem environments that should have indentation
-% \newcommand{\theoremenvs}{definition,proposition,theorem,corollary,example}
-
-% Apply indentation to each environment in the list
-% \makeatletter
-% \@for\next:=\theoremenvs\do{%
-%   \AtBeginEnvironment{\next}{\hspace{2em}\ignorespaces}%
-% }
-% \makeatother
+% Redefine proof environment with break + indent formatting
+\makeatletter
+\renewenvironment{proof}[1][\proofname]
+{%
+    \par\pushQED{\qed}%
+    \normalfont \topsep\p@\@plus\p@\relax
+    \trivlist
+    \item[\hskip\labelsep\bfseries\itshape#1:]\hfill\null\\\hspace*{\parindent}\ignorespaces
+}
+{%
+    \popQED\endtrivlist\@endpefalse
+}
+\makeatother

@@ -1,0 +1,500 @@
+% Preamble/Commands/LinearAlgebra.tex
+
+\NewDocumentCommand{\VecSpace}{o m}
+{
+    \IfValueTF{#1}
+    {
+        {}_{#1}#2
+    }
+    {
+        #2
+    }
+}
+
+\NewDocumentCommand{\Span}{o m}
+{
+    \IfValueTF{#1}
+    {
+        \operatorname{span}_{#1} \left( #2 \right)
+    }
+    {
+        \operatorname{span} \left( #2 \right)
+    }
+}
+
+\NewDocumentCommand{\Subspace}{o}
+{
+    \IfValueTF{#1}
+    {
+        \leq_{#1}
+    }
+    {
+        \leq
+    }
+}
+
+
+% SubspaceSum:
+%   \SubspaceSum{i \in I}{U_i} gives \sum_{i \in I} U_i  (2-arg: subscript only)
+%   \SubspaceSum{i=1}{n}{U_i} gives \sum_{i=1}^{n} U_i  (3-arg: sub + superscript)
+\NewDocumentCommand{\SubspaceSum}{m m g}
+{
+    \IfValueTF{#3}
+    {
+        \sum_{#1}^{#2} #3
+    }
+    {
+        \sum_{#1} #2
+    }
+}
+
+% DirectSum:
+%   A \DirectSum B gives A \oplus B  (binary operator, no args)
+%   \DirectSum{i \in I}{U_i} gives \bigoplus_{i \in I} U_i  (2-arg: subscript only)
+%   \DirectSum{i=1}{n}{U_i} gives \bigoplus_{i=1}^{n} U_i  (3-arg: sub + superscript)
+\NewDocumentCommand{\DirectSum}{g g g}
+{
+    \IfValueTF{#1}
+    {
+        \IfValueTF{#3}
+        {
+            \bigoplus_{#1}^{#2} #3
+        }
+        {
+            \bigoplus_{#1} #2
+        }
+    }
+    {
+        \oplus
+    }
+}
+
+% ExtDirectSum (external/coproduct):
+%   A \ExtDirectSum B gives A \amalg B  (binary operator, no args)
+%   \ExtDirectSum{i \in I}{U_i} gives \coprod_{i \in I} U_i  (2-arg: subscript only)
+%   \ExtDirectSum{i=1}{n}{U_i} gives \coprod_{i=1}^{n} U_i  (3-arg: sub + superscript)
+\NewDocumentCommand{\ExtDirectSum}{g g g}
+{
+    \IfValueTF{#1}
+    {
+        \IfValueTF{#3}
+        {
+            \coprod_{#1}^{#2} #3
+        }
+        {
+            \coprod_{#1} #2
+        }
+    }
+    {
+        \coprod
+    }
+}
+
+% DirectProd (product):
+%   A \DirectProd B gives A \times B  (binary operator, no args)
+%   \DirectProd{i \in I}{V_i} gives \prod_{i \in I} V_i  (2-arg: subscript only)
+%   \DirectProd{i=1}{n}{V_i} gives \prod_{i=1}^{n} V_i  (3-arg: sub + superscript)
+\NewDocumentCommand{\DirectProd}{g g g}
+{
+    \IfValueTF{#1}
+    {
+        \IfValueTF{#3}
+        {
+            \prod_{#1}^{#2} #3
+        }
+        {
+            \prod_{#1} #2
+        }
+    }
+    {
+        \times
+    }
+}
+
+
+
+\NewDocumentCommand{\Dim}{o m}
+{
+    \IfValueTF{#1}
+    {
+        \dim_{#1} \left( #2 \right)
+    }
+    {
+        \dim \left( #2 \right)
+    }
+}
+
+
+\NewDocumentCommand{\QuotientSpace}{tp m m}
+{
+    \IfBooleanTF{#1}
+    {
+        \left( #2 / #3 \right)
+    }
+    {
+        #2 / #3
+    }
+}
+
+\NewDocumentCommand{\Coset}{m m}
+{
+    #1 + #2
+}
+
+\NewDocumentCommand{\Ker}{m}
+{
+    \ker \left( #1 \right)
+}
+
+\NewDocumentCommand{\Rng}{m}
+{
+    \operatorname{Rng} \left( #1 \right)
+}
+
+\NewDocumentCommand{\Rank}{m}
+{
+    \operatorname{rank} \left( #1 \right)
+}
+
+\NewDocumentCommand{\Nullity}{m}
+{
+    \operatorname{nullity} \left( #1 \right)
+}
+
+\NewDocumentCommand{\Corank}{m}
+{
+    \operatorname{corank} \left( #1 \right)
+}
+\NewDocumentCommand{\Conullity}{m}
+{
+    \operatorname{conullity} \left( #1 \right)
+}
+
+% Override physics package \Transpose
+\RenewDocumentCommand{\Transpose}{tp m}
+{
+    \IfBooleanTF{#1}
+    {
+        {\left( #2 \right)}^\mathsf{T}
+    }
+    {
+        {#2}^\mathsf{T}
+    }
+}
+
+
+\NewDocumentCommand{\Adjoint}{tp m}
+{
+    \IfBooleanTF{#1}
+    {
+        {\left( #2 \right)}^*
+    }
+    {
+        {#2}^*
+    }
+}
+
+
+\NewDocumentCommand{\TensorProduct}{o m m}
+{
+    \IfValueTF{#1}
+    {
+        #2 \otimes_{#1} #3
+    }
+    {
+        #2 \otimes #3
+    }
+}
+
+\NewDocumentCommand{\Hadamard}{m m}
+{
+    #1 \circ #2
+}
+
+
+\NewDocumentCommand{\KroneckerProduct}{o m m}
+{
+    \IfValueTF{#1}
+    {
+        #2 \otimes_{#1} #3
+    }
+    {
+        #2 \otimes #3
+    }
+}
+
+% Override physics package \Det
+\RenewDocumentCommand{\Det}{m}
+{
+    \det \left( #1 \right)
+}
+
+
+% Override physics package \Trace
+\RenewDocumentCommand{\Trace}{m}
+{
+    \operatorname{Tr} \left( #1 \right)
+}
+
+\NewDocumentCommand{\Adjugate}{m}
+{
+    \operatorname{adj} \left( #1 \right)
+}
+
+\NewDocumentCommand{\Spectrum}{m}
+{
+    \sigma \left( #1 \right)
+}
+
+\NewDocumentCommand{\Eigenspace}{m m}
+{
+    E_{#2} \left( #1 \right)
+}
+
+\NewDocumentCommand{\GenEigenspace}{m m}
+{
+    G_{#2} \left( #1 \right)
+}
+
+
+\NewDocumentCommand{\MinPoly}{m}
+{
+    m_{#1}
+}
+
+\NewDocumentCommand{\CharPoly}{m}
+{
+    \chi_{#1}
+}
+
+
+\NewDocumentCommand{\Hom}{o m m}
+{
+    \IfValueTF{#1}
+    {
+        \operatorname{Hom}_{#1} \left( #2, #3 \right)
+    }
+    {
+        \operatorname{Hom} \left( #2, #3 \right)
+    }
+}
+
+\NewDocumentCommand{\End}{o m}
+{
+    \IfValueTF{#1}
+    {
+        \operatorname{End}_{#1} \left( #2 \right)
+    }
+    {
+        \operatorname{End} \left( #2 \right)
+    }
+}
+
+\NewDocumentCommand{\Aut}{o m}
+{
+    \IfValueTF{#1}
+    {
+        \operatorname{Aut}_{#1} \left( #2 \right)
+    }
+    {
+        \operatorname{Aut} \left( #2 \right)
+    }
+}
+
+\NewDocumentCommand{\GL}{m g}
+{
+    \IfValueTF{#2}
+    {
+        \operatorname{GL}_{#1} \left( #2 \right)
+    }
+    {
+        \operatorname{GL} \left( #1 \right)
+    }
+}
+
+\NewDocumentCommand{\Dual}{m}
+{
+    {#1}^\prime
+}
+
+\NewDocumentCommand{\Ann}{m}
+{
+    \operatorname{Ann} \left( #1 \right)
+}
+
+\NewDocumentCommand{\MatSpace}{m m o}
+{
+    \IfValueTF{#3}
+    {
+        M_{#1 \times #2} \left( #3 \right)
+    }
+    {
+        M_{#1 \times #2}
+    }
+}
+
+
+
+\NewDocumentCommand{\MinkowskiSum}{m m}
+{
+    #1 + #2
+}
+
+\NewDocumentCommand{\MinkowskiProd}{m m}
+{
+    #1 \cdot #2
+}
+
+\NewDocumentCommand{\CoordVec}{m o}
+{
+    \IfValueTF{#2}
+    {
+        \left[#1\right]_{#2}
+    }
+    {
+        \left[#1\right]
+    }
+}
+
+\NewDocumentCommand{\LinIndep}{}
+{
+    \text{lin.\ indep.}
+}
+
+\NewDocumentCommand{\LinDep}{}
+{
+    \text{lin.\ dep.}
+}
+
+
+\NewDocumentCommand{\DualBasis}{m}
+{
+    {#1}^*
+}
+
+\NewDocumentCommand{\DualMap}{m}
+{
+    {#1}^*
+}
+
+
+\NewDocumentCommand{\MultiLin}{o m m}
+{
+    \IfValueTF{#1}
+    {
+        \mathcal{L}_{#1} \left( #2; #3 \right)
+    }
+    {
+        \mathcal{L} \left( #2; #3 \right)
+    }
+}
+
+\NewDocumentCommand{\MultiForm}{o m m}
+{
+    \IfValueTF{#1}
+    {
+        \mathcal{L}^{#1} \left( #2 \right)
+    }
+    {
+        \mathcal{L} \left( #2 \right)
+    }
+}
+
+\NewDocumentCommand{\SymForm}{m m}
+{
+    \mathcal{S}^{#1} \left( #2 \right)
+}
+
+\NewDocumentCommand{\AltForm}{m m}
+{
+    \Lambda^{#1} \left( #2 \right)
+}
+
+\NewDocumentCommand{\Wedge}{m m}
+{
+    #1 \wedge #2
+}
+
+\NewDocumentCommand{\Norm}{o m}
+{
+    \IfValueTF{#1}
+    {
+        \left\| #2 \right\|_{#1}
+    }
+    {
+        \left\| #2 \right\|
+    }
+}
+
+\NewDocumentCommand{\InnerProd}{m m}
+{
+    \langle #1, #2 \rangle
+}
+
+\NewDocumentCommand{\UnitSphere}{m}
+{
+    S(#1)
+}
+
+\NewDocumentCommand{\UnitBall}{m}
+{
+    B(#1)
+}
+
+\NewDocumentCommand{\OrthComp}{m}
+{
+    {#1}^\perp
+}
+
+\NewDocumentCommand{\Proj}{m o}
+{
+    \IfValueTF{#2}
+    {
+        \operatorname{proj}_{#1}^{#2}
+    }
+    {
+        \operatorname{proj}_{#1}
+    }
+}
+
+\NewDocumentCommand{\Sym}{m o}
+{
+    \IfValueTF{#2}
+    {
+        \operatorname{Sym}_{#1}^{#2}
+    }
+    {
+        \operatorname{Sym}_{#1}
+    }
+}
+
+
+
+\NewDocumentCommand{\Hermitian}{tp m}
+{
+    \IfBooleanTF{#1}
+    {
+        {\left( #2 \right)}^\dagger
+    }
+    {
+        {#2}^\dagger
+    }
+}
+
+
+\NewDocumentCommand{\MatrixRep}{m o o}
+{
+    \IfValueTF{#3}
+    {
+        [#1]_{#2}^{#3}
+    }
+    {
+        \IfValueTF{#2}
+        {
+            [#1]_{#2}
+        }
+        {
+            [#1]
+        }
+    }
+}

@@ -1,0 +1,220 @@
+% Document/LinearAlgebra/VectorSpaces/Foundations/DirectSums.tex
+% Section: Internal Direct Sums
+
+\newpage
+\section{Internal Direct Sums}
+
+\begin{remark}[Duality with Linear Independence]
+    The characterizations of internal direct sums are \textbf{similar} to those of linear independence:
+    \begin{itemize}
+        \item \textbf{Linear independence}: unique representation of vectors as linear combinations
+              of \textbf{vectors} in $L$
+        \item \textbf{Direct sum}: unique representation of vectors as sums of \textbf{subspace elements}
+              from $(U_i)_{i \in I}$
+    \end{itemize}
+\end{remark}
+
+\begin{definition}[Unique Representation in a Family of Subspaces]\label{def:unique-rep-subspaces}
+    Given a family $(U_i)_{i \in I}$ of subspaces of $V$, a vector $v$ has \textbf{unique representation}
+    in the family if there exists a \textbf{unique} finite subset $F \subseteq I$ and \textbf{unique nonzero}
+    vectors $(u_i)_{i \in F}$ with $u_i \in U_i$ such that
+    \[
+        v = \sum_{i \in F} u_i
+    \]
+    The requirement that components be nonzero ensures uniqueness: otherwise we could add $0 \in U_j$ for any $j$.
+\end{definition}
+
+\begin{theorem}[Characterizations of Internal Direct Sums]\label{thm:direct-sum-equiv}
+    Let $(U_i)_{i \in I}$ be a family of subspaces of $V$. The following are equivalent:
+    \begin{enumerate}
+        \item[(i)] $\Forall :{j \in I}{U_j \Intersect \SubspaceSum{i \in I,\, i \neq j}{U_i} = \{0\}}$
+        \item[(ii)] Every $v \in \SubspaceSum{i \in I}{U_i}$ has unique representation in the family
+        \item[(iii)] Some $v \in \SubspaceSum{i \in I}{U_i}$ with $v \neq 0$ has unique representation
+        \item[(iv)] $0$ has unique representation (i.e., if $0 = \sum_{i \in F} u_i$ with $u_i \in U_i$
+              nonzero, then $F = \emptyset$)
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    \textbf{(ii) $\Rightarrow$ (iii)}:
+    Trivial (take any nonzero $v$; note $v = 0$ always has unique representation with $F = \emptyset$).
+
+    \textbf{(iii) $\Rightarrow$ (iv)}:
+    Let $v \neq 0$ have unique representation $v = \sum_{i \in F} u_i$ with $u_i \neq 0$.
+    If $0 = \sum_{j \in G} w_j$ with $w_j \neq 0$, then
+    \[
+        v = v + 0 = \sum_{i \in F} u_i + \sum_{j \in G} w_j
+    \]
+    For uniqueness, we need $G = \emptyset$.
+
+    \textbf{(iv) $\Rightarrow$ (ii)}:
+    Suppose $v = \sum_{i \in F} u_i = \sum_{j \in G} w_j$ with $u_i, w_j \neq 0$.
+    Then $0 = \sum_{i \in F} u_i - \sum_{j \in G} w_j$.
+    For $k \in F \Intersect G$: the coefficient is $u_k - w_k \in U_k$.
+    For $k \in F \setminus G$: the coefficient is $u_k \in U_k$.
+    For $k \in G \setminus F$: the coefficient is $-w_k \in U_k$.
+    By (iv), all these must be zero, so $F = G$ and $u_i = w_i$.
+
+    \textbf{(i) $\Rightarrow$ (iv)} (requires field axioms for extraction):
+    Suppose $0 = \sum_{i \in F} u_i$ with $u_j \neq 0$ for some $j \in F$.
+    Then $u_j = -\sum_{i \in F,\, i \neq j} u_i \in \SubspaceSum{i \in I,\, i \neq j}{U_i}$.
+    Also $u_j \in U_j$, so $u_j \in U_j \Intersect \SubspaceSum{i \in I,\, i \neq j}{U_i} = \{0\}$ by (i).
+    This contradicts $u_j \neq 0$.
+
+    \textbf{(iv) $\Rightarrow$ (i)}:
+    Suppose $u \in U_j \Intersect \SubspaceSum{i \in I,\, i \neq j}{U_i}$ with $u \neq 0$.
+    Then $u = \sum_{i \neq j} u_i$ for some $u_i \in U_i$.
+    Rearranging: $0 = (-u) + \sum_{i \neq j} u_i$ where $-u \in U_j$.
+    The component in $U_j$ is $-u \neq 0$, contradicting (iv).
+\end{proof}
+
+\begin{definition}[Internal Direct Sum Family]\label{def:direct-sum-family}
+    A family $(U_i)_{i \in I}$ of subspaces is an \textbf{internal direct sum family}
+    if it satisfies the equivalent conditions of Theorem~\ref{thm:direct-sum-equiv}.
+    We write $\DirectSum{i \in I}{U_i}$ for the sum when the family is a direct sum family.
+\end{definition}
+
+\begin{proposition}[Two-Subspace Criterion]\label{prop:two-subspace-direct}
+    For two subspaces $U, W \Subspace[K] V$:
+    \[
+        U + W \text{ is a direct sum} \iff U \Intersect W = \{0\}
+    \]
+    When this holds, we write $U \DirectSum W$ for the direct sum.
+\end{proposition}
+
+\begin{proof}
+    Taking $I = \{1, 2\}$ with $U_1 = U$, $U_2 = W$, condition (i) becomes:
+    \begin{itemize}
+        \item $U \Intersect W = \{0\}$
+        \item $W \Intersect U = \{0\}$
+    \end{itemize}
+    These are equivalent, giving the criterion.
+\end{proof}
+
+\begin{example}[Direct Sum Decompositions]\label{ex:direct-sums}
+    Consider the following direct sum decompositions:
+    \begin{enumerate}
+        \item $\bb{R}^3 = $ (xy-plane) $\DirectSum$ (z-axis)
+        \item $K^n = \DirectSum{i=1}{n}{K \cdot e_i}$ (direct sum of coordinate axes)
+        \item $K[X] = K[X]_{\text{even}} \DirectSum K[X]_{\text{odd}}$ (even/odd degree polynomials)
+    \end{enumerate}
+
+    \begin{center}
+    \begin{tikzpicture}[scale=1.0,
+        x={(1cm,0cm)},
+        y={(0.4cm,0.3cm)},
+        z={(0cm,1cm)}]
+
+        % xy-plane
+        \fill[blue!20, opacity=0.6] (-1.5,-1.5,0) -- (1.5,-1.5,0) -- (1.5,1.5,0) -- (-1.5,1.5,0) -- cycle;
+        \node[blue] at (1.5, 0, 0.3) {$W$};
+
+        % z-axis
+        \draw[thick, red] (0,0,-1.5) -- (0,0,1.5);
+        \node[red] at (0.3,0,1.5) {$U$};
+
+        % A vector decomposed
+        \draw[->, thick, purple] (0,0,0) -- (1,0.8,1.2);
+        \draw[->, thick, blue, dashed] (0,0,0) -- (1,0.8,0);
+        \draw[->, thick, red, dashed] (1,0.8,0) -- (1,0.8,1.2);
+
+        % Labels
+        \node at (0,-2,0) {$\bb{R}^3 = W \DirectSum U$};
+    \end{tikzpicture}
+    \end{center}
+\end{example}
+
+\begin{example}[Non-Direct Sum]\label{ex:non-direct-sum}
+    Two distinct lines through the origin in $\bb{R}^3$ do NOT decompose $\bb{R}^3$:
+    their sum is only a plane, not all of $\bb{R}^3$.
+
+    However, two distinct lines through the origin in $\bb{R}^2$ DO form a direct sum
+    decomposition of $\bb{R}^2$ (assuming they are not the same line).
+\end{example}
+
+\begin{proposition}[Linear Independence and Direct Sum]\label{prop:lin-indep-direct-sum}
+    Let $F \subseteq V$ and let $(A_i)_{i \in I}$ be a partition of $F$. Then the following are equivalent:
+    \begin{enumerate}
+        \item $F$ is linearly independent
+        \item $(\Span[K]{A_i})_{i \in I}$ is a direct sum family
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    \textbf{(1) $\Rightarrow$ (2)}:
+    Suppose $F$ is linearly independent. We show $(\Span[K]{A_i})_{i \in I}$ satisfies the
+    direct sum property (iv): if $0 = \sum_{i \in G} u_i$ with $u_i \in \Span[K]{A_i}$ nonzero,
+    then $G = \emptyset$.
+
+    Each $u_i \in \Span[K]{A_i}$ can be written as $u_i = \sum_{v \in B_i} a_{i,v} v$ for some
+    finite $B_i \subseteq A_i$ with $a_{i,v} \neq 0$. Thus:
+    \[
+        0 = \sum_{i \in G} \sum_{v \in B_i} a_{i,v} v
+    \]
+    Since $(A_i)$ partitions $F$, all these $v$ are distinct elements of $F$.
+    By linear independence of $F$ (Theorem~\ref{thm:lin-indep-equiv}(iv)), all $a_{i,v} = 0$.
+    But we assumed $a_{i,v} \neq 0$, so each $B_i = \emptyset$, hence each $u_i = 0$.
+    This contradicts $u_i \neq 0$, so $G = \emptyset$.
+
+    \textbf{(2) $\Rightarrow$ (1)}:
+    Suppose $(\Span[K]{A_i})_{i \in I}$ is a direct sum family. Let $0 = \sum_{v \in G} a_v v$
+    with $a_v \neq 0$ and $G \subseteq F$ finite.
+
+    For each $i \in I$, let $G_i = G \Intersect A_i$ and define $u_i = \sum_{v \in G_i} a_v v \in \Span[K]{A_i}$.
+    Then $0 = \sum_{i : G_i \neq \emptyset} u_i$.
+
+    By the direct sum property, each $u_i$ with $G_i \neq \emptyset$ must equal zero.
+    But if $G_i \neq \emptyset$, then $u_i = \sum_{v \in G_i} a_v v$ with $a_v \neq 0$,
+    and $u_i = 0$ means $\sum_{v \in G_i} a_v v = 0$.
+
+    Since $(A_i)$ is a partition, elements in different $A_i$ are disjoint from each other.
+    If any $G_i \neq \emptyset$, we get a nontrivial linear relation within $G_i$, but
+    $G_i \subseteq A_i \subseteq F$ and we're trying to prove $F$ is linearly independent.
+
+    The key insight: by the direct sum unique representation of $0$, we must have $G_i = \emptyset$
+    for all $i$ (else $u_i \neq 0$ would give a nontrivial sum). Thus $G = \emptyset$.
+\end{proof}
+
+\begin{corollary}[Singleton Partition Case]\label{cor:lin-indep-singleton-partition}
+    Let $F \subseteq V$. Then $F$ is linearly independent if and only if
+    $(\Span[K]{\{v\}})_{v \in F}$ is a direct sum family with sum $\Span[K]{F}$.
+\end{corollary}
+
+\begin{proof}
+    Apply Proposition~\ref{prop:lin-indep-direct-sum} with the partition $(\{v\})_{v \in F}$.
+\end{proof}
+
+\begin{proposition}[Direct Sum Characterization via Linear Independence]\label{prop:direct-sum-lin-indep}
+    A family $(U_i)_{i \in I}$ is a direct sum family if and only if for any linearly independent
+    sets $F_i \subseteq U_i$, the union $\BigUnion[i \in I] F_i$ is linearly independent.
+\end{proposition}
+
+\begin{proof}
+    ($\Rightarrow$)
+    Suppose $(U_i)$ is a direct sum family. Let $F_i \subseteq U_i$ be linearly independent for each $i$.
+    Suppose $0 = \sum_{k} a_k v_k$ where $v_k \in \BigUnion[i \in I] F_i$ with $a_k \neq 0$.
+    Group by index: $0 = \sum_{i} (\sum_{v \in F_i} a_v v)$.
+    Each inner sum $u_i = \sum_{v \in F_i} a_v v \in \Span[K]{F_i} \subseteq U_i$.
+    By the direct sum property, each $u_i = 0$.
+    By linear independence of $F_i$, all $a_v = 0$, so the only representation of $0$ is the empty sum.
+    Hence $\BigUnion[i \in I] F_i$ is linearly independent.
+
+    ($\Leftarrow$)
+    We prove $(U_i)$ satisfies the direct sum property (iv): if $0 = \sum_{i \in G} u_i$ with
+    $u_i \in U_i$ nonzero, then $G = \emptyset$.
+
+    Suppose $0 = \sum_{i \in G} u_i$ with $u_i \neq 0$ for all $i \in G$.
+    For each $i \in G$, the singleton $\{u_i\} \subseteq U_i$ is linearly independent (since $u_i \neq 0$).
+    By assumption, $\BigUnion[i \in G] \{u_i\}$ is linearly independent.
+    But $0 = \sum_{i \in G} 1 \cdot u_i$ is a nontrivial representation of zero,
+    contradicting linear independence. Hence $G = \emptyset$.
+\end{proof}
+
+\begin{definition}[Direct Sum Decomposition of $V$]\label{def:direct-decomposition}
+    We say $V$ \textbf{decomposes} as a direct sum $V = \DirectSum{i \in I}{U_i}$ if:
+    \begin{enumerate}
+        \item $(U_i)_{i \in I}$ is a direct sum family
+        \item $V = \SubspaceSum{i \in I}{U_i}$
+    \end{enumerate}
+    Equivalently: every $v \in V$ has unique representation in the family.
+\end{definition}

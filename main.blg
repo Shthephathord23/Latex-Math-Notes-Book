@@ -1,0 +1,59 @@
+This is BibTeX, Version 0.99d (TeX Live 2025)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+A level-1 auxiliary file: Document/SetTheory/SetTheory.aux
+A level-1 auxiliary file: Document/LinearAlgebra/LinearAlgebra.aux
+White space in argument---line 10 of file main.aux
+ : \@input{Document/UniBuc
+ :                         FMI/UniBuc.aux}
+I'm skipping whatever remains of this command
+The style file: alpha.bst
+I couldn't open database file Document/UniBucFMI/references.bib
+---line 13 of file main.aux
+ : \bibdata{Document/SetTheory/references,Document/LinearAlgebra/references,Document/UniBucFMI/references
+ :                                                                                                       }
+I'm skipping whatever remains of this command
+Database file #1: Document/SetTheory/references.bib
+Database file #2: Document/LinearAlgebra/references.bib
+You've used 6 entries,
+            2543 wiz_defined-function locations,
+            591 strings with 4962 characters,
+and the built_in function-call counts, 1726 in all, are:
+= -- 152
+> -- 59
+< -- 5
++ -- 16
+- -- 16
+* -- 94
+:= -- 300
+add.period$ -- 18
+call.type$ -- 6
+change.case$ -- 29
+chr.to.int$ -- 6
+cite$ -- 6
+duplicate$ -- 95
+empty$ -- 151
+format.name$ -- 27
+if$ -- 351
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 12
+newline$ -- 33
+num.names$ -- 18
+pop$ -- 50
+preamble$ -- 1
+purify$ -- 37
+quote$ -- 0
+skip$ -- 62
+stack$ -- 0
+substring$ -- 42
+swap$ -- 6
+text.length$ -- 5
+text.prefix$ -- 5
+top$ -- 0
+type$ -- 24
+warning$ -- 0
+while$ -- 13
+width$ -- 8
+write$ -- 78
+(There were 2 error messages)

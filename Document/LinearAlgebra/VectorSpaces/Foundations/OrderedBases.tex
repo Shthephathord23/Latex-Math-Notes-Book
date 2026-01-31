@@ -1,0 +1,108 @@
+% Document/LinearAlgebra/VectorSpaces/Foundations/OrderedBases.tex
+% Section: Ordered Bases and Coordinates
+
+\newpage
+\section{Ordered Bases and Coordinates}
+
+\begin{remark}[Motivation]
+    A basis $B$ determines unique coefficients for each vector, but without an ordering
+    on $B$, we cannot write these coefficients as a \emph{column vector}. Writing is inherently
+    order-preserving, so to represent vectors in matrix form, we need \textbf{ordered bases}.
+\end{remark}
+
+\begin{definition}[Ordered Basis]\label{def:ordered-basis}
+    An \textbf{ordered basis} of $V$ is a basis $B$ equipped with a \textbf{well-ordering} $<$ on it.
+    When $B$ is finite, we write $\mathcal{B} = (b_1, \ldots, b_n)$ as an $n$-tuple.
+    When $B$ is infinite, we write $\mathcal{B} = (b_i)_{i \in I}$ for some well-ordered index set $I$.
+\end{definition}
+
+\begin{remark}[Ordering Matters]
+    The same underlying set with different orderings gives \emph{different} ordered bases.
+    For example, $\{e_1, e_2\}$ in $\bb{R}^2$ yields two ordered bases: $(e_1, e_2)$ and $(e_2, e_1)$.
+    These give different coordinate representations for the same vector.
+\end{remark}
+
+\begin{definition}[Coordinates]\label{def:coordinates}
+    Let $\mathcal{B} = (b_i)_{i \in I}$ be an ordered basis for $V$ (with $I$ well-ordered).
+    For $v \in V$, the unique representation
+    \[
+        v = \sum_{i \in F} a_i b_i \quad (\text{$F \subseteq I$ finite, $a_i \neq 0$})
+    \]
+    determines the \textbf{coordinate vector} $\CoordVec{v}[\mathcal{B}] \in K^{(I)}$ defined by
+    \[
+        \CoordVec{v}[\mathcal{B}](i) =
+        \begin{cases}
+            a_i & \text{if } i \in F \\
+            0 & \text{otherwise}
+        \end{cases}
+    \]
+    When $I$ is finite, we write $\CoordVec{v}[\mathcal{B}] = \begin{pmatrix} a_1 \\ \vdots \\ a_n \end{pmatrix} \in K^n$.
+\end{definition}
+
+\begin{example}[Coordinate Dependence on Ordering]\label{ex:coord-ordering}
+    In $\bb{R}^2$, let $v = (3, 2)$. With the standard basis:
+    \begin{itemize}
+        \item $\mathcal{B}_1 = (e_1, e_2)$: $\CoordVec{v}[\mathcal{B}_1] = \begin{pmatrix} 3 \\ 2 \end{pmatrix}$
+        \item $\mathcal{B}_2 = (e_2, e_1)$: $\CoordVec{v}[\mathcal{B}_2] = \begin{pmatrix} 2 \\ 3 \end{pmatrix}$
+    \end{itemize}
+    The coordinates depend on the \textbf{ordering}, not just the set of basis vectors.
+\end{example}
+
+\begin{theorem}[Coordinate Bijection]\label{thm:coord-bijection}
+    Let $\mathcal{B} = (b_i)_{i \in I}$ be an ordered basis for $V$. The coordinate map
+    \[
+        \phi_{\mathcal{B}}: V \to K^{(I)}, \quad v \mapsto \CoordVec{v}[\mathcal{B}]
+    \]
+    is a bijection. (It is in fact a linear isomorphism; see Theorem~\ref{thm:coord-iso}.)
+\end{theorem}
+
+\begin{proof}
+    \textbf{Injectivity}: If $\CoordVec{v}[\mathcal{B}] = 0$, then all coefficients are zero, so $v = 0$.
+
+    \textbf{Surjectivity}: For any $f \in K^{(I)}$ with finite support $F$, the vector
+    $v = \sum_{i \in F} f(i) b_i$ satisfies $\CoordVec{v}[\mathcal{B}] = f$.
+\end{proof}
+
+\begin{proposition}[Canonical Basis of $K^{(I)}$]\label{prop:canonical-basis}
+    For any set $I$, define $e_i \in K^{(I)}$ by $e_i(j) = \delta_{ij}$ (Kronecker delta).
+    Then $(e_i)_{i \in I}$ is a basis for $K^{(I)}$, called the \textbf{canonical basis}.
+\end{proposition}
+
+\begin{proof}
+    \textbf{Generating}: For any $f \in K^{(I)}$ with finite support $F$:
+    \[
+        f = \sum_{i \in F} f(i) \cdot e_i
+    \]
+    (Verify: both sides agree at every $j \in I$.)
+
+    \textbf{Linear independence}: Suppose $0 = \sum_{i \in F} a_i e_i$ for some finite $F$ with $a_i \neq 0$.
+    Evaluating at any $j \in F$: $0 = a_j$, contradiction.
+\end{proof}
+
+\begin{corollary}[Dimension of $K^{(I)}$]\label{cor:dim-finite-support}
+    $\Dim[K]{K^{(I)}} = \Card{I}$.
+\end{corollary}
+
+\begin{example}[Standard Canonical Bases]\label{ex:canonical-bases}
+    The following are canonical bases:
+    \begin{itemize}
+        \item $K^n = K^{(\{1, \ldots, n\})}$: canonical basis $(e_1, \ldots, e_n)$
+        \item $K^{(\kappa)}$ for cardinal $\kappa$: canonical basis $(e_\alpha)_{\alpha < \kappa}$
+        \item $K[X] \cong K^{(\bb{N})}$: canonical basis $(1, X, X^2, \ldots)$
+    \end{itemize}
+\end{example}
+
+\begin{remark}[Cardinal Properties of $K^{(I)}$]
+    We study the cardinal properties of $K^{(I)}$:
+    \begin{enumerate}
+        \item \textbf{Lower bound}: Embeddings $k \mapsto k \cdot e_{i_0}$ and $i \mapsto e_i$ give
+              $\max(\Card{K}, \Card{I}) \leq \Card{K^{(I)}}$.
+        \item \textbf{Bijection}: $K^{(I)} \sim \BigUnion[n \in \bb{N}] (K \setminus \{0\})^n \times \binom{I}{n}$ (disjoint union;
+              a vector is determined by its finite support and nonzero values).
+        \item \textbf{Finite case}: When both $K$ and $I$ are finite, $K^{(I)} = K^I$, so $\Card{K^{(I)}} = \Card{K}^{\Card{I}}$.
+        \item \textbf{Infinite case}: When $\kappa = \max(\Card{K}, \Card{I}) \geq \aleph_0$:
+              \[
+                  \Card{K^{(I)}} = \sum_{n \in \bb{N}} \kappa^n = \aleph_0 \cdot \kappa = \kappa
+              \]
+    \end{enumerate}
+\end{remark}

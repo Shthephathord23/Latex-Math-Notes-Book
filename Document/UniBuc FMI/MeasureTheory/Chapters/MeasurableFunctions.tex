@@ -1,0 +1,521 @@
+\chapter{Measurable Functions}
+
+\section{Definition and Basic Properties}
+
+\begin{intuition}
+    Measurable functions are to measure theory what continuous functions are to topology: 
+    they are the ``structure-preserving'' maps. A function $f: X \to Y$ is measurable if it 
+    ``pulls back'' measurable sets to measurable sets, i.e., $f^{-1}(A) \in \mathcal{M}$ whenever 
+    $A \in \mathcal{N}$.
+    
+    Why this definition?
+    \begin{itemize}
+        \item It ensures that $\{x \mid f(x) \in A\}$ is measurable, so we can meaningfully 
+              ask ``what is the measure of points where $f$ takes values in $A$?''
+        \item It makes the integral well-defined: we need to integrate over level sets like 
+              $\{f > a\}$, which must be measurable.
+        \item It is preserved under composition, limits, and algebraic operations.
+    \end{itemize}
+\end{intuition}
+
+\bigskip
+
+\begin{definition}[Measurable Function]
+    Let $(X, \mathcal{M})$ and $(Y, \mathcal{N})$ be measurable spaces. 
+    A function $f: X \to Y$ is \textbf{measurable} if:
+    \[
+        \Forall :{A \in \mathcal{N}}{f^{-1}(A) \in \mathcal{M}}
+    \]
+\end{definition}
+
+\begin{proposition}[Monotonicity of Measurability]
+    Let $f: X \to Y$ be a function.
+    \begin{enumerate}
+        \item If $f$ is $(\mathcal{M}, \mathcal{N})$-measurable, $\mathcal{M} \subseteq \mathcal{M}'$, 
+            and $\mathcal{N}' \subseteq \mathcal{N}$, then $f$ is $(\mathcal{M}', \mathcal{N}')$-measurable.
+        \item Any function $f: X \to Y$ is $(\Powerset{X}, \mathcal{N})$-measurable for any $\mathcal{N}$.
+        \item Any function $f: X \to Y$ is $(\mathcal{M}, \{\emptyset, Y\})$-measurable for any $\mathcal{M}$.
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    \textbf{(1)} Let $A \in \mathcal{N}'$. Since $\mathcal{N}' \subseteq \mathcal{N}$, we have $A \in \mathcal{N}$. 
+    By $(\mathcal{M}, \mathcal{N})$-measurability, $f^{-1}(A) \in \mathcal{M} \subseteq \mathcal{M}'$.
+
+    \textbf{(2)} For any $A \in \mathcal{N}$, we have $f^{-1}(A) \subseteq X$, so $f^{-1}(A) \in \Powerset{X}$.
+
+    \textbf{(3)} We only need to check $f^{-1}(\emptyset) = \emptyset \in \mathcal{M}$ and 
+    $f^{-1}(Y) = X \in \mathcal{M}$.
+\end{proof}
+
+\bigskip
+\subsection{Pullback and Pushforward $\sigma$-Algebras}
+
+\begin{definition}[Pullback $\sigma$-Algebra]
+    Let $f: X \to Y$ be a function and $\mathcal{N}$ a $\sigma$-algebra on $Y$. 
+    The \textbf{pullback $\sigma$-algebra} (or \textbf{inverse image $\sigma$-algebra}) is:
+    \[
+        f^*(\mathcal{N}) = \{ f^{-1}(A) \mid A \in \mathcal{N} \}
+    \]
+    This is the coarsest $\sigma$-algebra on $X$ making $f$ measurable.
+\end{definition}
+
+\begin{proposition}
+    $f^*(\mathcal{N})$ is a $\sigma$-algebra on $X$.
+\end{proposition}
+
+\begin{proof}
+    \textit{Contains $\emptyset$:} $\emptyset = f^{-1}(\emptyset) \in f^*(\mathcal{N})$ since $\emptyset \in \mathcal{N}$.
+
+    \textit{Closure under complements:} Let $f^{-1}(A) \in f^*(\mathcal{N})$ where $A \in \mathcal{N}$. 
+    Then $(f^{-1}(A))^c = f^{-1}(A^c)$. Since $\mathcal{N}$ is a $\sigma$-algebra, $A^c \in \mathcal{N}$, 
+    so $f^{-1}(A^c) \in f^*(\mathcal{N})$.
+
+    \textit{Closure under countable unions:} Let $(f^{-1}(A_n))_{n \in \bb{N}} \subseteq f^*(\mathcal{N})$ 
+    where $A_n \in \mathcal{N}$. Then:
+    \[
+        \bigcup_{n \in \bb{N}} f^{-1}(A_n) = f^{-1}\left(\bigcup_{n \in \bb{N}} A_n\right)
+    \]
+    Since $\mathcal{N}$ is a $\sigma$-algebra, $\bigcup_{n \in \bb{N}} A_n \in \mathcal{N}$, 
+    so $f^{-1}(\bigcup_{n \in \bb{N}} A_n) \in f^*(\mathcal{N})$.
+\end{proof}
+
+\medskip
+\begin{definition}[Pushforward $\sigma$-Algebra]
+    Let $f: X \to Y$ be a function and $\mathcal{M}$ a $\sigma$-algebra on $X$. 
+    The \textbf{pushforward $\sigma$-algebra} is:
+    \[
+        f_*(\mathcal{M}) = \{ A \subseteq Y \mid f^{-1}(A) \in \mathcal{M} \}
+    \]
+    This is the finest $\sigma$-algebra on $Y$ making $f$ measurable.
+\end{definition}
+
+\begin{proposition}
+    $f_*(\mathcal{M})$ is a $\sigma$-algebra on $Y$.
+\end{proposition}
+
+\begin{proof}
+    \textit{Contains $\emptyset$:} $f^{-1}(\emptyset) = \emptyset \in \mathcal{M}$.
+
+    \textit{Closure under complements:} If $A \in f_*(\mathcal{M})$, then $f^{-1}(A) \in \mathcal{M}$, 
+    so $f^{-1}(A^c) = (f^{-1}(A))^c \in \mathcal{M}$, thus $A^c \in f_*(\mathcal{M})$.
+
+    \textit{Closure under countable unions:} If $(A_n)_{n \in \bb{N}} \subseteq f_*(\mathcal{M})$, then 
+    $f^{-1}(\bigcup_{n \in \bb{N}} A_n) = \bigcup_{n \in \bb{N}} f^{-1}(A_n) \in \mathcal{M}$.
+\end{proof}
+
+\bigskip
+\subsection{Pushforward Measure}
+
+\begin{definition}[Pushforward Measure]
+    Let $(X, \mathcal{M}, \mu)$ be a measure space, $(Y, \mathcal{N})$ a measurable space, 
+    and $f: X \to Y$ a measurable function. The \textbf{pushforward measure} 
+    $f_* \mu: \mathcal{N} \to [0, \infty]$ is defined by:
+    \[
+        (f_* \mu)(A) = \mu(f^{-1}(A)) \quad \text{for } A \in \mathcal{N}
+    \]
+\end{definition}
+
+\begin{proposition}
+    $f_* \mu$ is a measure on $(Y, \mathcal{N})$.
+\end{proposition}
+
+\begin{proof}
+    \textit{$(f_* \mu)(\emptyset) = 0$:} $(f_* \mu)(\emptyset) = \mu(f^{-1}(\emptyset)) = \mu(\emptyset) = 0$.
+
+    \textit{$\sigma$-additivity:} Let $(A_n)_{n \in \bb{N}}$ be pairwise disjoint in $\mathcal{N}$. 
+    Then $(f^{-1}(A_n))_{n \in \bb{N}}$ are pairwise disjoint in $\mathcal{M}$, so:
+    \[
+        (f_* \mu)\left(\bigcup_{n \in \bb{N}} A_n\right) = \mu\left(f^{-1}\left(\bigcup_{n \in \bb{N}} A_n\right)\right) 
+        = \mu\left(\bigcup_{n \in \bb{N}} f^{-1}(A_n)\right) = \sum_{n \in \bb{N}} \mu(f^{-1}(A_n)) 
+        = \sum_{n \in \bb{N}} (f_* \mu)(A_n)
+    \]
+\end{proof}
+
+\begin{remark}[Pullback Measure]
+    There is no natural ``pullback measure'' for a general measurable function $f: X \to Y$. 
+    The issue is that the direct image $f(A)$ of a measurable set $A \in \mathcal{M}$ need not 
+    be measurable in $\mathcal{N}$.
+    
+    However, if $f: X \to Y$ is a bijection with both $f$ and $f^{-1}$ measurable 
+    (a \textbf{measurable isomorphism}), then the pullback of $f$ can be defined as the 
+    pushforward of $f^{-1}$:
+    \[
+        f^* \nu = (f^{-1})_* \nu
+    \]
+\end{remark}
+
+\bigskip
+
+
+\begin{proposition}[Characterization for Real Functions]
+    $f: X \to \bb{R}$ is measurable iff any of the following equivalent conditions hold:
+    \begin{enumerate}
+        \item $f^{-1}((a, \infty)) \in \mathcal{M}$ for all $a \in \bb{R}$
+        \item $f^{-1}([a, \infty)) \in \mathcal{M}$ for all $a \in \bb{R}$
+        \item $f^{-1}((-\infty, a)) \in \mathcal{M}$ for all $a \in \bb{R}$
+        \item $f^{-1}((-\infty, a]) \in \mathcal{M}$ for all $a \in \bb{R}$
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    These four families generate $\BorelAlg{\bb{R}}$. Thus any condition implies 
+    $f^{-1}(B) \in \mathcal{M}$ for all $B \in \BorelAlg{\bb{R}}$.
+
+    The equivalences follow from: $(a, \infty)^c = (-\infty, a]$, 
+    $[a, \infty) = \bigcap_{n \in \bb{N}} (a - 1/n, \infty)$, etc.
+\end{proof}
+
+\bigskip
+\begin{proposition}[Closure Properties]
+    If $f, g$ are measurable and $c \in \bb{R}$:
+    \begin{enumerate}
+        \item $cf$, $f + g$, $fg$, $|f|$, $\max(f, g)$, $\min(f, g)$ are measurable
+        \item If $(f_n)$ are measurable, then $\sup_n f_n$, $\inf_n f_n$, 
+            $\limsup f_n$, $\liminf f_n$ are measurable
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    \textbf{(1)} For $cf$: $(cf)^{-1}((a, \infty)) = f^{-1}((a/c, \infty))$ (case $c > 0$).
+
+    For $f + g$: 
+    $(f+g)^{-1}((a, \infty)) = \bigcup_{r \in \bb{Q}} (f^{-1}((r, \infty)) \cap g^{-1}((a-r, \infty)))$.
+
+    For $fg$: use $fg = \frac{1}{4}((f+g)^2 - (f-g)^2)$ and $h^2$ is measurable since 
+    $(h^2)^{-1}((a, \infty)) = h^{-1}((\sqrt{a}, \infty)) \cup h^{-1}((-\infty, -\sqrt{a}))$ for $a \geq 0$.
+
+    For $\max$: $(\max(f,g))^{-1}((a, \infty)) = f^{-1}((a, \infty)) \cup g^{-1}((a, \infty))$.
+
+    \medskip
+    \textbf{(2)} $(\sup_n f_n)^{-1}((a, \infty)) = \bigcup_{n \in \bb{N}} f_n^{-1}((a, \infty)) \in \mathcal{M}$. 
+    Similarly for $\inf$. Then $\limsup f_n = \inf_k \sup_{n \geq k} f_n$.
+\end{proof}
+
+\section{Simple Functions}
+
+\begin{definition}[Simple Function]
+    A function $s: X \to [0, \infty)$ is \textbf{simple} if its image is finite.
+\end{definition}
+
+\begin{definition}[Canonical Form of Simple Function]
+    Let $s: X \to [0, \infty)$ be a simple function with image $\{\alpha_1, \ldots, \alpha_n\}$ 
+    where $\alpha_i$ are distinct. The \textbf{canonical form} is:
+    \[
+        s = \sum_{i=1}^n \alpha_i \CharFunc{A_i}
+    \]
+    where $A_i = s^{-1}(\{\alpha_i\})$ are the level sets.
+\end{definition}
+
+\begin{proposition}[Uniqueness of Canonical Form]
+    The canonical form of a simple function is unique.
+\end{proposition}
+
+\begin{proof}
+    Let $s: X \to [0, \infty)$ be a simple function. Suppose we have two canonical representations:
+    \[
+        s = \sum_{i=1}^n \alpha_i \CharFunc{A_i} = \sum_{j=1}^m \beta_j \CharFunc{B_j}
+    \]
+    where $\alpha_i$ are distinct, $\beta_j$ are distinct, and $A_i, B_j$ are the corresponding 
+    level sets.
+
+    \textbf{Step 1: The number of values coincides.}
+    The image of $s$ is a set-theoretic property of $s$ itself:
+    \[
+        \text{Im}(s) = \{ s(x) \mid x \in X \}
+    \]
+    In the first representation, $\text{Im}(s) = \{\alpha_1, \ldots, \alpha_n\}$.
+    In the second representation, $\text{Im}(s) = \{\beta_1, \ldots, \beta_m\}$.
+    Thus $\{\alpha_1, \ldots, \alpha_n\} = \{\beta_1, \ldots, \beta_m\}$, so $n = m$ and 
+    (after reordering) $\alpha_i = \beta_i$ for all $i$.
+    
+    \textbf{Step 2: The level sets coincide.}
+    For each $i$, the level set is uniquely determined by $s$ and $\alpha_i$:
+    \[
+        A_i = s^{-1}(\{\alpha_i\}) = \{ x \in X \mid s(x) = \alpha_i \}
+    \]
+    Since $\alpha_i = \beta_i$, we have $A_i = s^{-1}(\{\alpha_i\}) = s^{-1}(\{\beta_i\}) = B_i$.
+\end{proof}
+
+\begin{proposition}[Measurability Criterion for Simple Functions]
+    A simple function $s: X \to [0, \infty)$ is measurable if and only if each level set 
+    $A_i = s^{-1}(\{\alpha_i\})$ is measurable.
+\end{proposition}
+
+\begin{proof}
+    \textbf{($\Rightarrow$)} Suppose $s$ is measurable. Each singleton $\{\alpha_i\} \subseteq \bb{R}$ 
+    is a Borel set. Thus $A_i = s^{-1}(\{\alpha_i\})$ is measurable.
+    
+    \textbf{($\Leftarrow$)} Suppose each $A_i$ is measurable. For any Borel set $B \subseteq [0, \infty)$:
+    \[
+        s^{-1}(B) = \bigcup_{\alpha_i \in B} A_i
+    \]
+    Since this is a finite union of measurable sets (at most $n$ terms), it is measurable.
+\end{proof}
+
+\bigskip
+\section{$\sigma$-Simple Functions}
+
+\begin{definition}[$\sigma$-Simple Function]
+    A function $s: X \to [0, \infty]$ is \textbf{$\sigma$-simple} if its image is at most countable.
+\end{definition}
+
+\begin{definition}[Canonical Form of $\sigma$-Simple Function]
+    Let $s: X \to [0, \infty]$ be $\sigma$-simple with image $\{\alpha_i\}_{i \in I}$ 
+    where $I \subseteq \bb{N}$ and $\alpha_i$ are distinct. The \textbf{canonical form} is:
+    \[
+        s = \sum_{i \in I} \alpha_i \CharFunc{A_i}
+    \]
+    where $A_i = s^{-1}(\{\alpha_i\})$ are the level sets.
+\end{definition}
+
+\begin{proposition}[Uniqueness of Canonical Form]
+    The canonical form of a $\sigma$-simple function is unique.
+\end{proposition}
+
+\begin{proof}
+    Let $s: X \to [0, \infty]$ be $\sigma$-simple. Suppose we have two canonical representations:
+    \[
+        s = \sum_{i \in I} \alpha_i \CharFunc{A_i} = \sum_{j \in J} \beta_j \CharFunc{B_j}
+    \]
+    where $\alpha_i$ are distinct, $\beta_j$ are distinct, and $A_i, B_j$ are the corresponding 
+    level sets.
+
+    \textbf{Step 1: The values coincide.}
+    The image of $s$ is uniquely determined:
+    \[
+        \text{Im}(s) = \{ s(x) \mid x \in X \} = \{\alpha_i\}_{i \in I} = \{\beta_j\}_{j \in J}
+    \]
+    Thus (after bijective reindexing) the values are the same.
+    
+    \textbf{Step 2: The level sets coincide.}
+    For each value $\alpha \in \text{Im}(s)$, the level set is uniquely determined:
+    \[
+        s^{-1}(\{\alpha\}) = \{ x \in X \mid s(x) = \alpha \}
+    \]
+    This depends only on $s$ and $\alpha$, not on the representation.
+\end{proof}
+
+\begin{proposition}[Measurability Criterion for $\sigma$-Simple Functions]
+    A $\sigma$-simple function $s: X \to [0, \infty]$ is measurable if and only if each level set 
+    $A_i = s^{-1}(\{\alpha_i\})$ is measurable.
+\end{proposition}
+
+\begin{proof}
+    \textbf{($\Rightarrow$)} Suppose $s$ is measurable. Each singleton $\{\alpha_i\}$ is a Borel set 
+    in $[0, \infty]$. Thus $A_i = s^{-1}(\{\alpha_i\})$ is measurable.
+    
+    \textbf{($\Leftarrow$)} Suppose each $A_i$ is measurable. For any Borel set $B \subseteq [0, \infty]$:
+    \[
+        s^{-1}(B) = \bigcup_{\alpha_i \in B} A_i
+    \]
+    Since this is a countable union of measurable sets, it is measurable.
+\end{proof}
+
+\bigskip
+\section{$\sigma$-Simple Function Approximation}
+
+\begin{theorem}[Increasing $\sigma$-Simple Approximation]
+    Let $f: X \to [0, \infty]$ be measurable. Then there exists an increasing sequence 
+    of $\sigma$-simple functions $(s_n)_{n \in \bb{N}}$ such that $s_n \nearrow f$ uniformly.
+\end{theorem}
+
+\begin{proof}
+    \textbf{Construction:} Define for each $n \in \bb{N}$:
+    \[
+        s_n(x) = \begin{cases}
+            \lfloor 2^n f(x) \rfloor / 2^n & \text{if } f(x) < \infty \\
+            \infty & \text{if } f(x) = \infty
+        \end{cases}
+    \]
+    
+    \textbf{Step 1: $s_n$ is $\sigma$-simple.}
+    The image of $s_n$ is $\{k/2^n \mid k \in \bb{N}_0\} \cup \{\infty\}$, which is countable.
+    Each level set $s_n^{-1}(\{k/2^n\}) = f^{-1}([k/2^n, (k+1)/2^n))$ is measurable.
+    
+    \medskip
+    \textbf{Step 2: $s_n \leq f$.}
+    For $f(x) < \infty$: $s_n(x) = \lfloor 2^n f(x) \rfloor / 2^n \leq f(x)$ by definition of floor.
+    For $f(x) = \infty$: $s_n(x) = \infty = f(x)$.
+    
+    \medskip
+    \textbf{Step 3: $(s_n)$ is increasing.}
+    Let $k = \lfloor 2^n f(x) \rfloor$, so $k \leq 2^n f(x) < k+1$.
+    Then $2k \leq 2^{n+1} f(x) < 2k + 2$, so $\lfloor 2^{n+1} f(x) \rfloor \geq 2k$.
+    Thus:
+    \[
+        s_{n+1}(x) = \frac{\lfloor 2^{n+1} f(x) \rfloor}{2^{n+1}} \geq \frac{2k}{2^{n+1}} = \frac{k}{2^n} = s_n(x)
+    \]
+    
+    \textbf{Step 4: $s_n \to f$ uniformly.}
+    For $f(x) < \infty$: $|f(x) - s_n(x)| = f(x) - \lfloor 2^n f(x) \rfloor / 2^n < 1/2^n$.
+    For $f(x) = \infty$: $s_n(x) = f(x)$, so there is nothing to prove.
+    
+    Thus $\|f - s_n\|_\infty \leq 1/2^n \to 0$.
+\end{proof}
+
+\bigskip
+\begin{theorem}[Decreasing $\sigma$-Simple Approximation]
+    Let $f: X \to [0, \infty]$ be measurable. Then there exists a decreasing sequence 
+    of $\sigma$-simple functions $(t_n)_{n \in \bb{N}}$ such that $t_n \searrow f$ uniformly.
+\end{theorem}
+
+\begin{proof}
+    \textbf{Construction:} Define for each $n \in \bb{N}$:
+    \[
+        t_n(x) = \begin{cases}
+            \lceil 2^n f(x) \rceil / 2^n & \text{if } f(x) < \infty \\
+            \infty & \text{if } f(x) = \infty
+        \end{cases}
+    \]
+    
+    \textbf{Step 1: $t_n$ is $\sigma$-simple.}
+    The image is $\{k/2^n \mid k \in \bb{N}_0\} \cup \{\infty\}$, which is countable.
+    
+    \textbf{Step 2: $t_n \geq f$.}
+    For $f(x) < \infty$: $t_n(x) = \lceil 2^n f(x) \rceil / 2^n \geq f(x)$ by definition of ceiling.
+    For $f(x) = \infty$: $t_n(x) = \infty = f(x)$.
+    
+    \textbf{Step 3: $(t_n)$ is decreasing.}
+    Let $k = \lceil 2^n f(x) \rceil$, so $k-1 < 2^n f(x) \leq k$.
+    Then $2k - 2 < 2^{n+1} f(x) \leq 2k$, so $\lceil 2^{n+1} f(x) \rceil \leq 2k$.
+    Thus:
+    \[
+        t_{n+1}(x) = \frac{\lceil 2^{n+1} f(x) \rceil}{2^{n+1}} \leq \frac{2k}{2^{n+1}} = \frac{k}{2^n} = t_n(x)
+    \]
+    
+    \textbf{Step 4: $t_n \to f$ uniformly.}
+    For $f(x) < \infty$: $|t_n(x) - f(x)| = \lceil 2^n f(x) \rceil / 2^n - f(x) < 1/2^n$.
+    For $f(x) = \infty$: $t_n(x) = f(x)$, so there is nothing to prove.
+    
+    Thus $\|t_n - f\|_\infty \leq 1/2^n \to 0$.
+\end{proof}
+
+\begin{remark}
+    Unlike simple function approximation, $\sigma$-simple approximation is \textbf{always uniform} 
+    because we allow the value $\infty$ in the approximating functions. This handles unbounded 
+    functions without needing to truncate.
+\end{remark}
+
+
+\bigskip
+\section{Simple Function Approximation}
+
+\begin{theorem}[Increasing Simple Function Approximation]
+    Let $f: X \to [0, \infty]$ be measurable. Then there exists an increasing sequence 
+    $(s_n)_{n \in \bb{N}}$ of simple functions such that $s_n \nearrow f$ pointwise.
+\end{theorem}
+
+\begin{proof}
+    \textbf{Construction:} Define for each $n \in \bb{N}$:
+    \[
+        s_n(x) = \frac{\lfloor 2^n f(x) \rfloor}{2^n} \cdot \CharFunc{\{f < 2^n\}}(x) + 2^n \cdot \CharFunc{\{f \geq 2^n\}}(x)
+    \]
+    
+    \medskip
+    \textbf{Step 1: $s_n$ is simple.}
+    The image of $s_n$ is $\{k/2^n \mid 0 \leq k \leq 2^{2n}\} \cup \{2^n\}$, which is finite.
+    
+    \medskip
+    \textbf{Step 2: $s_n \leq f$.}
+    If $f(x) < 2^n$: $s_n(x) = \lfloor 2^n f(x) \rfloor / 2^n \leq f(x)$.
+    If $f(x) \geq 2^n$: $s_n(x) = 2^n \leq f(x)$.
+    
+    \medskip
+    \textbf{Step 3: $(s_n)$ is increasing.}
+    Let $k = \lfloor 2^n f(x) \rfloor$, so $k \leq 2^n f(x) < k+1$.
+    Then $2k \leq 2^{n+1} f(x) < 2k + 2$, so $\lfloor 2^{n+1} f(x) \rfloor \geq 2k$.
+    Thus $s_{n+1}(x) \geq 2k / 2^{n+1} = k / 2^n = s_n(x)$.
+    The cap also increases: $2^{n+1} > 2^n$.
+    
+    \medskip
+    \textbf{Step 4: $s_n \to f$ pointwise.}
+    If $f(x) < \infty$: For $n$ large enough that $2^n > f(x)$, we have $|f(x) - s_n(x)| < 1/2^n \to 0$.
+    If $f(x) = \infty$: $s_n(x) = 2^n \to \infty = f(x)$.
+\end{proof}
+
+\bigskip
+\begin{proposition}[Uniform Convergence Characterization]
+    The convergence $s_n \to f$ is uniform if and only if $f$ is bounded.
+\end{proposition}
+
+\begin{proof}
+    \textbf{($\Leftarrow$) Bounded implies uniform:}
+    Suppose $f \leq M$ for some $M < \infty$. For $n$ large enough that $2^n > M$, 
+    we have $f(x) < 2^n$ for all $x$, so:
+    \[
+        |f(x) - s_n(x)| = f(x) - \lfloor 2^n f(x) \rfloor / 2^n < 1/2^n
+    \]
+    Thus $\|f - s_n\|_\infty < 1/2^n \to 0$.
+    
+    \textbf{($\Rightarrow$) Uniform implies bounded:}
+    Suppose $s_n \to f$ uniformly. Then for some $N$, $\|f - s_N\|_\infty < 1$.
+    Since $s_N$ is simple, it is bounded: $s_N \leq C$ for some $C < \infty$.
+    Thus $f \leq s_N + 1 \leq C + 1 < \infty$.
+\end{proof}
+
+\begin{proposition}[Decreasing Simple Function Approximation]
+    Let $f: X \to [0, \infty]$ be measurable. Then $f$ can be approximated by a decreasing 
+    sequence of simple functions $t_n \searrow f$ if and only if $f$ is bounded.
+\end{proposition}
+
+\begin{proof}
+    \textbf{($\Rightarrow$) Decreasing simple approximation implies bounded:}
+    If $t_n \searrow f$ with $t_n$ simple, then each $t_n$ is bounded.
+    Since $t_1 \geq f$, we have $f \leq \|t_1\|_\infty < \infty$.
+    
+    \textbf{($\Leftarrow$) Bounded implies decreasing approximation:}
+    Suppose $f \leq M$. Define:
+    \[
+        t_n(x) = \frac{\lceil 2^n f(x) \rceil}{2^n}
+    \]
+    Then $t_n$ is simple (values in $\{k/2^n \mid 0 \leq k \leq \lceil 2^n M \rceil\}$), 
+    $t_n \geq f$, $t_n$ decreases (by similar argument to increasing case), 
+    and $\|t_n - f\|_\infty \leq 1/2^n \to 0$.
+\end{proof}
+
+\begin{remark}[Why Simple Approximation Cannot Always Be Uniform]
+    For unbounded $f$, simple functions---which take only finitely many values---cannot 
+    approximate $f$ uniformly because:
+    \begin{itemize}
+        \item Any simple function $s$ satisfies $s \leq \max(\text{Im}(s)) < \infty$
+        \item If $f(x_n) \to \infty$, then $|f(x_n) - s(x_n)| \to \infty$ for any fixed simple $s$
+    \end{itemize}
+    The $\sigma$-simple setting avoids this by allowing $\infty$ as a value.
+\end{remark}
+
+\bigskip
+\begin{compendium}
+
+\textbf{Measurable Functions:} $f: X \to Y$ is measurable if $f^{-1}(A) \in \mathcal{M}$ for all 
+$A \in \mathcal{N}$. For $f: X \to \bb{R}$, equivalent to $\{f > a\} \in \mathcal{M}$ for all $a$.
+
+\textbf{$\sigma$-Algebras on Functions:}
+\begin{itemize}
+    \item \textbf{Pullback:} $f^*(\mathcal{N}) = \{f^{-1}(A) \mid A \in \mathcal{N}\}$ (coarsest making $f$ measurable)
+    \item \textbf{Pushforward:} $f_*(\mathcal{M}) = \{A \subseteq Y \mid f^{-1}(A) \in \mathcal{M}\}$ (finest making $f$ measurable)
+\end{itemize}
+
+\textbf{Pushforward Measure:} $(f_*\mu)(A) = \mu(f^{-1}(A))$ is a measure on $(Y, \mathcal{N})$.
+
+\textbf{Closure Properties:} If $f, g$ measurable: $cf$, $f + g$, $fg$, $|f|$, $\max$, $\min$ are measurable. 
+Also $\sup_n f_n$, $\inf_n f_n$, $\limsup f_n$, $\liminf f_n$ are measurable.
+
+\textbf{Function Classes:}
+\begin{itemize}
+    \item \textbf{Simple:} \textbf{Finite} image in $[0, +\infty)$. Form: $s = \sum_{i=1}^n \alpha_i \CharFunc{A_i}$
+    \item \textbf{$\sigma$-Simple:} \textbf{Countable} image in $[0, +\infty]$. Form: $s = \sum_{i \in I} \alpha_i \CharFunc{A_i}$
+\end{itemize}
+
+\textbf{Approximation Theorems:} For measurable $f: X \to [0, \infty]$:
+\begin{itemize}
+    \item \textbf{Increasing simple} $s_n \nearrow f$ pointwise (uniform if $f$ bounded)
+    \item \textbf{Increasing $\sigma$-simple} $s_n \nearrow f$ uniformly always
+    \item \textbf{Decreasing $\sigma$-simple} $t_n \searrow f$ uniformly always
+    \item \textbf{Decreasing simple} $t_n \searrow f$ exists only if $f$ is bounded
+\end{itemize}
+
+\end{compendium}
+
+
+

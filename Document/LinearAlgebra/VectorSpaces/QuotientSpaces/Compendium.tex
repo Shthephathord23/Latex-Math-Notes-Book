@@ -1,0 +1,82 @@
+% Document/LinearAlgebra/VectorSpaces/QuotientSpaces/Compendium.tex
+% Chapter 3 Compendium: Quotient Spaces and Isomorphism Theorems
+
+\newpage
+\section{Chapter Compendium}
+
+\begin{compendium}[Quotient Space Construction]
+    \textbf{Equivalence Relation}: $u \sim_W v \Leftrightarrow u - v \in W$
+    
+    \textbf{Coset}: $v + W = \Set{v + w \mid w \in W} = \EquivClass{v}$
+    
+    \textbf{Operations}: $(u + W) + (v + W) = (u + v) + W$, \quad $a \cdot (v + W) = av + W$
+    
+    \textbf{Canonical Projection}: $\pi: V \to \QuotientSpace{V}{W}$, $\pi(v) = v + W$ (linear epimorphism, $\Ker{\pi} = W$)
+\end{compendium}
+
+\begin{compendium}[Dimension Formula]
+    \textbf{Additive Form} (all dimensions):
+    \[
+        \Dim[K]{W} + \Dim[K]{\QuotientSpace{V}{W}} = \Dim[K]{V}
+    \]
+    
+    \textbf{Subtraction Form} (finite-dimensional only):
+    $\Dim[K]{\QuotientSpace{V}{W}} = \Dim[K]{V} - \Dim[K]{W}$
+    
+    \textbf{Proof idea}: Extend basis of $W$ to basis of $V$; images of extension vectors form basis of quotient
+\end{compendium}
+
+\begin{compendium}[Universal Property of Quotient Spaces]
+    \begin{center}
+    \begin{tikzcd}[column sep=small]
+    V \arrow[r, "\pi"] \arrow[dr, "T"'] & \QuotientSpace{V}{W} \arrow[d, dashed, "\tilde{T}"] \\
+     & X
+    \end{tikzcd}
+    \end{center}
+    
+    \textbf{Existence}: $\tilde{T}$ exists with $T = \Composition{\tilde{T}}{\pi}$ $\Leftrightarrow$ $W \subseteq \Ker{T}$
+    
+    \textbf{Uniqueness}: If exists, $\tilde{T}$ is unique (since $\pi$ is an epimorphism)
+    
+    \textbf{Properties}: $\tilde{T}$ surjective $\Leftrightarrow$ $T$ surjective; 
+    $\tilde{T}$ injective $\Leftrightarrow$ $\Ker{T} = W$;
+    $\tilde{T}$ isomorphism $\Leftrightarrow$ $T$ surjective and $\Ker{T} = W$
+\end{compendium}
+
+\begin{compendium}[Isomorphism Theorems]
+    \textbf{First Isomorphism Theorem}:
+    $\QuotientSpace{U}{\Ker{T}} \cong \Rng{T}$
+    
+    Corollary (Rank-Nullity via iso): $\Nullity{T} + \Rank{T} = \Dim[K]{U}$
+    
+    \textbf{Second Isomorphism Theorem}: For $U, W \Subspace[K] V$:
+    $\QuotientSpace{(U + W)}{W} \cong \QuotientSpace{U}{(U \Intersect W)}$
+    
+    Corollary (Grassmann): $\Dim[K]{U + W} + \Dim[K]{U \Intersect W} = \Dim[K]{U} + \Dim[K]{W}$
+    
+    \textbf{Third Isomorphism Theorem}: For $U \subseteq W \subseteq V$:
+    $\QuotientSpace{\QuotientSpace p{V}{U}}{\QuotientSpace p{W}{U}} \cong \QuotientSpace{V}{W}$
+    
+    \textbf{Fourth Isomorphism Theorem} (Lattice Correspondence):
+    $\Set{U \Subspace[K] V \mid W \subseteq U} \xleftrightarrow{1:1} \Set{X \Subspace[K] \QuotientSpace{V}{W}}$
+    via $U \mapsto \QuotientSpace{U}{W}$ and $X \mapsto \InverseImage{\pi}{X}$
+\end{compendium}
+
+
+
+\begin{compendium}[Critical Counterexample: Cardinal vs Dimension]
+    Let $W = \Span[K]{\Set{X^n \mid n \geq 2}} \Subspace[K] K[X]$
+    
+    Cardinal arithmetic: $\Dim[K]{W} = \aleph_0$ and $\aleph_0 + 1 = \aleph_0 = \Dim[K]{K[X]}$
+    
+    But $\Dim[K]{\QuotientSpace{K[X]}{W}} = 2 \neq 1$, so $W$ is \textbf{NOT} a hyperplane
+    
+    \textbf{Lesson}: In infinite dimensions, use $\Dim[K]{\QuotientSpace{V}{W}} = 1$, not cardinal subtraction
+\end{compendium}
+
+\begin{compendium}[Key Examples]
+    \textbf{Finite-Dim}: $\QuotientSpace{\bb{R}^2}{L} \cong \bb{R}$ (parallel lines), 
+    $\QuotientSpace{\bb{R}^3}{P} \cong \bb{R}$ (parallel planes)
+    
+    \textbf{Infinite-Dim}: $\QuotientSpace{K[X]}{\Span[K]{\Set{X^n \mid n \geq 2}}} \cong K^2$
+\end{compendium}

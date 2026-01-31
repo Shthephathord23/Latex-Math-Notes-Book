@@ -1,0 +1,37 @@
+\chapter{Applications}
+
+\section{Differentiation Under the Integral}
+
+\begin{theorem}[Leibniz Rule]
+    Let $f: I \times X \to \bb{R}$ where $I \subseteq \bb{R}$ is an interval. If:
+    \begin{enumerate}
+        \item $t \mapsto f(t, x)$ is differentiable for each $x$
+        \item $|\frac{\partial f}{\partial t}(t, x)| \leq g(x)$ for some $g \in \Lp{1}(\mu)$
+    \end{enumerate}
+    Then $\phi(t) = \Integral_X f(t, x) d\mu(x)$ is differentiable and:
+    \[
+        \phi'(t) = \Integral_X \frac{\partial f}{\partial t}(t, x) d\mu(x)
+    \]
+\end{theorem}
+
+\begin{proof}
+    Apply DCT to the difference quotients $\frac{f(t+h, x) - f(t, x)}{h}$.
+\end{proof}
+
+\bigskip
+\section{Gaussian Integral}
+
+\begin{theorem}
+    $\Integral_{\bb{R}} e^{-x^2} d\lambda(x) = \sqrt{\pi}$.
+\end{theorem}
+
+\begin{proof}
+    Let $I = \Integral_\bb{R} e^{-x^2} d\lambda(x)$. Then:
+    \[
+        I^2 = \Integral_{\bb{R}^2} e^{-(x^2+y^2)} d(\lambda \otimes \lambda) 
+        = \Integral_{[0,2\pi]} \Integral_{[0,\infty)} e^{-r^2} r\,d\lambda(r)\,d\lambda(\theta) 
+        = 2\pi \cdot \frac{1}{2} = \pi
+    \]
+    Thus $I = \sqrt{\pi}$.
+\end{proof}
+

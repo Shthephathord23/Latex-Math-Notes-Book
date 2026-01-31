@@ -1,0 +1,575 @@
+\chapter{The Lebesgue Integral}
+
+\begin{intuition}
+    The Lebesgue integral extends the Riemann integral to a much larger class of functions 
+    by ``slicing horizontally'' rather than ``vertically''. Instead of partitioning the domain 
+    and summing $f(\text{sample point}) \times \text{(interval length)}$, we partition the 
+    \textbf{range} and sum $\text{value} \times \mu(\text{level set})$.
+    
+    Key advantages over Riemann integration:
+    \begin{itemize}
+        \item Works for highly discontinuous functions (e.g., Dirichlet function)
+        \item Powerful convergence theorems (MCT, DCT, Fatou) that fail for Riemann
+        \item Defines $\Lp{p}$ spaces as complete normed vector spaces
+    \end{itemize}
+    
+    Our construction proceeds: simple functions $\to$ $\sigma$-simple functions $\to$ 
+    non-negative measurable functions $\to$ integrable functions.
+\end{intuition}
+
+\bigskip
+\section{Integration of Positive Functions}
+
+\begin{definition}[Integral of Simple Function]
+    For simple $s = \sum_{i=1}^n \alpha_i \CharFunc{A_i}$ on $(X, \mathcal{M}, \mu)$:
+    \[
+        \Integral_X s \, d\mu = \sum_{i=1}^n \alpha_i \mu(A_i)
+    \]
+    with convention $0 \cdot \infty = 0$.
+\end{definition}
+
+\medskip
+\begin{definition}[Integral of $\sigma$-Simple Function]
+    For $\sigma$-simple $s = \sum_{i=1}^\infty \alpha_i \CharFunc{A_i}$ on $(X, \mathcal{M}, \mu)$:
+    \[
+        \Integral_X s \, d\mu = \sum_{i=1}^\infty \alpha_i \mu(A_i)
+    \]
+    with convention $0 \cdot \infty = 0$. The sum is always well-defined in $[0, \infty]$.
+\end{definition}
+
+\begin{proposition}[Properties of the Integral for $\sigma$-Simple Functions]
+    Let $s, t: X \to [0, \infty]$ be measurable $\sigma$-simple functions and $c \geq 0$. Then:
+    \begin{enumerate}
+        \item \textbf{Linearity:} $\Integral_X (s + t) \, d\mu = \Integral_X s \, d\mu + \Integral_X t \, d\mu$ 
+            and $\Integral_X (cs) \, d\mu = c \Integral_X s \, d\mu$
+        \item \textbf{Monotonicity in function:} $s \leq t \implies \Integral_X s \, d\mu \leq \Integral_X t \, d\mu$
+        \item \textbf{Zero characterization:} $\Integral_X s \, d\mu = 0 \iff s = 0$ \almosteverywhere{}
+        \item \textbf{Empty set:} $\Integral_\emptyset s \, d\mu = 0$
+        \item \textbf{Monotonicity in set:} $A \subseteq B \implies \Integral_A s \, d\mu \leq \Integral_B s \, d\mu$
+        \item \textbf{Countable additivity:} If $(A_k)_{k=1}^\infty$ are pairwise disjoint measurable sets:
+            \[
+                \Integral_{\bigcup_{k=1}^\infty A_k} s \, d\mu = \sum_{k=1}^\infty \Integral_{A_k} s \, d\mu
+            \]
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    Let $s = \sum_{n=1}^{\infty} \alpha_n \CharFunc{B_n}$ and $t = \sum_{m=1}^{\infty} \beta_m \CharFunc{C_m}$ 
+    be the canonical forms.
+
+    \bigskip
+    \textbf{(1) Linearity:} 
+    
+    \textit{Scalar multiplication:} The function $cs$ has canonical form 
+    $\sum_{n=1}^{\infty} (c\alpha_n) \CharFunc{B_n}$, so:
+    \[
+        \Integral_X cs \, d\mu = \sum_{n=1}^{\infty} c\alpha_n \mu(B_n) = c \sum_{n=1}^{\infty} \alpha_n \mu(B_n) = c \Integral_X s \, d\mu
+    \]
+    
+    \textit{Addition:} Consider the common refinement $\{B_n \cap C_m\}_{n,m \in \bb{N}}$.
+    These sets partition $X$ and on $B_n \cap C_m$, we have $(s + t)(x) = \alpha_n + \beta_m$.
+    
+    Thus $(s + t)$ can be written as $\sum_{n,m} (\alpha_n + \beta_m) \CharFunc{B_n \cap C_m}$, and:
+    \begin{align*}
+        \Integral_X (s + t) \, d\mu &= \sum_{n,m} (\alpha_n + \beta_m) \mu(B_n \cap C_m) \\
+        &= \sum_{n,m} \alpha_n \mu(B_n \cap C_m) + \sum_{n,m} \beta_m \mu(B_n \cap C_m)
+    \end{align*}
+    
+    For the first sum: $\sum_{n,m} \alpha_n \mu(B_n \cap C_m) = \sum_n \alpha_n \sum_m \mu(B_n \cap C_m) 
+    = \sum_n \alpha_n \mu(B_n) = \Integral_X s \, d\mu$.
+    
+    Similarly for the second sum. Thus $\Integral_X (s+t) = \Integral_X s + \Integral_X t$.
+
+    \bigskip
+    \textbf{(2) Monotonicity:} 
+    
+    Suppose $s \leq t$ pointwise. Consider the common refinement $\{B_n \cap C_m\}_{n,m}$.
+    
+    For $(n,m)$ such that $B_n \cap C_m \neq \emptyset$: on this set, $s(x) = \alpha_n$ and $t(x) = \beta_m$, 
+    so $\alpha_n \leq \beta_m$.
+    
+    Thus:
+    \begin{align*}
+        \Integral_X s \, d\mu &= \sum_{n,m} \alpha_n \mu(B_n \cap C_m) \\
+        &\leq \sum_{n,m} \beta_m \mu(B_n \cap C_m) = \Integral_X t \, d\mu
+    \end{align*}
+
+    \bigskip
+    \textbf{(3) Zero characterization:}
+    
+    ($\Rightarrow$) Suppose $\Integral_X s \, d\mu = \sum_{n=1}^\infty \alpha_n \mu(B_n) = 0$. 
+    
+    Since all terms are non-negative, each term is zero. For $\alpha_n > 0$, we must have $\mu(B_n) = 0$. 
+    Thus $\{s > 0\} = \bigcup_{\alpha_n > 0} B_n$ is a null set.
+    
+    ($\Leftarrow$) If $s = 0$ a.e., then for each $n$ with $\alpha_n > 0$, we have $\mu(B_n) = 0$.
+    Thus $\Integral_X s \, d\mu = \sum_{n=1}^\infty \alpha_n \mu(B_n) = 0$.
+
+    \bigskip
+    \textbf{(4) Empty set:} $\Integral_\emptyset s \, d\mu = \sum_{n=1}^\infty \alpha_n \mu(B_n \cap \emptyset) = 0$.
+
+    \bigskip
+    \textbf{(5) Set monotonicity:} If $A \subseteq B$, then $B_n \cap A \subseteq B_n \cap B$, so:
+    \[
+        \Integral_A s \, d\mu = \sum_{n=1}^\infty \alpha_n \mu(B_n \cap A) 
+        \leq \sum_{n=1}^\infty \alpha_n \mu(B_n \cap B) = \Integral_B s \, d\mu
+    \]
+
+    \bigskip
+    \textbf{(6) Countable additivity:} 
+    \[
+        \Integral_{\bigcup_{k=1}^\infty A_k} s \, d\mu = \sum_{n=1}^{\infty} \alpha_n \mu\left(B_n \cap \bigcup_{k=1}^\infty A_k\right)
+        = \sum_{n=1}^{\infty} \alpha_n \sum_{k=1}^{\infty} \mu(B_n \cap A_k)
+    \]
+    Since all terms are non-negative, we can interchange sums (Tonelli):
+    \[
+        = \sum_{k=1}^{\infty} \sum_{n=1}^{\infty} \alpha_n \mu(B_n \cap A_k) = \sum_{k=1}^{\infty} \Integral_{A_k} s \, d\mu
+    \]
+\end{proof}
+
+\bigskip
+\begin{definition}[Lower and Upper Integrals]
+    For any function $f: X \to [0, \infty]$ (not necessarily measurable), we define:
+
+    \textbf{Lower Simple Integral:}
+    \[
+        \LowerInt_X f \, d\mu = \sup \left\{ \Integral_X s \, d\mu \mid s \text{ simple measurable}, 0 \leq s \leq f \right\}
+    \]
+
+    \textbf{Lower $\sigma$-Simple Integral:}
+    \[
+        \LowerSigmaInt_X f \, d\mu = \sup \left\{ \Integral_X s \, d\mu \mid s \text{ $\sigma$-simple measurable}, 0 \leq s \leq f \right\}
+    \]
+
+    \textbf{Upper $\sigma$-Simple Integral:}
+    \[
+        \UpperSigmaInt_X f \, d\mu = \inf \left\{ \Integral_X t \, d\mu \mid t \text{ $\sigma$-simple measurable}, t \geq f \right\}
+    \]
+
+    \textbf{Upper Simple Integral:}
+    \[
+        \UpperInt_X f \, d\mu = \inf \left\{ \Integral_X t \, d\mu \mid t \text{ simple measurable}, t \geq f \right\}
+    \]
+\end{definition}
+
+\medskip
+\begin{proposition}[Ordering]
+    For any function $f: X \to [0, \infty]$:
+    \[
+        \LowerInt f \leq \LowerSigmaInt f \leq \UpperSigmaInt f \leq \UpperInt f
+    \]
+\end{proposition}
+
+\begin{proof}
+    The outer inequalities follow since simple $\subseteq$ $\sigma$-simple (larger class for sup, smaller for inf). 
+    The middle inequality follows since $s \leq f \leq t$ implies $\Integral s \leq \Integral t$ by monotonicity.
+\end{proof}
+
+\begin{proposition}[Lower Integrals Equality]
+    For any function $f: X \to [0, \infty]$:
+    \[
+        \LowerInt f = \LowerSigmaInt f
+    \]
+\end{proposition}
+
+\begin{proof}
+    ($\leq$) Immediate since simple $\subseteq$ $\sigma$-simple, so the supremum over simple 
+    functions is at most the supremum over $\sigma$-simple functions.
+    
+    ($\geq$) Let $s$ be $\sigma$-simple measurable with $0 \leq s \leq f$. We show 
+    $\LowerInt f \geq \Integral s$.
+    
+    Let $s = \sum_{n=1}^{\infty} \alpha_n \CharFunc{A_n}$ be the canonical form. 
+    Define the truncated simple functions:
+    \[
+        s_N = \sum_{n=1}^{N} \alpha_n \CharFunc{A_n}
+    \]
+    
+    Then $s_N$ is simple, $s_N \leq s \leq f$, and by monotone convergence of series:
+    \[
+        \Integral s_N = \sum_{n=1}^{N} \alpha_n \mu(A_n) \nearrow \sum_{n=1}^{\infty} \alpha_n \mu(A_n) = \Integral s
+    \]
+    
+    For any $\epsilon > 0$, there exists $N$ such that $\Integral s_N > \Integral s - \epsilon$.
+    Since $s_N \leq f$ and $s_N$ is simple: $\LowerInt f \geq \Integral s_N > \Integral s - \epsilon$.
+    
+    Since $\epsilon$ is arbitrary, $\LowerInt f \geq \Integral s$. Taking supremum over $\sigma$-simple $s \leq f$:
+    $\LowerInt f \geq \LowerSigmaInt f$.
+\end{proof}
+
+\begin{proposition}[Upper Integrals Equality]
+    For any function $f: X \to [0, \infty]$:
+    \[
+        \UpperSigmaInt f = \UpperInt f \iff f \text{ is bounded a.e.\ and } \mu(\{f > 0\}) < \infty
+    \]
+\end{proposition}
+
+\begin{proof}
+    \textbf{($\Leftarrow$)} Suppose $f \leq M$ a.e.\ for some $M < \infty$ and $\mu(\{f > 0\}) < \infty$.
+    
+    We have $\UpperSigmaInt f \leq \UpperInt f$ (from ordering, since simple $\subseteq$ $\sigma$-simple).
+    
+    For the reverse: let $t$ be $\sigma$-simple measurable with $t \geq f$, and let $\epsilon > 0$.
+    Define truncated simple functions:
+    \[
+        t_N = \sum_{n=1}^{N} \alpha_n \CharFunc{A_n}
+    \]
+    where $t = \sum_{n=1}^{\infty} \alpha_n \CharFunc{A_n}$ is the canonical form.
+    
+    Since $f$ is bounded a.e.\ by $M$ and has finite support, we can choose $t$ such that 
+    $t$ is also bounded and has finite support (take $t = M \cdot \CharFunc{\{f > 0\}}$ as an upper bound).
+    
+    Then for $N$ large enough, $t_N \geq f$ (on the finite support) and $\Integral t_N < \Integral t + \epsilon$.
+    Thus $\UpperInt f \leq \Integral t_N < \Integral t + \epsilon$.
+    
+    Taking infimum: $\UpperInt f \leq \UpperSigmaInt f$.
+    
+    \medskip
+    \textbf{($\Rightarrow$)} We prove the contrapositive.
+    
+    \textit{Case 1:} If $f$ is unbounded on a set of positive measure, i.e., 
+    $\mu(\{f > n\}) > 0$ for all $n$, then any simple $t \geq f$ must satisfy 
+    $t \geq n$ on $\{f > n\}$, so $\Integral t \geq n \cdot \mu(\{f > n\}) \to \infty$.
+    Thus $\UpperInt f = \infty$.
+    
+    However, we can take $\sigma$-simple $t = f$ itself (if measurable) or approximate, 
+    giving finite $\UpperSigmaInt f < \infty$ in many cases. So $\UpperSigmaInt f \neq \UpperInt f$.
+    
+    \textit{Case 2:} If $\mu(\{f > 0\}) = \infty$, then any simple $t \geq f$ must be positive 
+    on an infinite measure set. For $t \geq c > 0$ on this set, $\Integral t = \infty$.
+    Thus $\UpperInt f = \infty$, while $\UpperSigmaInt f$ may be finite.
+\end{proof}
+
+\begin{theorem}[Equality of Integrals for Measurable Functions]
+    For any measurable $f: X \to [0, \infty]$:
+    \[
+        \LowerInt f = \LowerSigmaInt f = \UpperSigmaInt f
+    \]
+    We denote this common value by $\Integral f \, d\mu$, the \textbf{Lebesgue integral}.
+\end{theorem}
+
+\begin{proof}
+    The equality $\LowerInt f = \LowerSigmaInt f$ holds for all $f$ (by the previous proposition).
+    
+    It remains to show $\LowerSigmaInt f = \UpperSigmaInt f$ for measurable $f$.
+    
+    \medskip
+    Let $\epsilon > 0$. By uniform $\sigma$-simple approximation with $2^n$, there exist 
+    $\sigma$-simple $s_n \nearrow f$ and $t_n \searrow f$ uniformly.
+    
+    For $n$ large enough: $\|t_n - s_n\|_\infty < \epsilon$, so:
+    \[
+        \Integral t_n - \Integral s_n = \Integral (t_n - s_n) \leq \epsilon \cdot \mu(\text{supp}(f))
+    \]
+    
+    Thus $\UpperSigmaInt f \leq \Integral t_n \leq \Integral s_n + \epsilon \cdot \mu(\text{supp}(f)) \leq \LowerSigmaInt f + \epsilon \cdot \mu(\text{supp}(f))$.
+    
+    Taking $\epsilon \to 0$: $\UpperSigmaInt f \leq \LowerSigmaInt f$.
+    
+    Combined with $\LowerSigmaInt f \leq \UpperSigmaInt f$ (from ordering), we have equality.
+\end{proof}
+
+\begin{definition}[Lebesgue Integral]
+    For measurable $f: X \to [0, \infty]$:
+    \[
+        \Integral_X f \, d\mu = \LowerInt f = \LowerSigmaInt f = \UpperSigmaInt f
+    \]
+\end{definition}
+
+\section{Monotone Convergence Theorem}
+
+\begin{intuition}
+    MCT is the cornerstone of Lebesgue integration theory. It says: for \textbf{non-negative} 
+    functions increasing pointwise, the integral of the limit equals the limit of the integrals.
+    
+    Why non-negativity? Without it, $\infty - \infty$ issues arise. Why increasing? 
+    Decreasing sequences may fail (e.g., $f_n = \CharFunc{[n,\infty)}$ on $\bb{R}$ with 
+    Lebesgue measure: $\Integral f_n = \infty$ but $\Integral \lim f_n = 0$).
+    
+    MCT unlocks powerful techniques:
+    \begin{itemize}
+        \item Interchange of $\sum$ and $\Integral$ for non-negative terms
+        \item Definition of the integral via simple function approximation
+        \item Proofs of Fatou and DCT
+    \end{itemize}
+\end{intuition}
+
+\bigskip
+
+\begin{theorem}[MCT / Beppo-Levi]
+Let $(f_n)$ be measurable with $0 \leq f_n \nearrow f$ pointwise. Then:
+\[ \lim_{n \to \infty} \Integral_X f_n \, d\mu = \Integral_X f \, d\mu \]
+\end{theorem}
+
+\begin{proof}
+Since $f_n \leq f$, monotonicity gives $\Integral_X f_n \, d\mu \leq \Integral_X f \, d\mu$, so $\lim \Integral_X f_n \, d\mu \leq \Integral_X f \, d\mu$.
+
+For the reverse, let $s$ be simple with $0 \leq s \leq f$ and $0 < c < 1$. Define:
+\[ E_n = \{x \mid f_n(x) \geq c \cdot s(x)\} \]
+Then $E_n \nearrow X$ since $f_n \nearrow f \geq s > cs$. Thus:
+\[ \Integral_X f_n \, d\mu \geq \Integral_{E_n} f_n \, d\mu \geq c \Integral_{E_n} s \, d\mu \]
+By continuity from below, $\Integral_{E_n} s \, d\mu \to \Integral_X s \, d\mu$. So $\lim \Integral_X f_n \, d\mu \geq c \Integral_X s \, d\mu$.
+
+Taking $c \to 1$ and supremum over $s$: $\lim \Integral_X f_n \, d\mu \geq \Integral_X f \, d\mu$.
+\end{proof}
+
+\begin{corollary}
+For measurable $f_n \geq 0$: $\Integral_X \sum_{n=1}^\infty f_n = \sum_{n=1}^\infty \Integral_X f_n$.
+\end{corollary}
+
+\begin{proof}
+Let $S_N = \sum_{n=1}^N f_n$. Then $S_N \nearrow \sum_{n=1}^\infty f_n$. By MCT: $\Integral_X \sum f_n = \lim_N \Integral_X S_N = \lim_N \sum_{n=1}^N \Integral_X f_n = \sum_{n=1}^\infty \Integral_X f_n$.
+\end{proof}
+
+\section{Fatou's Lemma}
+
+\begin{intuition}
+    Fatou's Lemma is a ``one-sided MCT'' for sequences that aren't necessarily monotone. 
+    It states: $\Integral (\liminf f_n) \leq \liminf (\Integral f_n)$.
+    
+    The inequality can be strict: mass can ``escape to infinity'' in the limit. For example, 
+    $f_n = \CharFunc{[n, n+1]}$ on $\bb{R}$: each $\Integral f_n = 1$, but $\liminf f_n = 0$.
+    
+    Fatou is remarkably useful because it requires \textbf{no dominating function}---only 
+    non-negativity. This makes it applicable when DCT fails.
+\end{intuition}
+
+\bigskip
+
+\begin{theorem}[Fatou's Lemma]
+If $(f_n)$ are measurable with $f_n \geq 0$:
+\[ \Integral_X \liminf_{n \to \infty} f_n \, d\mu \leq \liminf_{n \to \infty} \Integral_X f_n \, d\mu \]
+\end{theorem}
+
+\begin{proof}
+Let $g_k = \inf_{n \geq k} f_n$. Then $g_k \nearrow \liminf_{n \to \infty} f_n$ and $g_k \leq f_k$. By MCT:
+\[ \Integral_X \liminf_{n \to \infty} f_n \, d\mu = \lim_{k \to \infty} \Integral_X g_k \, d\mu \leq \liminf_{k \to \infty} \Integral_X f_k \, d\mu \]
+\end{proof}
+
+\section{Integrable Functions}
+
+\begin{definition}
+For measurable $f: X \to \bb{R}$, define $f^+ = \max(f, 0)$ and $f^- = \max(-f, 0)$.
+
+$f$ is \textbf{integrable} ($f \in \Lp{1}(\mu)$) if $\Integral_X f^+ \, d\mu < \infty$ and $\Integral_X f^- \, d\mu < \infty$.
+
+The integral is: $\Integral_X f \, d\mu = \Integral_X f^+ d\mu - \Integral_X f^- d\mu$.
+\end{definition}
+
+\begin{proposition}
+$f \in \Lp{1}(\mu)$ iff $\Integral_X |f| d\mu < \infty$. Moreover: $\left|\Integral_X f\right| \leq \Integral_X |f|$.
+\end{proposition}
+
+\begin{proof}
+$|f| = f^+ + f^-$, so $\Integral_X |f| = \Integral_X f^+ + \Integral_X f^- < \infty$ iff both are finite, iff $f \in \Lp{1}$.
+
+Triangle inequality: $|\Integral_X f| = |\Integral_X f^+ - \Integral_X f^-| \leq \Integral_X f^+ + \Integral_X f^- = \Integral_X |f|$.
+\end{proof}
+
+\section{Dominated Convergence Theorem}
+
+\begin{intuition}
+    DCT is the most practical convergence theorem: if $f_n \to f$ pointwise and $|f_n| \leq g$ 
+    for some integrable $g$, then $\Integral f_n \to \Integral f$.
+    
+    Unlike MCT, DCT works for \textbf{signed} functions and \textbf{non-monotone} convergence. 
+    The price is the dominating function $g \in \Lp{1}$, which prevents mass from escaping 
+    to infinity.
+    
+    DCT is the go-to tool for:
+    \begin{itemize}
+        \item Differentiating under the integral sign (Leibniz rule)
+        \item Interchanging limits and integrals in applications
+        \item Proving continuity of parameter-dependent integrals
+    \end{itemize}
+\end{intuition}
+
+\bigskip
+
+\begin{theorem}[DCT / Lebesgue]
+Let $(f_n)$ be measurable with $f_n \to f$ \almosteverywhere{} If there exists $g \in \Lp{1}(\mu)$ with $|f_n| \leq g$ \almosteverywhere{} for all $n$, then:
+\[ f \in \Lp{1}(\mu) \quad \text{and} \quad \lim_{n \to \infty} \Integral_X |f_n - f| \, d\mu = 0 \]
+In particular: $\lim_{n \to \infty} \Integral_X f_n \, d\mu = \Integral_X f \, d\mu$.
+\end{theorem}
+
+\begin{proof}
+Since $|f| = \lim |f_n| \leq g$ \almosteverywhere{}, we have $f \in \Lp{1}$.
+
+Apply Fatou to $g - f_n \geq 0$ and $g + f_n \geq 0$:
+\[ \Integral_X (g - f) \, d\mu \leq \liminf_{n \to \infty} \Integral_X (g - f_n) \, d\mu = \Integral_X g \, d\mu - \limsup_{n \to \infty} \Integral_X f_n \, d\mu \]
+\[ \Integral_X (g + f) \, d\mu \leq \liminf_{n \to \infty} \Integral_X (g + f_n) \, d\mu = \Integral_X g \, d\mu + \liminf_{n \to \infty} \Integral_X f_n \, d\mu \]
+Thus $\limsup_{n \to \infty} \Integral_X f_n \, d\mu \leq \Integral_X f \, d\mu \leq \liminf_{n \to \infty} \Integral_X f_n \, d\mu$, so $\lim_{n \to \infty} \Integral_X f_n \, d\mu = \Integral_X f \, d\mu$.
+
+For $\Integral_X |f_n - f| \, d\mu \to 0$: apply Fatou to $2g - |f_n - f| \geq 0$.
+\end{proof}
+
+\begin{corollary}[DCT Implies $\Lp{1}$ Convergence]
+    If the hypotheses of DCT hold, then:
+    \[
+        \Integral_X |f_n - f| \, d\mu \to 0 \implies \Integral_X f_n \, d\mu \to \Integral_X f \, d\mu
+    \]
+    In fact, the converse implication $\Integral_X |f_n - f| \, d\mu \to 0$ follows from DCT 
+    by applying it to the sequence $|f_n - f|$ (which converges to $0$ a.e.\ and is dominated by $2g$).
+\end{corollary}
+
+\section{Change of Variables}
+
+\begin{intuition}
+    The change of variables formula relates integrals via the pushforward measure. If we 
+    ``transport'' a measure $\mu$ on $X$ to a measure $f_* \mu$ on $Y$ via a measurable 
+    function $f: X \to Y$, then integrating $g$ over $Y$ with respect to $f_* \mu$ is the 
+    same as integrating $g \circ f$ over $X$ with respect to $\mu$.
+    
+    This generalizes classical substitution rules and is fundamental for probability theory 
+    (where it underlies the law of the unconscious statistician).
+\end{intuition}
+
+\bigskip
+\begin{theorem}[Change of Variables / Pushforward Formula]
+    Let $(X, \mathcal{M}, \mu)$ be a measure space, $(Y, \mathcal{N})$ a measurable space, 
+    and $f: X \to Y$ a measurable function. Let $f_* \mu$ be the pushforward measure on $Y$.
+    
+    For any measurable function $g: Y \to [0, \infty]$:
+    \[
+        \Integral_Y g \, d(f_* \mu) = \Integral_X (g \circ f) \, d\mu
+    \]
+    
+    More generally, if $g: Y \to \overline{\bb{R}}$ is measurable and either $g \geq 0$ or 
+    $g \in \Lp{1}(f_* \mu)$, then the equality holds (with $g \in \Lp{1}(f_* \mu) \iff g \circ f \in \Lp{1}(\mu)$).
+\end{theorem}
+
+\begin{proof}
+    We prove this in three steps: characteristic functions, simple functions, and general 
+    non-negative measurable functions.
+    
+    \bigskip
+    \textbf{Step 1: Characteristic functions.}
+    
+    Let $g = \CharFunc{A}$ for some $A \in \mathcal{N}$. The left-hand side is:
+    \[
+        \Integral_Y \CharFunc{A} \, d(f_* \mu) = (f_* \mu)(A) = \mu(f^{-1}(A))
+    \]
+    
+    The right-hand side is:
+    \[
+        \Integral_X (\CharFunc{A} \circ f) \, d\mu = \Integral_X \CharFunc{f^{-1}(A)} \, d\mu = \mu(f^{-1}(A))
+    \]
+    
+    Thus both sides are equal.
+    
+    \bigskip
+    \textbf{Step 2: Simple functions.}
+    
+    Let $g = \sum_{i=1}^n \alpha_i \CharFunc{A_i}$ be a simple function on $Y$. By linearity:
+    \begin{align*}
+        \Integral_Y g \, d(f_* \mu) &= \sum_{i=1}^n \alpha_i (f_* \mu)(A_i) \\
+        &= \sum_{i=1}^n \alpha_i \mu(f^{-1}(A_i)) \quad \text{(by Step 1)} \\
+        &= \Integral_X \left( \sum_{i=1}^n \alpha_i \CharFunc{f^{-1}(A_i)} \right) d\mu \\
+        &= \Integral_X (g \circ f) \, d\mu
+    \end{align*}
+    
+    \bigskip
+    \textbf{Step 3: General non-negative measurable functions.}
+    
+    Let $g: Y \to [0, \infty]$ be measurable. By the simple function approximation theorem, 
+    there exist simple functions $s_n \nearrow g$ pointwise on $Y$.
+    
+    Then $s_n \circ f \nearrow g \circ f$ pointwise on $X$.
+    
+    By MCT on both sides:
+    \begin{align*}
+        \Integral_Y g \, d(f_* \mu) &= \lim_{n \to \infty} \Integral_Y s_n \, d(f_* \mu) \quad \text{(MCT on $Y$)} \\
+        &= \lim_{n \to \infty} \Integral_X (s_n \circ f) \, d\mu \quad \text{(Step 2)} \\
+        &= \Integral_X (g \circ f) \, d\mu \quad \text{(MCT on $X$)}
+    \end{align*}
+    
+    \bigskip
+    \textbf{Step 4: General integrable functions.}
+    
+    For $g$ with indefinite sign, apply the non-negative case to $g^+$ and $g^-$:
+    \[
+        \Integral_Y g \, d(f_* \mu) = \Integral_Y g^+ \, d(f_* \mu) - \Integral_Y g^- \, d(f_* \mu)
+        = \Integral_X (g^+ \circ f) \, d\mu - \Integral_X (g^- \circ f) \, d\mu
+    \]
+    Since $(g^+ \circ f) = (g \circ f)^+$ and $(g^- \circ f) = (g \circ f)^-$:
+    \[
+        = \Integral_X (g \circ f)^+ \, d\mu - \Integral_X (g \circ f)^- \, d\mu = \Integral_X (g \circ f) \, d\mu
+    \]
+    
+    The integrability equivalence follows: $g \in \Lp{1}(f_* \mu) \iff \Integral_Y |g| \, d(f_* \mu) < \infty 
+    \iff \Integral_X |g \circ f| \, d\mu < \infty \iff g \circ f \in \Lp{1}(\mu)$.
+\end{proof}
+
+\section{Riemann vs Lebesgue}
+
+\begin{theorem}[Lebesgue Criterion]
+A bounded function $f: [a, b] \to \bb{R}$ is Riemann integrable iff $f$ is continuous \almosteverywhere{} (the set of discontinuities has Lebesgue measure 0).
+
+If $f$ is Riemann integrable, then $f$ is Lebesgue integrable and:
+\[ \Integral_a^b f(x) dx = \Integral_{[a,b]} f \, d\lambda \]
+\end{theorem}
+
+\begin{proof}
+Let $D_f = \{x \in [a,b] \mid f \text{ is discontinuous at } x\}$.
+
+\textbf{Oscillation:} For $x \in [a,b]$, define the oscillation:
+\[ \omega_f(x) = \lim_{\delta \to 0^+} \left( \sup_{|y-x|<\delta} f(y) - \inf_{|y-x|<\delta} f(y) \right) \]
+
+Then $x \in D_f$ iff $\omega_f(x) > 0$. Note $D_f = \bigcup_{n \in \bb{N}} \{x \mid \omega_f(x) \geq 1/n\}$.
+
+\textbf{($\Rightarrow$):} Assume $f$ is Riemann integrable. For any $\epsilon > 0$, there exists partition $P$ with $\overline{S}(f,P) - \underline{S}(f,P) < \epsilon$.
+
+Let $A_\epsilon = \{x \mid \omega_f(x) \geq \epsilon\}$. The contribution to $\overline{S} - \underline{S}$ from intervals meeting $A_\epsilon$ is $\geq \epsilon \cdot \lambda^*(A_\epsilon \setminus \text{endpoints})$.
+
+Thus $\lambda^*(A_\epsilon) \leq (\overline{S} - \underline{S})/\epsilon \to 0$ as partition refines. So $\lambda(A_\epsilon) = 0$ for all $\epsilon > 0$, hence $\lambda(D_f) = 0$.
+
+\textbf{($\Leftarrow$):} Assume $\lambda(D_f) = 0$. Given $\epsilon > 0$, cover $D_f$ by intervals of total length $< \epsilon$. On the compact set outside this cover, $f$ is continuous hence uniformly continuous.
+
+Choose partition fine enough that oscillation on each subinterval is $< \epsilon$ (except those meeting the cover). Then $\overline{S} - \underline{S} < \epsilon(b-a) + 2M\epsilon$ where $M = \sup|f|$.
+
+\textbf{Equality of integrals:} For Riemann integrable $f$, the upper/lower Riemann sums are Lebesgue integrals of simple functions that converge \almosteverywhere{} to $f$. By DCT (with dominating function $M$), the Lebesgue integral equals the Riemann integral.
+\end{proof}
+
+\bigskip
+\begin{compendium}
+
+\textbf{Integral Construction:}
+\begin{enumerate}
+    \item \textbf{Simple:} $\Integral s \, d\mu = \sum_i \alpha_i \mu(A_i)$ for $s = \sum_i \alpha_i \CharFunc{A_i}$
+    \item \textbf{$\sigma$-Simple:} Same formula, countable sum
+    \item \textbf{Non-negative measurable:} $\Integral f = \sup\{\Integral s \mid s \text{ simple}, s \leq f\}$
+    \item \textbf{Integrable:} $f \in \Lp{1}$ if $\Integral |f| < \infty$; then $\Integral f = \Integral f^+ - \Integral f^-$
+\end{enumerate}
+
+\textbf{Integral Properties (for $\sigma$-simple and measurable functions):}
+\begin{itemize}
+    \item \textbf{Linearity:} $\Integral (\alpha f + \beta g) = \alpha \Integral f + \beta \Integral g$
+    \item \textbf{Monotonicity:} $f \leq g \implies \Integral f \leq \Integral g$
+    \item \textbf{Triangle inequality:} $|\Integral f| \leq \Integral |f|$
+    \item \textbf{Monotonicity in set:} $A \subseteq B \implies \Integral_A f \leq \Integral_B f$ (for $f \geq 0$)
+    \item \textbf{Countable additivity in set:} $\Integral_{\bigsqcup_n A_n} f = \sum_n \Integral_{A_n} f$ (for $f \geq 0$)
+    \item \textbf{Zero characterization:} $\Integral f = 0$ and $f \geq 0 \implies f = 0$ a.e.
+\end{itemize}
+
+\textbf{Convergence Theorems:}
+\begin{itemize}
+    \item \textbf{MCT:} $0 \leq f_n \nearrow f$ $\implies$ $\Integral f_n \to \Integral f$
+    \item \textbf{Fatou:} $f_n \geq 0$ $\implies$ $\Integral \liminf f_n \leq \liminf \Integral f_n$
+    \item \textbf{DCT:} $f_n \to f$ a.e., $|f_n| \leq g \in \Lp{1}$ $\implies$ $\Integral |f_n - f| \to 0$ and $\Integral f_n \to \Integral f$
+\end{itemize}
+
+\textbf{MCT Corollary:} $\Integral \sum_n f_n = \sum_n \Integral f_n$ for $f_n \geq 0$.
+
+\textbf{Change of Variables:} For measurable $f: X \to Y$ and $g \geq 0$:
+\[
+    \Integral_Y g \, d(f_* \mu) = \Integral_X (g \circ f) \, d\mu
+\]
+
+\textbf{Riemann vs Lebesgue:} A bounded $f: [a,b] \to \bb{R}$ is Riemann integrable iff continuous a.e. 
+If Riemann integrable, then Lebesgue integrable with equal integrals.
+
+\end{compendium}
+
+
+
+

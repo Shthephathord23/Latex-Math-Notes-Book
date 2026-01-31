@@ -1,0 +1,186 @@
+\chapter{Exercises}
+
+\section{$\sigma$-Algebras and Borel Sets}
+
+\begin{enumerate}
+    \item Prove that $\BorelAlg{\bb{R}} = \GenSigmaAlg{\{(a,b) \mid a < b\}}$.
+    \item Show $\bb{Q} \in \BorelAlg{\bb{R}}$ and $\bb{R} \setminus \bb{Q} \in \BorelAlg{\bb{R}}$.
+    \item Let $\mathcal{F} = \{(a, \infty) \mid a \in \bb{R}\}$. Prove $\GenSigmaAlg{\mathcal{F}} = \BorelAlg{\bb{R}}$.
+    \item Show that the collection of half-open intervals $\{(a, b] \mid a \leq b\}$ forms a $\pi$-system.
+    \item Prove the Cantor set is Borel measurable with $\lambda(C) = 0$.
+    \item Show that $\{f^{-1}(B) \mid B \in \BorelAlg{\bb{R}}\}$ is a $\sigma$-algebra for any $f: X \to \bb{R}$.
+    \item Prove that every $\pi$-system closed under complements is an algebra.
+    \item Show that $\GenSigmaAlg{\mathcal{F}_1 \cup \mathcal{F}_2} = \GenSigmaAlg{\GenSigmaAlg{\mathcal{F}_1} \cup \mathcal{F}_2}$.
+    \item Prove that $|\BorelAlg{\bb{R}}| = |\bb{R}|$ (cardinality of continuum).
+    \item Show that $\BorelAlg{\bb{R}^n} = \GenSigmaAlg{\text{open balls}}$.
+\end{enumerate}
+
+\section{Measures}
+
+\begin{enumerate}
+    \item Prove $\sigma$-subadditivity from $\sigma$-additivity using disjointification.
+    \item Let $A_n = [n, \infty)$. Show $\lim \lambda(A_n) \neq \lambda(\cap A_n)$. Why doesn't continuity from above apply?
+    \item Prove continuity from below directly from $\sigma$-additivity.
+    \item Let $\mu$ be counting measure on $\bb{N}$. Find $\mu(\{n \mid n \text{ is even}\})$.
+    \item Show that if $\mu(A_n) = 0$ for all $n$, then $\mu(\cup A_n) = 0$.
+    \item Prove that $\mu(A \triangle B) = 0$ defines an equivalence relation.
+    \item Show that $\mu(\liminf A_n) \leq \liminf \mu(A_n)$ (Fatou for sets).
+    \item Prove Borel-Cantelli: if $\sum \mu(A_n) < \infty$, then $\mu(\limsup A_n) = 0$.
+    \item Let $\mu$ be finite. Prove $\mu(\limsup A_n) \geq \limsup \mu(A_n)$ is false in general.
+    \item Construct a measure on $\bb{N}$ that is not $\sigma$-finite.
+    \item Prove that Dirac measure $\delta_x$ is a measure.
+    \item Show that $\mu(A) = \sum_{n \in A} 2^{-n}$ is a finite measure on $\bb{N}$.
+\end{enumerate}
+
+\section{Carathéodory and Lebesgue Measure}
+
+\begin{enumerate}
+    \item Verify that every interval $[a, b]$ is $\lambda^*$-measurable.
+    \item Prove $\lambda^*(A) = \inf\{\lambda(G) \mid G \text{ open}, G \supseteq A\}$.
+    \item Construct a Lebesgue measurable set that is not Borel.
+    \item Show $\BorelAlg{\bb{R}} \subsetneq \text{Leb}(\bb{R}) \subsetneq \mathcal{P}(\bb{R})$.
+    \item Prove that the completion of Borel measure is Lebesgue measure.
+    \item Show $\lambda([0,1] \cap \bb{Q}) = 0$ and $\lambda([0,1] \setminus \bb{Q}) = 1$.
+    \item Prove that $\lambda$ is translation-invariant: $\lambda(A + x) = \lambda(A)$.
+    \item Show $\lambda(cA) = |c|^n \lambda(A)$ for $A \subseteq \bb{R}^n$.
+    \item Construct a non-measurable set using the axiom of choice.
+    \item Prove that every set of positive measure contains a non-measurable subset.
+    \item Show that $\lambda^*(A) = 0$ iff $A$ is contained in a Borel null set.
+    \item Prove Lebesgue's density theorem: $\lim_{r \to 0} \frac{\lambda(A \cap B_r(x))}{\lambda(B_r(x))} = 1$ for \almosteverywhere{} $x \in A$.
+\end{enumerate}
+
+\section{Riemann vs Lebesgue}
+
+\begin{enumerate}
+    \item Prove the Dirichlet function $\CharFunc{\bb{Q} \cap [0,1]}$ is Lebesgue integrable with $\Integral = 0$.
+    \item Show it is not Riemann integrable.
+    \item Find a function continuous \almosteverywhere{} that is Riemann integrable.
+    \item Construct $f$ bounded with uncountable discontinuity set but still Riemann integrable.
+    \item Prove: Riemann integrable $\implies$ Lebesgue integrable with same value.
+    \item Show that $f(x) = \sin(1/x)$ on $(0,1]$, $f(0) = 0$ is Riemann integrable.
+    \item Prove the Thomae function is Riemann integrable.
+    \item Show that $f_n(x) = x^n$ on $[0,1]$ converges pointwise but $\Integral_0^1 f_n \not\to \Integral_0^1 \lim f_n$ in Riemann sense.
+    \item Compute $\Integral_0^1 \CharFunc{C} dx$ where $C$ is the Cantor set.
+    \item Show that if $f$ is monotone on $[a,b]$, then $f$ is Riemann integrable.
+\end{enumerate}
+
+\section{Measurable Functions}
+
+\begin{enumerate}
+    \item Show that continuous functions are Borel measurable.
+    \item Prove that monotone functions on $\bb{R}$ are Borel measurable.
+    \item Show $f \cdot g$ measurable when $f, g$ measurable (direct proof).
+    \item Prove that $\{f = g\}$ is measurable when $f, g$ are measurable.
+    \item Show that $\limsup f_n$ is measurable when each $f_n$ is measurable.
+    \item Prove that the composition of measurable functions is measurable.
+    \item Show that $f^{-1}(\{y\})$ is measurable for each $y$ iff $f$ is measurable (false in general).
+    \item Prove Lusin's theorem: measurable $f$ is continuous on a large set.
+    \item Show that every measurable $f \geq 0$ is a limit of simple functions.
+    \item Prove Egorov's theorem: \almosteverywhere{} convergence implies almost uniform convergence on finite measure spaces.
+\end{enumerate}
+
+\section{Convergence Theorems}
+
+\begin{enumerate}
+    \item Compute $\lim_{n \to \infty} \Integral_0^1 nx^{n-1} dx$. Does MCT apply? DCT?
+    \item Let $f_n = n \CharFunc{[0, 1/n]}$. Show $f_n \to 0$ \almosteverywhere{} but $\Integral f_n = 1$.
+    \item Use MCT to prove $\Integral \sum f_n = \sum \Integral f_n$ for $f_n \geq 0$.
+    \item Apply Fatou to find $\liminf \Integral f_n$ when $f_n = \CharFunc{[n, n+1]}$.
+    \item Use DCT to compute $\lim \Integral_0^\infty \frac{\sin(x/n)}{x} e^{-x} dx$.
+    \item Compute $\lim_{n \to \infty} \Integral_0^n (1 - x/n)^n e^{x/2} dx$.
+    \item Show $\lim_{n \to \infty} \Integral_0^\infty \frac{n \sin(x/n)}{x(1+x^2)} dx = \pi/2$.
+    \item Prove: if $f_n \to f$ in $\Lp{1}$ and $f_n \to g$ \almosteverywhere{}, then $f = g$ \almosteverywhere{}
+    \item Show that MCT fails without monotonicity.
+    \item Compute $\lim_{n \to \infty} \Integral_0^1 \frac{nx}{1+n^2x^2} dx$.
+    \item Prove the reverse Fatou lemma with additional hypothesis.
+    \item Show $\Integral_0^\infty e^{-x^2} dx = \sqrt{\pi}/2$ using Fubini.
+\end{enumerate}
+
+\section{$\Lp{p}$ Spaces}
+
+\begin{enumerate}
+    \item Let $f_n = n^{1/p} \CharFunc{[1/n, 2/n]}$. Show $\|f_n\|_p = 1$ but $f_n \to 0$ pointwise.
+    \item Prove Young's inequality: $ab \leq \frac{a^p}{p} + \frac{b^q}{q}$.
+    \item Use Hölder to show $\|f\|_1 \leq \|f\|_2 \mu(X)^{1/2}$ for finite measure.
+    \item Prove $\Lp{2}$ convergence implies $\Lp{1}$ convergence on finite measure spaces.
+    \item Find $f \in \Lp{1}([0,1])$ but $f \notin \Lp{2}([0,1])$.
+    \item Show $\Lp{p} \subseteq \Lp{q}$ for $p > q$ on finite measure spaces.
+    \item Prove that $\Lp{2}$ is a Hilbert space with inner product $\langle f, g \rangle = \Integral f \bar{g}$.
+    \item Show that simple functions are dense in $\Lp{p}$.
+    \item Prove that $C_c(\bb{R})$ is dense in $\Lp{p}(\bb{R})$ for $p < \infty$.
+    \item Find the dual exponent $q$ for $p = 3/2$.
+    \item Show $\|f\|_\infty = \lim_{p \to \infty} \|f\|_p$ on finite measure spaces.
+    \item Prove that $L^\infty$ is not separable on $[0,1]$.
+\end{enumerate}
+
+\section{Product Measures}
+
+\begin{enumerate}
+    \item Use Fubini to compute $\Integral_0^1 \Integral_0^1 \frac{x-y}{(x+y)^3} dy\, dx$.
+    \item Compute $\Integral_{\bb{R}^2} e^{-(x^2+y^2)} dx\, dy$ using polar coordinates.
+    \item Show iterated integrals may differ if $f \notin \Lp{1}$.
+    \item Prove $\BorelAlg{\bb{R}^2} = \BorelAlg{\bb{R}} \otimes \BorelAlg{\bb{R}}$.
+    \item Compute $\Integral_0^\infty \frac{\sin x}{x} dx$ using parameter integrals.
+    \item Use Fubini to prove $\Integral_0^\infty \frac{e^{-ax} - e^{-bx}}{x} dx = \ln(b/a)$.
+    \item Compute $\Integral_0^1 \Integral_0^1 \frac{1}{1-xy} dx\, dy$ (hint: expand as series).
+    \item Show that $(\mu \otimes \nu) \otimes \rho = \mu \otimes (\nu \otimes \rho)$.
+    \item Prove Cavalieri's principle for Lebesgue measure.
+    \item Compute the volume of the $n$-ball using Fubini.
+\end{enumerate}
+
+\section{Convergence in Measure}
+
+\begin{enumerate}
+    \item Show $\Lp{p}$ convergence implies convergence in measure.
+    \item Find $(f_n)$ converging in measure but not \almosteverywhere{}
+    \item Prove Riesz: convergence in measure has \almosteverywhere{} convergent subsequence.
+    \item Define uniform integrability. Give an example.
+    \item State and apply Vitali's theorem.
+    \item Show that \almosteverywhere{} convergence does not imply convergence in measure (infinite measure).
+    \item Prove: $f_n \to f$ in measure and $g_n \to g$ in measure implies $f_n + g_n \to f + g$ in measure.
+    \item Show that $f_n \to f$ in measure iff every subsequence has a further subsequence converging \almosteverywhere{}
+    \item Prove that uniform integrability + convergence in measure implies $\Lp{1}$ convergence.
+    \item Give an example where $f_n \to f$ in $\Lp{1}$ but not uniformly.
+\end{enumerate}
+
+\section{Parameter Integrals}
+
+\begin{enumerate}
+    \item Prove $\phi(t) = \Integral_0^\infty e^{-tx} \sin x \, dx$ is differentiable for $t > 0$.
+    \item Compute $\Integral_0^\infty \frac{e^{-x} - e^{-2x}}{x} dx$ using parameter integrals.
+    \item Prove $\Gamma(n+1) = n!$ where $\Gamma(s) = \Integral_0^\infty x^{s-1} e^{-x} dx$.
+    \item Justify differentiation under the integral for $\Integral_0^1 x^t dx$.
+    \item Use Leibniz rule to compute $\frac{d}{dt} \Integral_0^t f(t, x) dx$.
+    \item Compute $\Integral_0^\infty \frac{\ln x}{x^2 - 1} dx$.
+    \item Prove $\Gamma(1/2) = \sqrt{\pi}$.
+    \item Use parameter integrals to compute $\Integral_0^\infty \frac{\sin x}{x} dx = \pi/2$.
+    \item Prove the beta function identity: $B(a,b) = \frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}$.
+    \item Compute $\Integral_0^\infty x^n e^{-x^2} dx$ in terms of $\Gamma$.
+\end{enumerate}
+
+\section{Modes of Convergence}
+
+\begin{enumerate}
+    \item Construct $(f_n)$ on $[0,1]$ with $f_n \to 0$ in measure but $f_n(x) \not\to 0$ for any $x$.
+    \item Show: \almosteverywhere{} convergence + domination implies $\Lp{p}$ convergence.
+    \item Prove that on finite measure spaces, $\Lp{p}$ convergence implies $\Lp{q}$ convergence for $q < p$.
+    \item Show that uniform convergence implies $\Lp{p}$ convergence on finite measure spaces.
+    \item Prove that $f_n \to f$ uniformly iff $\|f_n - f\|_\infty \to 0$.
+    \item Show the "typewriter sequence" converges in measure but not \almosteverywhere{}
+    \item Prove: $\Lp{1}$ convergence + \almosteverywhere{} convergence to $g$ implies $f = g$ \almosteverywhere{}
+    \item Give an example of $\Lp{p}$ convergence without \almosteverywhere{} convergence.
+\end{enumerate}
+
+\section{Simple Functions and Integration}
+
+\begin{enumerate}
+    \item Show that $\Integral (f + g) = \Integral f + \Integral g$ for integrable $f, g$.
+    \item Prove that $\Integral cf = c \Integral f$ for $c \in \bb{R}$.
+    \item Show that $f \leq g$ \almosteverywhere{} implies $\Integral f \leq \Integral g$.
+    \item Prove that $|\Integral f| \leq \Integral |f|$ (triangle inequality).
+    \item Show that $\Integral f = 0$ for all measurable $E$ implies $f = 0$ \almosteverywhere{}
+    \item Prove Chebyshev's inequality: $\mu(\{|f| \geq \alpha\}) \leq \frac{1}{\alpha} \Integral |f|$.
+    \item Show that if $\Integral |f|^p < \infty$ and $\Integral |f|^q < \infty$, then $\Integral |f|^r < \infty$ for $p < r < q$.
+    \item Prove Markov's inequality: $\mu(\{f \geq \alpha\}) \leq \frac{\Integral f}{\alpha}$ for $f \geq 0$.
+\end{enumerate}
+

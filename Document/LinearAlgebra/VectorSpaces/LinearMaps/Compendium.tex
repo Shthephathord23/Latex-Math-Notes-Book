@@ -1,0 +1,83 @@
+% Document/LinearAlgebra/VectorSpaces/LinearMaps/Compendium.tex
+% Chapter 2 Compendium: Linear Maps
+
+\newpage
+\section{Chapter Compendium}
+
+\begin{compendium}[Linear Transformations]
+    \textbf{Definition}: $T: U \to V$ linear iff $T(au + bv) = aT(u) + bT(v)$
+    
+    \textbf{Category $K$-Vect}: $\Hom[K]{U}{V} = \Set{T : U \to V \mid T \text{ linear}}$
+    
+    \textbf{Composition}: $T, S$ linear $\Rightarrow$ $\Composition{S}{T}$ linear (associative, identity morphisms)
+    
+    \textbf{Basic Properties}: $T(0) = 0$, $T(-v) = -T(v)$, $T(\sum a_i u_i) = \sum a_i T(u_i)$
+\end{compendium}
+
+\begin{compendium}[Universal Property (Free Objects)]
+    For basis $B$ of $V$, any $f: B \to W$ extends uniquely to linear $T: V \to W$
+    
+    \textbf{Equivalent} (no isomorphism): $V$ has basis $\Leftrightarrow$ universal property $\Leftrightarrow$ $V = \bigoplus \Span{v_i}$
+    
+    \textbf{Corollary}: Every vector space is free (has basis by Zorn's lemma)
+    
+    \textbf{Corollary}: Linear maps determined by values on basis
+\end{compendium}
+
+\begin{compendium}[Fundamental Subspaces]
+    \textbf{Kernel and Range}:
+    \begin{itemize}
+        \item $\Ker{T} = \Set{u \in U \mid T(u) = 0} \Subspace[K] U$
+        \item $\Rng{T} = \Set{T(u) \mid u \in U} \Subspace[K] V$
+    \end{itemize}
+    
+    \textbf{Span and Image Commute}: $\Span[K]{\DirectImage{T}{S}} = \DirectImage{T}{\Span[K]{S}}$
+    
+    \textbf{Dimensions}: $\Rank{T} = \Dim[K]{\Rng{T}}$, $\Nullity{T} = \Dim[K]{\Ker{T}}$
+\end{compendium}
+
+\begin{compendium}[Rank-Nullity Theorem]
+    \textbf{Theorem}: $\Dim[K]{U} = \Rank{T} + \Nullity{T}$ (additive form, via basis extension)
+    
+    \textbf{Proof idea}: Extend $\Ker{T}$ basis to $U$ basis; remaining vectors map to $\Rng{T}$ basis
+    
+    \textbf{Equal Dimensions}: If $U$ and $V$ are finite-dimensional with $\Dim[K]{U} = \Dim[K]{V}$, then
+    injective $\Leftrightarrow$ surjective $\Leftrightarrow$ bijective
+\end{compendium}
+
+\begin{compendium}[Injectivity Characterizations]
+    For $T: U \to V$ linear, TFAE:
+    \begin{enumerate}
+        \item $T$ injective
+        \item $\Ker{T} = \{0\}$
+        \item $T$ split mono ($\Exists{S}{\Composition{S}{T} = \Identity{U}}$, when $U \neq \{0\}$)
+        \item $T$ monic (left-cancellable)
+        \item $T$ sends every lin.\ indep.\ set to lin.\ indep.\ set
+        \item $T$ sends every basis to lin.\ indep.\ set
+        \item $T$ sends some basis to lin.\ indep.\ set
+    \end{enumerate}
+\end{compendium}
+
+\begin{compendium}[Surjectivity Characterizations]
+    For $T: U \to V$ linear, TFAE:
+    \begin{enumerate}
+        \item $T$ surjective
+        \item $\Rng{T} = V$
+        \item $T$ split epi ($\Exists{S}{\Composition{T}{S} = \Identity{V}}$, when $V \neq \{0\}$)
+        \item $T$ epic (right-cancellable)
+        \item $T$ sends every generating set to generating set
+        \item $T$ sends every basis to generating set
+        \item $T$ sends some basis to generating set
+    \end{enumerate}
+\end{compendium}
+
+\begin{compendium}[Bijectivity and Isomorphism]
+    \textbf{Bijectivity TFAE}: bijective $\Leftrightarrow$ inj + surj $\Leftrightarrow$ isomorphism $\Leftrightarrow$ monic + epic $\Leftrightarrow$ every/some basis $\to$ basis
+    
+    \textbf{Isomorphism}: $U \cong V \Leftrightarrow \Dim[K]{U} = \Dim[K]{V}$
+    
+    \textbf{Coordinate Isomorphism}: $\phi_{\mathcal{B}}: V \xrightarrow{\cong} K^{(I)}$ (different ordered basis $\mathcal{B}$ gives different isomorphism)
+    
+    \textbf{Finite-dim Endomorphism}: For $T: V \to V$ with $V$ finite-dimensional:
+    injective $\Leftrightarrow$ surjective $\Leftrightarrow$ bijective
+\end{compendium}

@@ -1,0 +1,113 @@
+% Document/LinearAlgebra/VectorSpaces/LinearMaps/RankNullity.tex
+% Section: Rank-Nullity Theorem
+
+\newpage
+\section{The Rank-Nullity Theorem}
+
+\begin{theorem}[Rank-Nullity Theorem]\label{thm:rank-nullity}
+    For any linear map $T: U \to V$:
+    \[
+        \Dim[K]{U} = \Rank{T} + \Nullity{T}
+    \]
+    That is, $\Dim[K]{U} = \Dim[K]{\Rng{T}} + \Dim[K]{\Ker{T}}$.
+\end{theorem}
+
+\begin{proof}
+    We prove this via basis extension, not quotient spaces.
+    
+    Let $B_K = \{k_1, k_2, \ldots\}$ be a basis for $\Ker{T}$ (possibly empty, possibly infinite).
+    By the Basis Extension Theorem (Theorem~\ref{thm:basis-extension}), extend $B_K$ to a basis
+    $B = B_K \Union C$ for $U$, where $C = \{c_1, c_2, \ldots\}$ and $B_K \Intersect C = \emptyset$.
+    
+    \textbf{Claim}: $\DirectImage{T}{C} = \{T(c) \mid c \in C\}$ is a basis for $\Rng{T}$.
+    
+    \textit{Linear independence of $\DirectImage{T}{C}$}:
+    Suppose $\sum_{i=1}^{n} a_i T(c_i) = 0$ for $c_i \in C$.
+    Then $T\left(\sum_{i=1}^{n} a_i c_i\right) = 0$, so $\sum_{i=1}^{n} a_i c_i \in \Ker{T} = \Span[K]{B_K}$.
+    
+    Write $\sum_{i=1}^{n} a_i c_i = \sum_{j=1}^{m} b_j k_j$ for some $k_j \in B_K$.
+    Then $\sum_{i=1}^{n} a_i c_i - \sum_{j=1}^{m} b_j k_j = 0$.
+    Since $B = B_K \Union C$ is a basis and $B_K \Intersect C = \emptyset$, all coefficients must be zero.
+    In particular, all $a_i = 0$.
+    
+    \textit{$\DirectImage{T}{C}$ generates $\Rng{T}$}:
+    Let $v \in \Rng{T}$, so $v = T(u)$ for some $u \in U$.
+    Write $u = \sum_{i} a_i c_i + \sum_{j} b_j k_j$ (finite sums with $c_i \in C$, $k_j \in B_K$).
+    Then:
+    \[
+        v = T(u) = \sum_{i} a_i T(c_i) + \sum_{j} b_j T(k_j) = \sum_{i} a_i T(c_i) + 0 = \sum_{i} a_i T(c_i)
+    \]
+    since $T(k_j) = 0$ for all $k_j \in B_K \subseteq \Ker{T}$.
+    Thus $v \in \Span[K]{\DirectImage{T}{C}}$.
+    
+    \textbf{Conclusion}:
+    We have shown $\DirectImage{T}{C}$ is a basis for $\Rng{T}$.
+    
+    Since $T$ restricted to $C$ is injective (if $T(c_1) = T(c_2)$ for $c_1, c_2 \in C$, then
+    $c_1 - c_2 \in \Ker{T}$, but $c_1 - c_2 \in \Span[K]{C}$, and $\Span[K]{C} \Intersect \Ker{T} = \{0\}$
+    since $B = B_K \Union C$ is linearly independent with $B_K$ a basis for $\Ker{T}$).
+    
+    Therefore:
+    \begin{align*}
+        \Dim[K]{U} &= \Card{B} = \Card{B_K} + \Card{C} \\
+        &= \Dim[K]{\Ker{T}} + \Card{\DirectImage{T}{C}} \\
+        &= \Nullity{T} + \Rank{T}
+    \end{align*}
+\end{proof}
+
+\begin{remark}[Additive Form]
+    The rank-nullity theorem is stated in \textbf{additive form}:
+    $\Dim[K]{U} = \Rank{T} + \Nullity{T}$.
+    
+    This form is valid for \textbf{all} vector spaces, including infinite-dimensional ones,
+    where cardinal addition is well-defined.
+    
+    The subtraction forms require the \textbf{subtrahend} to be finite:
+    \begin{itemize}
+        \item $\Rank{T} = \Dim[K]{U} - \Nullity{T}$ is meaningful when $\Nullity{T}$ is finite
+        \item $\Nullity{T} = \Dim[K]{U} - \Rank{T}$ is meaningful when $\Rank{T}$ is finite
+    \end{itemize}
+\end{remark}
+
+
+
+% \begin{corollary}[Dimension Corollaries]\label{cor:rank-nullity}
+%     Let $T: U \to V$ be linear with $U$ finite-dimensional, $\Dim[K]{U} = n$.
+%     \begin{enumerate}
+%         \item $\Rank{T} \leq n$ and $\Nullity{T} \leq n$
+%         \item $\Rank{T} = n$ iff $\Nullity{T} = 0$ iff $T$ is injective
+%         \item $\Nullity{T} = n$ iff $\Rank{T} = 0$ iff $T = 0$ (zero map)
+%     \end{enumerate}
+% \end{corollary}
+
+% \begin{proof}
+%     \textbf{(1)}: Since $\Rank{T} + \Nullity{T} = n$ and both are non-negative, each is at most $n$.
+    
+%     \textbf{(2)}: $\Rank{T} = n$ iff $\Nullity{T} = n - n = 0$ iff $\Ker{T} = \{0\}$ iff $T$ is injective.
+    
+%     \textbf{(3)}: $\Nullity{T} = n$ iff $\Rank{T} = 0$ iff $\Rng{T} = \{0\}$ iff $T = 0$.
+% \end{proof}
+
+
+\begin{example}[Applying Rank-Nullity]\label{ex:rank-nullity}
+    Consider the following applications:
+    \begin{enumerate}
+        \item \textbf{Derivative on polynomials}:
+              Let $D: K[X]_{\leq n} \to K[X]_{\leq n-1}$ be the derivative.
+              We have $\Ker{D} = K$ (constants), so $\Nullity{D} = 1$.
+              By rank-nullity: $\Rank{D} = (n+1) - 1 = n = \Dim[K]{K[X]_{\leq n-1}}$.
+              Thus $D$ is surjective (but not injective).
+        
+        \item \textbf{Projection}:
+              Let $\pi: K^3 \to K^2$ be $\pi(x, y, z) = (x, y)$.
+              Then $\Ker{\pi} = \{(0, 0, z) \mid z \in K\}$, so $\Nullity{\pi} = 1$.
+              By rank-nullity: $\Rank{\pi} = 3 - 1 = 2 = \Dim[K]{K^2}$.
+              Thus $\pi$ is surjective.
+        
+        \item \textbf{Inclusion}:
+              Let $\iota: K^2 \to K^3$ be $\iota(x, y) = (x, y, 0)$.
+              Then $\Ker{\iota} = \{0\}$, so $\Nullity{\iota} = 0$.
+              By rank-nullity: $\Rank{\iota} = 2 - 0 = 2 < 3 = \Dim[K]{K^3}$.
+              Thus $\iota$ is injective but not surjective.
+    \end{enumerate}
+\end{example}

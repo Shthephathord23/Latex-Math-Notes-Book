@@ -20,6 +20,11 @@
     \mathcal{N}(#1)
 }
 
+\NewDocumentCommand{\GenAlg}{m}
+{
+    \mathcal{A}(#1)
+}
+
 \NewDocumentCommand{\BorelAlg}{m}
 {
     \mathcal{B}(#1)
@@ -32,6 +37,11 @@
     #1^*
 }
 
+
+\NewDocumentCommand{\Integral}{}
+{
+    \int
+}
 
 
 \NewDocumentCommand{\LowerInt}{}
@@ -47,13 +57,13 @@
 
 \NewDocumentCommand{\LowerSigmaInt}{}
 {
-    \underline{\int}^\sigma
+    {}_\sigma\underline{\int}
 }
 
 
 \NewDocumentCommand{\UpperSigmaInt}{}
 {
-    \overline{\int}^\sigma
+    {}_\sigma\overline{\int}
 }
 
 

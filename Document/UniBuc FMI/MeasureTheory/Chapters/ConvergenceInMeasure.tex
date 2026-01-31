@@ -1,0 +1,89 @@
+\chapter{Convergence in Measure}
+
+\section{Definition}
+
+\begin{definition}
+    $f_n \to f$ \textbf{in measure} if for every $\alpha > 0$:
+    \[
+        \lim_{n \to \infty} \mu(\{x \mid |f_n(x) - f(x)| \geq \alpha\}) = 0
+    \]
+\end{definition}
+
+\bigskip
+\section{Relations Between Convergence Modes}
+
+\begin{proposition}
+    \begin{enumerate}
+        \item $\Lp{p}$ convergence $\implies$ convergence in measure
+        \item A.e. convergence + finite measure $\implies$ convergence in measure
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    \textbf{(1)} Chebyshev: $\mu(|f_n - f| \geq \alpha) \leq \frac{1}{\alpha^p}\|f_n - f\|_p^p \to 0$.
+
+    \textbf{(2)} By Egorov's theorem (uniform convergence on large sets).
+\end{proof}
+
+\bigskip
+\section{Riesz's Theorem}
+
+\begin{theorem}
+    If $f_n \to f$ in measure, there exists a subsequence $f_{n_k} \to f$ \almosteverywhere{}
+\end{theorem}
+
+\begin{proof}
+    Choose $n_k$ such that $\mu(|f_{n_k} - f| \geq 2^{-k}) < 2^{-k}$.
+
+    Let $E_k = \{|f_{n_k} - f| \geq 2^{-k}\}$. Then $\sum \mu(E_k) < \infty$.
+
+    By Borel-Cantelli: \almosteverywhere{} $x$ is in only finitely many $E_k$, 
+    so $f_{n_k}(x) \to f(x)$.
+\end{proof}
+
+\bigskip
+\section{Vitali Convergence}
+
+\begin{definition}
+    $(f_n)$ is \textbf{uniformly integrable} if for every $\epsilon > 0$, 
+    there exists $\delta > 0$ such that:
+    \[
+        \mu(A) < \delta \implies \sup_n \Integral_A |f_n| < \epsilon
+    \]
+\end{definition}
+
+\medskip
+\begin{theorem}[Vitali]
+    Let $\mu(X) < \infty$ and $f_n \to f$ in measure. 
+    Then $f_n \to f$ in $\Lp{1}$ iff $(f_n)$ is uniformly integrable.
+\end{theorem}
+
+\begin{proof}
+    \textbf{($\Rightarrow$)} Suppose $f_n \to f$ in $\Lp{1}$. Given $\epsilon > 0$, 
+    for large $n$, $\|f_n - f\|_1 < \epsilon/3$.
+
+    Since $f \in \Lp{1}$, there exists $\delta > 0$ such that 
+    $\mu(A) < \delta \implies \Integral_A |f| < \epsilon/3$.
+
+    For the finitely many remaining $f_1, \ldots, f_N$, reduce $\delta$ so 
+    $\Integral_A |f_k| < \epsilon$ for $k \leq N$ when $\mu(A) < \delta$.
+
+    For $n > N$: $\Integral_A |f_n| \leq \Integral_A |f_n - f| + \Integral_A |f| < \epsilon/3 + \epsilon/3 < \epsilon$.
+
+    \medskip
+    \textbf{($\Leftarrow$)} Suppose $(f_n)$ is uniformly integrable and $f_n \to f$ in measure.
+
+    By Riesz, some subsequence $f_{n_k} \to f$ \almosteverywhere{} By Fatou, $f \in \Lp{1}$.
+
+    Given $\epsilon > 0$, choose $\delta$ from uniform integrability. 
+    By Egorov, there exists $E$ with $\mu(E^c) < \delta$ and $f_n \to f$ uniformly on $E$.
+
+    Then:
+    \[
+        \Integral |f_n - f| = \Integral_E |f_n - f| + \Integral_{E^c} |f_n - f| 
+        \leq \mu(E) \cdot \sup_E |f_n - f| + \Integral_{E^c} |f_n| + \Integral_{E^c} |f|
+    \]
+
+    The first term $\to 0$. The last two are $< 2\epsilon$ by uniform integrability.
+\end{proof}
+

@@ -1,0 +1,154 @@
+\chapter{The Riemann Integral}
+
+\section{Riemann/Jordan Simple Functions}
+
+\begin{definition}[Riemann Simple Function]
+A function $s: R \to \bb{R}$ defined on a rectangle $R \subseteq \bb{R}^n$ is \textbf{Riemann simple} (or \textbf{step function}) if:
+\begin{enumerate}
+    \item $s$ has finite image
+    \item For any subset $B \subseteq \bb{R}$, the preimage $s^{-1}(B)$ is a finite disjoint union of rectangles
+\end{enumerate}
+Equivalently, $s = \sum_{i=1}^k \alpha_i \CharFunc{R_i}$ where $R_i$ are disjoint rectangles.
+\end{definition}
+
+\begin{definition}[Integral of Riemann Simple Function]
+For a Riemann simple function $s = \sum_{i=1}^k \alpha_i \CharFunc{R_i}$:
+\[ \Integral_R s \, dc = \sum_{i=1}^k \alpha_i \cdot c(R_i) \]
+\end{definition}
+
+\section{Upper and Lower Riemann Sums}
+
+\begin{definition}[Partition]
+A \textbf{partition} $P$ of a rectangle $R = [a_1, b_1] \times \cdots \times [a_n, b_n]$ is a collection of subrectangles $\{R_j\}$ such that:
+\begin{enumerate}
+    \item $R = \bigcup_j R_j$
+    \item The interiors of distinct $R_j$ are disjoint
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Upper and Lower Sums]
+For a bounded function $f: R \to \bb{R}$ and partition $P = \{R_j\}$:
+\begin{align*}
+    \LowerSum{f}{P} &= \sum_j \left(\inf_{x \in R_j} f(x)\right) \cdot c(R_j) \\
+    \UpperSum{f}{P} &= \sum_j \left(\sup_{x \in R_j} f(x)\right) \cdot c(R_j)
+\end{align*}
+\end{definition}
+
+\begin{proposition}
+For any partitions $P, Q$ of $R$:
+\[ \LowerSum{f}{P} \leq \UpperSum{f}{Q} \]
+\end{proposition}
+
+\begin{proof}
+Let $P \vee Q$ be the common refinement. Then:
+\[ \LowerSum{f}{P} \leq \LowerSum{f}{P \vee Q} \leq \UpperSum{f}{P \vee Q} \leq \UpperSum{f}{Q} \]
+\end{proof}
+
+\section{Riemann Integral}
+
+\begin{definition}[Upper and Lower Riemann Integrals]
+\begin{align*}
+    \LowerRiemann_R f \, dc &= \sup_P \LowerSum{f}{P} \\
+    \UpperRiemann_R f \, dc &= \inf_P \UpperSum{f}{P}
+\end{align*}
+\end{definition}
+
+\begin{definition}[Riemann Integrable]
+$f$ is \textbf{Riemann integrable} on $R$ if $\LowerRiemann_R f = \UpperRiemann_R f$. The common value is $\Integral_R f \, dc$.
+\end{definition}
+
+\begin{theorem}[Characterization of Riemann Integrability]
+$f$ is Riemann integrable if and only if for every $\epsilon > 0$, there exists a partition $P$ with:
+\[ \UpperSum{f}{P} - \LowerSum{f}{P} < \epsilon \]
+\end{theorem}
+
+\begin{proof}
+($\Rightarrow$) Given $\epsilon > 0$, choose partitions $P_1, P_2$ with $\LowerSum{f}{P_1} > \LowerRiemann f - \epsilon/2$ and $\UpperSum{f}{P_2} < \UpperRiemann f + \epsilon/2$. For $P = P_1 \vee P_2$:
+\[ \UpperSum{f}{P} - \LowerSum{f}{P} \leq \UpperSum{f}{P_2} - \LowerSum{f}{P_1} < \UpperRiemann f - \LowerRiemann f + \epsilon = \epsilon \]
+
+($\Leftarrow$) For any $\epsilon > 0$:
+\[ \UpperRiemann f - \LowerRiemann f \leq \UpperSum{f}{P} - \LowerSum{f}{P} < \epsilon \]
+\end{proof}
+
+\section{Riemann Double Integral}
+
+\begin{definition}[Iterated Integral]
+For $f: R_1 \times R_2 \to \bb{R}$ where $R_i \subseteq \bb{R}^{n_i}$, the \textbf{iterated integral} is:
+\[ \Integral_{R_1} \left( \Integral_{R_2} f(x, y) \, dc(y) \right) dc(x) \]
+when both inner integrals exist.
+\end{definition}
+
+\begin{theorem}[Fubini for Riemann Integral]
+If $f: R_1 \times R_2 \to \bb{R}$ is Riemann integrable, and for each $x \in R_1$ the function $y \mapsto f(x, y)$ is Riemann integrable on $R_2$, then:
+\[ \Integral_{R_1 \times R_2} f \, dc = \Integral_{R_1} \left( \Integral_{R_2} f(x, y) \, dc(y) \right) dc(x) \]
+\end{theorem}
+
+\begin{proof}
+Let $P = P_1 \times P_2$ be a partition of $R_1 \times R_2$ with $P_i$ partitions of $R_i$.
+
+For each subrectangle $S_1 \times S_2$ in $P$:
+\[ \inf_{S_1 \times S_2} f \leq \inf_{x \in S_1} \left( \inf_{y \in S_2} f(x, y) \right) \leq \inf_{x \in S_1} \Integral_{S_2} f(x, y) dc(y) / c(S_2) \]
+
+Summing over subrectangles:
+\[ \LowerSum{f}{P} \leq \LowerSum{g}{P_1} \]
+where $g(x) = \Integral_{R_2} f(x, y) dc(y)$.
+
+Similarly $\UpperSum{g}{P_1} \leq \UpperSum{f}{P}$.
+
+Since $f$ is Riemann integrable, $\UpperSum{f}{P} - \LowerSum{f}{P} \to 0$, forcing $g$ to be Riemann integrable with the stated equality.
+\end{proof}
+
+\section{Limitations of Riemann Integration}
+
+\begin{example}[Dirichlet Function]
+The function $\CharFunc{\bb{Q} \cap [0,1]}$ is not Riemann integrable. For any partition:
+\[ \underline{S} = 0, \quad \overline{S} = 1 \]
+since every interval contains both rationals and irrationals.
+\end{example}
+
+\begin{remark}
+Riemann integration has fundamental limitations:
+\begin{enumerate}
+    \item Cannot integrate many discontinuous functions
+    \item Poor behavior under limits (no good convergence theorems)
+    \item Requires bounded functions on bounded domains
+\end{enumerate}
+These motivate the development of Lebesgue integration.
+\end{remark}
+
+\bigskip
+\begin{compendium}
+
+\textbf{Riemann Simple Function:} $s: R \to \bb{R}$ with finite image and preimages that are 
+finite disjoint unions of rectangles. Form: $s = \sum_{i=1}^k \alpha_i \CharFunc{R_i}$.
+
+\textbf{Partition:} Collection of subrectangles $\{R_j\}$ covering $R$ with disjoint interiors.
+
+\textbf{Upper and Lower Sums:}
+\[
+    \LowerSum{f}{P} = \sum_j \left(\inf_{R_j} f\right) c(R_j), \quad
+    \UpperSum{f}{P} = \sum_j \left(\sup_{R_j} f\right) c(R_j)
+\]
+
+\textbf{Riemann Integrals:}
+\[
+    \LowerRiemann_R f = \sup_P \LowerSum{f}{P}, \quad 
+    \UpperRiemann_R f = \inf_P \UpperSum{f}{P}
+\]
+
+\textbf{Riemann Integrable:} $f$ is Riemann integrable iff $\LowerRiemann f = \UpperRiemann f$.
+
+\textbf{Integrability Criterion:} $f$ is Riemann integrable iff $\Forall :{\epsilon > 0}{\Exists :{P}{\UpperSum{f}{P} - \LowerSum{f}{P} < \epsilon}}$.
+
+\textbf{Fubini for Riemann:} If $f: R_1 \times R_2 \to \bb{R}$ is Riemann integrable and 
+$y \mapsto f(x, y)$ is Riemann integrable for each $x$:
+\[
+    \Integral_{R_1 \times R_2} f \, dc = \Integral_{R_1} \left(\Integral_{R_2} f(x, y) \, dc(y)\right) dc(x)
+\]
+
+\textbf{Limitations:} Cannot handle Dirichlet function, no good convergence theorems, 
+requires bounded functions on bounded domains.
+
+\end{compendium}
+
+

@@ -1,0 +1,79 @@
+Add macros for:
+- dual space of a vector space
+- dual of a basis
+- dual of a linear map
+- multilinear maps of U1, U2, ..., Un to V
+- alternating/wedge
+- norm
+- inner product
+- adjoint of a linear map
+- hermitian of a matrix
+
+Add the dual space of a vector space.
+Then add the dual of a basis. In general it is a lin indep system, and a basis iff the original space is finite-dimensional.
+
+Add the dual of a linear map.
+Add dual properties, dual of a linear map is injective iff the map is surjective, dual is surjective iff the original is injective.
+The matrix of the dual is the transpose of the matrix of the original relative to the dual basis.
+
+Give the change of basis formula for the dual.
+
+
+Add multilinear maps of U1, U2, ..., Un to V.
+Prove that it is a vector space.
+Find its dimension.
+
+A map is called a form if the codomain is the field of scalars.
+
+Study multilinear maps of U1, U2, ..., Un to V with U1=U2=...=Un.
+-symmetric forms
+-antisymmetric forms
+-alternating forms
+
+show alternating => antisymmetric
+if char K = 2 then antisymmetric <=> symmetric
+else antisymmetric <=> alternating
+
+Prove that the space of multilinear symmetric forms is a subspace of the space of multilinear forms. calculate its dimension.
+Prove that the space of multilinear alternating forms is a subspace of the space of multilinear forms. calculate its dimension.
+
+Add change of basis formula for multilinear maps (all arguments change basis).
+
+Show the determinant as a multilinear alternating form.
+Show the determinant as a functional on Hom_K(V, V).
+Show that the determinant is the unique such functional.
+add the determinant properties.
+
+Normed vector spaces.
+-Define norm.
+-Add properties.
+
+-Normed set (set with all elements of norm 1)
+
+-Define linear norm preserving maps (isometries)
+-Add properties, show they must be injective.
+
+Inner product spaces.
+-Define inner product.
+-Add properties.
+-norm induced by inner product
+
+-Orthogonal set (set of vectors such that the inner product of any two is 0)
+-Orthogonal set that does not contain the zero vector is linearly independent.
+-Orthonormal set
+-Orthonormal basis (orthonormal set that spans the space)
+
+-gram schmidt process
+
+-Define linear inner product preserving maps (isometries).
+-Add properties, show they must be injective.
+-norm preserving <=> inner product preserving
+
+Give the Riesz-Frechet representation for functionals and justify the well definedness of the adjoint.
+Matrix for the adjoint relative to a orthonormal basis is the transpose of the matrix of the original relative to the orthonormal basis.
+
+Define normal, unitary, hermitian, skew-hermitian, positive-definite, negative-definite, positive semi-definite, negative semi-definite.
+
+State and prove the spectral theorem for normal operators.
+Define unitary, auto adjoint operators.
+

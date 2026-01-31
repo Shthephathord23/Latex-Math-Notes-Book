@@ -1,0 +1,352 @@
+\chapter{$\Lp{p}$ Spaces}
+
+\section{Definitions}
+
+\begin{definition}[Pre-$\Lp{p}$ Space]
+    For $1 \leq p < \infty$, the \textbf{pre-$\Lp{p}$ space} (or \textbf{curly $\mathcal{L}^p$}) is:
+    \[
+        \LpFunc{p}(\mu) = \left\{ f: X \to \bb{R} \text{ measurable} \mid 
+        \Integral_X |f|^p \, d\mu < \infty \right\}
+    \]
+    with $\LpNorm{f}{p} = \left(\Integral_X |f|^p \, d\mu\right)^{1/p}$.
+\end{definition}
+
+\begin{proposition}[$\LpFunc{p}$ is a Vector Space]
+    $\LpFunc{p}(\mu)$ is a vector subspace of the space of measurable functions $X \to \bb{R}$.
+\end{proposition}
+
+\begin{proof}
+    Since $\LpFunc{p} \subseteq \{f: X \to \bb{R} \text{ measurable}\}$ (which is a vector space), 
+    we only need to verify the subspace properties.
+    
+    \bigskip
+    \textbf{Non-empty:} The zero function $0 \in \LpFunc{p}$ since $\Integral_X 0^p \, d\mu = 0 < \infty$.
+    
+    \bigskip
+    \textbf{Closure under scalar multiplication:} 
+    
+    Let $f \in \LpFunc{p}$ and $c \in \bb{R}$. Then:
+    \[
+        \Integral_X |cf|^p \, d\mu = |c|^p \Integral_X |f|^p \, d\mu < \infty
+    \]
+    So $cf \in \LpFunc{p}$.
+    
+    \bigskip
+    \textbf{Closure under addition:} 
+    
+    Let $f, g \in \LpFunc{p}$. We first show that for all $a, b \geq 0$:
+    \[
+        |a + b|^p \leq 2^p \max(a, b)^p \leq 2^p (a^p + b^p)
+    \]
+    Indeed: $|a + b| \leq 2 \max(a, b)$, so $|a + b|^p \leq 2^p \max(a, b)^p \leq 2^p (a^p + b^p)$.
+    
+    Applying this pointwise and integrating:
+    \[
+        \Integral_X |f + g|^p \, d\mu \leq 2^p \left( \Integral_X |f|^p \, d\mu + \Integral_X |g|^p \, d\mu \right) < \infty
+    \]
+    So $f + g \in \LpFunc{p}$.
+\end{proof}
+
+\bigskip
+\begin{definition}[$\Lp{p}$ Space]
+    The \textbf{$\Lp{p}$ space} is the quotient:
+    \[
+        \Lp{p}(\mu) = \LpFunc{p}(\mu) / {\sim}
+    \]
+    where $f \sim g$ iff $f = g$ \almosteverywhere{}. The equivalence class of $f$ is denoted $[f]$.
+    
+    The $\Lp{p}$ norm is well-defined on equivalence classes: 
+    $\LpNorm{[f]}{p} = \LpNorm{f}{p}$.
+\end{definition}
+
+\begin{remark}
+    We prove inequalities for $\LpFunc{p}$ first. The corresponding results for $\Lp{p}$ follow 
+    immediately since the seminorm $\LpNorm{\cdot}{p}$ is constant on equivalence classes.
+\end{remark}
+
+\bigskip
+\section{Young's Inequality}
+
+\begin{remark}
+    Young's Inequality is proved in the Product Measures chapter as a consequence of 
+    Fubini-Tonelli theorem using a beautiful geometric argument. We state the result here 
+    for use in proving Hölder's inequality.
+\end{remark}
+
+\begin{theorem}[Young's Inequality for $p$-powers]
+    Let $1 < p, q < \infty$ with $\frac{1}{p} + \frac{1}{q} = 1$. Then for all $a, b \geq 0$:
+    \[
+        ab \leq \frac{a^p}{p} + \frac{b^q}{q}
+    \]
+    with equality iff $a^p = b^q$.
+\end{theorem}
+
+\bigskip
+\section{Hölder's Inequality}
+
+\begin{theorem}[Hölder's Inequality for $\LpFunc{p}$]
+    Let $1 < p, q < \infty$ with $\frac{1}{p} + \frac{1}{q} = 1$. 
+    For $f \in \LpFunc{p}(\mu)$ and $g \in \LpFunc{q}(\mu)$:
+    \[
+        \Integral_X |fg| \, d\mu \leq \LpNorm{f}{p} \cdot \LpNorm{g}{q}
+    \]
+    In particular, $fg \in \LpFunc{1}(\mu)$.
+    
+    \textbf{Equality} holds iff $|f|^p$ and $|g|^q$ are proportional \almosteverywhere{}, 
+    i.e., there exist constants $\alpha, \beta \geq 0$ (not both zero) such that 
+    $\alpha |f|^p = \beta |g|^q$ \almosteverywhere{}
+\end{theorem}
+
+\begin{proof}
+    \textbf{Case 1: $\LpNorm{f}{p} = 0$ or $\LpNorm{g}{q} = 0$.}
+    
+    Then $f = 0$ a.e.\ or $g = 0$ a.e., so $fg = 0$ a.e.\ and both sides equal $0$.
+    
+    \medskip
+    \textbf{Case 2: $\LpNorm{f}{p}, \LpNorm{g}{q} > 0$.}
+    
+    \textbf{Step 1: Normalize.} Define:
+    \[
+        \tilde{f} = \frac{f}{\LpNorm{f}{p}}, \quad \tilde{g} = \frac{g}{\LpNorm{g}{q}}
+    \]
+    Then $\LpNorm{\tilde{f}}{p} = \LpNorm{\tilde{g}}{q} = 1$.
+    
+    \medskip
+    \textbf{Step 2: Apply Young's inequality pointwise.}
+    
+    For each $x \in X$, apply Young's inequality with $a = |\tilde{f}(x)|$ and $b = |\tilde{g}(x)|$:
+    \[
+        |\tilde{f}(x)| \cdot |\tilde{g}(x)| \leq \frac{|\tilde{f}(x)|^p}{p} + \frac{|\tilde{g}(x)|^q}{q}
+    \]
+    
+    \medskip
+    \textbf{Step 3: Integrate.}
+    \[
+        \Integral_X |\tilde{f} \tilde{g}| \, d\mu \leq \frac{1}{p} \Integral_X |\tilde{f}|^p \, d\mu 
+        + \frac{1}{q} \Integral_X |\tilde{g}|^q \, d\mu = \frac{1}{p} \cdot 1 + \frac{1}{q} \cdot 1 = 1
+    \]
+    
+    \medskip
+    \textbf{Step 4: Rescale.}
+    
+    Since $\tilde{f} \tilde{g} = \frac{fg}{\LpNorm{f}{p} \LpNorm{g}{q}}$:
+    \[
+        \frac{1}{\LpNorm{f}{p} \LpNorm{g}{q}} \Integral_X |fg| \, d\mu \leq 1
+    \]
+    Thus $\Integral_X |fg| \, d\mu \leq \LpNorm{f}{p} \LpNorm{g}{q}$.
+    
+    \medskip
+    \textbf{Step 5: Equality case.}
+    
+    Equality holds iff Young's inequality is an equality a.e., i.e., 
+    $|\tilde{f}(x)|^p = |\tilde{g}(x)|^q$ a.e.
+    
+    This means $\frac{|f(x)|^p}{\LpNorm{f}{p}^p} = \frac{|g(x)|^q}{\LpNorm{g}{q}^q}$ a.e., 
+    i.e., $|f|^p$ and $|g|^q$ are proportional a.e.
+\end{proof}
+
+\begin{corollary}[Hölder's Inequality for $\Lp{p}$]
+    Let $1 < p, q < \infty$ with $\frac{1}{p} + \frac{1}{q} = 1$. 
+    For $[f] \in \Lp{p}(\mu)$ and $[g] \in \Lp{q}(\mu)$:
+    \[
+        \LpNorm{[f][g]}{1} \leq \LpNorm{[f]}{p} \cdot \LpNorm{[g]}{q}
+    \]
+\end{corollary}
+
+\begin{proof}
+    Immediate from the $\LpFunc{p}$ version, since norms are constant on equivalence classes.
+\end{proof}
+
+\bigskip
+\section{Minkowski's Inequality}
+
+\begin{theorem}[Minkowski's Inequality for $\LpFunc{p}$]
+    For $1 \leq p < \infty$ and $f, g \in \LpFunc{p}(\mu)$:
+    \[
+        \LpNorm{f + g}{p} \leq \LpNorm{f}{p} + \LpNorm{g}{p}
+    \]
+    
+    \textbf{Equality} holds for $p > 1$ iff $f$ and $g$ are proportional with the same sign a.e., 
+    i.e., there exist $\alpha, \beta \geq 0$ (not both zero) such that $\alpha f = \beta g$ a.e.
+\end{theorem}
+
+\begin{proof}
+    \textbf{Case $p = 1$:} Direct from triangle inequality.
+    \[
+        \Integral_X |f + g| \, d\mu \leq \Integral_X (|f| + |g|) \, d\mu 
+        = \Integral_X |f| \, d\mu + \Integral_X |g| \, d\mu
+    \]
+    
+    \medskip
+    \textbf{Case $p > 1$:}
+    
+    \textbf{Step 1: Decompose $|f + g|^p$.}
+    \[
+        |f + g|^p = |f + g| \cdot |f + g|^{p-1} \leq (|f| + |g|) \cdot |f + g|^{p-1}
+    \]
+    Thus:
+    \[
+        |f + g|^p \leq |f| \cdot |f + g|^{p-1} + |g| \cdot |f + g|^{p-1}
+    \]
+    
+    \medskip
+    \textbf{Step 2: Integrate.}
+    \[
+        \Integral_X |f + g|^p \, d\mu \leq \Integral_X |f| \cdot |f + g|^{p-1} \, d\mu 
+        + \Integral_X |g| \cdot |f + g|^{p-1} \, d\mu
+    \]
+    
+    \medskip
+    \textbf{Step 3: Apply Hölder to each term.}
+    
+    Let $q = \frac{p}{p-1}$ (so $\frac{1}{p} + \frac{1}{q} = 1$). Note that $|f + g|^{p-1} \in \LpFunc{q}$ 
+    with $\LpNorm{|f+g|^{p-1}}{q} = \LpNorm{f+g}{p}^{p-1}$.
+    
+    By Hölder:
+    \[
+        \Integral_X |f| \cdot |f + g|^{p-1} \, d\mu \leq \LpNorm{f}{p} \cdot \LpNorm{f+g}{p}^{p-1}
+    \]
+    Similarly for $g$.
+    
+    \medskip
+    \textbf{Step 4: Combine.}
+    \[
+        \LpNorm{f + g}{p}^p \leq (\LpNorm{f}{p} + \LpNorm{g}{p}) \cdot \LpNorm{f+g}{p}^{p-1}
+    \]
+    
+    \medskip
+    \textbf{Step 5: Divide.}
+    
+    If $\LpNorm{f + g}{p} = 0$, the inequality holds trivially.
+    Otherwise, divide both sides by $\LpNorm{f+g}{p}^{p-1}$:
+    \[
+        \LpNorm{f + g}{p} \leq \LpNorm{f}{p} + \LpNorm{g}{p}
+    \]
+    
+    \medskip
+    \textbf{Step 6: Equality case.}
+    
+    Equality requires:
+    \begin{enumerate}
+        \item Triangle inequality: $|f + g| = |f| + |g|$ a.e. (same sign)
+        \item Hölder equality: $|f|^p \propto |f+g|^{(p-1)q} = |f+g|^p$ a.e.
+    \end{enumerate}
+    Together, these imply $f$ and $g$ are proportional with the same sign a.e.
+\end{proof}
+
+\begin{corollary}[Minkowski's Inequality for $\Lp{p}$]
+    For $1 \leq p < \infty$ and $[f], [g] \in \Lp{p}(\mu)$:
+    \[
+        \LpNorm{[f] + [g]}{p} \leq \LpNorm{[f]}{p} + \LpNorm{[g]}{p}
+    \]
+\end{corollary}
+
+\begin{proof}
+    Immediate from the $\LpFunc{p}$ version.
+\end{proof}
+
+\begin{remark}
+    Minkowski's inequality shows that $\LpNorm{\cdot}{p}$ is a seminorm on $\LpFunc{p}$ 
+    and a norm on $\Lp{p}$.
+\end{remark}
+
+\bigskip
+\section{Completeness}
+
+\begin{theorem}[Riesz-Fischer]
+    $(\Lp{p}(\mu), \LpNorm{\cdot}{p})$ is a Banach space (complete normed vector space).
+\end{theorem}
+
+\begin{proof}
+    Let $(f_n)$ be a Cauchy sequence in $\Lp{p}$.
+    
+    \medskip
+    \textbf{Step 1: Extract a rapidly converging subsequence.}
+    
+    Choose a subsequence $(f_{n_k})$ such that:
+    \[
+        \LpNorm{f_{n_{k+1}} - f_{n_k}}{p} < 2^{-k}
+    \]
+    
+    \medskip
+    \textbf{Step 2: Define auxiliary function.}
+    
+    Let $g = \sum_{k=1}^\infty |f_{n_{k+1}} - f_{n_k}|$. By Minkowski:
+    \[
+        \LpNorm{g}{p} \leq \sum_{k=1}^\infty \LpNorm{f_{n_{k+1}} - f_{n_k}}{p} < \sum_{k=1}^\infty 2^{-k} = 1
+    \]
+    So $g \in \LpFunc{p}$, hence $g < \infty$ \almosteverywhere{}
+    
+    \medskip
+    \textbf{Step 3: Pointwise convergence.}
+    
+    Since $g < \infty$ a.e., the series $\sum (f_{n_{k+1}} - f_{n_k})$ converges absolutely a.e.
+    
+    Define $f = \lim_{k \to \infty} f_{n_k}$ (exists a.e.). We have:
+    \[
+        f = f_{n_1} + \sum_{k=1}^\infty (f_{n_{k+1}} - f_{n_k})
+    \]
+    
+    \medskip
+    \textbf{Step 4: $f \in \LpFunc{p}$.}
+    
+    By Fatou's lemma:
+    \[
+        \Integral_X |f|^p \, d\mu \leq \liminf_{k \to \infty} \Integral_X |f_{n_k}|^p \, d\mu < \infty
+    \]
+    
+    \medskip
+    \textbf{Step 5: Convergence in norm.}
+    
+    By DCT (dominance by $g$): $\LpNorm{f_{n_k} - f}{p} \to 0$.
+    
+    Since $(f_n)$ is Cauchy, for any $\epsilon > 0$ there exists $N$ such that 
+    $\LpNorm{f_n - f_m}{p} < \epsilon/2$ for $n, m \geq N$.
+    
+    Choose $k$ large enough that $n_k \geq N$ and $\LpNorm{f_{n_k} - f}{p} < \epsilon/2$.
+    Then for $n \geq N$:
+    \[
+        \LpNorm{f_n - f}{p} \leq \LpNorm{f_n - f_{n_k}}{p} + \LpNorm{f_{n_k} - f}{p} < \epsilon
+    \]
+\end{proof}
+
+\bigskip
+\begin{compendium}
+
+\textbf{$\Lp{p}$ Spaces:} For $1 \leq p < \infty$:
+\[
+    \LpFunc{p}(\mu) = \{f \text{ measurable} \mid \Integral |f|^p < \infty\}, \quad
+    \Lp{p}(\mu) = \LpFunc{p}(\mu) / {\sim}
+\]
+where $f \sim g$ iff $f = g$ a.e. The norm is $\LpNorm{f}{p} = (\Integral |f|^p)^{1/p}$.
+
+\textbf{Young's Inequality:} For $\frac{1}{p} + \frac{1}{q} = 1$:
+\[
+    ab \leq \frac{a^p}{p} + \frac{b^q}{q}
+\]
+Equality iff $a^p = b^q$.
+
+\textbf{Hölder's Inequality:} For $f \in \LpFunc{p}$, $g \in \LpFunc{q}$ with $\frac{1}{p} + \frac{1}{q} = 1$:
+\[
+    \Integral |fg| \leq \LpNorm{f}{p} \cdot \LpNorm{g}{q}
+\]
+Equality iff $|f|^p \propto |g|^q$ a.e.
+
+\textbf{Minkowski's Inequality:} For $f, g \in \LpFunc{p}$:
+\[
+    \LpNorm{f + g}{p} \leq \LpNorm{f}{p} + \LpNorm{g}{p}
+\]
+This shows $\LpNorm{\cdot}{p}$ is a norm on $\Lp{p}$.
+
+\textbf{Riesz-Fischer Theorem:} $(\Lp{p}, \LpNorm{\cdot}{p})$ is a Banach space (complete).
+
+\textbf{Proof Strategy for Completeness:}
+\begin{enumerate}
+    \item Extract rapidly converging subsequence: $\LpNorm{f_{n_{k+1}} - f_{n_k}}{p} < 2^{-k}$
+    \item Define $g = \sum |f_{n_{k+1}} - f_{n_k}|$, show $g \in \LpFunc{p}$
+    \item Pointwise limit $f$ exists a.e. (series converges absolutely)
+    \item Apply Fatou to show $f \in \LpFunc{p}$, DCT for norm convergence
+\end{enumerate}
+
+\end{compendium}
+

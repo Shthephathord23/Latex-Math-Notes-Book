@@ -1,0 +1,376 @@
+\chapter{The Radon-Nikodym Theorem}
+
+\begin{intuition}
+    The Radon-Nikodym theorem is one of the central results in measure theory. It characterizes 
+    when one measure can be ``written in terms of'' another via a density function. If $\nu$ 
+    is absolutely continuous with respect to $\mu$ (meaning $\mu(A) = 0 \implies \nu(A) = 0$), 
+    then there exists a measurable function $f$ such that:
+    \[
+        \nu(A) = \Integral_A f \, d\mu
+    \]
+    
+    This function $f$ is called the \textbf{Radon-Nikodym derivative} of $\nu$ with respect to $\mu$, 
+    denoted $\frac{d\nu}{d\mu}$. The notation suggests an analogy with the Fundamental Theorem 
+    of Calculus: just as $F(x) = \Integral_{[a,x]} f(t) d\lambda(t)$ implies $F'(x) = f(x)$, we have 
+    $\nu(A) = \Integral_A f \, d\mu$ with $f = \frac{d\nu}{d\mu}$.
+    
+    Key applications include:
+    \begin{itemize}
+        \item \textbf{Probability:} Conditional expectation, likelihood ratios, change of measure
+        \item \textbf{Analysis:} Characterizing absolutely continuous functions
+        \item \textbf{Ergodic theory:} Invariant measures and entropy
+    \end{itemize}
+\end{intuition}
+
+\section{Signed Measures}
+
+\begin{definition}[Signed Measure]
+    Let $(X, \mathcal{M})$ be a measurable space. A \textbf{signed measure} is a function 
+    $\nu: \mathcal{M} \to [-\infty, +\infty]$ such that:
+    \begin{enumerate}
+        \item $\nu(\emptyset) = 0$
+        \item $\nu$ takes at most one of the values $+\infty$ or $-\infty$
+        \item \textbf{$\sigma$-additivity:} If $(A_n)_{n \in \bb{N}}$ are pairwise disjoint, then:
+        \[
+            \nu\left(\bigsqcup_{n=1}^\infty A_n\right) = \sum_{n=1}^\infty \nu(A_n)
+        \]
+        where the series converges absolutely if $|\nu(\bigsqcup A_n)| < \infty$.
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}[Positive and Negative Sets]
+    Let $\nu$ be a signed measure on $(X, \mathcal{M})$.
+    \begin{itemize}
+        \item A set $P \in \mathcal{M}$ is \textbf{positive} for $\nu$ if $\Forall :{A \in \mathcal{M}, A \subseteq P}{\nu(A) \geq 0}$
+        \item A set $N \in \mathcal{M}$ is \textbf{negative} for $\nu$ if $\Forall :{A \in \mathcal{M}, A \subseteq N}{\nu(A) \leq 0}$
+        \item A set $A \in \mathcal{M}$ is \textbf{null} for $\nu$ if $\Forall :{B \in \mathcal{M}, B \subseteq A}{\nu(B) = 0}$
+    \end{itemize}
+\end{definition}
+
+\begin{theorem}[Hahn Decomposition]
+    Let $\nu$ be a signed measure on $(X, \mathcal{M})$. There exist sets $P, N \in \mathcal{M}$ such that:
+    \begin{enumerate}
+        \item $X = P \sqcup N$ (disjoint union)
+        \item $P$ is positive for $\nu$
+        \item $N$ is negative for $\nu$
+    \end{enumerate}
+    The decomposition is unique up to null sets: if $X = P' \sqcup N'$ is another Hahn decomposition, 
+    then $P \triangle P'$ and $N \triangle N'$ are null for $\nu$.
+\end{theorem}
+
+\begin{proof}
+    Without loss of generality, assume $\nu$ does not take the value $+\infty$ 
+    (otherwise consider $-\nu$).
+    
+    \bigskip
+    \textbf{Step 1: Construct the negative set $N$.}
+    
+    Let $\alpha = \inf\{\nu(A) \mid A \in \mathcal{M}\}$. Note $-\infty \leq \alpha \leq 0$ 
+    (since $\nu(\emptyset) = 0$).
+    
+    Choose a sequence $(A_n)$ with $\nu(A_n) \to \alpha$. We will refine these to get disjoint 
+    sets that capture the ``most negative'' parts.
+    
+    \medskip
+    \textbf{Step 2: Extract a negative set from each $A_n$.}
+    
+    \textit{Claim:} For any $A \in \mathcal{M}$, there exists a negative set $N_A \subseteq A$ 
+    with $\nu(N_A) \leq \nu(A)$.
+    
+    \textit{Proof of claim:} If $A$ is negative, take $N_A = A$. Otherwise, there exists 
+    $B_1 \subseteq A$ with $\nu(B_1) > 0$. Let $n_1 = \min\{n \in \bb{N} \mid \Exists :{B \subseteq A}{\nu(B) \geq 1/n}\}$ 
+    and choose $B_1$ with $\nu(B_1) \geq 1/n_1$.
+    
+    Apply inductively to $A \setminus B_1, A \setminus (B_1 \cup B_2), \ldots$ The process 
+    terminates (else $\sum \nu(B_k) = \infty$ contradicting that $\nu(A)$ is finite) or 
+    $A \setminus \bigcup B_k$ is negative. Either way, we get $N_A = A \setminus \bigcup B_k$ 
+    with $\nu(N_A) = \nu(A) - \sum \nu(B_k) \leq \nu(A)$.
+    
+    \medskip
+    \textbf{Step 3: Construct $N$.}
+    
+    Apply the claim to each $A_n$ to get negative sets $N_n \subseteq A_n$ with 
+    $\nu(N_n) \leq \nu(A_n)$. Let:
+    \[
+        N = \bigcup_{n=1}^\infty N_n
+    \]
+    
+    We show $N$ is negative. Let $B \subseteq N$. Define $B_n = B \cap N_n \setminus \bigcup_{k<n} N_k$. 
+    Then $(B_n)$ are disjoint, $B = \bigsqcup B_n$, and each $B_n \subseteq N_n$ (negative), 
+    so $\nu(B_n) \leq 0$. Thus:
+    \[
+        \nu(B) = \sum_{n=1}^\infty \nu(B_n) \leq 0
+    \]
+    
+    \medskip
+    \textbf{Step 4: Show $P = X \setminus N$ is positive.}
+    
+    Suppose not: there exists $A \subseteq P$ with $\nu(A) < 0$. By Step 2, there exists 
+    a negative set $N_A \subseteq A$ with $\nu(N_A) \leq \nu(A) < 0$.
+    
+    Then $N \cup N_A$ is negative (union of negative sets that is disjoint from $N_A$), and:
+    \[
+        \nu(N \cup N_A) = \nu(N) + \nu(N_A) < \nu(N) \leq \alpha
+    \]
+    contradicting the definition of $\alpha$.
+    
+    \medskip
+    \textbf{Step 5: Uniqueness.}
+    
+    Let $X = P' \sqcup N'$ be another Hahn decomposition. Then $P \cap N' \subseteq P$ 
+    (positive) and $P \cap N' \subseteq N'$ (negative), so $P \cap N'$ is null. 
+    Similarly $P' \cap N$ is null. Thus $P \triangle P' = (P \cap N') \cup (P' \cap N)$ is null.
+\end{proof}
+
+\begin{definition}[Jordan Decomposition]
+    Let $\nu$ be a signed measure with Hahn decomposition $X = P \sqcup N$. The 
+    \textbf{positive part} and \textbf{negative part} are:
+    \[
+        \nu^+(A) = \nu(A \cap P), \qquad \nu^-(A) = -\nu(A \cap N)
+    \]
+    The \textbf{total variation} is $|\nu| = \nu^+ + \nu^-$. The \textbf{Jordan decomposition} is:
+    \[
+        \nu = \nu^+ - \nu^-
+    \]
+\end{definition}
+
+\begin{proposition}
+    The measures $\nu^+$, $\nu^-$, and $|\nu|$ are (unsigned) measures, and:
+    \begin{enumerate}
+        \item $\nu^+ \perp \nu^-$ (mutually singular: $P$ supports $\nu^+$, $N$ supports $\nu^-$)
+        \item The Jordan decomposition is the unique decomposition $\nu = \mu_1 - \mu_2$ with 
+              $\mu_1 \perp \mu_2$
+    \end{enumerate}
+\end{proposition}
+
+\section{Absolute Continuity and Singularity}
+
+\begin{definition}[Absolute Continuity]
+    Let $\mu$ and $\nu$ be measures (or signed measures) on $(X, \mathcal{M})$. We say $\nu$ is 
+    \textbf{absolutely continuous} with respect to $\mu$, written $\nu \ll \mu$, if:
+    \[
+        \Forall :{A \in \mathcal{M}}{\mu(A) = 0 \implies \nu(A) = 0}
+    \]
+\end{definition}
+
+\begin{definition}[Mutual Singularity]
+    Measures $\mu$ and $\nu$ are \textbf{mutually singular}, written $\mu \perp \nu$, if there 
+    exist disjoint sets $A, B \in \mathcal{M}$ with $X = A \sqcup B$ such that $\mu$ is 
+    concentrated on $A$ and $\nu$ is concentrated on $B$:
+    \[
+        \Forall :{E \in \mathcal{M}}{\mu(E) = \mu(E \cap A) \LogicAnd \nu(E) = \nu(E \cap B)}
+    \]
+\end{definition}
+
+\begin{proposition}[Characterization of Absolute Continuity for Finite Measures]
+    Let $\mu$ be a measure and $\nu$ a finite measure on $(X, \mathcal{M})$. Then $\nu \ll \mu$ 
+    if and only if:
+    \[
+        \Forall :{\epsilon > 0}{\Exists :{\delta > 0}{\mu(A) < \delta \implies \nu(A) < \epsilon}}
+    \]
+\end{proposition}
+
+\begin{proof}
+    \textbf{($\Leftarrow$)} If $\mu(A) = 0 < \delta$, then $\nu(A) < \epsilon$ for all $\epsilon$, 
+    so $\nu(A) = 0$.
+    
+    \textbf{($\Rightarrow$)} Suppose the $\epsilon$-$\delta$ condition fails. Then there exists 
+    $\epsilon > 0$ and sets $A_n$ with $\mu(A_n) < 2^{-n}$ but $\nu(A_n) \geq \epsilon$.
+    
+    Let $B_n = \bigcup_{k \geq n} A_k$ and $B = \bigcap_n B_n$. Then $\mu(B_n) < 2^{1-n}$, 
+    so $\mu(B) = 0$. But $\nu(B_n) \geq \epsilon$ and $B_n \searrow B$, so by continuity 
+    from above (using $\nu(B_1) < \infty$), $\nu(B) \geq \epsilon > 0$.
+    
+    This contradicts $\nu \ll \mu$.
+\end{proof}
+
+\section{The Radon-Nikodym Theorem}
+
+\begin{theorem}[Radon-Nikodym]
+    Let $(X, \mathcal{M}, \mu)$ be a $\sigma$-finite measure space, and let $\nu$ be a 
+    $\sigma$-finite signed measure on $(X, \mathcal{M})$ with $\nu \ll \mu$. Then there exists 
+    a measurable function $f: X \to \bb{R}$ such that:
+    \[
+        \nu(A) = \Integral_A f \, d\mu \qquad \Forall :{A \in \mathcal{M}}{}
+    \]
+    The function $f$ is unique $\mu$-a.e., and is called the \textbf{Radon-Nikodym derivative} 
+    of $\nu$ with respect to $\mu$, denoted:
+    \[
+        f = \frac{d\nu}{d\mu}
+    \]
+    If $\nu$ is a (non-negative) measure, then $f \geq 0$ $\mu$-a.e.
+\end{theorem}
+
+\begin{intuition}
+    The proof uses a Hilbert space argument (von Neumann's approach). The key observation is that 
+    the functional $\varphi: L^2(\mu + \nu) \to \bb{R}$ defined by $\varphi(g) = \Integral g \, d\nu$ 
+    is bounded, so by Riesz representation, it must come from an inner product with some 
+    function $h \in L^2(\mu + \nu)$. Unwinding the construction yields the Radon-Nikodym derivative.
+\end{intuition}
+
+\begin{proof}
+    We prove the case where $\nu$ is a finite (non-negative) measure; the $\sigma$-finite and 
+    signed cases follow by decomposition.
+    
+    \bigskip
+    \textbf{Step 1: Set up the Hilbert space.}
+    
+    Let $\lambda = \mu + \nu$. Consider the Hilbert space $H = L^2(\lambda)$ with inner product:
+    \[
+        \langle f, g \rangle = \Integral_X fg \, d\lambda
+    \]
+    
+    \medskip
+    \textbf{Step 2: Define a bounded linear functional.}
+    
+    Define $\varphi: H \to \bb{R}$ by:
+    \[
+        \varphi(g) = \Integral_X g \, d\nu
+    \]
+    
+    This is well-defined since $\nu \leq \lambda$, and linear. To show boundedness:
+    \[
+        |\varphi(g)| \leq \Integral_X |g| \, d\nu \leq \Integral_X |g| \, d\lambda 
+        \leq \sqrt{\lambda(X)} \cdot \|g\|_{L^2(\lambda)}
+    \]
+    by Cauchy-Schwarz. Thus $\varphi$ is bounded with $\|\varphi\| \leq \sqrt{\lambda(X)}$.
+    
+    \medskip
+    \textbf{Step 3: Apply Riesz representation.}
+    
+    By the Riesz representation theorem for Hilbert spaces, there exists $h \in L^2(\lambda)$ such that:
+    \[
+        \varphi(g) = \langle g, h \rangle = \Integral_X gh \, d\lambda \qquad \Forall :{g \in H}{}
+    \]
+    
+    \medskip
+    \textbf{Step 4: Show $0 \leq h \leq 1$ $\lambda$-a.e.}
+    
+    \textit{$h \geq 0$:} Let $A = \{h < 0\}$ and $g = \CharFunc{A}$. Then:
+    \[
+        0 \leq \nu(A) = \varphi(g) = \Integral_A h \, d\lambda \leq 0
+    \]
+    So $\Integral_A h \, d\lambda = 0$, which implies $h = 0$ $\lambda$-a.e.\@ on $A$, 
+    contradicting $h < 0$ on $A$ unless $\lambda(A) = 0$.
+    
+    \textit{$h \leq 1$:} Let $B = \{h > 1\}$ and $g = \CharFunc{B}$. Then:
+    \[
+        \nu(B) = \Integral_B h \, d\lambda > \lambda(B) = \mu(B) + \nu(B)
+    \]
+    So $\mu(B) < 0$, impossible unless $\mu(B) = 0$, hence $\lambda(B) = \nu(B)$, 
+    forcing $\Integral_B h \, d\lambda = \lambda(B)$, so $h = 1$ a.e.\@ on $B$, contradiction.
+    
+    \medskip
+    \textbf{Step 5: Construct the Radon-Nikodym derivative.}
+    
+    We have $\Integral_X g \, d\nu = \Integral_X gh \, d\lambda = \Integral_X gh \, d\mu + \Integral_X gh \, d\nu$.
+    
+    Rearranging: $\Integral_X g(1 - h) \, d\nu = \Integral_X gh \, d\mu$.
+    
+    Let $C = \{h = 1\}$. On $C$, we have $(1-h) = 0$, so for $g = \CharFunc{C}$:
+    $0 = \Integral_C h \, d\mu = \mu(C)$.
+    
+    Thus $\mu(C) = 0$, so we can define $f = \frac{h}{1-h}$ on $X \setminus C$ and $f = 0$ on $C$.
+    
+    For any $A \in \mathcal{M}$, take $g = \CharFunc{A} \cdot \frac{1}{1-h}$ (well-defined a.e.):
+    \[
+        \Integral_A \frac{1-h}{1-h} \, d\nu = \Integral_A \frac{h}{1-h} \, d\mu
+    \]
+    \[
+        \nu(A) = \Integral_A f \, d\mu
+    \]
+    
+    \medskip
+    \textbf{Step 6: Uniqueness.}
+    
+    If $f_1$ and $f_2$ both satisfy $\nu(A) = \Integral_A f_i \, d\mu$, then 
+    $\Integral_A (f_1 - f_2) \, d\mu = 0$ for all $A$. This implies $f_1 = f_2$ $\mu$-a.e.
+\end{proof}
+
+\begin{theorem}[Lebesgue Decomposition]
+    Let $\mu$ and $\nu$ be $\sigma$-finite measures on $(X, \mathcal{M})$. There exist unique 
+    measures $\nu_a$ and $\nu_s$ such that:
+    \begin{enumerate}
+        \item $\nu = \nu_a + \nu_s$
+        \item $\nu_a \ll \mu$
+        \item $\nu_s \perp \mu$
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    Apply Radon-Nikodym to $\nu$ with respect to $\mu + \nu$. There exists $f$ with 
+    $0 \leq f \leq 1$ such that:
+    \[
+        \nu(A) = \Integral_A f \, d(\mu + \nu)
+    \]
+    
+    Let $S = \{f = 1\}$. Define:
+    \[
+        \nu_a(A) = \nu(A \cap S^c), \qquad \nu_s(A) = \nu(A \cap S)
+    \]
+    
+    Then $\nu_s \perp \mu$ (supported on $S$ where $\mu(S) = 0$ by similar argument to Step 5 above).
+    
+    For $\nu_a \ll \mu$: if $\mu(A) = 0$, then on $A \cap S^c$ (where $f < 1$):
+    \[
+        \nu(A \cap S^c) = \Integral_{A \cap S^c} f \, d(\mu + \nu) = \Integral_{A \cap S^c} f \, d\nu
+    \]
+    This gives $(1-f) d\nu = 0$ on $A \cap S^c$, so $\nu_a(A) = 0$.
+\end{proof}
+
+\section{Properties of the Radon-Nikodym Derivative}
+
+\begin{proposition}[Chain Rule]
+    Let $\mu, \nu, \lambda$ be $\sigma$-finite measures with $\nu \ll \mu \ll \lambda$. Then:
+    \[
+        \frac{d\nu}{d\lambda} = \frac{d\nu}{d\mu} \cdot \frac{d\mu}{d\lambda} \qquad \lambda\text{-a.e.}
+    \]
+\end{proposition}
+
+\begin{proof}
+    For any $A \in \mathcal{M}$:
+    \[
+        \nu(A) = \Integral_A \frac{d\nu}{d\mu} \, d\mu = \Integral_A \frac{d\nu}{d\mu} \cdot \frac{d\mu}{d\lambda} \, d\lambda
+    \]
+    By uniqueness, $\frac{d\nu}{d\lambda} = \frac{d\nu}{d\mu} \cdot \frac{d\mu}{d\lambda}$.
+\end{proof}
+
+\begin{proposition}[Integration Formula]
+    Let $\nu \ll \mu$ with $f = \frac{d\nu}{d\mu}$. For any measurable $g: X \to [0, \infty]$:
+    \[
+        \Integral_X g \, d\nu = \Integral_X g \cdot f \, d\mu
+    \]
+    The same holds for integrable $g$ (with the usual sign conventions).
+\end{proposition}
+
+\begin{proof}
+    For $g = \CharFunc{A}$, this is the definition of Radon-Nikodym derivative. 
+    Extend to simple functions by linearity, then to non-negative measurable functions by MCT.
+\end{proof}
+
+\bigskip
+\begin{compendium}
+
+\textbf{Signed Measures:} $\nu: \mathcal{M} \to [-\infty, +\infty]$ with $\nu(\emptyset) = 0$, 
+at most one infinite value, and $\sigma$-additivity.
+
+\textbf{Hahn Decomposition:} Every signed measure $\nu$ admits $X = P \sqcup N$ where $P$ is 
+positive and $N$ is negative for $\nu$. Unique up to null sets.
+
+\textbf{Jordan Decomposition:} $\nu = \nu^+ - \nu^-$ where $\nu^+(A) = \nu(A \cap P)$, 
+$\nu^-(A) = -\nu(A \cap N)$. Total variation: $|\nu| = \nu^+ + \nu^-$.
+
+\textbf{Absolute Continuity:} $\nu \ll \mu$ means $\mu(A) = 0 \implies \nu(A) = 0$.
+
+\textbf{Mutual Singularity:} $\mu \perp \nu$ means $X = A \sqcup B$ with $\mu$ on $A$, $\nu$ on $B$.
+
+\textbf{Radon-Nikodym Theorem:} If $\nu \ll \mu$ ($\sigma$-finite), then $\Exists :{\frac{d\nu}{d\mu}}{\nu(A) = \Integral_A \frac{d\nu}{d\mu} \, d\mu}$.
+
+\textbf{Lebesgue Decomposition:} $\nu = \nu_a + \nu_s$ with $\nu_a \ll \mu$ and $\nu_s \perp \mu$.
+
+\textbf{Chain Rule:} $\frac{d\nu}{d\lambda} = \frac{d\nu}{d\mu} \cdot \frac{d\mu}{d\lambda}$.
+
+\textbf{Integration:} $\Integral g \, d\nu = \Integral g \cdot \frac{d\nu}{d\mu} \, d\mu$.
+
+\end{compendium}
+

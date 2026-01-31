@@ -1,0 +1,101 @@
+% Document/LinearAlgebra/VectorSpaces/Foundations/Compendium.tex
+% Chapter 1 Compendium: Formula-dense summary of Foundations
+
+\newpage
+\section{Chapter Compendium}
+
+\begin{compendium}[Foundations of Vector Spaces]
+
+%% MINKOWSKI OPERATIONS
+\textbf{Minkowski Operations}:
+\begin{itemize}
+    \item $\MinkowskiSum{A}{B} = \Set{a + b \mid a \in A, b \in B}$, \quad $\MinkowskiProd{L}{A} = \Set{\lambda a \mid \lambda \in L, a \in A}$
+\end{itemize}
+
+\textbf{Monoid Structure}: $(A + B) + C = A + (B + C)$, $A + B = B + A$, $\{0\} + A = A$, $\emptyset + A = \emptyset$ (absorbing)
+
+\textbf{Scalar Action}: $\{1_K\} \cdot A = A$, $(LM)A = L(MA)$, $\emptyset \cdot A = L \cdot \emptyset = \emptyset$, $\{0\} \cdot A = L \cdot \{0\} = \{0\}$
+
+\textbf{Monotonicity}: $A \subseteq B \Rightarrow A + C \subseteq B + C$, $LA \subseteq LB$; $L \subseteq M \Rightarrow LA \subseteq MA$
+
+\textbf{Distributivity over Unions}:
+$A + \BigUnion[i] B_i = \BigUnion[i](A + B_i)$, $L \cdot \BigUnion[i] A_i = \BigUnion[i] LA_i$
+
+\textbf{Sub-Distributivity}: $L(A+B) \subseteq LA + LB$, $(L+M)A \subseteq LA + MA$
+
+\textbf{Full Distributivity (singletons)}: $\lambda(A+B) = \lambda A + \lambda B$, $(L+M)\{a\} = L\{a\} + M\{a\}$
+
+\textbf{Sub-Distributivity over Intersections}:
+$A + \BigIntersect[i] B_i \subseteq \BigIntersect[i](A + B_i)$, $\{a\} + \BigIntersect[i] B_i = \BigIntersect[i](\{a\} + B_i)$ (singleton equality)
+
+%% SUBSPACES
+\textbf{Subspace Criterion}:
+$U \Subspace[K] V \Leftrightarrow U \neq \emptyset \land \Forall :{a,b \in K, u,v \in U}{au + bv \in U}$
+
+\textbf{Minkowski Characterization}:
+$U$ subspace $\Leftrightarrow U \neq \emptyset \land U + U = U \land KU = U \Leftrightarrow U \neq \emptyset \land KU + KU = U$
+
+\textbf{Operations}:
+$\BigIntersect[i \in I] U_i$ is subspace; $U \Union W$ subspace $\Leftrightarrow U \subseteq W \LogicOr W \subseteq U$
+
+%% SPAN
+\textbf{Span (equivalences)}:
+$\Span[K]{S} = \BigIntersect \Set{U \Subspace[K] V \mid S \subseteq U} = \Set{\sum_{i=1}^n a_i v_i \mid n \in \bb{N}, a_i \in K, v_i \in S}$
+
+\textbf{Span Properties}:
+\begin{itemize}
+    \item $\Span[K]{\emptyset} = \{0\}$, $S \subseteq \Span[K]{S}$, $\Span[K]{\Span[K]{S}} = \Span[K]{S}$
+    \item Monotonicity: $S \subseteq T \Rightarrow \Span[K]{S} \subseteq \Span[K]{T}$
+    \item Subspace iff $\Span[K]{U} = U$
+    \item $\Span[K]{S \Union T} = \Span[K]{\Span[K]{S} \Union \Span[K]{T}}$
+    \item $\SubspaceSum{i \in I}{\Span[K]{S_i}} = \Span[K]{\BigUnion[i \in I] S_i}$ \quad (sum of spans = span of union)
+\end{itemize}
+
+%% LINEAR INDEPENDENCE
+\textbf{Linear Independence (equivalent characterizations)}:
+\begin{enumerate}
+    \item[(i)] $\Forall :{v \in L}{\Span[K]{L \setminus \{v\}} \subsetneq \Span[K]{L}}$
+    \item[(i')] $\Forall :{v \in L}{\Span[K]{\{v\}} \Intersect \Span[K]{L \setminus \{v\}} = \{0\}}$
+    \item[(ii)] Every $v \in \Span[K]{L}$ has unique representation
+    \item[(iii)] Some $v \in \Span[K]{L}$ has unique representation
+    \item[(iv)] $0$ has unique representation (only trivial: all $a_i = 0$)
+\end{enumerate}
+
+%% DIRECT SUMS
+\textbf{Direct Sum (equivalent characterizations)}:
+$(U_i)_{i \in I}$ is direct sum family iff:
+\begin{enumerate}
+    \item[(i)] $\Forall :{j \in I}{U_j \Intersect \SubspaceSum{i \neq j}{U_i} = \{0\}}$
+    \item[(ii)] Every $v \in \SubspaceSum{i \in I}{U_i}$ has unique representation
+    \item[(iii)] Some $v \neq 0$ in the sum has unique representation
+    \item[(iv)] $0$ has unique representation
+\end{enumerate}
+
+%% BASES
+\textbf{Basis}: $B$ lin.\ indep.\ AND $\Span[K]{B} = V$ $\Leftrightarrow$ maximal lin.\ indep.\ $\Leftrightarrow$ minimal generating
+
+\textbf{Basis Extension} (Zorn): $L$ lin.\ indep.\ $\subseteq G$ generating $\Rightarrow \exists B$ basis with $L \subseteq B \subseteq G$
+
+\textbf{Steinitz Exchange}: $L$ lin.\ indep., $S$ spanning $\Rightarrow \Card{L} \leq \Card{S}$
+
+\textbf{Basis Union Lemma}: $(U_i)$ direct sum, $B_i$ basis of $U_i$ $\Rightarrow \BigUnion[i \in I] B_i$ basis of $\DirectSum{i \in I}{U_i}$
+
+%% DIMENSION
+\textbf{Dimension}: $\Dim[K]{V} = \Card{B}$ for any basis $B$; \quad $\Card{L} \leq \Dim[K]{V} \leq \Card{G}$
+
+\textbf{Grassmann Formula}: $\Dim[K]{U + W} + \Dim[K]{U \Intersect W} = \Dim[K]{U} + \Dim[K]{W}$
+
+\textbf{Direct Sum Dimension}: $\Dim[K]{\DirectSum{i \in I}{U_i}} = \sum_{i \in I} \Dim[K]{U_i}$
+
+\textbf{Cardinal Properties}: $\Card{V} = \sum_{n \in \bb{N}} (\Card{K}-1)^n \cdot \binom{\Card{B}}{n}$
+\begin{itemize}
+    \item Finite: $K$ and $B$ both finite $\Rightarrow \Card{V} = \Card{K}^{\Card{B}}$ (Newton binomial, $\binom{m}{n} = 0$ for $n > m$)
+    \item Infinite: $\max(\Card{K}, \Card{B}) = \kappa \geq \aleph_0 \Rightarrow \Card{V} = \kappa$
+\end{itemize}
+
+%% COORDINATES
+\textbf{Coordinate Isomorphism}: $\phi_{\mathcal{B}}: V \xrightarrow{\sim} K^{(I)}$, $v \mapsto \CoordVec{v}[\mathcal{B}]$; \quad $\Dim[K]{K^{(I)}} = \Card{I}$
+
+\textbf{Key Dimensions}: $\Dim[K]{K^n} = n$, $\Dim[K]{K[X]_{\leq n}} = n+1$, $\Dim[K]{\MatSpace{m}{n}[K]} = mn$, $\Dim[K]{K[X]} = \aleph_0$, $\Dim[\bb{Q}]{\bb{R}} = \mathfrak{c}$, $\Dim[\bb{R}]{C([0,1])} = \mathfrak{c}$
+
+\end{compendium}
