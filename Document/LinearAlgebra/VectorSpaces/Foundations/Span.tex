@@ -32,22 +32,24 @@
 
         % Span of two non-collinear vectors
         \begin{scope}[xshift=7cm]
+            % Plane drawn as a receding-floor parallelogram in perspective:
+            % bottom edge slopes slightly down-right, sides lean slightly right going up
+            \fill[purple!20, opacity=0.5] (-1.8,-0.3) -- (2.0,-0.7) -- (2.4,1.3) -- (-1.4,1.7) -- cycle;
             \draw[->, thick, blue] (0,0) -- (1.5,0.3) node[right] {$v_1$};
             \draw[->, thick, red] (0,0) -- (0.5,1.2) node[above] {$v_2$};
-            \fill[purple!20, opacity=0.5] (-1.5,-1.5) -- (2.5,-0.5) -- (2.5,2.5) -- (-1.5,1.5) -- cycle;
             \fill (0,0) circle (2pt) node[below left] {$0$};
-            \node at (0.5,-1) {Plane through origin};
+            \node at (0.5,-1.2) {Plane through origin};
         \end{scope}
     \end{tikzpicture}
     \end{center}
 \end{example}
 
 \begin{example}[Spans in $\bb{R}^3$]\label{ex:span-R3}
-    In $\bb{R}^3$, consider the standard basis vectors $e_1 = (1,0,0)$, $e_2 = (0,1,0)$, $e_3 = (0,0,1)$:
+    In $\bb{R}^3$, consider the standard basis vectors $e_0 = (1,0,0)$, $e_1 = (0,1,0)$, $e_2 = (0,0,1)$:
     \begin{enumerate}
-        \item \textbf{Line}: $\Span[\bb{R}]{\{e_3\}} = \Set{(0, 0, z) \mid z \in \bb{R}}$ (the $z$-axis)
-        \item \textbf{Plane}: $\Span[\bb{R}]{\{e_1, e_2\}} = \Set{(x, y, 0) \mid x, y \in \bb{R}}$ (the $xy$-plane)
-        \item \textbf{Whole space}: $\Span[\bb{R}]{\{e_1, e_2, e_3\}} = \bb{R}^3$
+        \item \textbf{Line}: $\Span[\bb{R}]{\{e_2\}} = \Set{(0, 0, z) \mid z \in \bb{R}}$ (the $z$-axis)
+        \item \textbf{Plane}: $\Span[\bb{R}]{\{e_0, e_1\}} = \Set{(x, y, 0) \mid x, y \in \bb{R}}$ (the $xy$-plane)
+        \item \textbf{Whole space}: $\Span[\bb{R}]{\{e_0, e_1, e_2\}} = \bb{R}^3$
     \end{enumerate}
 
     \textbf{Non-example}: $\{(1, 0, 0), (2, 0, 0)\}$ spans only a line, not a plane, because $(2, 0, 0) = 2 \cdot (1, 0, 0)$ is redundant.
@@ -60,11 +62,11 @@
 
         % xy-plane (span of e1, e2)
         \fill[blue!20, opacity=0.6] (-1.5,-1.5,0) -- (1.5,-1.5,0) -- (1.5,1.5,0) -- (-1.5,1.5,0) -- cycle;
-        \node[blue] at (1.5, 0, 0.3) {$\Span{e_1, e_2}$};
+        \node[blue] at (1.5, 0, 0.3) {$\Span{e_0, e_1}$};
 
         % z-axis (span of e3)
         \draw[thick, red] (0,0,-1.5) -- (0,0,1.5);
-        \node[red] at (0.4,0,1.5) {$\Span{e_3}$};
+        \node[red] at (0.4,0,1.5) {$\Span{e_2}$};
 
         % Coordinate axes
         \draw[->, thick] (0,0,0) -- (2,0,0) node[right] {$x$};
@@ -81,7 +83,7 @@
 \begin{proposition}[Constructive Characterization of Span]\label{prop:span-constructive}
     For any $S \subseteq V$:
     \[
-        \Span[K]{S} = \Set{\sum_{i=1}^{n} a_i v_i \mid n \in \bb{N}, a_i \in K, v_i \in S}
+        \Span[K]{S} = \Set{\sum_{i \in n} a_i v_i \mid n \in \bb{N}, a_i \in K, v_i \in S}
     \]
     That is, $\Span[K]{S}$ equals the set of all finite $K$-linear combinations of elements in $S$.
 \end{proposition}
@@ -93,10 +95,10 @@
     We show $L$ is a subspace containing $S$, hence contains $\Span[K]{S}$.
     \begin{itemize}
         \item $L \neq \emptyset$: The empty sum gives $0 \in L$.
-        \item \textbf{Closure}: If $x = \sum_{i=1}^{n} a_i v_i$ and $y = \sum_{j=1}^{m} b_j w_j$ are in $L$, then
+        \item \textbf{Closure}: If $x = \sum_{i \in n} a_i v_i$ and $y = \sum_{j \in m} b_j w_j$ are in $L$, then
               for $\alpha, \beta \in K$:
               \[
-                  \alpha x + \beta y = \sum_{i=1}^{n} \alpha a_i v_i + \sum_{j=1}^{m} \beta b_j w_j \in L
+                  \alpha x + \beta y = \sum_{i \in n} \alpha a_i v_i + \sum_{j \in m} \beta b_j w_j \in L
               \]
         \item $S \subseteq L$: Each $v \in S$ equals $1 \cdot v \in L$.
     \end{itemize}
@@ -155,7 +157,7 @@
     (1) The only linear combination of elements from $\emptyset$ is the empty sum, which equals $0$.
     Thus $\Span[K]{\emptyset} = \{0\}$.
 
-    (2) Every linear combination of $0$ has the form $\sum_{i=1}^n a_i \cdot 0 = 0$.
+    (2) Every linear combination of $0$ has the form $\sum_{i \in n} a_i \cdot 0 = 0$.
     Thus $\Span[K]{\{0\}} = \{0\}$.
 \end{proof}
 
@@ -254,4 +256,31 @@
 
 \begin{proof}
     By monotonicity: $V = \Span[K]{G} \subseteq \Span[K]{H} \subseteq V$.
+\end{proof}
+
+\begin{proposition}[$\operatorname{span}_K(\{e_i\}_{i \in I}) = K^{(I)}$]\label{prop:span-ei-finite-support}
+    For any index set $I$, the span of the indicator functions equals the space of
+    functions with finite support:
+    \[
+        \Span[K]{\{e_i\}_{i \in I}} = K^{(I)}
+    \]
+\end{proposition}
+
+\begin{proof}
+    This is an immediate reformulation of Proposition~\ref{prop:lincomb-finite-support} in the
+    language of span: the set of all linear combinations of the $e_i$'s is precisely $K^{(I)}$,
+    and by the constructive characterization of span (Proposition~\ref{prop:span-constructive}),
+    this set equals $\Span[K]{\{e_i\}_{i \in I}}$.
+\end{proof}
+
+\begin{corollary}\label{cor:span-ei-not-KI}
+    If $I$ is infinite, then $\Span[K]{\{e_i\}_{i \in I}} = K^{(I)} \subsetneq K^I$.
+    In particular, the indicator functions $(e_i)_{i \in I}$ do \textbf{not} generate $K^I$.
+\end{corollary}
+
+\begin{proof}
+    By Proposition~\ref{prop:span-ei-finite-support}, $\Span[K]{\{e_i\}_{i \in I}} = K^{(I)}$.
+    Since $I$ is infinite, the constant-$1$ function $f(i) = 1$ for all $i \in I$ lies in
+    $K^I \setminus K^{(I)}$ (as shown in Proposition~\ref{prop:lincomb-finite-support}),
+    so $K^{(I)} \subsetneq K^I$.
 \end{proof}

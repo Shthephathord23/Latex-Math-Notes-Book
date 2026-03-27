@@ -18,7 +18,7 @@
 
 \begin{remark}[Ordering Matters]
     The same underlying set with different orderings gives \emph{different} ordered bases.
-    For example, $\{e_1, e_2\}$ in $\bb{R}^2$ yields two ordered bases: $(e_1, e_2)$ and $(e_2, e_1)$.
+    For example, $\{e_0, e_1\}$ in $\bb{R}^2$ yields two ordered bases: $(e_0, e_1)$ and $(e_1, e_0)$.
     These give different coordinate representations for the same vector.
 \end{remark}
 
@@ -28,22 +28,22 @@
     \[
         v = \sum_{i \in F} a_i b_i \quad (\text{$F \subseteq I$ finite, $a_i \neq 0$})
     \]
-    determines the \textbf{coordinate vector} $\CoordVec{v}[\mathcal{B}] \in K^{(I)}$ defined by
+    determines the \textbf{coordinate vector} $\CoordVec[\mathcal{B}]{v} \in K^{(I)}$ defined by
     \[
-        \CoordVec{v}[\mathcal{B}](i) =
+        \CoordVec[\mathcal{B}]{v}(i) =
         \begin{cases}
             a_i & \text{if } i \in F \\
             0 & \text{otherwise}
         \end{cases}
     \]
-    When $I$ is finite, we write $\CoordVec{v}[\mathcal{B}] = \begin{pmatrix} a_1 \\ \vdots \\ a_n \end{pmatrix} \in K^n$.
+    When $I$ is finite, we write $\CoordVec[\mathcal{B}]{v} = \ColVec{a_0 \\ \vdots \\ a_{n-1}}[\mathcal{B}] \in K^n$.
 \end{definition}
 
 \begin{example}[Coordinate Dependence on Ordering]\label{ex:coord-ordering}
     In $\bb{R}^2$, let $v = (3, 2)$. With the standard basis:
     \begin{itemize}
-        \item $\mathcal{B}_1 = (e_1, e_2)$: $\CoordVec{v}[\mathcal{B}_1] = \begin{pmatrix} 3 \\ 2 \end{pmatrix}$
-        \item $\mathcal{B}_2 = (e_2, e_1)$: $\CoordVec{v}[\mathcal{B}_2] = \begin{pmatrix} 2 \\ 3 \end{pmatrix}$
+        \item $\mathcal{B}_1 = (e_0, e_1)$: $\CoordVec[\mathcal{B}_1]{v} = \ColVec{3 \\ 2}[\mathcal{B}_1]$
+        \item $\mathcal{B}_2 = (e_1, e_0)$: $\CoordVec[\mathcal{B}_2]{v} = \ColVec{2 \\ 3}[\mathcal{B}_2]$
     \end{itemize}
     The coordinates depend on the \textbf{ordering}, not just the set of basis vectors.
 \end{example}
@@ -51,16 +51,16 @@
 \begin{theorem}[Coordinate Bijection]\label{thm:coord-bijection}
     Let $\mathcal{B} = (b_i)_{i \in I}$ be an ordered basis for $V$. The coordinate map
     \[
-        \phi_{\mathcal{B}}: V \to K^{(I)}, \quad v \mapsto \CoordVec{v}[\mathcal{B}]
+        \phi_{\mathcal{B}}: V \to K^{(I)}, \quad v \mapsto \CoordVec[\mathcal{B}]{v}
     \]
     is a bijection. (It is in fact a linear isomorphism; see Theorem~\ref{thm:coord-iso}.)
 \end{theorem}
 
 \begin{proof}
-    \textbf{Injectivity}: If $\CoordVec{v}[\mathcal{B}] = 0$, then all coefficients are zero, so $v = 0$.
+    \textbf{Injectivity}: If $\CoordVec[\mathcal{B}]{v} = 0$, then all coefficients are zero, so $v = 0$.
 
     \textbf{Surjectivity}: For any $f \in K^{(I)}$ with finite support $F$, the vector
-    $v = \sum_{i \in F} f(i) b_i$ satisfies $\CoordVec{v}[\mathcal{B}] = f$.
+    $v = \sum_{i \in F} f(i) b_i$ satisfies $\CoordVec[\mathcal{B}]{v} = f$.
 \end{proof}
 
 \begin{proposition}[Canonical Basis of $K^{(I)}$]\label{prop:canonical-basis}
@@ -79,17 +79,29 @@
     Evaluating at any $j \in F$: $0 = a_j$, contradiction.
 \end{proof}
 
+\begin{remark}[Canonicity is Special to $K^{(I)}$]\label{rem:canonical-basis-special}
+    The basis $(e_i)_{i \in I}$ is \textbf{canonical} because it is defined intrinsically by
+    the function-space structure of $K^{(I)}$ itself --- no arbitrary choice is involved.
+    \textbf{An abstract $K$-vector space $V$ has no canonical basis}: any basis of $V$ requires a
+    choice (equivalently, a choice of isomorphism $V \cong K^{(I)}$). Even $\bb{R}^n$ only has
+    a ``standard'' basis because we keep track of the identification $\bb{R}^n = K^{(n)}$ where $n = \{0, 1, \ldots, n-1\}$.
+    The canonical basis exists \emph{only} for spaces of the form $K^{(I)}$.
+\end{remark}
+
 \begin{corollary}[Dimension of $K^{(I)}$]\label{cor:dim-finite-support}
     $\Dim[K]{K^{(I)}} = \Card{I}$.
 \end{corollary}
 
-\begin{example}[Standard Canonical Bases]\label{ex:canonical-bases}
-    The following are canonical bases:
+\begin{example}[Canonical Bases]\label{ex:canonical-bases}
+    Spaces of the form $K^{(I)}$ have a canonical basis. The following are instances:
     \begin{itemize}
-        \item $K^n = K^{(\{1, \ldots, n\})}$: canonical basis $(e_1, \ldots, e_n)$
-        \item $K^{(\kappa)}$ for cardinal $\kappa$: canonical basis $(e_\alpha)_{\alpha < \kappa}$
-        \item $K[X] \cong K^{(\bb{N})}$: canonical basis $(1, X, X^2, \ldots)$
+        \item $K^n = K^{(n)}$ where $n = \{0, 1, \ldots, n-1\}$: canonical basis $(e_0, e_1, \ldots, e_{n-1})$
+        \item $K^{(\kappa)}$ for a cardinal $\kappa$: canonical basis $(e_\alpha)_{\alpha < \kappa}$
     \end{itemize}
+    Other vector spaces have \emph{no} canonical basis. For instance, $K[X]$ has a natural ordered
+    basis $(1, X, X^2, \ldots)$, but this is only ``natural'' because we implicitly choose the
+    isomorphism $K[X] \cong K^{(\bb{N})}$ sending $X^n \mapsto e_n$. A different isomorphism would
+    yield a different basis. The basis is not canonical --- only the isomorphism type is.
 \end{example}
 
 \begin{remark}[Cardinal Properties of $K^{(I)}$]

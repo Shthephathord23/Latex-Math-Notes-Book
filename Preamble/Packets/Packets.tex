@@ -1,6 +1,6 @@
 % Preamble/Packets/Packets.tex
 
-\usepackage[utf8]{inputenc}
+% XeLaTeX handles UTF-8 natively — inputenc not needed
 \usepackage{combelow}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -16,8 +16,9 @@
 \usepackage[italicdiff]{physics}
 
 \usepackage{etoolbox}
-\usepackage[T1]{fontenc}
-\usepackage{selinput}
+% Fonts (XeLaTeX)
+\usepackage{fontspec}
+\newfontfamily\emojifont{Noto Emoji}
 
 % TikZ for diagrams
 \usepackage{tikz}

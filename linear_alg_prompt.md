@@ -99,6 +99,7 @@ Before implementing this document, ensure the following packages are loaded in `
 - Do NOT use subtraction on dimensions in proofs—use additive form ALWAYS unless explicitly stated finite-dimensional
 - Do NOT use `\sum_{n=0}^{\infty}`—use `\sum_{n \in \bb{N}}` instead (cardinal/set notation)
 - Do NOT use `< \infty` for finite—use "finite-dimensional" phrasing instead
+- **0-Based Indexing Convention**: This document uses **0-based indexing** throughout. Finite ordered bases of dimension $n$ are written $(b_0, b_1, \ldots, b_{n-1})$; the canonical basis of $K^n$ is $(e_0, e_1, \ldots, e_{n-1})$; $K^n$ is identified with $K^{\{0,1,\ldots,n-1\}} = K^n$ (as the von Neumann ordinal). All index ranges start at 0: $i \in \{0, \ldots, n-1\}$, $\sum_{i=0}^{n-1}$, etc. This matches the set-theoretic convention $n = \{0, 1, \ldots, n-1\}$.
 - Do NOT leave broken references like `??`—ensure all `\ref{}` labels are defined before referencing
 - **Do NOT write `\hfill QED` at the end of proofs**—the `proof` environment automatically adds the QED symbol. Manual QED causes double symbols in the PDF.
 - **Do NOT use disjoint union symbol `\bigsqcup` or `\sqcup`**—use regular union (`\Union`, `\BigUnion`, `\Intersect`, `\BigIntersect`, `\Subset`, `\SubsetEq`, `\Supset`, `\SupsetEq`) and note "(disjoint)" or "where the union is disjoint" in text when relevant.
@@ -199,13 +200,17 @@ When drawing 3D figures (planes, lines in $\mathbb{R}^3$), define proper unit ve
 | **Quotient** | `\QuotientSpace{V}{W}`, `\QuotientSpace p{V}{W}` (parenthesized), `\Coset{v}{W}` |
 | **Fundamental** | `\Ker{T}`, `\Rng{T}`, `\Rank{T}`, `\Nullity{T}` |
 | **Dimension** | `\Dim[K]{V}` |
-| **Matrices** | `\Transpose{A}`, `\Adjoint{A}`, `\TensorProduct[K]{U}{V}`, `\Hadamard{A}{B}`, `\KroneckerProduct[K]{A}{B}` |
+| **Subspace Lattice** | `\Sub{V}` → $\operatorname{Sub}(V)$ (set of all subspaces of $V$, ordered by inclusion) |
+| **Matrix Spaces** | `\MatSpace{X}{Y}[K]` → $\mathrm{Mat}_{X,Y}(K)$ (all functions $X \times Y \to K$, no finiteness); `\CFMat{X}{Y}[K]` → $\mathrm{Mat}_{X,(Y)}(K)$ (column-finite: for each $j \in Y$, $A(-,j) \in K^{(X)}$) |
+| **Matrices** | `\Transpose{A}`, `\Adjoint{A}`, `\Hermitian{A}`, `\TensorProduct[K]{U}{V}`, `\Hadamard{A}{B}`, `\KroneckerProduct[K]{A}{B}` |
+| **Matrix Rep** | `\MatrixRep{T}` → $[T]$; `\MatrixRep{T}[\mathcal{B}]` → $[T]_{\mathcal{B}}$; `\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]` → $[T]_{\mathcal{B}_U}^{\mathcal{B}_V}$ |
 | **Spectral** | `\Det{A}`, `\Trace{A}`, `\Adjugate{A}`, `\Spectrum{T}`, `\Eigenspace{T}{\lambda}`, `\GenEigenspace{T}{\lambda}` |
 | **Polynomials** | `\MinPoly{T}`, `\CharPoly{T}` |
 | **Hom/End** | `\Hom[K]{U}{V}`, `\End[K]{V}`, `\Aut[K]{V}`, `\GL{n}{K}`, `\Dual{V}` |
 | **Dual** | `\DualBasis{B}`, `\DualMap{T}` |
 | **Multilinear** | `\MultiLin[K]{...}{V}`, `\MultiForm[K]{n}{V}`, `\SymForm{n}{V}`, `\AltForm{n}{V}`, `\Wedge{a}{b}` |
 | **Norms/IP** | `\Norm[p]{v}`, `\InnerProd{u}{v}`, `\OrthComp{U}`, `\Proj{U}`, `\Sym{U}` |
+| **Column Vectors** | `\ColVec{a_1 \\ a_2 \\ \vdots \\ a_n}` (no base), `\ColVec{a_1 \\ \vdots \\ a_n}[\mathcal{B}]` (with base subscript) |
 | **Misc** | `\LinIndep`, `\LinDep`, `\MinkowskiSum{A}{B}`, `\Hermitian{A}` |
 
 **Sum Macro Syntax (CRITICAL)**:
@@ -214,7 +219,7 @@ When drawing 3D figures (planes, lines in $\mathbb{R}^3$), define proper unit ve
 - **Prefer 3-arg for numbered ranges** like $i=1$ to $n$; use 2-arg for set membership like $i \in I$
 - Same applies to `\SubspaceSum`, `\DirectProd`, `\ExtDirectSum`
 
-**ALWAYS use `[K]` subscript** for: `\Span[K]`, `\Subspace[K]`, `\Dim[K]`, `\Hom[K]`, `\End[K]`, `\Aut[K]`, `\TensorProduct[K]`, `\KroneckerProduct[K]`
+**ALWAYS use `[K]` subscript** for: `\Span[K]`, `\Subspace[K]`, `\Dim[K]`, `\Hom[K]`, `\End[K]`, `\Aut[K]`, `\TensorProduct[K]`, `\KroneckerProduct[K]`, `\MatSpace[K]`, `\CFMat[K]`
 
 **Use from `Preamble/Commands/BinaryRelations.tex`:**
 - `\Composition{S}{T}` for $S \circ T$
@@ -274,13 +279,15 @@ Each of the following concepts MUST have examples and non-examples in $\mathbb{R
    - **Scalar multiplication** as scaling (stretch/shrink, reverse if negative)
    - 🎨 **FIGURE**: TikZ illustration of parallelogram rule and 3D vector
 4. **Coordinate spaces $K^n$**:
-   - $K^n = K^{\{1, \ldots, n\}}$—view $n$-tuples as functions
+   - $K^n = K^{\{0, 1, \ldots, n-1\}}$—view $n$-tuples as functions (0-based: index set is the von Neumann ordinal $n = \{0, \ldots, n-1\}$)
    - Pointwise operations
 5. **Geometric Interpretation of $K^n$** (REMARK):
    - For $n = 1, 2, 3$ over $K = \bb{R}$, identify points in $\bb{R}^n$ with **position vectors** (arrows from origin $0$ to the point)
-   - This identification is bijective: $(x_1, \ldots, x_n) \leftrightarrow$ arrow from $0$ to $(x_1, \ldots, x_n)$
-   - Addition corresponds to tip-to-toe (parallelogram) rule
-   - Scalar multiplication corresponds to scaling and reflecting arrows
+   - This identification is bijective: $(x_0, \ldots, x_{n-1}) \leftrightarrow$ arrow from $0$ to $(x_0, \ldots, x_{n-1})$
+   - **Geometric proof for addition**: Decompose $u = u_0 e_0 + u_1 e_1$, $v = v_0 e_0 + v_1 e_1$. By axioms: $u + v = (u_0+v_0)e_0 + (u_1+v_1)e_1$, which is the coordinatewise sum. Geometrically: fourth vertex of the parallelogram.
+   - **Geometric proof for scaling**: $\alpha u = \alpha(u_0 e_0 + u_1 e_1) = (\alpha u_0)e_0 + (\alpha u_1)e_1$, the coordinatewise product. Geometrically: scaling the arrow by $|\alpha|$, reversing if $\alpha < 0$.
+   - 🎨 **FIGURE 1**: Parallelogram rule — large TikZ diagram (scale 1.3) with grid, axes, u+v label at tip
+   - 🎨 **FIGURE 2**: Scalar multiplication — three side-by-side diagrams: $\alpha=2$ (stretch), $\alpha=\tfrac{1}{2}$ (squish), $\alpha=-1$ (negate)
    - This geometric intuition guides linear algebra even in higher dimensions and abstract fields
 6. **Function spaces $K^I$**:
    - Define pointwise operations for arbitrary index set $I$
@@ -290,12 +297,14 @@ Each of the following concepts MUST have examples and non-examples in $\mathbb{R
    - Every $f \in K^{(I)}$ can be written as finite sum $\sum f(i) e_i$
    - Do NOT claim $(e_i)$ is a basis here—defer to Phase 7
    - Key distinction: $K^{(I)} = K^I$ iff $I$ finite
+   - **Column vector notation for $K^n$** (REMARK): For $n \in \bb{N}$, elements of $K^n$ (functions from $\{0,\ldots,n-1\}$ to $K$) are denoted as column vectors $\ColVec{a_0 \\ \vdots \\ a_{n-1}}$. Show indicator functions $e_0, \ldots, e_{n-1}$ in column form (0-based).
 8. **Polynomial spaces $K[X]$**:
    - $K[X]_{\leq n} = \Set{p \in K[X] \mid \deg p \leq n}$ (degree at most $n$)
    - $K[X]_{\le n} = \Set{p \in K[X] \mid \deg p \le n}$ (degree less than $n$)
-9. **Matrix spaces $\MatSpace{m}{n}[K]$**:
-   - $m \times n$ matrices with entries in $K$
-   - Pointwise operations
+9. **Matrix spaces $\MatSpace{m}{n}[K]$ and $\CFMat{m}{n}[K]$**:
+   - $\MatSpace{m}{n}[K] = K^{m \times n}$: all functions $\{0,\ldots,m-1\} \times \{0,\ldots,n-1\} \to K$; pointwise operations
+   - $\CFMat{m}{n}[K]$: column-finite subspace (for finite $m, n$, coincides with $\MatSpace{m}{n}[K]$; distinction matters for infinite index sets)
+   - Matrix multiplication defined on $\CFMat{m}{n}[K]$ (fully developed in Phase 16)
 10. **Field Extension Examples**: $\mathbb{C}/\mathbb{R}$, $\mathbb{R}/\mathbb{Q}$
 11. **Properties from axioms** with proofs:
     - $0v = 0$, $a0 = 0$, $(-1)v = -v$
@@ -416,11 +425,17 @@ Each of the following concepts MUST have examples and non-examples in $\mathbb{R
    - 🎨 **FIGURE**: Span of 2 vectors in $\mathbb{R}^3$ = plane through origin
    - **Non-examples**:
      - Infinite series like $\sum_{i=1}^{\infty} a_i v_i$ are NOT linear combinations
-   - **Counterexample**: In $K^{\mathbb{N}}$, let $e_i = (0, \ldots, 0, 1, 0, \ldots)$. Then $(1, 1, 1, \ldots) \notin \Span[K]{\{e_i\}_{i \in \mathbb{N}}}$.
+   - **Remark (finiteness is essential)**: Infinite sums require topological structure (limits). As counterexample: constant sequence $(1,1,1,\ldots)$ is NOT a lin. comb. of $e_i$'s in $K^{\bb{N}}$, even though intuitively it equals $\sum_{i=1}^{\infty} e_i$.
+   - **Proposition (lin. combs. of indicator functions)**: The set of all lin. combs. of $(e_i)_{i \in I}$ in $K^I$ is precisely $K^{(I)}$. In particular if $I$ is infinite, elements of $K^I \setminus K^{(I)}$ exist. Full proof with both inclusions using Kronecker delta calculations. Do NOT use span here—span is introduced later.
 4. **Vector subspace iff closed under all linear combinations**: $U \Subspace[K] V$ iff $\Forall :{F \subseteq U, F \text{ finite}}{\Forall :{(a_v)_{v \in F} \in K^F}{\sum_{v \in F} a_v v \in U}}$
 5. **Trivial subspaces**: $\{0\}$ and $V$
    - **Non trivial examples of vector spaces**
    - 🎨 **FIGURE**: Lines and planes through origin in $\mathbb{R}^3$
+5b. **Remark (Subspace Lattice $\Sub{V}$)**:
+   - Write $\Sub{V}$ for the **set of all $K$-subspaces of $V$**, ordered by inclusion.
+   - It is a **complete lattice**: meet $= \bigcap$ (intersection), join $= \sum$ (sum).
+   - Bottom element: $\{0\}$; top element: $V$.
+   - Forward reference: this lattice is the home of **flags** (Phase 7b).
 6. **Intersection**: Arbitrary intersection of subspaces is subspace
 7. **Union**: $U \Union W$ is subspace iff $U \subseteq W \LogicOr W \subseteq U$
 8. **Minkowski sum of subspaces is a subspace** (prove)
@@ -444,7 +459,7 @@ Each of the following concepts MUST have examples and non-examples in $\mathbb{R
    - 🎨 **FIGURE**: Span of 2 vectors in $\mathbb{R}^3$ = plane through origin
    - **Non-examples**:
      - Infinite series like $\sum_{i=1}^{\infty} a_i v_i$ are NOT linear combinations
-   - **Counterexample**: In $K^{\mathbb{N}}$, let $e_i = (0, \ldots, 0, 1, 0, \ldots)$. Then $(1, 1, 1, \ldots) \notin \Span[K]{\{e_i\}_{i \in \mathbb{N}}}$.
+   - **Counterexample**: In $K^{\bb{N}}$, the constant-$1$ sequence $f(i)=1$ is NOT a lin. comb. of $e_i$ (finite support argument). The set of all lin. combs. of $(e_i)$ equals $K^{(I)}$, which is strictly smaller than $K^I$ for infinite $I$.
 
 2. **Definition (intersection)**: $\Span[K]{S} = \BigIntersect \Set{ U \Subspace[K] V \mid S \subseteq U }$
    - **Examples**:
@@ -473,6 +488,9 @@ Each of the following concepts MUST have examples and non-examples in $\mathbb{R
    - $G \subseteq V$ is generating iff $\Span[K]{G} = V$
    - **$V$ always generates $V$**: $\Span[K]{V} = V$ (since $V$ is a subspace containing itself)
    - **Superset of generating is generating**
+9. **$\Span[K]{\{e_i\}_{i \in I}} = K^{(I)}$** (Proposition, follows from the linear combination example in Phase 3):
+   - Reformulation using span: the set of lin. combs. of $e_i$ proven to be $K^{(I)}$ equals $\Span[K]{\{e_i\}_{i \in I}}$ by constructive characterization of span
+   - **Corollary**: For infinite $I$, $\Span[K]{\{e_i\}_{i \in I}} = K^{(I)} \subsetneq K^I$ — indicator functions do NOT generate $K^I$
 
 ---
 
@@ -482,7 +500,7 @@ Each of the following concepts MUST have examples and non-examples in $\mathbb{R
    - **Examples of lin. indep. sets**:
      - $\{(1,0), (0,1)\}$ in $\mathbb{R}^2$
      - $\{1, X, X^2\}$ in $K[X]$
-     - $\{e_1, e_2, e_3\}$ standard basis in $\mathbb{R}^3$
+     - $\{e_0, e_1, e_2\}$ standard basis in $\mathbb{R}^3$ (0-indexed)
    - 🎨 **FIGURE**: Two non-collinear vectors in $\mathbb{R}^2$ (lin. indep.) vs two collinear vectors (lin. dep.)
    - **Examples of lin. dep. sets**:
      - $\{(1,0), (2,0)\}$ in $\mathbb{R}^2$ (one is scalar multiple of other)
@@ -535,7 +553,7 @@ Each of the following concepts MUST have examples and non-examples in $\mathbb{R
    - **Decomposition**: $V = U \DirectSum W$ iff $V = U + W$ and $U \Intersect W = \{0\}$
    - **Examples**:
      - $\mathbb{R}^3 = $ (xy-plane) $\DirectSum$ (z-axis)
-     - $K^n = \DirectSum{i=1}{n}{K \cdot e_i}$ (direct sum of coordinate axes)
+     - $K^n = \DirectSum{i=0}{n-1}{K \cdot e_i}$ (direct sum of coordinate axes, 0-indexed)
      - $K[X] = K[X]_{\text{even}} \DirectSum K[X]_{\text{odd}}$ (even/odd degree polynomials)
    - 🎨 **FIGURE**: $\mathbb{R}^3$ as direct sum of xy-plane and z-axis
    - **Non-example**: Two distinct lines through origin in $\mathbb{R}^3$ do NOT give $\mathbb{R}^3$ (only a plane)
@@ -583,7 +601,14 @@ Each of the following concepts MUST have examples and non-examples in $\mathbb{R
    - **Extension to Basis**: Any lin. indep. set can be extended to a basis (take $G = V$)
    - **Extraction from Generating Set**: Any generating set contains a basis (take $L = \emptyset$)
 
-6. **Steinitz Exchange Lemma** (Zorn's Lemma proof):
+6. **Complementary Subspaces**:
+   - **Definition**: $W$ is a **complement** of $U$ in $V$ iff $V = U \DirectSum W$ (i.e., $U + W = V$ and $U \Intersect W = \{0\}$)
+   - **Existence (Proposition)**: Every subspace $U \Subspace[K] V$ has a complement in $V$
+     - **Proof**: Extend basis $B_U$ of $U$ to basis $B = B_U \Union C$ of $V$. Then $W = \Span[K]{C}$ is a complement.
+   - **Non-Uniqueness (Corollary)**: Complements are generally **not unique**—different basis extensions yield different complements
+   - **Example**: In $\mathbb{R}^2$, the $x$-axis has infinitely many complements: any non-horizontal line through origin (e.g., $y$-axis, line $y = x$, etc.)
+
+7. **Steinitz Exchange Lemma** (Zorn's Lemma proof):
    - Let $L$ be linearly independent, $S$ spanning
    - **Statement**: There exists injection $f: L \to S$ such that $(S \setminus \DirectImage{f}{L}) \Union L$ spans $V$
    - **Proof structure**:
@@ -591,25 +616,25 @@ Each of the following concepts MUST have examples and non-examples in $\mathbb{R
      2. **Apply Zorn**: Chains have upper bounds (union of $L_\alpha$, union of $S_\alpha$, combined bijection); spanning preserved since any $v$ is finite linear combination
      3. **Prove $\bar{L} = L$**: If $u \in L \setminus \bar{L}$, write $u = \sum a_i \ell_i + \sum b_j s_j$; some $b_j \neq 0$ (else $u \in \Span[K]{\bar{L}}$, contradicting lin. indep.); exchange $u \leftrightarrow s_j$ to extend, contradicting maximality
 
-7. **Corollary**: $\Card{L} \leq \Card{S}$ (injection $f: L \to S$)
+8. **Corollary**: $\Card{L} \leq \Card{S}$ (injection $f: L \to S$)
 
-8. **Remark: Finite-Dimensional Case and Choice**:
+9. **Remark: Finite-Dimensional Case and Choice**:
    - If $V$ has a **finite generating set**, both Basis Extension and Steinitz hold **without** Axiom of Choice
    - Zorn's Lemma for finite posets reduces to exhaustive search—provable in ZF
 
-9. **Dimension invariance**: Any two bases have the same cardinality (follows from Steinitz)
-10. **Definition of dimension**: $\Dim[K]{V}$ = common cardinality of all bases
+10. **Dimension invariance**: Any two bases have the same cardinality (follows from Steinitz)
+11. **Definition of dimension**: $\Dim[K]{V}$ = common cardinality of all bases
     - For infinite-dim: use actual cardinal ($\aleph_0$, $\mathfrak{c}$), NOT "$\infty$"
     - **Corollary (Dimension Zero)**: $\Dim{V} = 0$ iff $V = \{0\}$
     - **Corollary (Subspace Equal Dim)**: If $U \Subspace V$ finite-dim and $\Dim{U} = \Dim{V}$, then $U = V$
       - Proof: Basis of $U$ is lin indep of maximal size in $V$ ⟹ basis of $V$ ⟹ $U = V$
-11. **Examples**:
+12. **Examples**:
     - **Finite-dim**: $K^n$ (dim $n$), polynomials of deg $\leq n$ (dim $n+1$), $\MatSpace{m}{n}[K]$ (dim $mn$)
     - **Infinite-dim**: $K[X]$ (all polynomials, dim $\aleph_0$), $K^{\mathbb{N}}$ (sequences, dim $\mathfrak{c}$), $C([0,1], \mathbb{R})$
-12. **Cardinality comparisons**: $\Card{L} \leq \Dim[K]{V} \leq \Card{G}$
-13. **Corollary**: Any lin indep system has at most $\Dim[K]{V}$ elements, any generating has at least.
+13. **Cardinality comparisons**: $\Card{L} \leq \Dim[K]{V} \leq \Card{G}$
+14. **Corollary**: Any lin indep system has at most $\Dim[K]{V}$ elements, any generating has at least.
 
-14. **Grassmann formula**: $\Dim[K]{U + W} + \Dim[K]{U \Intersect W} = \Dim[K]{U} + \Dim[K]{W}$
+15. **Grassmann formula**: $\Dim[K]{U + W} + \Dim[K]{U \Intersect W} = \Dim[K]{U} + \Dim[K]{W}$
     - **Proof**: Extend basis of $U \Intersect W$ to bases of $U$ and $W$ separately, show union is basis of $U + W$
     - **Direct sum corollary**: $\Dim[K]{U \DirectSum W} = \Dim[K]{U} + \Dim[K]{W}$ (since $U \Intersect W = \{0\}$)
     - **Basis union lemma**: If $(U_i)_{i \in I}$ is a direct sum family and $B_i$ is a basis for $U_i$, then $\bigcup_{i \in I} B_i$ is a basis for $\DirectSum{i \in I}{U_i}$
@@ -619,7 +644,7 @@ Each of the following concepts MUST have examples and non-examples in $\mathbb{R
       - **Proof**: Induction on $|I|$, using Grassmann for $|I|=2$ as base case
     - 🎨 **FIGURE**: Two planes intersecting in a line in $\mathbb{R}^3$
 
-15. **Cardinal Properties of Vector Spaces** (Theorem with detailed proof, requires $V \neq \{0\}$):
+16. **Cardinal Properties of Vector Spaces** (Theorem with detailed proof, requires $V \neq \{0\}$):
     - **(1)** Lower bound: $\max(\Card{K}, \Card{B}) \leq \Card{V}$
     - **(2)** Bijection with disjoint union: $V \sim \BigUnion[n \in \mathbb{N}] (K \setminus \{0\})^n \times \binom{B}{n}$
       - **PROVE EXPLICITLY**: Define map $\phi$, prove injectivity, surjectivity
@@ -628,7 +653,7 @@ Each of the following concepts MUST have examples and non-examples in $\mathbb{R
     - **(4)** Infinite case: If $\max(\Card{K}, \Card{B}) = \kappa \geq \aleph_0$, then $\Card{V} = \kappa$
     - Use `\sum_{n \in \mathbb{N}}` not `\sum_{n=0}^{\infty}`, `\Card{X}` macro
 
-16. **Infinite-Dimensional Examples** (MUST come AFTER Cardinal Properties):
+17. **Infinite-Dimensional Examples** (MUST come AFTER Cardinal Properties):
     - **$\Dim[K]{K[X]} = \aleph_0$** — countable basis $\{1, X, X^2, \ldots\}$
     - **$\Dim[\mathbb{Q}]{\mathbb{R}} = \mathfrak{c}$** — proof uses Cardinal Properties item (4)
     - **$\Dim[\mathbb{R}]{C([0,1], \mathbb{R})} = \mathfrak{c}$** — upper bound via evaluation, lower bound via $\{e^{ax}\}$
@@ -651,10 +676,11 @@ Each of the following concepts MUST have examples and non-examples in $\mathbb{R
    - **Proposition**: $(e_i)_{i \in I}$ is a basis for $K^{(I)}$
    - **Proof**: Generating (expand any $f$ as $\sum f(i)e_i$), Lin. indep. (evaluate at $j$)
    - **Corollary**: $\Dim[K]{K^{(I)}} = \Card{I}$
-6. **Standard Canonical Bases**:
-   - $K^n = K^{(\{1,\ldots,n\})}$: $(e_1, \ldots, e_n)$
+   - **Remark (Canonicity is special to $K^{(I)}$)**: The basis $(e_i)_{i \in I}$ is called **canonical** because it is *defined by the structure of $K^{(I)}$ itself* — no arbitrary choice is involved. An abstract $K$-vector space $V$ has no canonical basis: every basis requires a choice (even $\mathbb{R}^n$ has many bases; the standard one is only preferred because we remember that $\mathbb{R}^n = K^{(n)}$ where $n = \{0,1,\ldots,n-1\}$). The canonical basis exists **only** for spaces of the form $K^{(I)}$.
+6. **Standard Canonical Bases** (0-indexed):
+   - $K^n = K^{(n)}$ where $n = \{0, 1, \ldots, n-1\}$: canonical basis $(e_0, e_1, \ldots, e_{n-1})$
    - $K^{(\kappa)}$: $(e_\alpha)_{\alpha < \kappa}$
-   - $K[X]$: $(1, X, X^2, \ldots)$
+   <!-- - $K[X]$: $(1, X, X^2, \ldots)$ -->
 7. **Cardinal Properties via $K^{(I)}$** (corollary of coordinate isomorphism):
    - Since $V \cong K^{(I)}$, study cardinal properties of $K^{(I)}$:
      - (1) Lower bound: embeddings $k \mapsto k \cdot e_{i_0}$, $i \mapsto e_i$
@@ -666,6 +692,45 @@ Each of the following concepts MUST have examples and non-examples in $\mathbb{R
 8. **Add macro**: `\CoordVec{v}[\mathcal{B}]` for coordinate vector
 
 ---
+
+## Phase 7b: Flags and Chains of Subspaces
+
+**File: `Document/LinearAlgebra/VectorSpaces/Foundations/Flags.tex`**
+
+1. **Remark (Motivation)**: Flags are to subspaces what ordered bases are to vectors — they impose a linear order to capture geometry and enable normal forms (triangular matrices, Jordan form, Gaussian elimination).
+
+2. **Remark (Total order vs.\ well-order for ordered bases)**:
+   - **For coordinates only**: A total order on the basis suffices.
+   - **For matrices**: A well-order is required to index by ordinals; without it there is no canonical first column for infinite bases.
+   - In **finite dimensions** the distinction vanishes.
+
+3. **Definition (Flag)**: A **flag** in $V$ is a chain of subspaces under strict inclusion. A finite flag of **length $r+1$** is $V_0 \subsetneq V_1 \subsetneq \cdots \subsetneq V_r$ ($r+1$ subspaces; no requirement on $V_0 = \{0\}$ or $V_r = V$). An infinite flag is indexed by a totally ordered set.
+   - **Example in $\mathbb{R}^2$**: $\{0\} \subsetneq \mathbb{R}^2$ (length 2); $\{0\} \subsetneq \Span{e_1} \subsetneq \mathbb{R}^2$ (length 3); $\Span{e_2} \subsetneq \mathbb{R}^2$ (length 2, not starting at $\{0\}$). Infinitely many length-3 flags, one per line.
+   - **Example in $K[X]_{\leqslant 2}$**: length 2 ($\{0\} \subsetneq K[X]_{\leqslant 2}$), length 3 ($\{0\} \subsetneq \Span{1} \subsetneq K[X]_{\leqslant 2}$, dims $0,1,3$), length 4 ($\{0\} \subsetneq \Span{1} \subsetneq K[X]_{\leqslant 1} \subsetneq K[X]_{\leqslant 2}$, dims $0,1,2,3$).
+
+4. **Definition (Complete flag)**: A flag is **complete** if it is a maximal chain in the poset of subspaces — nothing can be inserted.
+   - **Examples/counterexamples in $\mathbb{R}^3$**:
+     - ❌ $\{0\} \subsetneq \mathbb{R}^3$ (length 2): can insert any line or plane.
+     - ❌ $\{0\} \subsetneq \Span{e_1} \subsetneq \mathbb{R}^3$ (length 3, dims $0,1,3$): can insert $\Span{e_1,e_2}$ between the last two.
+     - ✅ $\{0\} \subsetneq \Span{e_1} \subsetneq \Span{e_1,e_2} \subsetneq \mathbb{R}^3$ (length 4, dims $0,1,2,3$): complete.
+     - ✅ $\{0\} \subsetneq \Span{e_1+e_2} \subsetneq \Span{e_1+e_2, e_3} \subsetneq \mathbb{R}^3$: another complete flag.
+
+5. **Proposition (Complete flags, finite dims)**: For $\Dim[K]{V} = n$, a flag $V_0 \subsetneq \cdots \subsetneq V_r$ with $V_0 = \{0\}$, $V_r = V$ is complete iff $r = n$ and $\Dim[K]{V_i} = i$ for all $i$.
+   - **Proof** ($\Rightarrow$): A gap of $\geq 2$ allows inserting an intermediate subspace by basis extension — contradicts maximality. ($\Leftarrow$): Any $W$ with $V_i \subsetneq W \Subspace[K] V_{i+1}$ has $\Dim[K]{W} = i+1 = \Dim[K]{V_{i+1}}$, so $W = V_{i+1}$ by the equal-dimension corollary.
+   - **Example in $\mathbb{R}^4$**: $\mathcal{F}_1$ (dims $0,1,2,3,4$, length 5) complete; $\mathcal{F}_2$ (dims $0,1,3,4$, length 4) not complete — $\Span{e_1,e_2}$ fits in the gap.
+
+6. **Proposition (Every ordered basis induces a complete flag — including infinite dims)**:
+   Let $\mathcal{B} = (b_i)_{i \in I}$ be an ordered basis with $I$ well-ordered. Set $V_\alpha \defeq \Span[K]{\{b_i \mid i \leqslant \alpha\}}$. Then $(V_\alpha)_{\alpha \in I}$ (with $V_{-\infty} = \{0\}$ before the first index) is a complete flag.
+   - **Proof**:
+     - *Strict inclusion*: $b_{\alpha^+} \notin V_\alpha$ by linear independence, so $V_\alpha \subsetneq V_{\alpha^+}$.
+     - *Covers $V$*: Every $v \in V$ is a finite combination $\sum_{j \in F} c_j b_j$; taking $\alpha = \max F$, $v \in V_\alpha$.
+     - *Completeness*: If $V_\alpha \subsetneq W \Subspace[K] V_{\alpha^+}$, pick $w \in W \setminus V_\alpha$; write $w$ in the basis — the $b_{\alpha^+}$ coefficient is nonzero, so $b_{\alpha^+} \in W$, giving $V_{\alpha^+} \Subspace[K] W$, hence $W = V_{\alpha^+}$.
+   - **Examples**: Standard basis of $\mathbb{R}^3$ gives the standard complete flag; canonical basis $(e_n)_{n \in \mathbb{N}}$ of $K^{(\mathbb{N})}$ gives $\{0\} \subsetneq \Span{e_0} \subsetneq \Span{e_0,e_1} \subsetneq \cdots$ (infinite complete flag).
+
+7. **Remark (Converse, finite dims)**: Every complete flag of a finite-dimensional space admits an adapted ordered basis $(b_1,\ldots,b_n)$ with $V_i = \Span[K]{b_1,\ldots,b_i}$, built by choosing $b_i \in V_i \setminus V_{i-1}$ at each step.
+
+---
+
 
 ## Chapter 1 Compendium
 
@@ -813,7 +878,7 @@ $$\Span[K]{S} = \BigIntersect \Set{U \Subspace[K] V \mid S \subseteq U} = \Set{\
 6. **Universal Property of Vector Spaces (Free Objects)**:
    - For basis $B$ of $V$, any $f: B \to W$ extends uniquely to linear $T: V \to W$
    - 📊 **DIAGRAM** (tikz-cd): Triangle $B \xrightarrow{\iota} V \xrightarrow{\exists! T} W$ with $f: B \to W$
-   - 📊 **FIGURE** (TikZ): Unit square (basis $\{e_1, e_2\}$) → parallelogram ($\{f(e_1), f(e_2)\}$) showing $T$ determined by basis images
+   - 📊 **FIGURE** (TikZ): Unit square (basis $\{e_0, e_1\}$) → parallelogram ($\{f(e_0), f(e_1)\}$) showing $T$ determined by basis images
    - 📊 **DIAGRAM**: Triangle showing $B \to V \to W$ with unique extension
    - **Equivalent characterizations** (without isomorphism):
      - $V$ has a basis
@@ -935,6 +1000,8 @@ $$\Span[K]{S} = \BigIntersect \Set{U \Subspace[K] V \mid S \subseteq U} = \Set{\
 - **(5)⟹(6)**: Has left inverse ⟹ monic (by char (6)⟹(7)). Has right inverse ⟹ epic (by char (6)⟹(7))
 - **(6)⟹(2)**: Monic ⟹ injective (by char (7)⟹(2)). Epic ⟹ surjective (by char (7)⟹(2))
 
+**Definition: Inverse Linear Map**: For a bijective linear map $T: U \to V$, its inverse $T^{-1}: V \to U$ is linear.
+
 **After bijectivity, add:**
 
 1. **Two vector spaces are isomorphic iff they have the same dimension**
@@ -942,17 +1009,18 @@ $$\Span[K]{S} = \BigIntersect \Set{U \Subspace[K] V \mid S \subseteq U} = \Set{\
 2. **Coordinate Isomorphism** (moved from Ordered Bases where it was just a bijection):
    - Extends the coordinate bijection to show it is a $K$-linear isomorphism
    - $\phi_{\mathcal{B}}: V \to K^{(I)}$ is a linear isomorphism
-   - **Remark**: Different ordered bases give different isomorphisms. Example: $(e_1, e_2)$ vs $(e_2, e_1)$ give $\phi(3e_1+2e_2) = (3,2)$ vs $(2,3)$. Permuting basis = composing with permutation isomorphism on $K^{(I)}$.
+   - **Remark**: Different ordered bases give different isomorphisms. Example: $(e_0, e_1)$ vs $(e_1, e_0)$ give $\phi(3e_0+2e_1) = (3,2)$ vs $(2,3)$. Permuting basis = composing with permutation isomorphism on $K^{(I)}$.
 
 3. **Corollary: $V \cong K^{(\Dim{V})}$**:
    - Every vector space with basis of cardinality $|I|$ is isomorphic to $K^{(I)}$
    - Proof: immediate from coordinate isomorphism
 
-### Finite dimensional endomorphisms
+### Equal Dimension Equivalence
 
 ```latex
-\begin{theorem}[Endomorphism Equivalence]
-    For $T: V \to V$ endomorphism on finite-dimensional $V$, TFAE:
+\begin{theorem}[Equal Dimension Equivalence]
+    Let $U$ and $V$ be finite-dimensional $K$-vector spaces with $\Dim[K]{U} = \Dim[K]{V}$,
+    and let $T: U \to V$ be a linear map. Then TFAE:
     \begin{enumerate}
         \item $T$ is injective
         \item $T$ is surjective
@@ -962,10 +1030,49 @@ $$\Span[K]{S} = \BigIntersect \Set{U \Subspace[K] V \mid S \subseteq U} = \Set{\
 ```
 
 **Proof (WITHOUT rank-nullity, using basis characterizations)**:
-- (1)⟹(3): $T$ sends basis $B$ to lin indep set of size $n = \Dim{V}$, hence a maximal lin indep ⟹ basis ⟹ surjective
-- (2)⟹(3): $T$ sends basis $B$ to generating set; must have $n$ elements (else $< n$ contradicts gen set bound) ⟹ minimal gen ⟹ basis ⟹ lin indep ⟹ injective
+- (1)⟹(3): $T$ sends basis $B$ of $U$ to lin indep set in $V$ of size $n = \Dim{V}$, hence a maximal lin indep ⟹ basis of $V$ ⟹ surjective
+- (2)⟹(3): $T$ sends basis $B$ of $U$ to generating set of $V$; must have $n$ elements ⟹ minimal gen ⟹ basis ⟹ lin indep ⟹ injective
+
+### Finite dimensional endomorphisms (Corollary)
+
+```latex
+\begin{corollary}[Endomorphism Equivalence]
+    For $T: V \to V$ endomorphism on finite-dimensional $V$, TFAE:
+    \begin{enumerate}
+        \item $T$ is injective
+        \item $T$ is surjective
+        \item $T$ is bijective
+    \end{enumerate}
+\end{corollary}
+```
+
+**Proof**: Apply Equal Dimension Equivalence with $U = V$.
 
 -Counterexamples if not endomorphism or if not finite dimensional (shift operators, inclusion/projection).
+
+---
+
+## Phase 9b: Hom Spaces as Vector Spaces
+
+1. **$\Hom[K]{U}{V}$ is a $K$-vector space** (ALL 10 AXIOMS explicitly verified):
+   - Closure under addition and scalar multiplication
+   - Additive identity (zero map), additive inverse
+   - Commutativity and associativity of addition
+   - Compatibility of scalar and field multiplication
+   - Identity element of scalar multiplication
+   - Both distributivity laws
+2. **$\End[K]{V}$ definition**: State it equals $\Hom{V}{V}$ AND that it has composition as multiplication: $S \cdot T = \Composition{S}{T}$
+3. **$\End[K]{V}$ is a ring** with composition (use bracket protection in title: `[{$\End[K]{V}$ is a Ring}]`)
+4. **$K$-algebra definition**: State compatibility $a(xy) = (ax)y = x(ay)$ WITH the definition, not separate
+5. **$\End[K]{V}$ is a $K$-algebra**: unital, associative
+6. **Non-Commutativity** (EXPLICIT EXAMPLE):
+   - For $\Dim[K]{V} \geq 2$, pick linearly independent $v_0, v_1$, extend to basis
+   - Define $S(v_0) = v_1$, $S(v_1) = 0$, $S(b) = 0$ for other basis elements
+   - Define $T(v_0) = 0$, $T(v_1) = v_0$, $T(b) = 0$ for other basis elements
+   - Compute $(\Composition{S}{T})(v_0) = 0 \neq v_0 = (\Composition{T}{S})(v_0)$
+7. **Dimension of $\Hom[K]{U}{V}$ (finite-dimensional)**: $\Dim[K]{\Hom[K]{U}{V}} = m \cdot n$ where $m = \Dim[K]{U}$, $n = \Dim[K]{V}$
+   - Proof: Construct explicit basis $\{T_{ij}\}$ where $T_{ij}(u_k) = \delta_{ik} v_j$ (all indices $0$-based: $i,k \in \{0,\ldots,m-1\}$, $j \in \{0,\ldots,n-1\}$). Show spanning (any $T$ is $\sum a_{ij} T_{ij}$ by expanding $T(u_i)$ in basis of $V$) and lin. indep. (evaluate at $u_k$, use lin. indep. of $v_j$'s). No matrices.
+   - **Corollary**: $\Dim[K]{\End[K]{V}} = n^2$
 
 ---
 
@@ -988,13 +1095,368 @@ $$\Span[K]{S} = \BigIntersect \Set{U \Subspace[K] V \mid S \subseteq U} = \Set{\
 > 3. **Fundamental Subspaces**: $\Ker{T}$, $\Rng{T}$, Span-Image commute, Rank/Nullity definitions
 > 4. **Injectivity Characterizations**: TFAE 7 items (injective, kernel=0, split mono, monic, every lin indep, every basis, some basis)
 > 5. **Surjectivity Characterizations**: TFAE 7 items (surjective, image=V, split epi, epic, every gen set, every basis, some basis)
-> 6. **Bijectivity and Isomorphism**: TFAE, $U \cong V$ iff same dim, Coordinate isomorphism (different ordered basis $\mathcal{B}$ gives different isomorphism), Finite-dim endomorphism equivalence
+> 6. **Bijectivity and Isomorphism**: TFAE, $U \cong V$ iff same dim, Coordinate isomorphism, Equal Dimension Equivalence (inj⟺surj⟺bij when dim U = dim V), Endomorphism corollary
 > 7. **Rank-Nullity Theorem**: Additive form, Proof idea (basis extension)
+> 8. **Hom Spaces and Endomorphisms**: $\Hom[K]{U}{V}$ is VS, $\End[K]{V}$ is ring and $K$-algebra, Non-commutativity (dim ≥ 2)
 
 ---
 
 
-# CHAPTER 3: Quotient Spaces & Isomorphism Theorems
+---
+
+# CHAPTER 3: Matrices & Subspace Representations
+
+## Phase 16: Matrices
+
+### Motivation (open the chapter with this remark — before any definition)
+
+**Remark (Why Matrices?)**
+
+We have built a rich theory of linear maps. But working with abstract maps is cumbersome for computation: to describe $T \in \Hom[K]{U}{V}$ we would need to specify $T(v)$ for every $v \in U$. By the universal property, $T$ is completely determined by its values on a basis $\mathcal{B}_U = (b_j)_{j \in J}$, reducing the data to the family $(T(b_j))_{j \in J}$ in $V$. Expressing each $T(b_j)$ in a basis $\mathcal{B}_V = (c_i)_{i \in I}$ of $V$ further reduces the information to a family of scalars $(a_{ij})_{i \in I, j \in J}$ with $T(b_j) = \sum_i a_{ij} c_i$. A **matrix** is precisely this rectangular array of scalars. It stores the action of $T$ in a form that is:
+- **Finite** (finitely many nonzero entries per column, since $T(b_j) \in V$ has finite support in $\mathcal{B}_V$),
+- **Computable** (finding $T(v)$ for any $v$ reduces to arithmetic on scalars),
+- **Composable** (the matrix of $\Composition{S}{T}$ is determined by the matrices of $S$ and $T$).
+
+However, the array itself depends on the choice of ordered bases. To define things properly, we first define the **matrix of $T$ as a linear map** (a basis-dependent isomorphism $K^{(\kappa_1)} \to K^{(\kappa_2)}$), and then separately define **matrices as purely combinatorial objects** (arrays of scalars). The connection between these two notions is made precise by the fundamental isomorphism of **16c**.
+
+---
+
+**Proposition (Existence and uniqueness of the scalar array)**:
+Let $T: U \to V$ be $K$-linear, with ordered bases $\mathcal{B}_U = (b_j)_{j \in J}$ and $\mathcal{B}_V = (c_i)_{i \in I}$. For each $j \in J$ there exist **unique** scalars $(A_{ij})_{i \in I}$ with $A_{ij} \in K$ such that
+\[
+    T(b_j) = \sum_{i \in I} A_{ij}\, c_i
+\]
+and for each fixed $j$, only finitely many $A_{ij}$ are nonzero.
+
+**Proof**: Each $T(b_j) \in V$. Since $\mathcal{B}_V$ is a basis of $V$, every vector in $V$ has a unique expression as a finite linear combination of $(c_i)_{i \in I}$. Applying this to $T(b_j)$ gives the unique scalars $A_{ij} = \CoordVec{T(b_j)}[\mathcal{B}_V](i)$, with only finitely many nonzero (finite support by definition of a basis). $\checkmark$
+
+**Remark**: The double index $(i,j)$ is the fundamental datum of the chapter: $i$ picks the row (the target basis vector $c_i$) and $j$ picks the column (the source basis vector $b_j$). The family $(A_{ij})_{i \in I,\, j \in J}$ is the **matrix of $T$** with respect to $\mathcal{B}_U$ and $\mathcal{B}_V$. Everything that follows — column formula, matrix-times-vector, matrix multiplication — is a consequence of this single fact together with linearity.
+
+---
+
+### 16a: Matrix of a Linear Map
+
+**Setup**: Let $U$ and $V$ be $K$-vector spaces with ordered bases $\mathcal{B}_U = (b_j)_{j \in J}$ and $\mathcal{B}_V = (c_i)_{i \in I}$, where $|J| = \kappa_1$ and $|I| = \kappa_2$ are cardinals. Let $T: U \to V$ be a $K$-linear map. Recall the coordinate isomorphisms $\phi_{\mathcal{B}_U}: U \xrightarrow{\sim} K^{(\kappa_1)}$ and $\phi_{\mathcal{B}_V}: V \xrightarrow{\sim} K^{(\kappa_2)}$ from Phase 7.
+
+**Why $K^{(I)}$?** As established in Phase 7, abstract vector spaces have no canonical basis — any basis requires an arbitrary choice. The spaces $K^{(I)}$ are the exception: they carry the canonical basis $(e_i)_{i \in I}$, intrinsically defined by the function-space structure. This is the key reason we factor $T$ through coordinate spaces: once we pass to $K^{(\kappa_1)} \to K^{(\kappa_2)}$, the canonical bases are automatically available. The resulting map $[T]_{\mathcal{B}_U}^{\mathcal{B}_V}$ can then be interrogated on each $e_j$ — yielding the column formula — and stored as a plain array of scalars. **Matrices exist to exploit the canonical structure of $K^{(I)}$.**
+
+1. **Definition (Matrix of $T$ w.r.t. $\mathcal{B}_U$, $\mathcal{B}_V$)**:
+   - The **matrix of $T$ with respect to $\mathcal{B}_U$ and $\mathcal{B}_V$**  is the $K$-linear map
+     \[
+         [T]_{\mathcal{B}_U}^{\mathcal{B}_V} \defeq \Composition{\phi_{\mathcal{B}_V}}{\Composition{T}{\phi_{\mathcal{B}_U}^{-1}}} : K^{(\kappa_1)} \to K^{(\kappa_2)}
+     \]
+     This is the map making the following square commute:
+     ```
+     📊 DIAGRAM: commutative square
+       U  --T-->  V
+       |          |
+      φ_BU      φ_BV
+       |          |
+       ↓          ↓
+     K^(κ₁) --> K^(κ₂)
+              [T]
+     ```
+   - In other words, $[T]_{\mathcal{B}_U}^{\mathcal{B}_V}$ expresses $T$ in coordinate language: it takes the coordinates of $u$ in $\mathcal{B}_U$ and returns the coordinates of $T(u)$ in $\mathcal{B}_V$.
+   - **Note**: This definition requires **ordered** bases (to have a specific coordinate isomorphism); unordered bases give only an isomorphism up to reordering.
+
+2. **Theorem (Column Formula)**:
+   - The $j$-th column of $[T]_{\mathcal{B}_U}^{\mathcal{B}_V}$ (i.e., its value on $e_j \in K^{(\kappa_1)}$) equals the coordinate vector $\phi_{\mathcal{B}_V}(T(b_j))$.
+   - **Proof**: $[T]_{\mathcal{B}_U}^{\mathcal{B}_V}(e_j) = \phi_{\mathcal{B}_V}(T(\phi_{\mathcal{B}_U}^{-1}(e_j))) = \phi_{\mathcal{B}_V}(T(b_j))$.
+   - **Practical consequence**: To compute $[T]_{\mathcal{B}_U}^{\mathcal{B}_V}$, apply $T$ to each basis vector $b_j \in \mathcal{B}_U$, express the result $T(b_j)$ in the basis $\mathcal{B}_V$, and place those coordinates as the $j$-th column.
+   - **Explicit entry**: Denote the scalars by $a_{ij}$ where $T(b_j) = \sum_{i} a_{ij} c_i$. Then $(\phi_{\mathcal{B}_V}(T(b_j)))_i = a_{ij}$, so the $(i,j)$-entry of the matrix equals $a_{ij}$.
+
+3. **Proposition (Matrix-times-vector formula)**:
+   - **Motivation**: The column formula gives the action of $[T]_{\mathcal{B}_U}^{\mathcal{B}_V}$ on every canonical basis vector $e_j$. Any $x = \sum_j x_j e_j \in K^{(\kappa_1)}$ (a finite sum) is determined by its coordinates $(x_j)$. Linearity of $[T]_{\mathcal{B}_U}^{\mathcal{B}_V}$ then forces:
+     \[
+         [T]_{\mathcal{B}_U}^{\mathcal{B}_V}(x)
+         = \sum_j x_j \cdot [T]_{\mathcal{B}_U}^{\mathcal{B}_V}(e_j)
+         = \sum_j x_j \cdot \phi_{\mathcal{B}_V}(T(b_j))
+     \]
+     Taking the $i$-th coordinate of both sides and using $a_{ij}$ for the entries:
+     \[
+         \left([T]_{\mathcal{B}_U}^{\mathcal{B}_V}(x)\right)_i = \sum_j a_{ij} x_j
+     \]
+     This is exactly the $i$-th row of $A$ dotted with $x$: the standard row-by-column product $(Ax)_i = \sum_j A_{ij} x_j$. The formula $[T]x = Ax$ is therefore **not a definition** — it is a **theorem** that follows solely from linearity and the column formula.
+   - **Statement**: For any $u \in U$,
+     \[
+         \CoordVec{T(u)}[\mathcal{B}_V] = [T]_{\mathcal{B}_U}^{\mathcal{B}_V} \cdot \CoordVec{u}[\mathcal{B}_U]
+     \]
+   - **Proof**: Let $x = \CoordVec{u}[\mathcal{B}_U]$, so $u = \sum_j x_j b_j$. Then $T(u) = \sum_j x_j T(b_j) = \sum_j x_j \sum_i a_{ij} c_i = \sum_i \left(\sum_j a_{ij} x_j\right) c_i$. Hence the $i$-th coordinate of $T(u)$ in $\mathcal{B}_V$ is $\sum_j a_{ij} x_j = (Ax)_i$. $\checkmark$
+
+4. **Composition rule**:
+   - If $S: V \to W$ has matrix $[S]_{\mathcal{B}_V}^{\mathcal{B}_W}$, then the matrix of $\Composition{S}{T}$ is $[S]_{\mathcal{B}_V}^{\mathcal{B}_W} \circ [T]_{\mathcal{B}_U}^{\mathcal{B}_V}$ (composition of the two maps $K^{(\kappa_1)} \to K^{(\kappa_2)} \to K^{(\kappa_3)}$).
+
+---
+
+### 16b: Matrix Spaces $\MatSpace{X}{Y}[K]$ and $\CFMat{X}{Y}[K]$
+
+**Motivation**: We now define matrices as *purely set-theoretic objects* — functions on a product of index sets — independent of any vector spaces. Two levels of structure arise naturally:
+
+- The **general matrix space** $\MatSpace{X}{Y}[K] = K^{X \times Y}$ consists of all functions $X \times Y \to K$, with pointwise addition and scalar multiplication inherited from the product vector space structure. No finiteness condition is imposed.
+- The **column-finite matrix space** $\CFMat{X}{Y}[K]$ is the subspace of matrices with finite support in each column. Column-finiteness is not arbitrary: it is the condition that $T(b_j) \in V$ imposes when expressing a linear map in a basis (each image is a *finite* linear combination of basis vectors).
+
+**Motivation for matrix operations (transport of structure)**:
+Matrix addition on $\MatSpace{X}{Y}[K]$ needs no extra motivation — it is the pointwise addition of functions. Matrix multiplication has no natural a priori definition, and is *forced upon us* by requiring the isomorphism $\Phi: \Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}} \xrightarrow{\sim} \CFMat{\kappa_2}{\kappa_1}[K]$ of **16c** to be an algebra morphism: since $\End[K]{K^{(\kappa)}}$ is a $K$-algebra with composition as multiplication, requiring $\Phi(\Composition{S}{T}) = \Phi(S) \cdot \Phi(T)$ forces $(AB)_{ij} = \sum_k A_{ik} B_{kj}$. Since composition involves only column-finite maps (those landing in $K^{(\kappa_2)}$), multiplication is defined only for column-finite matrices.
+
+In other words: **matrix addition is defined on all matrices (product space structure); matrix multiplication is defined only for column-finite matrices, and its formula is transported from composition of linear maps.**
+
+1. **Definitions**:
+
+   **General matrix space**: Let $X, Y$ be sets (row and column index sets). A **$(X \times Y)$-matrix with entries in $K$** is a function
+     \[
+         A: X \times Y \to K
+     \]
+     Write $A_{ij}$ for $A(i,j)$ (row index $i \in X$, column index $j \in Y$). The set of all such matrices is
+     \[
+         \MatSpace{X}{Y}[K] \defeq K^{X \times Y}
+     \]
+     with no finiteness condition. For cardinals $\kappa_1, \kappa_2$, write $\MatSpace{\kappa_2}{\kappa_1}[K]$ ($\kappa_2$ rows, $\kappa_1$ columns).
+
+   **Column-finite matrix space**: A matrix $A \in \MatSpace{X}{Y}[K]$ is **column-finite** if for each $j \in Y$, the column $A(-,j): i \mapsto A_{ij}$ has **finite support**: $A_{ij} = 0$ for all but finitely many $i \in X$. Equivalently, $A(-,j) \in K^{(X)}$ for all $j$. The set of column-finite matrices is
+     \[
+         \CFMat{X}{Y}[K] \defeq \Set{A \in \MatSpace{X}{Y}[K] \mid \forall j \in Y,\ A(-,j) \in K^{(X)}}
+     \]
+     This is a **subspace** of $\MatSpace{X}{Y}[K]$: for $A, B \in \CFMat{X}{Y}[K]$ and $\lambda \in K$, one has $(A+B)(-,j) = A(-,j) + B(-,j) \in K^{(X)}$ and $(\lambda A)(-,j) = \lambda A(-,j) \in K^{(X)}$.
+
+   **Currying**: A matrix $A \in \MatSpace{X}{Y}[K]$ is equivalently a function $j \mapsto A(-,j) \in K^X$ (column map). For column-finite matrices: $\CFMat{X}{Y}[K] \cong (K^{(X)})^Y$ — functions from $Y$ to finitely-supported column vectors. This is **not** $K^{(X \times Y)}$: the latter requires globally finite support (only finitely many nonzero entries total), strictly stronger than column-finiteness when $Y$ is infinite.
+
+2. **Vector space structure — matrix addition and scalar multiplication**:
+
+   Since $\MatSpace{X}{Y}[K] = K^{X \times Y}$ is a product of copies of $K$, it is a $K$-vector space with pointwise operations:
+   \[
+       (A + B)_{ij} \defeq A_{ij} + B_{ij}, \qquad (\lambda A)_{ij} \defeq \lambda A_{ij}, \qquad 0_{ij} \defeq 0
+   \]
+   These are defined for **all** $A, B \in \MatSpace{X}{Y}[K]$, with no finiteness condition required. Since $\CFMat{X}{Y}[K]$ is a subspace (item 1), it is itself a $K$-vector space under the same operations.
+
+   **Compatibility with $\Phi$**: The isomorphism $\Phi: \Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}} \xrightarrow{\sim} \CFMat{\kappa_2}{\kappa_1}[K]$ of **16c** is $K$-linear with respect to these definitions, since $\Phi(S+T)_{ij} = ((S+T)(e_j))_i = (S(e_j))_i + (T(e_j))_i = \Phi(S)_{ij} + \Phi(T)_{ij}$ and similarly for scalar multiplication. Thus the entrywise formulas are the *unique* definitions making $\Phi$ a linear map.
+
+3. **Standard matrix operations** (state and prove):
+   - **Matrix multiplication** (column-finite only):
+
+     **Setup**: Let $A \in \CFMat{X}{Z}[K]$ and $B \in \CFMat{Z}{Y}[K]$.
+
+     **Motivation**: We want $A \cdot B$ to correspond to composing the associated linear maps — i.e., if $T_A = \Phi^{-1}(A)$ and $T_B = \Phi^{-1}(B)$, then $AB$ should equal $\Phi(\Composition{T_A}{T_B})$.
+
+     **Derivation of entry formula**: Compute the $j$-th column of $\Phi(\Composition{T_A}{T_B})$ using the column formula:
+     \[
+         \Phi(\Composition{T_A}{T_B})(-,j) = (\Composition{T_A}{T_B})(e_j) = T_A(T_B(e_j)) = T_A(B(-,j))
+     \]
+     Now apply the matrix-times-vector formula (proved in **16a.3**) to $T_A$ acting on $B(-,j) = \sum_k B_{kj} e_k$ (finite sum since $B(-,j) \in K^{(Z)}$ by column-finiteness of $B$):
+     \[
+         T_A(B(-,j)) = \sum_k B_{kj} \cdot T_A(e_k) = \sum_k B_{kj} \cdot A(-,k)
+     \]
+     The $i$-th entry of this column is:
+     \[
+         (AB)_{ij} \defeq \sum_{k \in Z} A_{ik} B_{kj}
+     \]
+     **Proof of well-definedness**: For fixed $j$, let $S_j = \{k \in Z : B_{kj} \neq 0\}$; this is finite by column-finiteness of $B$. Then $(AB)_{ij} = \sum_{k \in S_j} A_{ik} B_{kj}$ is a finite sum in $K$, well-defined for all $i$. Moreover, $\{i : (AB)_{ij} \neq 0\} \subseteq \bigcup_{k \in S_j} \{i : A_{ik} \neq 0\}$ is a finite union of finite sets (column-finiteness of $A$), so $(AB)(-,j) \in K^{(X)}$. Thus $AB \in \CFMat{X}{Y}[K]$. $\checkmark$
+
+     **Why column-finite only**: Without column-finiteness of $B$, the sum $\sum_k A_{ik} B_{kj}$ may be infinite. Without column-finiteness of $A$, the result $AB$ may fail to be column-finite (its columns may have infinite support). Column-finiteness of both factors is the minimal condition ensuring the product is well-defined and stays in $\CFMat{X}{Y}[K]$.
+   - **Hadamard product**: $(\Hadamard{A}{B})_{ij} = A_{ij} B_{ij}$ (pointwise; same size matrices only; defined on all of $\MatSpace{X}{Y}[K]$, and column-finiteness is preserved)
+   - **Kronecker product**: $\KroneckerProduct[K]{A}{B}$ (block matrix structure)
+   - **Transpose**: $(\Transpose{A})_{ij} = A_{ji}$; the transpose of $A \in \MatSpace{X}{Y}[K]$ lies in $\MatSpace{Y}{X}[K]$. The transpose of a column-finite matrix $A \in \CFMat{X}{Y}[K]$ is **not** in general column-finite as an element of $\MatSpace{Y}{X}[K]$: transposing turns columns of $A$ into rows of $\Transpose{A}$, and each row of $\Transpose{A}$ may have infinite support even if each column of $A$ does not. For finite matrices (both $X$ and $Y$ finite), $\Transpose{A} \in \CFMat{Y}{X}[K]$ always.
+   - **Hermitian conjugate (conjugate transpose)**: $\Hermitian{A} \defeq \overline{\Transpose{A}}$, i.e. $(\Hermitian{A})_{ij} = \overline{A_{ji}}$. This requires $K$ to carry a conjugation involution (e.g. $K = \mathbb{C}$). Same column-finiteness caveat as for transpose.
+   - **Determinant** (forward reference — fully developed in Chapter 7, Multilinear Algebra):
+     - **Leibniz formula** (for square $n \times n$ matrices over a commutative ring):
+       \[
+           \Det{A} = \sum_{\sigma \in S_n} \operatorname{sgn}(\sigma) \prod_{i=1}^{n} A_{i,\sigma(i)}
+       \]
+       This formula will be derived in Chapter 7 as the unique alternating multilinear form normalized by $\Det{I_n} = 1$.
+     - **Rank-based characterization**: $\Det{A} \neq 0$ iff $A$ is invertible (equivalently, $\Rank{A} = n$). State this as a theorem to be proved in Chapter 7.
+     - For now: use $\Det{A}$ as notation and rely on the Leibniz formula when needed for small matrices.
+
+4. **Sizes**:
+   - **General matrices**: $\MatSpace{X}{Y}[K] = K^{X \times Y}$, canonically isomorphic to the product $\prod_{j \in Y} K^X$ (one copy of $K^X$ per column).
+   - **Column-finite matrices**: Via currying, $\CFMat{X}{Y}[K] \cong \left(K^{(X)}\right)^Y$ — functions from $Y$ to finitely-supported column vectors. Explicitly, $A \leftrightarrow (A(-,j))_{j \in Y}$ is a bijection between $\CFMat{X}{Y}[K]$ and functions $Y \to K^{(X)}$.
+   - **Contrast with $K^{(X \times Y)}$**: The space $K^{(X \times Y)}$ requires globally finite support (only finitely many nonzero entries in total). This is strictly stronger than column-finiteness when $Y$ is infinite: a column-finite matrix may have infinitely many nonzero columns, each individually finite.
+
+---
+
+### 16c: The Fundamental Isomorphism $\Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}} \cong \CFMat{\kappa_2}{\kappa_1}[K]$
+
+1. **Theorem**: There is a canonical $K$-linear isomorphism
+   \[
+       \Phi: \Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}} \xrightarrow{\sim} \CFMat{\kappa_2}{\kappa_1}[K],
+       \qquad T \mapsto \MatrixRep{T}, \quad \MatrixRep{T}_{ij} \defeq (T(e_j))_i
+   \]
+   i.e. the $(i,j)$-entry of $\MatrixRep{T}$ is the $i$-th coordinate of $T(e_j)$ in $K^{(\kappa_2)}$. The codomain is $\CFMat{\kappa_2}{\kappa_1}[K]$ (not the larger $\MatSpace{\kappa_2}{\kappa_1}[K]$): column-finiteness is not imposed externally but is a *consequence* of $T$ mapping into $K^{(\kappa_2)}$.
+
+   - **Well-definedness** (image lands in $\CFMat{\kappa_2}{\kappa_1}[K]$): Each $T(e_j) \in K^{(\kappa_2)}$ has finite support in $i$, so $\MatrixRep{T}(-,j) \in K^{(\kappa_2)}$, i.e. $\MatrixRep{T}$ is column-finite. $\checkmark$
+   - **$K$-linearity of $\Phi$**: $(\MatrixRep{\alpha T + \beta S})_{ij} = ((\alpha T{+}\beta S)(e_j))_i = \alpha \MatrixRep{T}_{ij} + \beta \MatrixRep{S}_{ij}$. $\checkmark$
+   - **Injectivity**: If $\MatrixRep{T} = 0$, then $T(e_j) = 0$ for all $j$, so $T = 0$ (linear maps determined by basis values). $\checkmark$
+   - **Surjectivity + matrix-times-column formula**: Given $A \in \CFMat{\kappa_2}{\kappa_1}[K]$, define $T_A(e_j) \defeq A(-,j) \in K^{(\kappa_2)}$ (well-defined since $A$ is column-finite) and extend linearly. Then $\MatrixRep{T_A} = A$. Moreover, for any $x = \sum_j x_j e_j \in K^{(\kappa_1)}$ (a finite sum):
+     \[
+         T_A(x) = \sum_j x_j A(-,j), \qquad (T_A(x))_i = \sum_j A_{ij} x_j = (Ax)_i
+     \]
+     so $T_A(x) = Ax$, i.e. $\ColVec{T_A(x)} = A \cdot \ColVec{x}$. Every $A \in \CFMat{\kappa_2}{\kappa_1}[K]$ acts on $K^{(\kappa_1)} \to K^{(\kappa_2)}$ by left multiplication. $\checkmark$
+
+   **Remark**: A general matrix $A \in \MatSpace{\kappa_2}{\kappa_1}[K]$ also acts on $K^{(\kappa_1)}$ by $x \mapsto Ax$ (the sum $\sum_j A_{ij} x_j$ is finite since $x$ has finite support), but the result lies in $K^{\kappa_2}$, not necessarily in $K^{(\kappa_2)}$. Column-finiteness of $A$ is precisely the condition guaranteeing $Ax \in K^{(\kappa_2)}$.
+
+2. **Special cases (must verify explicitly)**:
+   - **Zero matrix = zero map**: $\MatrixRep{0}_{ij} = (0 \cdot e_j)_i = 0$. $\checkmark$
+   - **Identity matrix = identity map**: $\MatrixRep{\Identity{K^{(\kappa)}}}_{ij} = (e_j)_i = \delta_{ij} = (I_\kappa)_{ij}$. $\checkmark$
+   - **Scalar matrix**: $\MatrixRep{\lambda \Identity{K^{(\kappa)}}} = \lambda I_\kappa$. $\checkmark$
+
+3. **Matrix-times-column for general bases**:
+   - For $U$, $V$ with ordered bases $\mathcal{B}_U$, $\mathcal{B}_V$ and $T: U \to V$, the formula from surjectivity above applies to $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] = \phi_{\mathcal{B}_V} \circ T \circ \phi_{\mathcal{B}_U}^{-1}$. For any $v \in U$:
+     \[
+         \ColVec{T(v)}[\mathcal{B}_V] = \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] \cdot \ColVec{v}[\mathcal{B}_U]
+     \]
+     **Proof**: $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] \cdot \phi_{\mathcal{B}_U}(v) = (\phi_{\mathcal{B}_V} \circ T \circ \phi_{\mathcal{B}_U}^{-1})(\phi_{\mathcal{B}_U}(v)) = \phi_{\mathcal{B}_V}(T(v)) = \ColVec{T(v)}[\mathcal{B}_V]$. $\checkmark$
+   - **This is the operational content of the definition in 16a**: the matrix transforms coordinate columns.
+
+4. **Composition = matrix multiplication**:
+   - $\Phi(\Composition{S}{T}) = \Phi(S) \cdot \Phi(T)$, i.e. $\MatrixRep{\Composition{S}{T}} = \MatrixRep{S} \cdot \MatrixRep{T}$.
+   - **Proof using the matrix-times-column formula**: For any $x \in K^{(\kappa_1)}$:
+     \[
+         \MatrixRep{\Composition{S}{T}} \cdot x = (\Composition{S}{T})(x) = S(T(x)) = S(\MatrixRep{T} \cdot x) = \MatrixRep{S} \cdot (\MatrixRep{T} \cdot x) = (\MatrixRep{S} \cdot \MatrixRep{T}) \cdot x
+     \]
+     Since this holds for all $x$, $\MatrixRep{\Composition{S}{T}} = \MatrixRep{S} \cdot \MatrixRep{T}$. $\checkmark$
+   - **Corollary**: $\Phi$ is an isomorphism of $K$-algebras $\End[K]{K^{(\kappa)}} \xrightarrow{\sim} \CFMat{\kappa}{\kappa}[K]$:
+     - Adding maps ↔ adding matrices
+     - Composing maps ↔ multiplying matrices
+     - Zero map ↔ zero matrix
+     - Identity map ↔ identity matrix
+
+5. **General Hom via bases**:
+   - For $U$, $V$ with ordered bases $\mathcal{B}_U$, $\mathcal{B}_V$, the map $T \mapsto \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]$ is a $K$-linear isomorphism:
+     \[
+         \Hom[K]{U}{V} \xrightarrow{\;\sim\;} \CFMat{|\mathcal{B}_V|}{|\mathcal{B}_U|}[K]
+     \]
+     The isomorphism lands in the **column-finite** space: for any $T \in \Hom[K]{U}{V}$ and any $j \in \mathcal{B}_U$, the image $T(b_j) \in V$ has finite support in $\mathcal{B}_V$ (by definition of a basis), so the $j$-th column of $\MatrixRep{T}$ is finitely supported. Different choices of bases yield different but isomorphic identifications (related by change-of-basis matrices, Phase 17).
+
+---
+
+<!-- ### 16d: Block Matrices (with all the proofs)
+1. **Block matrix**: Matrix with matrix entries that unravel to rectangles
+2. **Compatibility**: Row blocks must have same height, column blocks same width
+3. **Unraveling morphism property**: For operations $\circ \in \{+, \cdot, \otimes_K, \circ_{\text{Hadamard}}\}$:
+   - $\text{unravel}(A \circ B) = \text{unravel}(A) \circ \text{unravel}(B)$
+   - i.e., partition into blocks → apply operation as block matrices → unravel = operate as regular matrices -->
+
+---
+
+### 16e: Matrices as Linear Maps (Canonical Interpretation)
+- Since $A \in \CFMat{\kappa_2}{\kappa_1}[K]$ corresponds canonically to a linear map $\Phi^{-1}(A): K^{(\kappa_1)} \to K^{(\kappa_2)}$ via the isomorphism of **16c**, we treat any column-finite matrix as a linear map without further comment. This is **not** an abuse of notation — it is a direct consequence of the definition.
+- In particular, $\Ker{A}$ and $\Rng{A}$ are well-defined:
+  \[
+      \Ker{A} \defeq \Set{x \in K^{(\kappa_1)} \mid Ax = 0}, \qquad \Rng{A} \defeq \Set{Ax \mid x \in K^{(\kappa_1)}}
+  \]
+  where $Ax \defeq \Phi^{-1}(A)(x) = \sum_{j \in \kappa_1} x_j \cdot A(-,j) \in K^{(\kappa_2)}$ (finite sum since $x$ has finite support).
+- **For $K^n$**: When working in $K^n$, the canonical bases are always in force, so $A \in \CFMat{m}{n}[K]$ acts on $K^n$ directly via $x \mapsto Ax$ (for finite $m, n$, $\CFMat{m}{n}[K] = \MatSpace{m}{n}[K]$).
+
+---
+
+### 16f: Linear Systems
+1. **Homogeneous system**: $Ax = 0$
+   - Solution space = $\Ker{T_A}$ where $T_A: K^{(\kappa_1)} \to K^{(\kappa_2)}$
+   - Always a subspace
+2. **Non-homogeneous system**: $Ax = b$
+   - Solution set = $v_0 + \Ker{T_A}$ (affine subspace/coset)
+   - Non-empty iff $b \in \Rng{A}$
+3. **Parametric equations**: Express solution in terms of free variables
+4. **Implicit equations**: System of equations defining a subspace
+
+---
+
+## Phase 17: Change of Basis and Gaussian Elimination
+
+1. **Change of basis matrices**: Invertible; columns are coordinates of new basis in terms of old
+   - 📊 **DIAGRAM**: Commutative square $V \xrightarrow{T} W$ with coordinate maps $K^n \to K^m$
+2. **Similarity**: $A' = P^{-1}AP$ for endomorphisms
+3. **Equivalence**: $A' = QAP^{-1}$ for general linear maps
+4. **RREF, CREF, REF** as equivalence relations
+5. **Kernel/Range invariance** under row/column operations
+
+### RREF/CREF and Map Properties
+6. **Injectivity**: RREF has no zero rows iff injective (full column rank)
+7. **Surjectivity**: CREF has no zero columns iff surjective (full row rank)
+8. **Bijectivity**: Square matrix in RREF = identity iff bijective
+
+### Gauss-Jordan Elimination for Inverses
+9. **Left inverse** (when injective): Augment $[A | I]$, row reduce to $[R | L]$, then $LA = R$
+10. **Right inverse** (when surjective): Augment $\begin{pmatrix} A \\ I \end{pmatrix}$, column reduce
+11. **Two-sided inverse**: $[A | I] \to [I | A^{-1}]$ via Gauss-Jordan
+
+---
+
+## Phase 18: Subspace Representations and Equations
+
+### Core Forms
+1. **Every subspace = kernel of some linear map**:
+   - Given $U \Subspace[K] V$, construct $\pi: V \to \QuotientSpace{V}{U}$ with $\Ker{\pi} = U$
+   - Every subspace is the kernel of an endomorphism
+2. **Every subspace = image of some linear map**:
+   - Given $U \Subspace[K] V$, take inclusion $\iota: U \hookrightarrow V$
+   - Every subspace is the image of an endomorphism
+3. **Parametric form** (image): $U = \Span[K]{\{v_1, \ldots, v_k\}}$
+4. **Implicit form** (kernel): $U = \Set{v \mid L_1(v) = \cdots = L_r(v) = 0}$ for functionals $L_i$
+
+- Examples
+
+### Converting Between Forms
+- **Parametric → Implicit**: Find functionals vanishing on generating set (solve homogeneous system)
+- **Implicit → Parametric**: Solve the homogeneous system to get generating set
+
+### Operations on Subspaces
+| Operation | Easier with | Method |
+|-----------|-------------|--------|
+| $U + W$ | Parametric | Concatenate generating sets |
+| $U \Intersect W$ | Implicit | Concatenate equation systems |
+| $\DirectImage{T}{U}$ | Parametric | Apply $T$ to generators |
+| $\InverseImage{T}{W}$ | Implicit | Compose equations with $T$: $\Composition{L_i}{T} = 0$ |
+
+### Direct Image $\DirectImage{T}{U}$ (Image of a Subspace)
+**Easier with Parametric representation of $U$:**
+- If $U = \Span[K]{\{u_1, \ldots, u_k\}}$, then $\DirectImage{T}{U} = \Span[K]{\{T(u_1), \ldots, T(u_k)\}}$
+- Simply apply $T$ to each generator
+- **Why implicit is harder**: If $U = \Ker{L}$ (implicit), then $\DirectImage{T}{U} = \DirectImage{T}{\Ker{L}}$ requires finding generators of $\Ker{L}$ first, then applying $T$
+
+### Inverse Image $\InverseImage{T}{W}$ (Preimage of a Subspace)
+**Easier with Implicit representation of $W$:**
+- If $W = \Set{v \mid L_1(v) = \cdots = L_r(v) = 0}$, then $\InverseImage{T}{W} = \Set{u \mid L_1(T(u)) = \cdots = L_r(T(u)) = 0}$
+- Simply compose each defining functional with $T$: the equations become $(\Composition{L_i}{T})(u) = 0$
+- **Why parametric is harder**: If $W = \Span[K]{\{w_1, \ldots, w_k\}}$, finding $\InverseImage{T}{W}$ requires solving $T(u) = \sum a_j w_j$, which is a parametric equation in $u$ and $(a_j)$—more complex
+
+### Summary Table (Expanded)
+| Operation | Representation | Formula / Method |
+|-----------|----------------|------------------|
+| $\DirectImage{T}{U}$ | $U$ parametric | $\DirectImage{T}{\Span[K]{G}} = \Span[K]{\DirectImage{T}{G}}$ |
+| $\DirectImage{T}{U}$ | $U$ implicit | Convert to parametric first, then apply $T$ |
+| $\InverseImage{T}{W}$ | $W$ implicit | $\InverseImage{T}{\Ker{L}} = \Ker{\Composition{L}{T}}$ |
+| $\InverseImage{T}{W}$ | $W$ parametric | Solve $T(u) \in W$; convert $W$ to implicit first |
+
+### Formulas
+- **Sum (implicit)**: Requires elimination; $U + W = \pi_V(\Set{(u,w) \mid u-w=0})$
+- **Intersection (parametric)**: Requires solving $\sum a_i u_i = \sum b_j w_j$
+
+---
+
+## Phase 19: Rank and Nullity Inequalities
+
+1. **$\Ker{\Composition{S}{T}} \supseteq \Ker{T}$**
+2. **$\DirectImage{S}{V} \supseteq \DirectImage{\Composition{S}{T}}{U}$**
+3. **Rank bounds**: $|\Rank{T} - \Rank{S}| \leq \Rank{T \pm S} \leq \Rank{T} + \Rank{S}$
+4. **$\Rank{\Composition{S}{T}} \leq \min\{\Rank{S}, \Rank{T}\}$**
+5. **Nullity counterexample**: $\Nullity{\Composition{S}{T}} \geq \Nullity{S}$ is FALSE in general
+
+---
+
+## Phase 20: Sylvester and Frobenius Inequalities
+
+1. **Full rank factorization**
+2. **Sylvester**: $\Dim[K]{\Ker{\Composition{S}{T}}} = \Dim[K]{\Ker{T}} + \Dim[K]{\Ker{S} \Intersect \DirectImage{T}{U}}$ (give the rank equivalent)
+3. **Frobenius**: $\Dim[K]{\Ker{\Composition{A}{\Composition{B}{C}}}} + \Dim[K]{\Ker{B}} \leq \Dim[K]{\Ker{\Composition{A}{B}}} + \Dim[K]{\Ker{\Composition{B}{C}}}$ (give the rank equivalent)
+4. **Generalization to $n$ maps**
+
+---
+
+> **CHAPTER 3 COMPENDIUM**: Add compendium here summarizing matrix representations, change of basis.
+
+---
+
+
+# CHAPTER 4: Quotient Spaces & Isomorphism Theorems
 
 **File: `Document/LinearAlgebra/VectorSpaces/QuotientSpaces/`**
 
@@ -1124,7 +1586,7 @@ Correspondence between subspaces of $\Quotient{V}{W}$ and subspaces of $V$ conta
 
 ---
 
-### CHAPTER 3 COMPENDIUM
+### CHAPTER 4 COMPENDIUM
 
 **Quotient Space Construction**:
 - Equivalence: $u \sim_W v \Leftrightarrow u - v \in W$
@@ -1150,7 +1612,7 @@ Correspondence between subspaces of $\Quotient{V}{W}$ and subspaces of $V$ conta
 
 ---
 
-# CHAPTER 4: Products, Hom Spaces, and Dual Spaces
+# CHAPTER 5: Products, Hom Spaces, and Dual Spaces
 
 **IMPLEMENTATION NOTES (CRITICAL)**:
 1. **Categorical Approach**: Start with universal property definitions for products/coproducts, THEN show constructive definitions and prove equivalence
@@ -1268,29 +1730,17 @@ Correspondence between subspaces of $\Quotient{V}{W}$ and subspaces of $V$ conta
 
 ---
 
-## Phase 14: Hom Spaces
+## Phase 14: Dimension of Hom Spaces
 
-1. **$\Hom[K]{U}{V}$ is a $K$-vector space** (ALL 10 AXIOMS explicitly verified):
-   - Closure under addition and scalar multiplication
-   - Additive identity (zero map), additive inverse
-   - Commutativity and associativity of addition
-   - Compatibility of scalar and field multiplication
-   - Identity element of scalar multiplication
-   - Both distributivity laws
-2. **$\End[K]{V}$ definition**: State it equals $\Hom{V}{V}$ AND that it has composition as multiplication: $S \cdot T = S \circ T$
-3. **$\End[K]{V}$ is a ring** with composition (use bracket protection in title: `[{$\End[K]{V}$ is a Ring}]`)
-4. **$K$-algebra definition**: State compatibility $a(xy) = (ax)y = x(ay)$ WITH the definition, not separate
-5. **Non-Commutativity** (EXPLICIT EXAMPLE):
-   - For $\Dim[K]{V} \geq 2$, pick linearly independent $v_1, v_2$, extend to basis
-   - Define $S(v_1) = v_2$, $S(v_2) = 0$, $S(b) = 0$ for other basis elements
-   - Define $T(v_1) = 0$, $T(v_2) = v_1$, $T(b) = 0$ for other basis elements
-   - Compute $(ST)(v_1) = 0 \neq v_1 = (TS)(v_1)$
-6. **Proposition: $\Hom{K}{V} \cong V$** (with PROOF - BEFORE dimension theorem):
+> [!NOTE]
+> Basic Hom vector space structure and Endomorphism Algebra moved to Phase 9b (Chapter 2).
+
+1. **Proposition: $\Hom{K}{V} \cong V$** (with PROOF - BEFORE dimension theorem):
    - **Isomorphism**: $\Phi(T) = T(1_K)$, inverse $\Phi^{-1}(v) = (a \mapsto av)$
    - **Proof**: verify well-defined, linear, inverse property
    - **Asymmetry remark**: $\Hom{V}{K}$ is NOT isomorphic to $V$ in general
-6b. **Corollary: $\Hom{K}{K} \cong K$** (apply proposition with $V = K$)
-7. **Isomorphism theorem**: $\Hom{U}{V} \cong \DirectProd{B_U}{K^{(\Dim[K]{V})}}$ (finite $\Dim[K]{V}$)
+1b. **Corollary: $\Hom{K}{K} \cong K$** (apply proposition with $V = K$)
+2. **Isomorphism theorem**: $\Hom{U}{V} \cong \DirectProd{B_U}{K^{(\Dim[K]{V})}}$ (finite $\Dim[K]{V}$)
    - **Full chain**:
      - $\Hom{U}{V} \cong \Hom{K^{(B_U)}}{V}$ ($U \cong K^{(B_U)}$)
      - $\cong \DirectProd{B_U}{\Hom{K}{V}}$ (contravariance: coproduct → product)
@@ -1299,11 +1749,11 @@ Correspondence between subspaces of $\Quotient{V}{W}$ and subspaces of $V$ conta
      - $\cong \DirectProd{B_U}{\ExtDirectSum{B_V}{K}}$ (Corollary: $\Hom{K}{K} \cong K$)
      - $\cong \DirectProd{B_U}{K^{(\Dim[K]{V})}}$
    - **Dimension**: $\Card{K^{(\Dim[K]{V})}}^{\Dim[K]{U}}$
-8. **Finite case corollary**:
+3. **Finite case corollary**:
    - By main theorem: $\Hom{U}{V} \cong \DirectProd{i=1}{m}{K^{(n)}}$
    - Finite products/coproducts coincide (biproduct): $\DirectProd{i=1}{m}{K^{(n)}} \cong K^{m \times n}$
    - **Result**: $\Dim[K]{\Hom{U}{V}} = m \cdot n$
-9. **Dimension of End**: $\Dim[K]{\End{V}} = n^2$ (apply corollary with $U = V$)
+4. **Dimension of End**: $\Dim[K]{\End{V}} = n^2$ (apply corollary with $U = V$)
 
 
 ---
@@ -1371,7 +1821,7 @@ Correspondence between subspaces of $\Quotient{V}{W}$ and subspaces of $V$ conta
 
 ---
 
-### CHAPTER 4 COMPENDIUM
+### CHAPTER 5 COMPENDIUM
 
 **Products and Coproducts**:
 - Product: $\DirectProd{i \in I}{V_i}$ with projections $\pi_j$
@@ -1417,144 +1867,6 @@ $$\Hom{U}{V} \cong \DirectProd{B_U}{\Hom{K}{K^{(B_V)}}} \cong \DirectProd{B_U}{\
 - $\DualMap{T}: \Dual{V} \to \Dual{U}$, $\DualMap{T}(\varphi) = \varphi \circ T$ (contravariant)
 - $\DualMap{T}$ inj $\Leftrightarrow$ $T$ surj; $\DualMap{T}$ surj $\Leftrightarrow$ $T$ inj
 - $\eta_V: V \hookrightarrow \Dual{\Dual{V}}$ canonical; iso iff $\Dim{V} \in \bb{N}$
-
----
-
-# CHAPTER 5: Matrices & Subspace Representations
-
-## Phase 16: Matrices
-
-### 15a: Matrix Fundamentals
-1. **Matrix of linear map** relative to **ordered bases**
-   - CRITICAL: Requires ordered bases, not just bases
-2. **Matrices of any size**: $\MatSpace{m}{n}[K]$ for cardinals $m, n$
-3. **Matrix operations**:
-   - Addition: $(A + B)_{ij} = A_{ij} + B_{ij}$
-   - Scalar multiplication: $(\lambda A)_{ij} = \lambda A_{ij}$
-   - Matrix multiplication: $(AB)_{ij} = \sum_k A_{ik} B_{kj}$
-   - Hadamard product: $(A \circ B)_{ij} = A_{ij} B_{ij}$
-   - Kronecker product: $A \otimes_K B$ (with block structure)
-4. **Isomorphism**: $\Hom[K]{U}{V} \cong \MatSpace{n}{m}[K]$ (relative to ordered bases; for any two fixed bases in the domain and codomain there is a unique isomorphism)
-5. **Composition corresponds to matrix multiplication**
-
-### 15b: Block Matrices (with all the proofs)
-1. **Block matrix**: Matrix with matrix entries that unravel to rectangles
-2. **Compatibility**: Row blocks must have same height, column blocks same width
-3. **Unraveling morphism property**: For operations $\circ \in \{+, \cdot, \otimes_K, \circ_{\text{Hadamard}}\}$:
-   - $\text{unravel}(A \circ B) = \text{unravel}(A) \circ \text{unravel}(B)$
-   - i.e., partition into blocks → apply operation as block matrices → unravel = operate as regular matrices
-
-### 15c: Abuse of notation
-1. If in the context we are talking about two bases (or the canonical bases if we are working on $K^n$), then for any matrix A we will write $\Ker{A}$ for $\Ker{T_A}$ and $\Rng{A}$ for $\Rng{T_A}$ where $T_A: K^n \to K^m$ is the linear map associated to A (unique via the Hom matrix isomorphism).
-2. This is equivalent to defining $\Ker{A} = \Set{x \in K^n \mid Ax = 0}$ and $\Rng{A} = \Set{y \in K^m \mid \exists x \in K^n \text{ such that } Ax = y}$.
-
-### 15d: Linear Systems
-1. **Homogeneous system**: $Ax = 0$
-   - Solution space = $\Ker{T_A}$ where $T_A: K^n \to K^m$
-   - Always a subspace
-2. **Non-homogeneous system**: $Ax = b$
-   - Solution set = $v_0 + \Ker{T_A}$ (affine subspace/coset)
-   - Non-empty iff $b \in \DirectImage{T_A}{K^n}$
-3. **Parametric equations**: Express solution in terms of free variables
-4. **Implicit equations**: System of equations defining a subspace
-
----
-
-## Phase 17: Change of Basis and Gaussian Elimination
-
-1. **Change of basis matrices**: Invertible; columns are coordinates of new basis in terms of old
-   - 📊 **DIAGRAM**: Commutative square $V \xrightarrow{T} W$ with coordinate maps $K^n \to K^m$
-2. **Similarity**: $A' = P^{-1}AP$ for endomorphisms
-3. **Equivalence**: $A' = QAP^{-1}$ for general linear maps
-4. **RREF, CREF, REF** as equivalence relations
-5. **Kernel/Range invariance** under row/column operations
-
-### RREF/CREF and Map Properties
-6. **Injectivity**: RREF has no zero rows iff injective (full column rank)
-7. **Surjectivity**: CREF has no zero columns iff surjective (full row rank)
-8. **Bijectivity**: Square matrix in RREF = identity iff bijective
-
-### Gauss-Jordan Elimination for Inverses
-9. **Left inverse** (when injective): Augment $[A | I]$, row reduce to $[R | L]$, then $LA = R$
-10. **Right inverse** (when surjective): Augment $\begin{pmatrix} A \\ I \end{pmatrix}$, column reduce
-11. **Two-sided inverse**: $[A | I] \to [I | A^{-1}]$ via Gauss-Jordan
-
----
-
-## Phase 18: Subspace Representations and Equations
-
-### Core Forms
-1. **Every subspace = kernel of some linear map**:
-   - Given $U \Subspace[K] V$, construct $\pi: V \to \QuotientSpace{V}{U}$ with $\Ker{\pi} = U$
-   - Every subspace is the kernel of an endomorphism
-2. **Every subspace = image of some linear map**:
-   - Given $U \Subspace[K] V$, take inclusion $\iota: U \hookrightarrow V$
-   - Every subspace is the image of an endomorphism
-3. **Parametric form** (image): $U = \Span[K]{\{v_1, \ldots, v_k\}}$
-4. **Implicit form** (kernel): $U = \Set{v \mid L_1(v) = \cdots = L_r(v) = 0}$ for functionals $L_i$
-
-- Examples
-
-### Converting Between Forms
-- **Parametric → Implicit**: Find functionals vanishing on generating set (solve homogeneous system)
-- **Implicit → Parametric**: Solve the homogeneous system to get generating set
-
-### Operations on Subspaces
-| Operation | Easier with | Method |
-|-----------|-------------|--------|
-| $U + W$ | Parametric | Concatenate generating sets |
-| $U \Intersect W$ | Implicit | Concatenate equation systems |
-| $\DirectImage{T}{U}$ | Parametric | Apply $T$ to generators |
-| $\InverseImage{T}{W}$ | Implicit | Compose equations with $T$: $\Composition{L_i}{T} = 0$ |
-
-### Direct Image $\DirectImage{T}{U}$ (Image of a Subspace)
-**Easier with Parametric representation of $U$:**
-- If $U = \Span[K]{\{u_1, \ldots, u_k\}}$, then $\DirectImage{T}{U} = \Span[K]{\{T(u_1), \ldots, T(u_k)\}}$
-- Simply apply $T$ to each generator
-- **Why implicit is harder**: If $U = \Ker{L}$ (implicit), then $\DirectImage{T}{U} = \DirectImage{T}{\Ker{L}}$ requires finding generators of $\Ker{L}$ first, then applying $T$
-
-### Inverse Image $\InverseImage{T}{W}$ (Preimage of a Subspace)
-**Easier with Implicit representation of $W$:**
-- If $W = \Set{v \mid L_1(v) = \cdots = L_r(v) = 0}$, then $\InverseImage{T}{W} = \Set{u \mid L_1(T(u)) = \cdots = L_r(T(u)) = 0}$
-- Simply compose each defining functional with $T$: the equations become $(\Composition{L_i}{T})(u) = 0$
-- **Why parametric is harder**: If $W = \Span[K]{\{w_1, \ldots, w_k\}}$, finding $\InverseImage{T}{W}$ requires solving $T(u) = \sum a_j w_j$, which is a parametric equation in $u$ and $(a_j)$—more complex
-
-### Summary Table (Expanded)
-| Operation | Representation | Formula / Method |
-|-----------|----------------|------------------|
-| $\DirectImage{T}{U}$ | $U$ parametric | $\DirectImage{T}{\Span[K]{G}} = \Span[K]{\DirectImage{T}{G}}$ |
-| $\DirectImage{T}{U}$ | $U$ implicit | Convert to parametric first, then apply $T$ |
-| $\InverseImage{T}{W}$ | $W$ implicit | $\InverseImage{T}{\Ker{L}} = \Ker{\Composition{L}{T}}$ |
-| $\InverseImage{T}{W}$ | $W$ parametric | Solve $T(u) \in W$; convert $W$ to implicit first |
-
-### Formulas
-- **Sum (implicit)**: Requires elimination; $U + W = \pi_V(\Set{(u,w) \mid u-w=0})$
-- **Intersection (parametric)**: Requires solving $\sum a_i u_i = \sum b_j w_j$
-
----
-
-## Phase 19: Rank and Nullity Inequalities
-
-1. **$\Ker{\Composition{S}{T}} \supseteq \Ker{T}$**
-2. **$\DirectImage{S}{V} \supseteq \DirectImage{\Composition{S}{T}}{U}$**
-3. **Rank bounds**: $|\Rank{T} - \Rank{S}| \leq \Rank{T \pm S} \leq \Rank{T} + \Rank{S}$
-4. **$\Rank{\Composition{S}{T}} \leq \min\{\Rank{S}, \Rank{T}\}$**
-5. **Nullity counterexample**: $\Nullity{\Composition{S}{T}} \geq \Nullity{S}$ is FALSE in general
-
----
-
-## Phase 20: Sylvester and Frobenius Inequalities
-
-1. **Full rank factorization**
-2. **Sylvester**: $\Dim[K]{\Ker{\Composition{S}{T}}} = \Dim[K]{\Ker{T}} + \Dim[K]{\Ker{S} \Intersect \DirectImage{T}{U}}$ (give the rank equivalent)
-3. **Frobenius**: $\Dim[K]{\Ker{\Composition{A}{\Composition{B}{C}}}} + \Dim[K]{\Ker{B}} \leq \Dim[K]{\Ker{\Composition{A}{B}}} + \Dim[K]{\Ker{\Composition{B}{C}}}$ (give the rank equivalent)
-4. **Generalization to $n$ maps**
-
----
-
-> **CHAPTER 5 COMPENDIUM**: Add compendium here summarizing matrix representations, change of basis.
-
----
 
 # CHAPTER 6: Endomorphisms & Spectral Theory
 
@@ -1602,7 +1914,7 @@ $$\Hom{U}{V} \cong \DirectProd{B_U}{\Hom{K}{K^{(B_V)}}} \cong \DirectProd{B_U}{\
 ### 22c: Triangular Operators
 1. **Upper triangular matrix**: $A_{ij} = 0$ for $i > j$
 2. **Lower triangular matrix**: $A_{ij} = 0$ for $i < j$
-3. **Upper/lower triangular relative to ordered basis**: Can choose either convention since reversing basis order swaps upper↔lower (prove this) (i.e. $T$ is upper triangular relative to $(b_1, \ldots, b_n)$ iff lower triangular relative to $(b_n, \ldots, b_1)$ )
+3. **Upper/lower triangular relative to ordered basis**: Can choose either convention since reversing basis order swaps upper↔lower (prove this) (i.e. $T$ is upper triangular relative to $(b_0, \ldots, b_{n-1})$ iff lower triangular relative to $(b_{n-1}, \ldots, b_0)$)
 4. **Triangularizable operator**:
    - Triangularizability Characterization: $T$ triangularizable iff there exists chain of $T$-invariant subspaces:
    $$\{0\} = U_0 \subsetneq U_1 \subsetneq \cdots \subsetneq U_n = V$$
@@ -1770,21 +2082,21 @@ Document/LinearAlgebra/
     │   ├── InjSurjBij.tex               # Phase 10: Inj/Surj/Bij & Rank-Nullity
     │   └── Properties.tex
     │
-    ├── QuotientSpaces/                  # CHAPTER 3: Quotients & Iso Theorems
-    │   ├── QuotientSpaces.tex           # Phase 11: Quotient spaces & UP
-    │   ├── Hyperplanes.tex
-    │   └── IsomorphismTheorems.tex      # Phase 12: All four iso theorems
-    │
-    ├── HomAndDual/                      # CHAPTER 4: Products, Hom, Dual
-    │   ├── ExternalOperations.tex       # Phase 13: External products
-    │   ├── HomSpaces.tex                # Phase 14: Hom spaces
-    │   └── DualSpaces.tex               # Phase 15: Dual spaces, annihilators, V≅V**
-    │
-    ├── Matrices/                        # CHAPTER 5: Matrices & Representations
+    ├── Matrices/                        # CHAPTER 3: Matrices & Representations
     │   ├── Matrices.tex                 # Phase 16: Matrix fundamentals
     │   ├── ChangeOfBasis.tex            # Phase 17: Change of basis, Gaussian
     │   ├── SubspaceRepresentations.tex  # Phase 18: Parametric/implicit forms
     │   └── RankInequalities.tex         # Phase 19-21: Rank inequalities
+    │
+    ├── QuotientSpaces/                  # CHAPTER 4: Quotients & Iso Theorems
+    │   ├── QuotientSpaces.tex           # Phase 11: Quotient spaces & UP
+    │   ├── Hyperplanes.tex
+    │   └── IsomorphismTheorems.tex      # Phase 12: All four iso theorems
+    │
+    ├── HomAndDual/                      # CHAPTER 5: Products, Hom, Dual
+    │   ├── ExternalOperations.tex       # Phase 13: External products
+    │   ├── HomSpaces.tex                # Phase 14: Hom spaces
+    │   └── DualSpaces.tex               # Phase 15: Dual spaces, annihilators, V≅V**
     │
     ├── Endomorphisms/                   # CHAPTER 6: Endomorphisms & Spectral
     │   ├── Endomorphisms.tex            # Phase 22: Projections, symmetries

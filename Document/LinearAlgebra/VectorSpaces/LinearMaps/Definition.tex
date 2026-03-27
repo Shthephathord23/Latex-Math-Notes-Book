@@ -51,7 +51,7 @@
     \begin{enumerate}
         \item $T(0_U) = 0_V$
         \item $T(-u) = -T(u)$ for all $u \in U$
-        \item $T\left(\sum_{i=1}^{n} a_i u_i\right) = \sum_{i=1}^{n} a_i T(u_i)$ for any finite linear combination
+        \item $T\left(\sum_{i \in n} a_i u_i\right) = \sum_{i \in n} a_i T(u_i)$ for any finite linear combination
     \end{enumerate}
 \end{proposition}
 
@@ -191,9 +191,9 @@
             \draw[->] (0,-0.5) -- (0,2.5) node[above] {$y$};
             \fill[blue!20] (0,0) -- (1,0) -- (1,1) -- (0,1) -- cycle;
             \draw[blue, thick] (0,0) -- (1,0) -- (1,1) -- (0,1) -- cycle;
-            \draw[->, thick, red] (0,0) -- (1,0) node[midway, below] {$e_1$};
-            \draw[->, thick, green!50!black] (0,0) -- (0,1) node[midway, left] {$e_2$};
-            \node[below] at (1,-0.8) {Basis $B = \{e_1, e_2\}$};
+            \draw[->, thick, red] (0,0) -- (1,0) node[midway, below] {$e_0$};
+            \draw[->, thick, green!50!black] (0,0) -- (0,1) node[midway, left] {$e_1$};
+            \node[below] at (1,-0.8) {Basis $B = \{e_0, e_1\}$};
         \end{scope}
         
         % Arrow for transformation
@@ -205,13 +205,13 @@
             \draw[->] (0,-0.5) -- (0,2.5) node[above] {$y$};
             \fill[orange!20] (0,0) -- (2,0) -- (2.5,1.5) -- (0.5,1.5) -- cycle;
             \draw[orange, thick] (0,0) -- (2,0) -- (2.5,1.5) -- (0.5,1.5) -- cycle;
-            \draw[->, thick, red] (0,0) -- (2,0) node[midway, below] {$f(e_1)$};
-            \draw[->, thick, green!50!black] (0,0) -- (0.5,1.5) node[midway, left] {$f(e_2)$};
+            \draw[->, thick, red] (0,0) -- (2,0) node[midway, below] {$f(e_0)$};
+            \draw[->, thick, green!50!black] (0,0) -- (0.5,1.5) node[midway, left] {$f(e_1)$};
             \node[below] at (1.25,-0.8) {Target $W$};
         \end{scope}
     \end{tikzpicture}
-    \caption{The universal property in action: specifying $f(e_1)$ and $f(e_2)$ uniquely determines the linear map $T$.
-    The unit square spanned by $\{e_1, e_2\}$ maps to the parallelogram spanned by $\{f(e_1), f(e_2)\}$.}
+    \caption{The universal property in action: specifying $f(e_0)$ and $f(e_1)$ uniquely determines the linear map $T$.
+    The unit square spanned by $\{e_0, e_1\}$ maps to the parallelogram spanned by $\{f(e_0), f(e_1)\}$.}
     \label{fig:universal-property}
 \end{figure}
 \begin{theorem}[Equivalent Characterizations of Free Vector Spaces]%
@@ -267,7 +267,7 @@
 \begin{corollary}[Linear Maps Determined by Basis Values]\label{cor:linear-map-basis}
     A linear map $T: V \to W$ is uniquely determined by its values on any basis of $V$.
     In particular, for finite-dimensional spaces, every linear map $T: K^n \to K^m$ is uniquely 
-    determined by the images of the standard basis vectors $T(e_1), \ldots, T(e_n) \in K^m$.
+    determined by the images of the standard basis vectors $T(e_0), \ldots, T(e_{n-1}) \in K^m$.
 \end{corollary}
 
 \begin{proposition}[Images and Preimages of Subspaces]\label{prop:image-preimage-subspace}
@@ -371,10 +371,10 @@
 
 \begin{proof}
     \textbf{($\supseteq$)}: Let $v \in \DirectImage{T}{\Span[K]{S}}$, so $v = T(u)$ for some $u \in \Span[K]{S}$.
-    Then $u = \sum_{i=1}^{n} a_i s_i$ for some $a_i \in K$, $s_i \in S$.
+    Then $u = \sum_{i \in n} a_i s_i$ for some $a_i \in K$, $s_i \in S$.
     By linearity:
     \[
-        v = T(u) = T\left(\sum_{i=1}^{n} a_i s_i\right) = \sum_{i=1}^{n} a_i T(s_i) \in \Span[K]{\DirectImage{T}{S}}
+        v = T(u) = T\left(\sum_{i \in n} a_i s_i\right) = \sum_{i \in n} a_i T(s_i) \in \Span[K]{\DirectImage{T}{S}}
     \]
     
     \textbf{($\subseteq$)}: $\DirectImage{T}{S} \subseteq \DirectImage{T}{\Span[K]{S}}$, and the latter is a subspace

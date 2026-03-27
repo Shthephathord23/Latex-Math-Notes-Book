@@ -1,0 +1,208 @@
+% Document/LinearAlgebra/VectorSpaces/Foundations/Flags.tex
+% Section: Flags and Chains of Subspaces
+
+\newpage
+\section{Flags and Chains of Subspaces}\label{sec:flags}
+
+\begin{remark}[Motivation]
+    Having introduced ordered bases, we now study a related but distinct concept: ordered
+    families of \emph{subspaces}. Just as an ordered basis imposes a total order on vectors
+    to produce coordinates, a \emph{flag} imposes a total order on a chain of subspaces to
+    capture the geometry of nested substructures. Flags arise naturally in the study of
+    triangular and block-triangular matrix forms, Gaussian elimination, and Jordan normal forms.
+\end{remark}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Ordered Bases and Set-Theoretic Requirements}
+
+\begin{remark}[Total Order vs.\ Well-Order]
+    There is a subtle but important distinction between the ordering requirements for
+    coordinates versus for matrices:
+    \begin{itemize}
+        \item \textbf{For coordinates only}: A \emph{total order} on the basis $B$ suffices.
+              Given any total order, each $v \in V$ has a unique finite representation
+              $v = \sum_{i \in F} a_i b_i$, and we can write the coordinate function
+              $\phi_{\mathcal{B}}: V \to K^{(I)}$ unambiguously.
+
+        \item \textbf{For matrices}: A \emph{well-order} on $B$ is required. This indexes
+              the basis by ordinal numbers $(\alpha)_{\alpha < \kappa}$, guaranteeing a
+              definitive ``first'' column/row (a top-left corner) and discrete sequential
+              steps. Without well-ordering, the column-index arithmetic underlying matrix
+              multiplication has no canonical starting point for infinite bases.
+    \end{itemize}
+    For \textbf{finite-dimensional} spaces, every total order is a well-order, so the
+    distinction vanishes in practice.
+\end{remark}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Flags}
+
+\begin{definition}[Flag]\label{def:flag}
+    A \textbf{flag} in a $K$-vector space $V$ is a totally ordered set (chain) of subspaces
+    ordered by strict inclusion. A \textbf{finite flag} of \textbf{length} $r+1$ is a sequence
+    \[
+        V_0 \subsetneq V_1 \subsetneq \cdots \subsetneq V_r
+    \]
+    of $r+1$ subspaces of $V$. For an \textbf{infinite flag}, one has a chain
+    $(V_\alpha)_{\alpha \in A}$ indexed by a totally ordered set $A$, with $V_\alpha \subsetneq V_\beta$
+    whenever $\alpha < \beta$.
+
+    Equivalently, a flag is a chain in the poset $\bigl(\Sub{V},\, \Subspace[K]\bigr)$ of all
+    subspaces of $V$ ordered by inclusion.
+\end{definition}
+
+\begin{example}[Flags in $\bb{R}^2$]\label{ex:flag-R2}
+    In $V = \bb{R}^2$ (dimension $2$), examples of flags:
+    \begin{itemize}
+        \item $\{0\} \subsetneq \bb{R}^2$ \quad --- length $2$, a chain of two subspaces.
+        \item $\{0\} \subsetneq \Span[K]{e_0} \subsetneq \bb{R}^2$ \quad --- length $3$,
+              a chain of three subspaces where $\Span[K]{e_0}$ is a line.
+        \item $\Span[K]{e_1} \subsetneq \bb{R}^2$ \quad --- length $2$; a flag need not
+              start at $\{0\}$ or end at $V$.
+    \end{itemize}
+    There are infinitely many flags of length $3$ in $\bb{R}^2$: one for each line through
+    the origin.
+\end{example}
+
+\begin{example}[Flags in Polynomial Spaces]\label{ex:flag-poly}
+    Let $V = K[X]_{\leqslant 2}$, the space of polynomials of degree at most $2$ (dimension $3$).
+    Flags of different lengths:
+    \begin{itemize}
+        \item Length $2$: $\{0\} \subsetneq K[X]_{\leqslant 2}$
+              (jumps directly from $\{0\}$ to $V$).
+        \item Length $3$: $\{0\} \subsetneq \Span[K]{1} \subsetneq K[X]_{\leqslant 2}$
+              (dimensions $0, 1, 3$; a gap of $2$ in the last step).
+        \item Length $4$: $\{0\} \subsetneq \Span[K]{1} \subsetneq K[X]_{\leqslant 1}
+              \subsetneq K[X]_{\leqslant 2}$
+              (dimensions $0, 1, 2, 3$; each step increases by $1$).
+    \end{itemize}
+\end{example}
+
+\begin{definition}[Complete Flag]\label{def:complete-flag}
+    A flag $\mathcal{F}$ in $V$ is \textbf{complete} if it is a \emph{maximal chain} in the
+    poset of all subspaces of $V$: no subspace can be inserted into $\mathcal{F}$ at any
+    position without violating strict inclusion.
+\end{definition}
+
+\begin{example}[Complete and Non-Complete Flags in $\bb{R}^3$]\label{ex:flag-complete-R3}
+    In $V = \bb{R}^3$ (dimension $3$), consider flags from $\{0\}$ to $\bb{R}^3$:
+    \begin{itemize}
+        \item \textbf{Non-complete, length $2$}:
+              $\{0\} \subsetneq \bb{R}^3$.
+              Any line or plane can be inserted.
+
+        \item \textbf{Non-complete, length $3$ (dimension gap)}:
+              $\{0\} \subsetneq \Span[K]{e_0} \subsetneq \bb{R}^3$
+              (dimensions $0, 1, 3$). Any plane $P$ with
+              $\Span[K]{e_0} \subsetneq P \subsetneq \bb{R}^3$
+              (e.g.\ $P = \Span[K]{e_0, e_1}$) can be inserted between the last two terms.
+              Not maximal.
+
+        \item \textbf{Complete, length $4$}:
+              $\{0\} \subsetneq \Span[K]{e_0} \subsetneq \Span[K]{e_0, e_1} \subsetneq \bb{R}^3$
+              (dimensions $0, 1, 2, 3$; each step $+1$; nothing can be inserted).
+
+        \item \textbf{Another complete flag, length $4$}:
+              $\{0\} \subsetneq \Span[K]{e_0 + e_1} \subsetneq
+               \Span[K]{e_0 + e_1,\, e_2} \subsetneq \bb{R}^3$.
+    \end{itemize}
+\end{example}
+
+\begin{proposition}[Complete Flags in Finite Dimensions]\label{prop:complete-flag-finite}
+    Let $\Dim[K]{V} = n \in \bb{N}$. A flag
+    $V_0 \subsetneq V_1 \subsetneq \cdots \subsetneq V_r$
+    with $V_0 = \{0\}$ and $V_r = V$
+    is complete if and only if $r+1 = n+1$ (i.e.\ $r = n$) and $\Dim[K]{V_i} = i$ for all
+    $i = 0, 1, \ldots, n$.
+    In particular, every step increases dimension by exactly $1$.
+\end{proposition}
+
+\begin{proof}
+    ($\Rightarrow$)
+    Suppose the flag is complete. Since each inclusion is strict, $\Dim[K]{V_{i+1}} > \Dim[K]{V_i}$.
+    If $\Dim[K]{V_{i+1}} \geq \Dim[K]{V_i} + 2$ for some $i$, pick any subspace $W$ with
+    $V_i \subsetneq W \subsetneq V_{i+1}$ and $\Dim[K]{W} = \Dim[K]{V_i} + 1$
+    (such $W$ exists by the basis extension theorem). Inserting $W$ contradicts maximality.
+    Hence $\Dim[K]{V_{i+1}} = \Dim[K]{V_i} + 1$ for all $i$, giving $r = n$ and $\Dim[K]{V_i} = i$.
+
+    ($\Leftarrow$)
+    Suppose $r = n$ and $\Dim[K]{V_i} = i$. If $W$ satisfies $V_i \subsetneq W \Subspace[K] V_{i+1}$,
+    then $i < \Dim[K]{W} \leqslant i+1$, so $\Dim[K]{W} = i+1 = \Dim[K]{V_{i+1}}$,
+    hence $W = V_{i+1}$ by the equal-dimension corollary. No intermediate subspace fits.
+\end{proof}
+
+\begin{example}[Verifying Completeness in $\bb{R}^4$]\label{ex:flag-verify}
+    Two flags from $\{0\}$ to $\bb{R}^4$:
+    \begin{itemize}
+        \item $\mathcal{F}_1$: $\{0\} \subsetneq \Span[K]{e_0} \subsetneq \Span[K]{e_0,e_1}
+              \subsetneq \Span[K]{e_0,e_1,e_2} \subsetneq \bb{R}^4$.
+              Dimensions: $0,1,2,3,4$. Length $= 5 = 4+1$. Each step $+1$.
+              \textbf{Complete.}
+
+        \item $\mathcal{F}_2$: $\{0\} \subsetneq \Span[K]{e_0} \subsetneq
+              \Span[K]{e_0,e_1,e_2} \subsetneq \bb{R}^4$.
+              Dimensions: $0,1,3,4$. Length $= 4$. Step $1\to 3$ jumps by $2$:
+              $\Span[K]{e_0, e_1}$ can be inserted. \textbf{Not complete.}
+    \end{itemize}
+\end{example}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Flags from Ordered Bases}
+
+\begin{proposition}[Every Ordered Basis Induces a Complete Flag]\label{prop:basis-flag}
+    Let $\mathcal{B} = (b_i)_{i \in I}$ be an ordered basis of $V$ (with $I$ well-ordered).
+    For each $\alpha \in I$, define
+    \[
+        V_\alpha \defeq \Span[K]{\Set{b_i \mid i \leqslant \alpha}}.
+    \]
+    Set $V_0 \defeq \{0\}$. Then the chain
+    \[
+        V_0 \subsetneq V_{\alpha_0} \subsetneq \cdots \subsetneq V_\alpha \subsetneq V_{\alpha^+}
+        \subsetneq \cdots
+    \]
+    is a complete flag of $V$, where $\alpha_0$ is the minimum element of $I$ and $\alpha^+$ denotes
+    the successor of $\alpha$ in $I$.
+\end{proposition}
+
+\begin{proof}
+    We verify each required property.
+
+    \textbf{Strict inclusions}: Since $(b_i)_{i \in I}$ is linearly independent,
+    $b_{\alpha^+} \notin \Span[K]{\Set{b_i \mid i \leqslant \alpha}} = V_\alpha$, so
+    $V_\alpha \subsetneq V_{\alpha^+}$.
+
+    \textbf{The chain covers $V$}: Since $\mathcal{B}$ generates $V$, every $v \in V$ is a
+    finite linear combination $v = \sum_{j \in F} c_j b_j$ for some finite $F \subseteq I$.
+    Taking $\alpha = \max F$ (which exists since $F$ is finite and $I$ is well-ordered),
+    $v \in V_\alpha$. Hence $\bigcup_{\alpha \in I} V_\alpha = V$.
+
+    \textbf{Completeness (maximality)}: Suppose $W \Subspace[K] V$ satisfies
+    $V_\alpha \subsetneq W \Subspace[K] V_{\alpha^+}$ for some $\alpha$. Pick
+    $w \in W \setminus V_\alpha$. Write $w = \sum_{j \leqslant \alpha^+} c_j b_j$ using
+    linear independence; the coefficient of $b_{\alpha^+}$ must be nonzero (else
+    $w \in V_\alpha$, contradiction). Then $b_{\alpha^+} = c_{\alpha^+}^{-1}(w - \sum_{j \leqslant \alpha} c_j b_j) \in W$,
+    so $V_{\alpha^+} = V_\alpha + \Span[K]{b_{\alpha^+}} \Subspace[K] W$, giving $W = V_{\alpha^+}$.
+    No proper subspace fits strictly between $V_\alpha$ and $V_{\alpha^+}$.
+\end{proof}
+
+\begin{example}[Induced Flags]\label{ex:induced-flag}
+    The following ordered bases yield the following complete flags:
+    \begin{itemize}
+        \item Standard basis $(e_0, e_1, e_2)$ of $\bb{R}^3$:
+              $\{0\} \subsetneq \Span[K]{e_0} \subsetneq \Span[K]{e_0,e_1} \subsetneq \bb{R}^3$.
+        \item Rotated basis $(e_0+e_1,\, e_1,\, e_2)$ of $\bb{R}^3$:
+              $\{0\} \subsetneq \Span[K]{e_0+e_1} \subsetneq \Span[K]{e_0+e_1,\, e_1}
+               \subsetneq \bb{R}^3$.
+        \item Canonical basis $(e_n)_{n \in \bb{N}}$ of $K^{(\bb{N})}$:
+              $\{0\} \subsetneq \Span[K]{e_0} \subsetneq \Span[K]{e_0,e_1}
+               \subsetneq \cdots$ (an infinite complete flag).
+    \end{itemize}
+\end{example}
+
+\begin{remark}[Converse]\label{rem:flag-from-basis}
+    The converse also holds in finite dimensions: every complete flag
+    $\{0\} = V_0 \subsetneq V_1 \subsetneq \cdots \subsetneq V_n = V$
+    admits an \emph{adapted ordered basis} $(b_0, \ldots, b_{n-1})$ with
+    $V_{i+1} = \Span[K]{b_0, \ldots, b_i}$, constructed by choosing $b_i \in V_{i+1} \setminus V_i$
+    at each step. Different choices give different adapted bases for the same flag.
+\end{remark}

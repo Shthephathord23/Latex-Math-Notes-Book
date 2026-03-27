@@ -10,6 +10,18 @@
     inherited operations from $V$.
 \end{definition}
 
+\begin{remark}[The Subspace Lattice $\Sub{V}$]\label{rem:sub-lattice}
+    We write $\Sub{V}$ for the \textbf{set of all $K$-vector subspaces of $V$}, ordered by
+    inclusion. It is a \emph{complete lattice}: any family of subspaces has a meet (intersection)
+    and a join (sum):
+    \[
+        \bigwedge_{i \in I} U_i = \BigIntersect[i \in I] U_i, \qquad
+        \bigvee_{i \in I} U_i = \SubspaceSum{i \in I}{U_i}.
+    \]
+    The bottom element is $\{0\}$ and the top element is $V$. This lattice structure
+    underlies the theory of flags (Section~\ref{sec:flags}).
+\end{remark}
+
 \begin{example}[Subspaces in Low Dimensions]\label{ex:subspaces-low-dim}
     The following are subspaces:
     \begin{enumerate}
@@ -57,7 +69,7 @@
 \begin{proposition}[Subspace Criterion]\label{prop:subspace-criterion}
     A subset $U \subseteq V$ is a subspace if and only if:
     \begin{enumerate}
-        \item $U \neq \emptyset$ (equivalently, $0 \in U$)
+        \item $U \neq \emptyset$
         \item $\Forall :{a, b \in K}{\Forall :{u, v \in U}{au + bv \in U}}$
     \end{enumerate}
 \end{proposition}
@@ -111,11 +123,20 @@
     \end{itemize}
 \end{proof}
 
+\begin{example}[Trivial Subspaces]\label{ex:trivial-subspaces}
+    Every vector space $V$ has two \textbf{trivial subspaces}:
+    \begin{itemize}
+        \item The zero subspace $\{0\}$
+        \item The whole space $V$
+    \end{itemize}
+    A subspace $U$ with $\{0\} \subsetneq U \subsetneq V$ is called \textbf{proper} or \textbf{nontrivial}.
+\end{example}
+
 \begin{definition}[Linear Combination]\label{def:linear-combination}
     Let $V$ be a $K$-vector space and $S \subseteq V$. A \textbf{linear combination} of
     vectors in $S$ is a \textbf{finite} sum
     \[
-        \sum_{i=1}^{n} a_i v_i
+        \sum_{i \in n} a_i v_i
     \]
     where $n \in \bb{N}$, $a_i \in K$, and $v_i \in S$.
 
@@ -127,17 +148,17 @@
     \begin{enumerate}
         \item $3v_1 + 2v_2$ is a linear combination of $\{v_1, v_2\}$
         \item The empty sum $0$ is a linear combination of any set (including $\emptyset$)
-        \item In $\bb{R}^3$: $(1, 2, 3) = 1 \cdot e_1 + 2 \cdot e_2 + 3 \cdot e_3$ where $e_i$ are standard vectors
+        \item In $\bb{R}^3$: $(1, 2, 3) = 1 \cdot e_0 + 2 \cdot e_1 + 3 \cdot e_2$ where $e_i$ are standard vectors
     \end{enumerate}
 \end{example}
 
 \begin{remark}[Finiteness is Essential]\label{rem:finite-lincomb}
-    Infinite series like $\sum_{i=1}^{\infty} a_i v_i$ are \textbf{not} linear combinations
+    Infinite series like $\sum_{i=0}^{\infty} a_i v_i$ are \textbf{not} linear combinations
     in the algebraic sense. Such series require topological structure (limits) to define.
 
     As a counterexample: in $K^{\bb{N}}$, let $e_i = (0, \ldots, 0, 1, 0, \ldots)$ with $1$ in position $i$.
     Then the constant sequence $(1, 1, 1, \ldots)$ is \textbf{not} a (finite) linear combination
-    of the $e_i$'s, even though ``intuitively'' it equals $\sum_{i=1}^{\infty} e_i$.
+    of the $e_i$'s, even though ``intuitively'' it equals $\sum_{i=0}^{\infty} e_i$.
 \end{remark}
 
 \begin{proposition}[Subspace iff Closed Under Linear Combinations]\label{prop:subspace-lincomb}
@@ -153,14 +174,51 @@
     Conversely, the linear combination condition with $|F| \leq 2$ gives the criterion.
 \end{proof}
 
-\begin{example}[Trivial Subspaces]\label{ex:trivial-subspaces}
-    Every vector space $V$ has two \textbf{trivial subspaces}:
-    \begin{itemize}
-        \item The zero subspace $\{0\}$
-        \item The whole space $V$
-    \end{itemize}
-    A subspace $U$ with $\{0\} \subsetneq U \subsetneq V$ is called \textbf{proper} or \textbf{nontrivial}.
-\end{example}
+\begin{proposition}[Linear Combinations of Indicator Functions]%
+    \label{prop:lincomb-finite-support}
+    Let $I$ be any set and let $(e_i)_{i \in I}$ be the indicator functions in $K^I$.
+    Then the set of all linear combinations of the $e_i$'s is precisely $K^{(I)}$.
+    In particular, if $I$ is infinite, then there exist elements of $K^I$ that are not
+    linear combinations of the $e_i$'s.
+\end{proposition}
+
+\begin{proof}
+    We show both inclusions.
+
+    ($\subseteq$)
+    Let $g$ be a linear combination of the $e_i$'s. Then
+    $g = \sum_{j \in n} a_j e_{i_j}$ for some $n \in \bb{N}$, scalars $a_j \in K$,
+    and distinct indices $i_0, \ldots, i_{n-1} \in I$. For any $k \in I$:
+    \[
+        g(k) = \sum_{j \in n} a_j e_{i_j}(k) = \sum_{j \in n} a_j \delta_{i_j k}
+        =
+        \begin{cases}
+            a_j & \text{if } k = i_j \text{ for some } j \in \{0, \ldots, n-1\} \\
+            0   & \text{otherwise}
+        \end{cases}
+    \]
+    Hence $\operatorname{supp}(g) \subseteq \{i_0, \ldots, i_{n-1}\}$, which is finite.
+    Therefore $g \in K^{(I)}$.
+
+    ($\supseteq$)
+    Let $f \in K^{(I)}$. Then $\operatorname{supp}(f) = \{i_0, \ldots, i_{n-1}\}$ is finite.
+    Define $g = \sum_{k \in n} f(i_k) \cdot e_{i_k}$. For any $j \in I$:
+    \[
+        g(j) = \sum_{k \in n} f(i_k) \cdot e_{i_k}(j) = \sum_{k \in n} f(i_k) \cdot \delta_{i_k j}
+        =
+        \begin{cases}
+            f(i_k) & \text{if } j = i_k \text{ for some } k \in \{0, \ldots, n-1\} \\
+            0      & \text{otherwise}
+        \end{cases}
+    \]
+    Since $j \notin \operatorname{supp}(f)$ implies $f(j) = 0 = g(j)$, and
+    $j = i_k \in \operatorname{supp}(f)$ implies $g(j) = f(i_k) = f(j)$,
+    we conclude $f = g$. Hence $f$ is a linear combination of the $e_i$'s.
+
+    For the last claim: if $I$ is infinite, then the constant-$1$ function
+    $f(i) = 1$ for all $i \in I$ has $\operatorname{supp}(f) = I$, which is infinite.
+    By the first inclusion, $f$ is not a linear combination of the $e_i$'s.
+\end{proof}
 
 \begin{proposition}[Intersection of Subspaces]\label{prop:intersection-subspace}
     Let $(U_i)_{i \in I}$ be a family of subspaces of $V$. Then $\BigIntersect[i \in I] U_i$ is a subspace of $V$.
@@ -239,9 +297,9 @@
 \end{proof}
 
 \begin{proposition}[Finite Sums Equal Minkowski Sums]\label{prop:finite-minkowski}
-    For a finite family $(U_1, \ldots, U_n)$ of subspaces:
+    For a finite family $(U_0, \ldots, U_{n-1})$ of subspaces:
     \[
-        \SubspaceSum{i=1}{n}{U_i} = U_1 + U_2 + \cdots + U_n
+        \SubspaceSum{i \in n}{U_i} = U_0 + U_1 + \cdots + U_{n-1}
     \]
     where the right side is the iterated Minkowski sum.
 \end{proposition}

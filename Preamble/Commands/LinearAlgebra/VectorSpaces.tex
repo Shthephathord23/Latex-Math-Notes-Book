@@ -1,0 +1,165 @@
+% Preamble/Commands/LinearAlgebra/VectorSpaces.tex
+
+\NewDocumentCommand{\VecSpace}{o m}
+{
+    \IfValueTF{#1}
+    {
+        {}_{#1}#2
+    }
+    {
+        #2
+    }
+}
+
+\NewDocumentCommand{\Span}{o m}
+{
+    \IfValueTF{#1}
+    {
+        \operatorname{span}_{#1} \left( #2 \right)
+    }
+    {
+        \operatorname{span} \left( #2 \right)
+    }
+}
+
+\NewDocumentCommand{\Subspace}{o}
+{
+    \IfValueTF{#1}
+    {
+        \leq_{#1}
+    }
+    {
+        \leq
+    }
+}
+
+
+% SubspaceSum:
+%   \SubspaceSum{i \in I}{U_i} gives \sum_{i \in I} U_i  (2-arg: subscript only)
+%   \SubspaceSum{i=1}{n}{U_i} gives \sum_{i=1}^{n} U_i  (3-arg: sub + superscript)
+\NewDocumentCommand{\SubspaceSum}{m m g}
+{
+    \IfValueTF{#3}
+    {
+        \sum_{#1}^{#2} #3
+    }
+    {
+        \sum_{#1} #2
+    }
+}
+
+% DirectSum:
+%   A \DirectSum B gives A \oplus B  (binary operator, no args)
+%   \DirectSum{i \in I}{U_i} gives \bigoplus_{i \in I} U_i  (2-arg: subscript only)
+%   \DirectSum{i=1}{n}{U_i} gives \bigoplus_{i=1}^{n} U_i  (3-arg: sub + superscript)
+\NewDocumentCommand{\DirectSum}{g g g}
+{
+    \IfValueTF{#1}
+    {
+        \IfValueTF{#3}
+        {
+            \bigoplus_{#1}^{#2} #3
+        }
+        {
+            \bigoplus_{#1} #2
+        }
+    }
+    {
+        \oplus
+    }
+}
+
+% ExtDirectSum (external/coproduct):
+%   A \ExtDirectSum B gives A \amalg B  (binary operator, no args)
+%   \ExtDirectSum{i \in I}{U_i} gives \coprod_{i \in I} U_i  (2-arg: subscript only)
+%   \ExtDirectSum{i=1}{n}{U_i} gives \coprod_{i=1}^{n} U_i  (3-arg: sub + superscript)
+\NewDocumentCommand{\ExtDirectSum}{g g g}
+{
+    \IfValueTF{#1}
+    {
+        \IfValueTF{#3}
+        {
+            \coprod_{#1}^{#2} #3
+        }
+        {
+            \coprod_{#1} #2
+        }
+    }
+    {
+        \coprod
+    }
+}
+
+% DirectProd (product):
+%   A \DirectProd B gives A \times B  (binary operator, no args)
+%   \DirectProd{i \in I}{V_i} gives \prod_{i \in I} V_i  (2-arg: subscript only)
+%   \DirectProd{i=1}{n}{V_i} gives \prod_{i=1}^{n} V_i  (3-arg: sub + superscript)
+\NewDocumentCommand{\DirectProd}{g g g}
+{
+    \IfValueTF{#1}
+    {
+        \IfValueTF{#3}
+        {
+            \prod_{#1}^{#2} #3
+        }
+        {
+            \prod_{#1} #2
+        }
+    }
+    {
+        \times
+    }
+}
+
+\NewDocumentCommand{\Dim}{o m}
+{
+    \IfValueTF{#1}
+    {
+        \dim_{#1} \left( #2 \right)
+    }
+    {
+        \dim \left( #2 \right)
+    }
+}
+
+\NewDocumentCommand{\QuotientSpace}{tp m m}
+{
+    \IfBooleanTF{#1}
+    {
+        \left( #2 / #3 \right)
+    }
+    {
+        #2 / #3
+    }
+}
+
+\NewDocumentCommand{\Coset}{m m}
+{
+    #1 + #2
+}
+
+\NewDocumentCommand{\LinIndep}{}
+{
+    \text{lin.\ indep.}
+}
+
+\NewDocumentCommand{\LinDep}{}
+{
+    \text{lin.\ dep.}
+}
+
+% Lattice of all subspaces: \Sub{V} → Sub(V)
+\NewDocumentCommand{\Sub}{m}
+{
+    \operatorname{Sub}\!\left( #1 \right)
+}
+
+\NewDocumentCommand{\MinkowskiSum}{m m}
+{
+    #1 + #2
+}
+
+\NewDocumentCommand{\MinkowskiProd}{m m}
+{
+    #1 \cdot #2
+}

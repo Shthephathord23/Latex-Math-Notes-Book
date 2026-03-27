@@ -1,0 +1,126 @@
+% Preamble/Commands/LinearAlgebra/Matrices.tex
+
+\NewDocumentCommand{\MatSpace}{m m o}
+{
+    \IfValueTF{#3}
+    {
+        M_{#1 \times #2} \left( #3 \right)
+    }
+    {
+        M_{#1 \times #2}
+    }
+}
+
+% Override physics package \Transpose
+\RenewDocumentCommand{\Transpose}{tp m}
+{
+    \IfBooleanTF{#1}
+    {
+        {\left( #2 \right)}^\mathsf{T}
+    }
+    {
+        {#2}^\mathsf{T}
+    }
+}
+
+\NewDocumentCommand{\Adjoint}{tp m}
+{
+    \IfBooleanTF{#1}
+    {
+        {\left( #2 \right)}^*
+    }
+    {
+        {#2}^*
+    }
+}
+
+% Override physics package \Det
+\RenewDocumentCommand{\Det}{m}
+{
+    \det \left( #1 \right)
+}
+
+% Override physics package \Trace
+\RenewDocumentCommand{\Trace}{m}
+{
+    \operatorname{Tr} \left( #1 \right)
+}
+
+\NewDocumentCommand{\Adjugate}{m}
+{
+    \operatorname{adj} \left( #1 \right)
+}
+
+\NewDocumentCommand{\Hermitian}{tp m}
+{
+    \IfBooleanTF{#1}
+    {
+        {\left( #2 \right)}^\dagger
+    }
+    {
+        {#2}^\dagger
+    }
+}
+
+\NewDocumentCommand{\CoordVec}{o m}
+{
+    \IfValueTF{#1}
+    {
+        \left[#2\right]^{#1}
+    }
+    {
+        \left[#2\right]
+    }
+}
+
+\NewDocumentCommand{\CoordMatrix}{o o m}
+{
+    \IfValueTF{#2}
+    {
+        \begin{pmatrix} #3 \end{pmatrix}_{#1}^{#2}
+    }
+    {
+        \IfValueTF{#1}
+        {
+            \begin{pmatrix} #3 \end{pmatrix}_{#1}
+        }
+        {
+            \begin{pmatrix} #3 \end{pmatrix}
+        }
+    }
+}
+
+
+% % Column vector: \ColVec{a_0 \\ a_1 \\ \vdots \\ a_{n-1}}
+% % Optional base: \ColVec{a_0 \\ a_1}[\mathcal{B}]  →  (...) with subscript B
+% \NewDocumentCommand{\ColVec}{m o}
+% {
+%     \IfValueTF{#2}
+%     {
+%         \begin{pmatrix} #1 \end{pmatrix}_{#2}
+%     }
+%     {
+%         \begin{pmatrix} #1 \end{pmatrix}
+%     }
+% }
+
+% % Matrix representation with optional bases:
+% %   \MatrixRep{T}              gives [T]
+% %   \MatrixRep{T}[\mathcal{B}] gives [T]_{\mathcal{B}}
+% %   \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] gives [T]_{\mathcal{B}_U}^{\mathcal{B}_V}
+% \NewDocumentCommand{\MatrixRep}{m o o}
+% {
+%     \IfValueTF{#3}
+%     {
+%         [#1]_{#2}^{#3}
+%     }
+%     {
+%         \IfValueTF{#2}
+%         {
+%             [#1]_{#2}
+%         }
+%         {
+%             [#1]
+%         }
+%     }
+% }

@@ -11,7 +11,7 @@ This is a structured mathematical document project written in LaTeX, covering ad
 ### Primary Build Command
 Run:
 ```bash
-pdflatex -interaction=nonstopmode main.tex
+xelatex -interaction=nonstopmode main.tex
 ```
 If the build fails, read the errors fix them and recompile.
 

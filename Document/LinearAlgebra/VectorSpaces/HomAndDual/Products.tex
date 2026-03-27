@@ -298,11 +298,11 @@
     $V \to 0 \to W$. In $K\text{-Vect}$, this is the zero linear map $0_{VW}(v) = 0_W$.
     
     \textbf{Step 3: Define the canonical morphism $\phi$.}
-    We construct $\phi: \ExtDirectSum{j=1}{n}{V_j} \to \DirectProd{i=1}{n}{V_i}$ using 
+    We construct $\phi: \ExtDirectSum{j \in n}{V_j} \to \DirectProd{i \in n}{V_i}$ using 
     both universal properties.
     
     \textit{Step 3a}: By the coproduct universal property, to define $\phi$ it suffices to specify 
-    the compositions $\phi \circ \iota_j: V_j \to \DirectProd{}{V_i}$ for each $j \in \{1, \ldots, n\}$.
+    the compositions $\phi \circ \iota_j: V_j \to \DirectProd{}{V_i}$ for each $j \in \{0, \ldots, n-1\}$.
     
     \textit{Step 3b}: By the product universal property, each $\phi \circ \iota_j$ is uniquely
     determined by specifying $\pi_i \circ (\phi \circ \iota_j): V_j \to V_i$ for each $i$.
@@ -322,7 +322,7 @@
     In an additive category, we can sum morphisms with common domain and codomain.
     Define:
     \[
-        \psi = \sum_{k=1}^{n} \iota_k \circ \pi_k: \DirectProd{}{V_i} \to \ExtDirectSum{}{V_j}
+        \psi = \sum_{k \in n} \iota_k \circ \pi_k: \DirectProd{}{V_i} \to \ExtDirectSum{}{V_j}
     \]
     
     \textit{Why well-defined}: Each $\iota_k \circ \pi_k: \DirectProd{}{V_i} \to \ExtDirectSum{}{V_j}$
@@ -334,14 +334,14 @@
     \textit{Strategy}: By the uniqueness part of the coproduct universal property, it suffices
     to show that $(\psi \circ \phi) \circ \iota_j = \iota_j$ for all $j$.
     
-    \textit{Computation}: For each $j \in \{1, \ldots, n\}$:
+    \textit{Computation}: For each $j \in \{0, \ldots, n-1\}$:
     \begin{align*}
         (\psi \circ \phi) \circ \iota_j 
         &= \psi \circ (\phi \circ \iota_j) && \text{(associativity)} \\
-        &= \left(\sum_{k=1}^{n} \iota_k \circ \pi_k\right) \circ (\phi \circ \iota_j) && \text{(definition of $\psi$)} \\
-        &= \sum_{k=1}^{n} \left(\iota_k \circ \pi_k \circ \phi \circ \iota_j\right) && \text{(distributivity in additive category)} \\
-        &= \sum_{k=1}^{n} \left(\iota_k \circ (\pi_k \circ \phi \circ \iota_j)\right) && \text{(associativity)} \\
-        &= \sum_{k=1}^{n} \iota_k \circ \delta_{kj} && \text{(Step 3c)} \\
+        &= \left(\sum_{k \in n} \iota_k \circ \pi_k\right) \circ (\phi \circ \iota_j) && \text{(definition of $\psi$)} \\
+        &= \sum_{k \in n} \left(\iota_k \circ \pi_k \circ \phi \circ \iota_j\right) && \text{(distributivity in additive category)} \\
+        &= \sum_{k \in n} \left(\iota_k \circ (\pi_k \circ \phi \circ \iota_j)\right) && \text{(associativity)} \\
+        &= \sum_{k \in n} \iota_k \circ \delta_{kj} && \text{(Step 3c)} \\
         &= \iota_j \circ \Identity{V_j} + \sum_{k \neq j} \iota_k \circ 0_{V_j V_k} && \text{(split sum)} \\
         &= \iota_j + 0 = \iota_j && \text{($\iota_k \circ 0 = 0$ in additive category)}
     \end{align*}
@@ -352,13 +352,13 @@
     \textit{Strategy}: By the uniqueness part of the product universal property, it suffices
     to show that $\pi_i \circ (\phi \circ \psi) = \pi_i$ for all $i$.
     
-    \textit{Computation}: For each $i \in \{1, \ldots, n\}$:
+    \textit{Computation}: For each $i \in \{0, \ldots, n-1\}$:
     \begin{align*}
         \pi_i \circ (\phi \circ \psi)
-        &= \pi_i \circ \phi \circ \left(\sum_{k=1}^{n} \iota_k \circ \pi_k\right) && \text{(definition of $\psi$)} \\
-        &= \sum_{k=1}^{n} \left(\pi_i \circ \phi \circ \iota_k \circ \pi_k\right) && \text{(distributivity)} \\
-        &= \sum_{k=1}^{n} \left((\pi_i \circ \phi \circ \iota_k) \circ \pi_k\right) && \text{(associativity)} \\
-        &= \sum_{k=1}^{n} \delta_{ik} \circ \pi_k && \text{(Step 3c)} \\
+        &= \pi_i \circ \phi \circ \left(\sum_{k \in n} \iota_k \circ \pi_k\right) && \text{(definition of $\psi$)} \\
+        &= \sum_{k \in n} \left(\pi_i \circ \phi \circ \iota_k \circ \pi_k\right) && \text{(distributivity)} \\
+        &= \sum_{k \in n} \left((\pi_i \circ \phi \circ \iota_k) \circ \pi_k\right) && \text{(associativity)} \\
+        &= \sum_{k \in n} \delta_{ik} \circ \pi_k && \text{(Step 3c)} \\
         &= \Identity{V_i} \circ \pi_i + \sum_{k \neq i} 0_{V_k V_i} \circ \pi_k && \text{(split sum)} \\
         &= \pi_i + 0 = \pi_i && \text{($0 \circ f = 0$)}
     \end{align*}
@@ -367,7 +367,7 @@
     \textbf{Conclusion}: Since $\phi$ has a two-sided inverse $\psi$, it is an isomorphism.
     This result \textbf{requires finiteness} because:
     \begin{itemize}
-        \item $\psi = \sum_{k=1}^{n} \iota_k \circ \pi_k$ is a finite sum of morphisms
+        \item $\psi = \sum_{k \in n} \iota_k \circ \pi_k$ is a finite sum of morphisms
         \item For infinite $I$, we cannot form such a sum in general categories
         \item In $K\text{-Vect}$ with infinite $I$: the image of $\psi$ would have finite support,
               but $\DirectProd{}{V_i}$ contains elements with infinite support
@@ -387,7 +387,7 @@
         \item $\Dim[K]{\ExtDirectSum{i \in I}{V_i}} = \sum_{i \in I} d_i$ 
               (sum of cardinals, finite for countable families with finite-dim factors)
         \item For finite $I$ with $\Card{I} = n \in \bb{N}$: 
-              $\Dim[K]{\DirectProd{i=1}{n}{V_i}} = \sum_{i=1}^n d_i$
+              $\Dim[K]{\DirectProd{i \in n}{V_i}} = \sum_{i \in n} d_i$
         \item For infinite $I$: $\Dim[K]{\DirectProd{i \in I}{V_i}}$ can be strictly larger than
               $\sum_{i \in I} d_i$
     \end{enumerate}
@@ -471,17 +471,17 @@
     This is the ``geometric sequence in $K$'' embedded along the image of $\nu$.
     Let $S = \Set{u_\alpha \mid \alpha \in K}$. Then $\Card{S} = \Card{K}$.
     
-    \textit{Linear independence}: Suppose $\sum_{j=1}^m c_j u_{\alpha_j} = 0$ for distinct $\alpha_1, \ldots, \alpha_m$.
+    \textit{Linear independence}: Suppose $\sum_{j \in m} c_j u_{\alpha_j} = 0$ for distinct $\alpha_0, \ldots, \alpha_{m-1}$.
     Evaluating at coordinates $\nu(0), \nu(1), \ldots, \nu(m-1)$:
     \[
-        \sum_{j=1}^m c_j \alpha_j^n = 0 \quad \text{for } n = 0, 1, \ldots, m-1
+        \sum_{j \in m} c_j \alpha_j^n = 0 \quad \text{for } n = 0, 1, \ldots, m-1
     \]
     In matrix form: $\mathbf{V} \cdot \mathbf{c} = 0$ where $\mathbf{V}$ is the Vandermonde matrix 
     with entries $\mathbf{V}_{nj} = \alpha_j^n$.
     
     The Vandermonde determinant is:
     \[
-        \det(\mathbf{V}) = \prod_{1 \leq r < s \leq m} (\alpha_s - \alpha_r) \neq 0
+        \det(\mathbf{V}) = \prod_{0 \leq r < s \leq m-1} (\alpha_s - \alpha_r) \neq 0
     \]
     since the $\alpha_j$ are distinct. Thus $\mathbf{V}$ is invertible, so $\mathbf{c} = 0$.
     
@@ -823,14 +823,14 @@
     \[
         F_k = \Set{i \in I \mid \pi_i(T(u_k)) \neq 0}
     \]
-    The total support is $F = \bigcup_{k=1}^n F_k$, which is a finite union of finite sets, hence finite.
+    The total support is $F = \bigcup_{k \in n} F_k$, which is a finite union of finite sets, hence finite.
     
-    For any $i \notin F$ and any $u = \sum_{k=1}^n a_k u_k \in U$:
+    For any $i \notin F$ and any $u = \sum_{k \in n} a_k u_k \in U$:
     \begin{align*}
-        (\pi_i \circ T)(u) &= \pi_i\left(T\left(\sum_{k=1}^n a_k u_k\right)\right) \\
-        &= \pi_i\left(\sum_{k=1}^n a_k T(u_k)\right) && \text{($T$ is linear)} \\
-        &= \sum_{k=1}^n a_k \cdot \pi_i(T(u_k)) && \text{($\pi_i$ is linear)} \\
-        &= \sum_{k=1}^n a_k \cdot 0 = 0 && \text{($i \notin F_k$ for all $k$)}
+        (\pi_i \circ T)(u) &= \pi_i\left(T\left(\sum_{k \in n} a_k u_k\right)\right) \\
+        &= \pi_i\left(\sum_{k \in n} a_k T(u_k)\right) && \text{($T$ is linear)} \\
+        &= \sum_{k \in n} a_k \cdot \pi_i(T(u_k)) && \text{($\pi_i$ is linear)} \\
+        &= \sum_{k \in n} a_k \cdot 0 = 0 && \text{($i \notin F_k$ for all $k$)}
     \end{align*}
     Thus $\pi_i \circ T = 0$ for all $i \notin F$, so $\Theta(T) \in \ExtDirectSum{}{\Hom[K]{U}{V_i}}$.
     
@@ -883,7 +883,7 @@
     \textbf{Conclusion}: $\Theta$ is a linear bijection, hence an isomorphism.
     
     \textbf{Note}: This proof requires $\Dim[K]{U}$ to be finite because finite-dimensionality ensures
-    that $F = \bigcup_{k=1}^n F_k$ is a finite union. For infinite-dimensional $U$, this union
+    that $F = \bigcup_{k \in n} F_k$ is a finite union. For infinite-dimensional $U$, this union
     could be infinite, and $\Theta(T)$ might not have finite support.
 \end{proof}
 

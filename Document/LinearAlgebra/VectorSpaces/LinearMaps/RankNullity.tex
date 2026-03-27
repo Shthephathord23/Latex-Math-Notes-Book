@@ -22,11 +22,11 @@
     \textbf{Claim}: $\DirectImage{T}{C} = \{T(c) \mid c \in C\}$ is a basis for $\Rng{T}$.
     
     \textit{Linear independence of $\DirectImage{T}{C}$}:
-    Suppose $\sum_{i=1}^{n} a_i T(c_i) = 0$ for $c_i \in C$.
-    Then $T\left(\sum_{i=1}^{n} a_i c_i\right) = 0$, so $\sum_{i=1}^{n} a_i c_i \in \Ker{T} = \Span[K]{B_K}$.
+    Suppose $\sum_{i \in n} a_i T(c_i) = 0$ for $c_i \in C$.
+    Then $T\left(\sum_{i \in n} a_i c_i\right) = 0$, so $\sum_{i \in n} a_i c_i \in \Ker{T} = \Span[K]{B_K}$.
     
-    Write $\sum_{i=1}^{n} a_i c_i = \sum_{j=1}^{m} b_j k_j$ for some $k_j \in B_K$.
-    Then $\sum_{i=1}^{n} a_i c_i - \sum_{j=1}^{m} b_j k_j = 0$.
+    Write $\sum_{i \in n} a_i c_i = \sum_{j \in m} b_j k_j$ for some $k_j \in B_K$.
+    Then $\sum_{i \in n} a_i c_i - \sum_{j \in m} b_j k_j = 0$.
     Since $B = B_K \Union C$ is a basis and $B_K \Intersect C = \emptyset$, all coefficients must be zero.
     In particular, all $a_i = 0$.
     

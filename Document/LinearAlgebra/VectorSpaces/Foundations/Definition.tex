@@ -72,30 +72,139 @@
 \begin{example}[Coordinate Spaces $K^n$]\label{ex:coordinate-space}
     For any field $K$ and positive integer $n$, the set
     \[
-        K^n = \Set{(x_1, \ldots, x_n) \mid x_i \in K}
+        K^n = \Set{(x_0, \ldots, x_{n-1}) \mid x_i \in K}
     \]
     forms a $K$-vector space with pointwise operations:
     \begin{align*}
-        (x_1, \ldots, x_n) + (y_1, \ldots, y_n) &= (x_1 + y_1, \ldots, x_n + y_n) \\
-        a \cdot (x_1, \ldots, x_n) &= (ax_1, \ldots, ax_n)
+        (x_0, \ldots, x_{n-1}) + (y_0, \ldots, y_{n-1}) &= (x_0 + y_0, \ldots, x_{n-1} + y_{n-1}) \\
+        a \cdot (x_0, \ldots, x_{n-1}) &= (ax_0, \ldots, ax_{n-1})
     \end{align*}
 
-    More formally, $K^n = K^{\{1, \ldots, n\}}$---the set of functions from $\{1, \ldots, n\}$ to $K$.
-    We identify the $n$-tuple $(x_1, \ldots, x_n)$ with the function $i \mapsto x_i$.
+    More formally, $K^n = K^{\{0, 1, \ldots, n-1\}}$---the set of functions from the ordinal $n = \{0, 1, \ldots, n-1\}$ to $K$.
+    We identify the $n$-tuple $(x_0, \ldots, x_{n-1})$ with the function $i \mapsto x_i$.
 \end{example}
 
 \begin{remark}[Geometric Interpretation of $K^n$]\label{rem:geometric-K^n}
     For $n = 1, 2, 3$ over $K = \bb{R}$, we identify points in $\bb{R}^n$ with \textbf{position vectors}:
     arrows from the origin $0$ to the point. This identification is bijective:
     \[
-        (x_1, \ldots, x_n) \longleftrightarrow \text{arrow from } 0 \text{ to } (x_1, \ldots, x_n)
+        (x_0, \ldots, x_{n-1}) \longleftrightarrow \text{arrow from } 0 \text{ to } (x_0, \ldots, x_{n-1})
     \]
     Under this identification, the vector space operations on $\bb{R}^n$ correspond exactly to
-    the geometric operations on arrows described in Example~\ref{ex:geometric-vectors}:
-    \begin{itemize}
-        \item \textbf{Addition} corresponds to the tip-to-toe (parallelogram) rule
-        \item \textbf{Scalar multiplication} corresponds to scaling and reflecting arrows
-    \end{itemize}
+    the geometric operations on arrows described in Example~\ref{ex:geometric-vectors}.
+
+    \textbf{Why addition matches the parallelogram rule.}
+    Let $e_0 = (1, 0)$ and $e_1 = (0, 1)$ be the standard basis vectors.
+    Any $u = (u_0, u_1)$ decomposes as $u = u_0 e_0 + u_1 e_1$,
+    and similarly $v = v_0 e_0 + v_1 e_1$. Then by the vector space axioms:
+    \[
+        u + v = (u_0 e_0 + u_1 e_1) + (v_0 e_0 + v_1 e_1)
+        = (u_0 + v_0) e_0 + (u_1 + v_1) e_1
+    \]
+    which corresponds to the point $(u_0 + v_0, \; u_1 + v_1)$.
+    Geometrically, this is the fourth vertex of the parallelogram
+    formed by $0$, $u$, and $v$: translating the arrow $v$ so that its tail
+    is at the tip of $u$ places its tip at $(u_0 + v_0, \; u_1 + v_1)$.
+
+    \begin{center}
+    \begin{tikzpicture}[scale=1.3, >=stealth]
+        % Grid for coordinates
+        \draw[gray!25, very thin] (-0.5,-0.5) grid (5.5,4.5);
+
+        % Axes
+        \draw[gray!50, ->] (-0.5,0) -- (5.5,0);
+        \draw[gray!50, ->] (0,-0.5) -- (0,4.5);
+
+        % Vectors
+        \draw[->, thick, blue] (0,0) -- (3,1) node[midway, below right] {$u = (3,1)$};
+        \draw[->, thick, red] (0,0) -- (1,2) node[midway, above left] {$v = (1,2)$};
+        \draw[->, thick, purple] (0,0) -- (4,3);
+
+        % Label at tip
+        \node[purple, above right=2pt] at (4,3) {$u + v = (4,3)$};
+
+        % Parallelogram sides
+        \draw[dashed, blue!60, thick] (1,2) -- (4,3)
+            node[midway, above=3pt] {\footnotesize translate by $u$};
+        \draw[dashed, red!60, thick] (3,1) -- (4,3)
+            node[midway, right=3pt] {\footnotesize translate by $v$};
+
+        % Coordinate projections for u+v
+        \draw[dotted, gray] (4,0) node[below] {\footnotesize $4$} -- (4,3);
+        \draw[dotted, gray] (0,3) node[left] {\footnotesize $3$} -- (4,3);
+
+        % Points
+        \fill (0,0) circle (1.5pt) node[below left] {$0$};
+        \fill (4,3) circle (1.5pt);
+    \end{tikzpicture}
+    \end{center}
+
+    \textbf{Why scalar multiplication matches scaling.}
+    For $\alpha \in \bb{R}$ and $u = u_0 e_0 + u_1 e_1$, the scalar multiplication axioms give:
+    \[
+        \alpha \cdot u = \alpha (u_0 e_0 + u_1 e_1)
+        = (\alpha u_0) e_0 + (\alpha u_1) e_1
+    \]
+    which corresponds to the point $(\alpha u_0, \; \alpha u_1)$.
+    Geometrically, this is the point at fraction $\alpha$ along the ray from $0$
+    through $u$: it stretches the arrow by $|\alpha|$ and reverses direction if $\alpha < 0$.
+    The parametric line $t \mapsto t \cdot u = (t u_0, \; t u_1)$ confirms this.
+
+    \begin{center}
+    \begin{tikzpicture}[>=stealth]
+        % --- Stretching: alpha = 2 ---
+        \begin{scope}[xshift=0cm]
+            \draw[gray!25, very thin] (-0.5, -0.5) grid (4.5, 3.5);
+            \draw[gray!50, ->] (-0.5,0) -- (4.5,0);
+            \draw[gray!50, ->] (0,-0.5) -- (0,3.5);
+
+            \draw[->, thick, blue] (0,0) -- (1.5,1)
+                node[midway, below right=-1pt] {\footnotesize $u$};
+            \draw[->, thick, purple] (0,0) -- (3,2)
+                node[midway, above left=-1pt] {\footnotesize $2u$};
+
+            % Dashed extension
+            \draw[dashed, gray!50] (1.5,1) -- (3,2);
+
+            \fill (0,0) circle (1.5pt) node[below left] {\footnotesize $0$};
+            \node[below] at (2,-0.9) {$\alpha = 2$ (stretch)};
+        \end{scope}
+
+        % --- Squishing: alpha = 1/2 ---
+        \begin{scope}[xshift=6cm]
+            \draw[gray!25, very thin] (-0.5, -0.5) grid (4.5, 3.5);
+            \draw[gray!50, ->] (-0.5,0) -- (4.5,0);
+            \draw[gray!50, ->] (0,-0.5) -- (0,3.5);
+
+            \draw[->, thick, blue] (0,0) -- (3,2)
+                node[near end, above left=-1pt] {\footnotesize $u$};
+            \draw[->, very thick, purple] (0,0) -- (1.5,1)
+                node[midway, below right=-1pt] {\footnotesize $\tfrac{1}{2}u$};
+
+            \fill (0,0) circle (1.5pt) node[below left] {\footnotesize $0$};
+            \node[below] at (2,-0.9) {$\alpha = \tfrac{1}{2}$ (squish)};
+        \end{scope}
+
+        % --- Negation: alpha = -1 ---
+        \begin{scope}[xshift=12cm]
+            \draw[gray!25, very thin] (-2.5, -2.5) grid (2.5, 2.5);
+            \draw[gray!50, ->] (-2.5,0) -- (2.5,0);
+            \draw[gray!50, ->] (0,-2.5) -- (0,2.5);
+
+            \draw[->, thick, blue] (0,0) -- (1.5,1)
+                node[midway, above left=-1pt] {\footnotesize $u$};
+            \draw[->, thick, purple] (0,0) -- (-1.5,-1)
+                node[midway, below right=-1pt] {\footnotesize $-u$};
+
+            % Dashed line through both
+            \draw[dashed, gray!50] (-2,-1.33) -- (2,1.33);
+
+            \fill (0,0) circle (1.5pt) node[above left] {\footnotesize $0$};
+            \node[below] at (0,-2.9) {$\alpha = -1$ (negate)};
+        \end{scope}
+    \end{tikzpicture}
+    \end{center}
+
     This geometric intuition guides much of linear algebra, even in higher dimensions and over
     abstract fields where visualization is not possible.
 \end{remark}
@@ -132,6 +241,24 @@
 
     Note that $K^{(I)} = K^I$ if and only if $I$ is finite.
 \end{example}
+
+\begin{remark}[Column Vector Notation for $K^n$]\label{rem:column-notation}
+    For $n \in \bb{N}$, the elements of $K^n = K^{\{0, 1, \ldots, n-1\}}$ are functions from
+    $\{0, 1, \ldots, n-1\}$ to $K$, i.e., finite-length sequences. We denote these as
+    \textbf{column vectors}:
+    \[
+        f \longleftrightarrow
+        \ColVec{f(0) \\ f(1) \\ \vdots \\ f(n-1)}
+    \]
+    For instance, the indicator functions in $K^n$ are denoted
+    \[
+        e_0 = \ColVec{1 \\ 0 \\ \vdots \\ 0}, \quad
+        e_1 = \ColVec{0 \\ 1 \\ \vdots \\ 0}, \quad \ldots, \quad
+        e_{n-1} = \ColVec{0 \\ 0 \\ \vdots \\ 1}
+    \]
+    and a general element $(a_0, a_1, \ldots, a_{n-1}) \in K^n$ is written as
+    $\ColVec{a_0 \\ a_1 \\ \vdots \\ a_{n-1}}$.
+\end{remark}
 
 \begin{example}[Polynomial Spaces]\label{ex:polynomial-space}
     For a field $K$, the polynomial ring $K[X]$ is a $K$-vector space. We define 

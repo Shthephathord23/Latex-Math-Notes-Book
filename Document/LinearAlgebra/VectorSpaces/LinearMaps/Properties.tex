@@ -12,7 +12,7 @@
         \item $T$ sends every linearly independent set to a linearly independent set
         \item $T$ sends every basis of $U$ to a linearly independent set
         \item $T$ sends some basis of $U$ to a linearly independent set
-        \item $T$ is a split monomorphism (has a left inverse): if $U \neq \{0\}$, $\Exists :{S: V \to U}{\Composition{S}{T} = \Identity{U}}$
+        \item $T$ is a split monomorphism (has a left inverse): $\Exists :{S: V \to U}{\Composition{S}{T} = \Identity{U}}$
         \item $T$ is monic (left-cancellable): $\Forall :{S_1, S_2: W \to U}{\Composition{T}{S_1} = \Composition{T}{S_2} \implies S_1 = S_2}$
     \end{enumerate}
 \end{theorem}
@@ -33,9 +33,9 @@
     
     \textbf{(2) $\Rightarrow$ (3)}:
     Suppose $\Ker{T} = \{0\}$ and $L \subseteq U$ is linearly independent.
-    Let $\sum_{i=1}^{n} a_i T(\ell_i) = 0$ for $\ell_i \in L$.
-    By linearity: $T\left(\sum_{i=1}^{n} a_i \ell_i\right) = 0$.
-    Thus $\sum_{i=1}^{n} a_i \ell_i \in \Ker{T} = \{0\}$.
+    Let $\sum_{i \in n} a_i T(\ell_i) = 0$ for $\ell_i \in L$.
+    By linearity: $T\left(\sum_{i \in n} a_i \ell_i\right) = 0$.
+    Thus $\sum_{i \in n} a_i \ell_i \in \Ker{T} = \{0\}$.
     By linear independence of $L$: all $a_i = 0$.
     Therefore $\DirectImage{T}{L}$ is linearly independent.
     
@@ -46,7 +46,7 @@
     \textbf{(4) $\Rightarrow$ (5)}:
     Trivial (every basis is some basis).
     
-    \textbf{(5) $\Rightarrow$ (6)} (when $U \neq \{0\}$):
+    \textbf{(5) $\Rightarrow$ (6)}:
     Suppose some basis $B$ is sent to a linearly independent set $\DirectImage{T}{B}$.
     Extend $\DirectImage{T}{B}$ to a basis $B' = \DirectImage{T}{B} \Union C$ for $V$
     (Theorem~\ref{thm:basis-extension}).
@@ -66,16 +66,16 @@
     Let $\Composition{T}{S_1} = \Composition{T}{S_2}$ for $S_1, S_2: W \to U$.
     Composing with $S$ on the left:
     \[
-        S_1 = \Identity{U} \circ S_1 = (\Composition{S}{T}) \circ S_1 = S \circ (T \circ S_1) = S \circ (T \circ S_2) = (\Composition{S}{T}) \circ S_2 = S_2
+        S_1 = \Composition{\Identity{U}}{S_1} = \Composition{(\Composition{S}{T})}{S_1} = \Composition{S}{(\Composition{T}{S_1})} = \Composition{S}{(\Composition{T}{S_2})} = \Composition{(\Composition{S}{T})}{S_2} = S_2
     \]
     
     \textbf{(7) $\Rightarrow$ (2)}:
-    Suppose $T$ is monic. Consider the zero map $0: K \to U$ and for any $u \in \Ker{T}$,
-    the map $S_u: K \to U$ defined by $S_u(a) = au$.
+    Suppose $T$ is monic. Consider the zero map $0: \Ker{T} \to U$ and the inclusion
+    $\iota: \Ker{T} \hookrightarrow U$ defined by $\iota(u) = u$.
     
-    Since $u \in \Ker{T}$, we have $T(S_u(a)) = T(au) = aT(u) = 0 = T(0(a))$.
-    Thus $\Composition{T}{S_u} = \Composition{T}{0}$.
-    By the monic property, $S_u = 0$, so $S_u(1) = u = 0$.
+    For any $u \in \Ker{T}$: $T(\iota(u)) = T(u) = 0 = T(0(u))$.
+    Thus $\Composition{T}{\iota} = \Composition{T}{0}$.
+    By the monic property, $\iota = 0$, so $\iota(u) = u = 0$ for all $u \in \Ker{T}$.
     Therefore $\Ker{T} = \{0\}$.
 \end{proof}
 
@@ -88,7 +88,7 @@
         \item $T$ sends every generating system of $U$ to a generating system of $V$
         \item $T$ sends every basis of $U$ to a generating system of $V$
         \item $T$ sends some basis of $U$ to a generating system of $V$
-        \item $T$ is a split epimorphism (has a right inverse): if $V \neq \{0\}$, $\Exists :{S: V \to U}{\Composition{T}{S} = \Identity{V}}$
+        \item $T$ is a split epimorphism (has a right inverse): $\Exists :{S: V \to U}{\Composition{T}{S} = \Identity{V}}$
         \item $T$ is epic (right-cancellable): $\Forall :{S_1, S_2: V \to W}{\Composition{S_1}{T} = \Composition{S_2}{T} \implies S_1 = S_2}$
     \end{enumerate}
 \end{theorem}
@@ -112,7 +112,7 @@
     \textbf{(4) $\Rightarrow$ (5)}:
     Trivial (every basis is some basis).
     
-    \textbf{(5) $\Rightarrow$ (6)} (when $V \neq \{0\}$):
+    \textbf{(5) $\Rightarrow$ (6)}:
     Suppose some basis $B$ of $U$ maps to a generating system $\DirectImage{T}{B}$ for $V$.
     Let $B_V$ be any basis for $V$ (which is contained in or extracted from $\Span[K]{\DirectImage{T}{B}} = V$).
     For each $b_V \in B_V$, since $b_V \in \Span[K]{\DirectImage{T}{B}}$, we can write
@@ -129,19 +129,20 @@
     Let $\Composition{S_1}{T} = \Composition{S_2}{T}$ for $S_1, S_2: V \to W$.
     Composing with $S$ on the right:
     \[
-        S_1 = S_1 \circ \Identity{V} = S_1 \circ (\Composition{T}{S}) = (S_1 \circ T) \circ S = (S_2 \circ T) \circ S = S_2 \circ (\Composition{T}{S}) = S_2
+        S_1 = \Composition{S_1}{\Identity{V}} = \Composition{S_1}{(\Composition{T}{S})} = \Composition{(\Composition{S_1}{T})}{S} = \Composition{(\Composition{S_2}{T})}{S} = \Composition{S_2}{(\Composition{T}{S})} = S_2
     \]
     
     \textbf{(7) $\Rightarrow$ (2)}:
-    Suppose $T$ is epic. Consider the canonical projection $\pi: V \to \QuotientSpace{V}{\Rng{T}}$
-    and the zero map $0: V \to \QuotientSpace{V}{\Rng{T}}$.
+    Suppose $T$ is epic. Since $\Rng{T}$ is a subspace of $V$, by the Basis Extension Theorem
+    (Theorem~\ref{thm:basis-extension}) there exists a subspace $W$ such that $V = \Rng{T} \DirectSum W$.
+    Let $\pi: V \to W$ be the projection onto $W$ along $\Rng{T}$
+    (so $\pi(r + w) = w$ for $r \in \Rng{T}$, $w \in W$).
     
-    For any $u \in U$: $\pi(T(u)) = \Coset{T(u)}{\Rng{T}} = \Coset{0}{\Rng{T}}$ since $T(u) \in \Rng{T}$.
-    Also $0(T(u)) = \Coset{0}{\Rng{T}}$.
-    Thus $\Composition{\pi}{T} = \Composition{0}{T}$.
-    
-    By the epic property, $\pi = 0$, so $\Forall :{v \in V}{\pi(v) = \Coset{0}{\Rng{T}}}$.
-    This means $v \in \Rng{T}$ for all $v \in V$, so $\Rng{T} = V$.
+    For any $u \in U$: $\pi(T(u)) = 0$ since $T(u) \in \Rng{T}$.
+    Thus $\Composition{\pi}{T} = \Composition{0}{T}$, where $0: U \to W$ is the zero map.
+    By the epic property, $\pi = 0$, so $\pi(v) = 0$ for all $v \in V$.
+    In particular, for $w \in W$: $\pi(w) = w = 0$.
+    Thus $W = \{0\}$, and $\Rng{T} = V$.
 \end{proof}
 
 \newpage
@@ -195,6 +196,12 @@
     epic $\Rightarrow$ surjective (Theorem~\ref{thm:surjectivity}(7)$\Rightarrow$(2)).
 \end{proof}
 
+\begin{definition}[Inverse Linear Map]\label{def:inverse-map}
+    Let $T: U \to V$ be a bijective linear map. Its \textbf{inverse linear map}
+    $T^{-1}: V \to U$ is the unique linear map such that
+    $\Composition{T^{-1}}{T} = \Identity{U}$ and $\Composition{T}{T^{-1}} = \Identity{V}$.
+\end{definition}
+
 \begin{definition}[Isomorphism]\label{def:isomorphism}
     A linear map $T: U \to V$ is an \textbf{isomorphism} if it has a two sided linear inverse.
     We write $U \cong V$ if there exists an isomorphism between $U$ and $V$.
@@ -218,9 +225,9 @@
     Since $T$ sends the basis $B_U$ to the basis $B_V$, $T$ is an isomorphism.
 \end{proof}
 
-\begin{theorem}[Endomorphism Equivalence]\label{thm:endo-equiv}
-    Let $V$ be a \textbf{finite-dimensional} $K$-vector space and $T: V \to V$ a linear endomorphism.
-    Then the following are equivalent:
+\begin{theorem}[Equal Dimension Equivalence]\label{thm:equal-dim-equiv}
+    Let $U$ and $V$ be \textbf{finite-dimensional} $K$-vector spaces with $\Dim[K]{U} = \Dim[K]{V}$,
+    and let $T: U \to V$ be a linear map. Then the following are equivalent:
     \begin{enumerate}
         \item $T$ is injective
         \item $T$ is surjective
@@ -229,20 +236,34 @@
 \end{theorem}
 
 \begin{proof}
-    Let $B = \{b_1, \ldots, b_n\}$ be a basis for $V$ (where $n = \Dim[K]{V}$).
+    Let $n = \Dim[K]{U} = \Dim[K]{V}$, and let $B = \{b_0, \ldots, b_{n-1}\}$ be a basis for $U$.
     
     \textbf{(1) $\Rightarrow$ (3)}: Suppose $T$ is injective.
-    By Theorem~\ref{thm:injectivity}(3), $\DirectImage{T}{B}$ is linearly independent.
+    By Theorem~\ref{thm:injectivity}(3), $\DirectImage{T}{B}$ is linearly independent in $V$.
     Since $|\DirectImage{T}{B}| = n = \Dim[K]{V}$, it is a maximal linearly independent set,
-    hence a basis (Proposition~\ref{prop:basis-maxmin}). Thus $T$ is surjective, hence bijective.
+    hence a basis for $V$ (Proposition~\ref{prop:basis-maxmin}). Thus $T$ is surjective, hence bijective.
     
     \textbf{(2) $\Rightarrow$ (3)}: Suppose $T$ is surjective.
     By Theorem~\ref{thm:surjectivity}(4), $\DirectImage{T}{B}$ generates $V$.
-    Since a generating set has at least $\Dim[K]{V}$ elements and $|\DirectImage{T}{B}| \leq n$,
+    Since a generating set has at least $\Dim[K]{V} = n$ elements and $|\DirectImage{T}{B}| \leq n$,
     we have $|\DirectImage{T}{B}| = n$, so it is a minimal generating set, hence a basis.
     Thus $\DirectImage{T}{B}$ is linearly independent, so $T$ is injective, hence bijective.
     
     \textbf{(3) $\Rightarrow$ (1), (2)}: Trivial.
+\end{proof}
+
+\begin{corollary}[Endomorphism Equivalence]\label{thm:endo-equiv}
+    Let $V$ be a \textbf{finite-dimensional} $K$-vector space and $T: V \to V$ a linear endomorphism.
+    Then the following are equivalent:
+    \begin{enumerate}
+        \item $T$ is injective
+        \item $T$ is surjective
+        \item $T$ is bijective
+    \end{enumerate}
+\end{corollary}
+
+\begin{proof}
+    Apply Theorem~\ref{thm:equal-dim-equiv} with $U = V$.
 \end{proof}
 
 \begin{example}[Counterexamples]\label{ex:endo-counterexamples}
@@ -259,17 +280,60 @@
               ($L(1, 0, 0, \ldots) = (0, 0, \ldots) = L(0, 0, \ldots)$).
         
         \item \textbf{Non-endomorphism (different spaces)}:
-              The inclusion $\iota: K^n \hookrightarrow K^{n+1}$, $\iota(x_1, \ldots, x_n) = (x_1, \ldots, x_n, 0)$
+              The inclusion $\iota: K^n \hookrightarrow K^{n+1}$, $\iota(x_0, \ldots, x_{n-1}) = (x_0, \ldots, x_{n-1}, 0)$
               is injective but not surjective.
-              The projection $\pi: K^{n+1} \to K^n$, $\pi(x_1, \ldots, x_{n+1}) = (x_1, \ldots, x_n)$
+              The projection $\pi: K^{n+1} \to K^n$, $\pi(x_0, \ldots, x_n) = (x_0, \ldots, x_{n-1})$
               is surjective but not injective.
     \end{enumerate}
 \end{example}
 
+\begin{theorem}[Natural Isomorphism ${\Hom[K]{K}{V}} \cong V$]\label{thm:hom-k-v-iso}
+    Let $V$ be a $K$-vector space. The evaluation map
+    \[
+        \varepsilon: \Hom[K]{K}{V} \to V, \quad T \mapsto T(1_K)
+    \]
+    is a $K$-linear isomorphism.
+\end{theorem}
+
+\begin{proof}
+    \textbf{Linearity}: For $T, S \in \Hom[K]{K}{V}$ and $\alpha, \beta \in K$:
+    \[
+        \varepsilon(\alpha T + \beta S)
+        = (\alpha T + \beta S)(1_K)
+        = \alpha T(1_K) + \beta S(1_K)
+        = \alpha \varepsilon(T) + \beta \varepsilon(S)
+    \]
+
+    \textbf{Injectivity}: Suppose $\varepsilon(T) = T(1_K) = 0$.
+    For any $\lambda \in K$:
+    \[
+        T(\lambda) = T(\lambda \cdot 1_K) = \lambda T(1_K) = \lambda \cdot 0 = 0
+    \]
+    Thus $T = 0$, so $\Ker{\varepsilon} = \{0\}$.
+
+    \textbf{Surjectivity}: For any $v \in V$, define $T_v: K \to V$ by
+    $T_v(\lambda) = \lambda v$. Then $T_v$ is linear:
+    \[
+        T_v(\alpha \lambda + \beta \mu)
+        = (\alpha \lambda + \beta \mu) v
+        = \alpha (\lambda v) + \beta (\mu v)
+        = \alpha T_v(\lambda) + \beta T_v(\mu)
+    \]
+    and $\varepsilon(T_v) = T_v(1_K) = 1_K \cdot v = v$.
+\end{proof}
+
+\begin{remark}
+    This isomorphism is \textbf{natural}: it does not depend on any choice of basis.
+    Every linear map $T: K \to V$ is completely determined by $T(1_K)$,
+    since $T(\lambda) = \lambda T(1_K)$ by linearity. The inverse
+    $\varepsilon^{-1}: V \to \Hom[K]{K}{V}$ sends $v \mapsto T_v$
+    where $T_v(\lambda) = \lambda v$.
+\end{remark}
+
 \begin{theorem}[Coordinate Isomorphism]\label{thm:coord-iso}
     Let $\mathcal{B} = (b_i)_{i \in I}$ be an ordered basis for $V$. The coordinate map
     \[
-        \phi_{\mathcal{B}}: V \to K^{(I)}, \quad v \mapsto \CoordVec{v}[\mathcal{B}]
+        \phi_{\mathcal{B}}: V \to K^{(I)}, \quad v \mapsto \CoordVec[\mathcal{B}]{v}
     \]
     is a $K$-linear isomorphism.
 \end{theorem}
@@ -279,7 +343,7 @@
     \[
         \alpha v + \beta w = \sum_{i \in I} (\alpha a_i + \beta c_i) b_i
     \]
-    Thus $\CoordVec{\alpha v + \beta w}[\mathcal{B}] = \alpha \CoordVec{v}[\mathcal{B}] + \beta \CoordVec{w}[\mathcal{B}]$.
+    Thus $\CoordVec[\mathcal{B}]{\alpha v + \beta w} = \alpha \CoordVec[\mathcal{B}]{v} + \beta \CoordVec[\mathcal{B}]{w}$.
 
     \textbf{Bijectivity}: This was shown in Theorem~\ref{thm:coord-bijection}.
 \end{proof}
@@ -288,10 +352,10 @@
     Each ordered basis $\mathcal{B}$ gives a \textbf{different} coordinate isomorphism $\phi_{\mathcal{B}}$.
     Changing the ordering of the same basis vectors produces a different isomorphism.
     
-    \textbf{Example}: Consider $\bb{R}^2$ with basis vectors $e_1 = (1, 0)$ and $e_2 = (0, 1)$.
+    \textbf{Example}: Consider $\bb{R}^2$ with basis vectors $e_0 = (1, 0)$ and $e_1 = (0, 1)$.
     \begin{itemize}
-        \item For $\mathcal{B}_1 = (e_1, e_2)$: $\phi_{\mathcal{B}_1}(3e_1 + 2e_2) = (3, 2)$
-        \item For $\mathcal{B}_2 = (e_2, e_1)$: $\phi_{\mathcal{B}_2}(3e_1 + 2e_2) = (2, 3)$
+        \item For $\mathcal{B}_1 = (e_0, e_1)$: $\phi_{\mathcal{B}_1}(3e_0 + 2e_1) = (3, 2)$
+        \item For $\mathcal{B}_2 = (e_1, e_0)$: $\phi_{\mathcal{B}_2}(3e_0 + 2e_1) = (2, 3)$
     \end{itemize}
     The same vector maps to different coordinate tuples depending on the ordering.
     The two isomorphisms $\phi_{\mathcal{B}_1}$ and $\phi_{\mathcal{B}_2}$ differ by the permutation
@@ -303,7 +367,7 @@
     $K^{(I)} \to K^{(I)}$ induced by $\sigma$.
 \end{remark}
 
-\begin{corollary}[Canonical Isomorphism to $K^{(I)}$]
+\begin{corollary}[Isomorphism to $K^{(I)}$]
     Every $K$-vector space $V$ with basis of cardinality $\Card{I}$ is isomorphic to $K^{(I)}$.
     In particular, $V \cong K^{(\Dim[K]{V})}$.
 \end{corollary}

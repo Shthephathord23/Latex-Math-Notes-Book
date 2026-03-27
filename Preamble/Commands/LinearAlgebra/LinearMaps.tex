@@ -1,0 +1,75 @@
+% Preamble/Commands/LinearAlgebra/LinearMaps.tex
+
+\NewDocumentCommand{\Ker}{m}
+{
+    \ker \left( #1 \right)
+}
+
+\NewDocumentCommand{\Rng}{m}
+{
+    \operatorname{Rng} \left( #1 \right)
+}
+
+\NewDocumentCommand{\Rank}{m}
+{
+    \operatorname{rank} \left( #1 \right)
+}
+
+\NewDocumentCommand{\Nullity}{m}
+{
+    \operatorname{nullity} \left( #1 \right)
+}
+
+\NewDocumentCommand{\Corank}{m}
+{
+    \operatorname{corank} \left( #1 \right)
+}
+
+\NewDocumentCommand{\Conullity}{m}
+{
+    \operatorname{conullity} \left( #1 \right)
+}
+
+\NewDocumentCommand{\Hom}{o m m}
+{
+    \IfValueTF{#1}
+    {
+        \operatorname{Hom}_{#1} \left( #2, #3 \right)
+    }
+    {
+        \operatorname{Hom} \left( #2, #3 \right)
+    }
+}
+
+\NewDocumentCommand{\End}{o m}
+{
+    \IfValueTF{#1}
+    {
+        \operatorname{End}_{#1} \left( #2 \right)
+    }
+    {
+        \operatorname{End} \left( #2 \right)
+    }
+}
+
+\NewDocumentCommand{\Aut}{o m}
+{
+    \IfValueTF{#1}
+    {
+        \operatorname{Aut}_{#1} \left( #2 \right)
+    }
+    {
+        \operatorname{Aut} \left( #2 \right)
+    }
+}
+
+\NewDocumentCommand{\GL}{m g}
+{
+    \IfValueTF{#2}
+    {
+        \operatorname{GL}_{#1} \left( #2 \right)
+    }
+    {
+        \operatorname{GL} \left( #1 \right)
+    }
+}

@@ -18,7 +18,7 @@
         \item $\{(1, 0), (0, 1)\}$ is the standard basis for $\bb{R}^2$
         \item $\{(1, 1), (1, -1)\}$ is a non-standard basis for $\bb{R}^2$
         \item $\{1, X, X^2, \ldots\}$ is a basis for $K[X]$
-        \item $\{e_1, \ldots, e_n\}$ is the standard basis for $K^n$
+        \item $\{e_0, \ldots, e_{n-1}\}$ is the standard basis for $K^n$
     \end{enumerate}
 
     \begin{center}
@@ -27,8 +27,8 @@
         \begin{scope}
             \draw[->, thick] (-0.3,0) -- (2,0) node[right] {$x$};
             \draw[->, thick] (0,-0.3) -- (0,2) node[above] {$y$};
-            \draw[->, very thick, blue] (0,0) -- (1,0) node[below right] {$e_1$};
-            \draw[->, very thick, red] (0,0) -- (0,1) node[above left] {$e_2$};
+            \draw[->, very thick, blue] (0,0) -- (1,0) node[below right] {$e_0$};
+            \draw[->, very thick, red] (0,0) -- (0,1) node[above left] {$e_1$};
             \node at (0.8,-0.8) {Standard basis};
         \end{scope}
 
@@ -49,19 +49,19 @@
 
     \textbf{Bases (linearly independent + spanning)}:
     \begin{itemize}
-        \item $\{e_1, e_2, e_3\} = \{(1,0,0), (0,1,0), (0,0,1)\}$ --- standard basis
+        \item $\{e_0, e_1, e_2\} = \{(1,0,0), (0,1,0), (0,0,1)\}$ --- standard basis
         \item $\{(1,1,0), (1,0,1), (0,1,1)\}$ --- non-standard basis (verify: determinant $\neq 0$)
         \item $\{(1,0,0), (1,1,0), (1,1,1)\}$ --- upper triangular basis
     \end{itemize}
 
     \textbf{Not a basis (spanning but dependent)}:
     \begin{itemize}
-        \item $\{e_1, e_2, e_3, (1,1,1)\}$ --- 4 vectors in $\bb{R}^3$, so dependent
+        \item $\{e_0, e_1, e_2, (1,1,1)\}$ --- 4 vectors in $\bb{R}^3$, so dependent
     \end{itemize}
 
     \textbf{Not a basis (independent but not spanning)}:
     \begin{itemize}
-        \item $\{e_1, e_2\}$ --- only spans the $xy$-plane, not all of $\bb{R}^3$
+        \item $\{e_0, e_1\}$ --- only spans the $xy$-plane, not all of $\bb{R}^3$
     \end{itemize}
 
     \begin{center}
@@ -71,9 +71,9 @@
         z={(0cm,1cm)}]
 
         % Standard basis in R^3
-        \draw[->, very thick, blue] (0,0,0) -- (1.5,0,0) node[right] {$e_1$};
-        \draw[->, very thick, red] (0,0,0) -- (0,1.5,0) node[above right] {$e_2$};
-        \draw[->, very thick, green!60!black] (0,0,0) -- (0,0,1.5) node[above] {$e_3$};
+        \draw[->, very thick, blue] (0,0,0) -- (1.5,0,0) node[right] {$e_0$};
+        \draw[->, very thick, red] (0,0,0) -- (0,1.5,0) node[above right] {$e_1$};
+        \draw[->, very thick, green!60!black] (0,0,0) -- (0,0,1.5) node[above] {$e_2$};
 
         % Coordinate axes (lighter)
         \draw[thin, gray] (-0.5,0,0) -- (2,0,0);
@@ -181,6 +181,51 @@
     \end{enumerate}
 \end{corollary}
 
+\begin{definition}[Complementary Subspaces]\label{def:complement}
+    Let $U \Subspace[K] V$. A subspace $W \Subspace[K] V$ is a \textbf{complement} of $U$ in $V$
+    if $V = U \DirectSum W$, i.e., if:
+    \begin{enumerate}
+        \item $U + W = V$ (the subspaces span $V$)
+        \item $U \Intersect W = \{0\}$ (the subspaces meet trivially)
+    \end{enumerate}
+    We also say $U$ and $W$ are \textbf{complementary subspaces} of $V$.
+\end{definition}
+
+\begin{proposition}[Existence of Complements]\label{prop:complement-existence}
+    Every subspace $U \Subspace[K] V$ has a complement in $V$.
+\end{proposition}
+
+\begin{proof}
+    Let $B_U$ be a basis for $U$. By the Basis Extension Theorem (Theorem~\ref{thm:basis-extension}),
+    $B_U$ extends to a basis $B = B_U \Union C$ for $V$, where $B_U \Intersect C = \emptyset$ (take $C = \SetMinus{B}{B_U}$).
+    
+    Let $W = \Span[K]{C}$. We show $V = U \DirectSum W$:
+    \begin{itemize}
+        \item \textbf{$U + W = V$}: Since $B = B_U \Union C$ spans $V$, and $B_U$ spans $U$ while $C$ spans $W$,
+              every $v \in V$ can be written as a sum of elements from $U$ and $W$.
+        \item \textbf{$U \Intersect W = \{0\}$}: Let $v \in U \Intersect W$. Then $v = \sum_{b \in F_U} a_b b$
+              for some finite $F_U \subseteq B_U$, and $v = \sum_{c \in F_C} d_c c$ for some finite $F_C \subseteq C$.
+              Thus $\sum_{b \in F_U} a_b b - \sum_{c \in F_C} d_c c = 0$.
+              Since $B = B_U \Union C$ is linearly independent and $B_U \Intersect C = \emptyset$,
+              all coefficients are zero. Hence $v = 0$.
+    \end{itemize}
+\end{proof}
+
+\begin{corollary}[Non-Uniqueness of Complements]\label{cor:complement-non-unique}
+    Complements are generally \textbf{not unique}. Different extensions of a basis for $U$ yield
+    different complements.
+\end{corollary}
+
+\begin{example}[Multiple Complements]\label{ex:complements}
+    In $\bb{R}^2$, let $U = \Span[\bb{R}]{(1, 0)}$ (the $x$-axis).
+    \begin{itemize}
+        \item $W_1 = \Span[\bb{R}]{(0, 1)}$ (the $y$-axis) is a complement of $U$
+        \item $W_2 = \Span[\bb{R}]{(1, 1)}$ (the line $y = x$) is also a complement of $U$
+        \item In fact, $\Span[\bb{R}]{(a, b)}$ is a complement of $U$ for any $b \neq 0$
+    \end{itemize}
+    All these give $\bb{R}^2 = U \DirectSum W_i$, illustrating non-uniqueness.
+\end{example}
+
 \begin{theorem}[Steinitz Exchange Lemma]\label{thm:steinitz}
     Let $L$ be linearly independent and $S$ a spanning set for $V$.
     Then there exists an injection $f: L \to S$ such that
@@ -281,7 +326,7 @@
 \begin{proposition}[Dimensions of Finite-Dimensional Spaces]\label{prop:dim-finite}
     The following hold:
     \begin{enumerate}
-        \item $\Dim[K]{K^n} = n$, since $\{e_1, \ldots, e_n\}$ is a basis.
+        \item $\Dim[K]{K^n} = n$, since $\{e_0, \ldots, e_{n-1}\}$ is a basis.
         \item $\Dim[K]{K[X]_{\leq n}} = n + 1$, since $\{1, X, \ldots, X^n\}$ is a basis.
         \item $\Dim[K]{\MatSpace{m}{n}[K]} = mn$, since the elementary matrices $E_{ij}$ form a basis.
     \end{enumerate}
@@ -291,7 +336,7 @@
     In each case, we exhibit a basis and count its elements.
 
     \textbf{(1)}: The standard vectors $e_i = (0, \ldots, 0, 1, 0, \ldots, 0)$ with $1$ in position $i$
-    span $K^n$ (any $(a_1, \ldots, a_n) = \sum_{i=1}^n a_i e_i$) and are linearly independent
+    span $K^n$ (any $(a_0, \ldots, a_{n-1}) = \sum_{i \in n} a_i e_i$) and are linearly independent
     (evaluate at position $i$ to see coefficient $a_i$ is determined).
 
     \textbf{(2)}: The monomials $1, X, \ldots, X^n$ span $K[X]_{\leq n}$ by definition.
@@ -399,17 +444,17 @@
 \end{corollary}
 
 \begin{theorem}[Inclusion-Exclusion for Dimension]\label{thm:dim-inclusion-exclusion}
-    For a finite family $(U_1, \ldots, U_n)$ of subspaces:
+    For a finite family $(U_0, \ldots, U_{n-1})$ of finite dimensional subspaces:
     \[
-        \Dim[K]{\sum_{i=1}^n U_i} = \sum_{\emptyset \neq J \subseteq \{1,\ldots,n\}} (-1)^{|J|+1} \Dim[K]{\BigIntersect[j \in J] U_j}
+        \Dim[K]{\sum_{i \in n} U_i} = \sum_{\emptyset \neq J \subseteq \{0,\ldots,n-1\}} (-1)^{|J|+1} \Dim[K]{\BigIntersect[j \in J] U_j}
     \]
 \end{theorem}
 
 \begin{proof}
     By induction on $n$. The base case $n = 2$ is the Grassmann formula.
 
-    For the inductive step, apply Grassmann to $U_n$ and $\sum_{i=1}^{n-1} U_i$, then use the
-    identity $U_n \Intersect \sum_{i=1}^{n-1} U_i = \sum_{i=1}^{n-1} (U_n \Intersect U_i)$ (which holds for
+    For the inductive step, apply Grassmann to $U_{n-1}$ and $\sum_{i \in n-1} U_i$, then use the
+    identity $U_{n-1} \Intersect \sum_{i \in n-1} U_i = \sum_{i \in n-1} (U_{n-1} \Intersect U_i)$ (which holds for
     subspaces of an ambient space).
 \end{proof}
 
@@ -449,8 +494,8 @@
     \textit{Injectivity}: If $\phi(v) = \phi(w)$, then $F_v = F_w$ and $(a_b)_{b \in F_v} = (c_b)_{b \in F_w}$,
     so $v = \sum_{b \in F_v} a_b b = \sum_{b \in F_w} c_b b = w$.
 
-    \textit{Surjectivity}: Given $(a_1, \ldots, a_n) \in (K \setminus \{0\})^n$ and $\{b_1, \ldots, b_n\} \in \binom{B}{n}$,
-    define $v = \sum_{i=1}^{n} a_i b_i$. Then $\phi(v) = ((a_1, \ldots, a_n), \{b_1, \ldots, b_n\})$.
+    \textit{Surjectivity}: Given $(a_0, \ldots, a_{n-1}) \in (K \setminus \{0\})^n$ and $\{b_0, \ldots, b_{n-1}\} \in \binom{B}{n}$,
+    define $v = \sum_{i \in n} a_i b_i$. Then $\phi(v) = ((a_0, \ldots, a_{n-1}), \{b_0, \ldots, b_{n-1}\})$.
 
     The union is disjoint because vectors have a unique support size. Taking cardinalities:
     \[
@@ -500,7 +545,7 @@
     By Cardinal Properties (item 4), $\Dim[\bb{R}]{C([0,1], \bb{R})} \leq \mathfrak{c}$.
 
     \textit{Lower bound}: The functions $\{f_a : x \mapsto e^{ax} \mid a \in \bb{R}\}$
-    are linearly independent (a nontrivial relation $\sum_{i=1}^n c_i e^{a_i x} = 0$
+    are linearly independent (a nontrivial relation $\sum_{i \in n} c_i e^{a_i x} = 0$
     with distinct $a_i$ would contradict the Wronskian being nonzero).
     Thus $\Dim[\bb{R}]{C([0,1], \bb{R})} \geq \mathfrak{c}$.
 \end{proof}

@@ -8,22 +8,22 @@
 \label{def:dual-space}
     The \textbf{dual space} of a $K$-vector space $V$ is:
     \[
-        \Dual{V} = \Hom[K]{V}{K}
+        \AlgebraicDual{V} = \Hom[K]{V}{K}
     \]
-    Elements of $\Dual{V}$ are called \textbf{linear functionals} or \textbf{covectors}.
+    Elements of $\AlgebraicDual{V}$ are called \textbf{linear functionals} or \textbf{covectors}.
 \end{definition}
 
 \begin{theorem}[Dimension of Dual Space]
 \label{thm:dual-dim}
     Let $V$ be a $K$-vector space with basis $B$.
     \begin{enumerate}
-        \item If $\Dim[K]{V} = n \in \bb{N}$, then $\Dim[K]{\Dual{V}} = n$
-        \item If $\Dim[K]{V}$ is infinite, then $\Dim[K]{\Dual{V}} > \Dim[K]{V}$
+        \item If $\Dim[K]{V} = n \in \bb{N}$, then $\Dim[K]{\AlgebraicDual{V}} = n$
+        \item If $\Dim[K]{V}$ is infinite, then $\Dim[K]{\AlgebraicDual{V}} > \Dim[K]{V}$
     \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-    By definition, $\Dual{V} = \Hom[K]{V}{K}$.
+    By definition, $\AlgebraicDual{V} = \Hom[K]{V}{K}$.
     
     \textbf{(1) Finite case}:
     By Theorem~\ref{thm:hom-dim-categorical} with codomain $K$ (where $\Dim[K]{K} = 1$):
@@ -33,19 +33,19 @@
     
     Applying Corollary~\ref{cor:hom-dim-finite} with $U = V$ and $\Dim[K]{K} = 1$:
     \[
-        \Dim[K]{\Dual{V}} = \Dim[K]{\Hom[K]{V}{K}} = n \cdot 1 = n
+        \Dim[K]{\AlgebraicDual{V}} = \Dim[K]{\Hom[K]{V}{K}} = n \cdot 1 = n
     \]
     
     \textbf{(2) Infinite case}:
     Let $\Card{B} = \kappa$ be infinite. By Theorem~\ref{thm:hom-dim-categorical}:
     \[
-        \Dual{V} = \Hom[K]{V}{K} \cong \DirectProd{b \in B}{K^{(1)}} = K^B
+        \AlgebraicDual{V} = \Hom[K]{V}{K} \cong \DirectProd{b \in B}{K^{(1)}} = K^B
     \]
     This is a product over an infinite index set with non-trivial factors.
     
     By Theorem~\ref{thm:infinite-prod-dim}:
     \[
-        \Dim[K]{\Dual{V}} = \Card{K^B} = \Card{K}^\kappa
+        \Dim[K]{\AlgebraicDual{V}} = \Card{K^B} = \Card{K}^\kappa
     \]
     
     By Cantor's theorem, $\Card{K}^\kappa > \kappa = \Dim[K]{V}$ (since $\Card{K} \geq 2$).
@@ -56,8 +56,8 @@
 
 \begin{definition}[Dual Basis]
 \label{def:dual-basis}
-    For ordered basis $\mathcal{B} = (b_1, \ldots, b_n)$ of finite-dimensional $V$, the 
-    \textbf{dual basis} $\DualBasis{\mathcal{B}} = (b^1, \ldots, b^n)$ consists of 
+    For ordered basis $\mathcal{B} = (b_0, \ldots, b_{n-1})$ of finite-dimensional $V$, the 
+    \textbf{dual basis} $\AlgebraicDualBasis{\mathcal{B}} = (b^0, \ldots, b^{n-1})$ consists of 
     linear functionals defined by:
     \[
         b^i(b_j) = \delta_{ij} = \begin{cases} 1 & \text{if } i = j \\ 0 & \text{if } i \neq j \end{cases}
@@ -66,16 +66,16 @@
 
 \begin{theorem}[Dual Basis is Linearly Independent]
 \label{thm:dual-basis-li}
-    The dual basis $\DualBasis{\mathcal{B}} = (b^1, \ldots, b^n)$ is linearly independent in $\Dual{V}$.
+    The dual basis $\AlgebraicDualBasis{\mathcal{B}} = (b^0, \ldots, b^{n-1})$ is linearly independent in $\AlgebraicDual{V}$.
 \end{theorem}
 
 \begin{proof}
-    Suppose $\sum_{i=1}^n a_i b^i = 0$ (the zero functional).
+    Suppose $\sum_{i \in n} a_i b^i = 0$ (the zero functional).
     
-    For each $j \in \Set{1, \ldots, n}$, evaluate at $b_j$:
+    For each $j \in \Set{0, \ldots, n-1}$, evaluate at $b_j$:
     \[
-        0 = \left(\sum_{i=1}^n a_i b^i\right)(b_j) = \sum_{i=1}^n a_i \cdot b^i(b_j) 
-        = \sum_{i=1}^n a_i \cdot \delta_{ij} = a_j
+        0 = \left(\sum_{i \in n} a_i b^i\right)(b_j) = \sum_{i \in n} a_i \cdot b^i(b_j) 
+        = \sum_{i \in n} a_i \cdot \delta_{ij} = a_j
     \]
     
     Thus $a_j = 0$ for all $j$, proving linear independence.
@@ -83,17 +83,17 @@
 
 \begin{theorem}[Dual Basis is a Basis iff Finite-Dimensional]
 \label{thm:dual-basis-basis}
-    $\DualBasis{\mathcal{B}}$ is a basis of $\Dual{V}$ if and only if $\Dim[K]{V} \in \bb{N}$.
+    $\AlgebraicDualBasis{\mathcal{B}}$ is a basis of $\AlgebraicDual{V}$ if and only if $\Dim[K]{V} \in \bb{N}$.
 \end{theorem}
 
 \begin{proof}
-    ($\Rightarrow$) If $\DualBasis{\mathcal{B}}$ is a basis of $\Dual{V}$, then 
-    $\Dim[K]{\Dual{V}} = \Card{\DualBasis{\mathcal{B}}} = \Card{\mathcal{B}} = \Dim[K]{V}$.
+    ($\Rightarrow$) If $\AlgebraicDualBasis{\mathcal{B}}$ is a basis of $\AlgebraicDual{V}$, then 
+    $\Dim[K]{\AlgebraicDual{V}} = \Card{\AlgebraicDualBasis{\mathcal{B}}} = \Card{\mathcal{B}} = \Dim[K]{V}$.
     By Theorem~\ref{thm:dual-dim}, this implies $\Dim[K]{V}$ is finite.
     
     ($\Leftarrow$) Suppose $\Dim[K]{V} = n \in \bb{N}$. By Theorem~\ref{thm:dual-basis-li},
-    $\DualBasis{\mathcal{B}}$ is a linearly independent set of $n$ elements in $\Dual{V}$.
-    Since $\Dim[K]{\Dual{V}} = n$ by Theorem~\ref{thm:dual-dim}, any $n$ linearly 
+    $\AlgebraicDualBasis{\mathcal{B}}$ is a linearly independent set of $n$ elements in $\AlgebraicDual{V}$.
+    Since $\Dim[K]{\AlgebraicDual{V}} = n$ by Theorem~\ref{thm:dual-dim}, any $n$ linearly 
     independent elements form a basis.
 \end{proof}
 
@@ -140,19 +140,19 @@
 
 \begin{proposition}[Expansion in Dual Basis]
 \label{prop:dual-expansion}
-    For finite-dimensional $V$ with basis $\mathcal{B}$, every $\varphi \in \Dual{V}$ satisfies:
+    For finite-dimensional $V$ with basis $\mathcal{B}$, every $\varphi \in \AlgebraicDual{V}$ satisfies:
     \[
-        \varphi = \sum_{i=1}^n \varphi(b_i) \cdot b^i
+        \varphi = \sum_{i \in n} \varphi(b_i) \cdot b^i
     \]
 \end{proposition}
 
 \begin{proof}
-    Let $\psi = \sum_{i=1}^n \varphi(b_i) \cdot b^i$. We show $\varphi = \psi$.
+    Let $\psi = \sum_{i \in n} \varphi(b_i) \cdot b^i$. We show $\varphi = \psi$.
     
     For each basis element $b_j$:
     \[
-        \psi(b_j) = \sum_{i=1}^n \varphi(b_i) \cdot b^i(b_j) 
-        = \sum_{i=1}^n \varphi(b_i) \cdot \delta_{ij} = \varphi(b_j)
+        \psi(b_j) = \sum_{i \in n} \varphi(b_i) \cdot b^i(b_j) 
+        = \sum_{i \in n} \varphi(b_i) \cdot \delta_{ij} = \varphi(b_j)
     \]
     
     Since $\varphi$ and $\psi$ agree on all basis elements, and both are linear maps,
@@ -161,10 +161,10 @@
 
 \begin{theorem}[Non-Canonical Isomorphism]
 \label{thm:non-canonical-iso}
-    For $\Dim[K]{V} = n \in \bb{N}$, choosing a basis $\mathcal{B} = (b_1, \ldots, b_n)$ 
+    For $\Dim[K]{V} = n \in \bb{N}$, choosing a basis $\mathcal{B} = (b_0, \ldots, b_{n-1})$ 
     determines an isomorphism:
     \[
-        \psi_{\mathcal{B}}: V \to \Dual{V}, \quad b_i \mapsto b^i
+        \psi_{\mathcal{B}}: V \to \AlgebraicDual{V}, \quad b_i \mapsto b^i
     \]
     This isomorphism \textbf{depends on the choice of basis} (hence "non-canonical").
 \end{theorem}
@@ -178,11 +178,11 @@
     By linear independence of the dual basis (Theorem~\ref{thm:dual-basis-li}), $a_i = 0$ for all $i$.
     Thus $v = 0$.
     
-    \textit{Surjectivity}: $\Dim[K]{V} = n = \Dim[K]{\Dual{V}}$ by Theorem~\ref{thm:dual-dim}.
+    \textit{Surjectivity}: $\Dim[K]{V} = n = \Dim[K]{\AlgebraicDual{V}}$ by Theorem~\ref{thm:dual-dim}.
     An injective linear map between spaces of equal finite dimension is surjective.
     
     \textit{Basis-dependence}: A different basis $\mathcal{B}'$ yields a different dual basis 
-    $\DualBasis{\mathcal{B}'}$ and hence a different isomorphism $\psi_{\mathcal{B}'} \neq \psi_{\mathcal{B}}$.
+    $\AlgebraicDualBasis{\mathcal{B}'}$ and hence a different isomorphism $\psi_{\mathcal{B}'} \neq \psi_{\mathcal{B}}$.
 \end{proof}
 
 \newpage
@@ -192,17 +192,17 @@
 \label{def:annihilator}
     For $S \subseteq V$, the \textbf{annihilator} of $S$ is:
     \[
-        \Ann{S} = \Set{\varphi \in \Dual{V} \mid \Forall :{v \in S}{\varphi(v) = 0}}
+        \Ann{S} = \Set{\varphi \in \AlgebraicDual{V} \mid \Forall :{v \in S}{\varphi(v) = 0}}
     \]
 \end{definition}
 
 \begin{proposition}[Annihilator is a Subspace]
 \label{prop:ann-subspace}
-    For any $S \subseteq V$, $\Ann{S} \Subspace[K] \Dual{V}$.
+    For any $S \subseteq V$, $\Ann{S} \Subspace[K] \AlgebraicDual{V}$.
 \end{proposition}
 
 \begin{proof}
-    \textit{Non-empty}: The zero functional $0 \in \Dual{V}$ satisfies $0(v) = 0$ for all $v \in S$,
+    \textit{Non-empty}: The zero functional $0 \in \AlgebraicDual{V}$ satisfies $0(v) = 0$ for all $v \in S$,
     so $0 \in \Ann{S}$.
     
     \textit{Closed under addition}: Let $\varphi, \psi \in \Ann{S}$. For any $v \in S$:
@@ -262,19 +262,19 @@
 
 \begin{proposition}[Annihilator of Zero]
 \label{prop:ann-zero}
-    $\Ann{\Set{0}} = \Dual{V}$.
+    $\Ann{\Set{0}} = \AlgebraicDual{V}$.
 \end{proposition}
 
 \begin{proof}
     We show both inclusions.
     
-    ($\supseteq$) Let $\varphi \in \Dual{V}$. For the unique element $0 \in \Set{0}$:
+    ($\supseteq$) Let $\varphi \in \AlgebraicDual{V}$. For the unique element $0 \in \Set{0}$:
     \[
         \varphi(0) = \varphi(0 \cdot 0) = 0 \cdot \varphi(0) = 0
     \]
     Thus $\varphi$ vanishes on every element of $\Set{0}$, so $\varphi \in \Ann{\Set{0}}$.
     
-    ($\subseteq$) $\Ann{\Set{0}} \subseteq \Dual{V}$ by definition.
+    ($\subseteq$) $\Ann{\Set{0}} \subseteq \AlgebraicDual{V}$ by definition.
 \end{proof}
 
 \begin{proposition}[Annihilator of Entire Space]
@@ -285,7 +285,7 @@
 \begin{proof}
     We show both inclusions.
     
-    ($\supseteq$) The zero functional $0 \in \Dual{V}$ satisfies $0(v) = 0$ for all $v \in V$,
+    ($\supseteq$) The zero functional $0 \in \AlgebraicDual{V}$ satisfies $0(v) = 0$ for all $v \in V$,
     so $0 \in \Ann{V}$.
     
     ($\subseteq$) Let $\varphi \in \Ann{V}$. Then $\varphi(v) = 0$ for all $v \in V$.
@@ -302,32 +302,32 @@
 \end{theorem}
 
 \begin{proof}
-    Let $\Dim[K]{U} = m$ and choose a basis $(u_1, \ldots, u_m)$ for $U$.
-    Extend to a basis $(u_1, \ldots, u_m, v_{m+1}, \ldots, v_n)$ for $V$.
-    Let $(u^1, \ldots, u^m, v^{m+1}, \ldots, v^n)$ be the dual basis.
+    Let $\Dim[K]{U} = m$ and choose a basis $(u_0, \ldots, u_{m-1})$ for $U$.
+    Extend to a basis $(u_0, \ldots, u_{m-1}, v_m, \ldots, v_{n-1})$ for $V$.
+    Let $(u^0, \ldots, u^{m-1}, v^m, \ldots, v^{n-1})$ be the dual basis.
     
-    \textit{Claim}: $\Ann{U} = \Span[K]{\Set{v^{m+1}, \ldots, v^n}}$.
+    \textit{Claim}: $\Ann{U} = \Span[K]{\Set{v^m, \ldots, v^{n-1}}}$.
     
-    ($\supseteq$) For $j > m$ and $i \leq m$: $v^j(u_i) = \delta_{ji} = 0$.
+    ($\supseteq$) For $j \geq m$ and $i < m$: $v^j(u_i) = \delta_{ji} = 0$.
     Thus $v^j \in \Ann{U}$.
     
     ($\subseteq$) Let $\varphi \in \Ann{U}$. By Proposition~\ref{prop:dual-expansion}:
     \[
-        \varphi = \sum_{i=1}^m \varphi(u_i) \cdot u^i + \sum_{j=m+1}^n \varphi(v_j) \cdot v^j
+        \varphi = \sum_{i \in m} \varphi(u_i) \cdot u^i + \sum_{j=m}^{n-1} \varphi(v_j) \cdot v^j
     \]
-    Since $\varphi \in \Ann{U}$, we have $\varphi(u_i) = 0$ for $i \leq m$.
-    Thus $\varphi = \sum_{j=m+1}^n \varphi(v_j) \cdot v^j \in \Span[K]{\Set{v^{m+1}, \ldots, v^n}}$.
+    Since $\varphi \in \Ann{U}$, we have $\varphi(u_i) = 0$ for $i < m$.
+    Thus $\varphi = \sum_{j=m}^{n-1} \varphi(v_j) \cdot v^j \in \Span[K]{\Set{v^m, \ldots, v^{n-1}}}$.
     
     Therefore $\Dim[K]{\Ann{U}} = n - m = \Dim[K]{V} - \Dim[K]{U}$.
 \end{proof}
 
 \begin{corollary}[Annihilator and Quotient]
 \label{cor:ann-quotient}
-    $\Ann{U} \cong \Dual{\QuotientSpace{V}{U}}$ for $\Dim[K]{V} \in \bb{N}$.
+    $\Ann{U} \cong \AlgebraicDual{\QuotientSpace{V}{U}}$ for $\Dim[K]{V} \in \bb{N}$.
 \end{corollary}
 
 \begin{proof}
-    Define $\Phi: \Ann{U} \to \Dual{\QuotientSpace{V}{U}}$ by $\Phi(\varphi) = \tilde{\varphi}$,
+    Define $\Phi: \Ann{U} \to \AlgebraicDual{\QuotientSpace{V}{U}}$ by $\Phi(\varphi) = \tilde{\varphi}$,
     where $\tilde{\varphi}(\Coset{v}{U}) = \varphi(v)$.
     
     \textit{Well-defined}: If $\Coset{v_1}{U} = \Coset{v_2}{U}$, then $v_1 - v_2 \in U$.
@@ -340,7 +340,7 @@
     so $\varphi = 0$.
     
     \textit{Surjectivity}: By Theorem~\ref{thm:annihilator-dim}, 
-    $\Dim[K]{\Ann{U}} = \Dim[K]{V} - \Dim[K]{U} = \Dim[K]{\QuotientSpace{V}{U}} = \Dim[K]{\Dual{\QuotientSpace{V}{U}}}$.
+    $\Dim[K]{\Ann{U}} = \Dim[K]{V} - \Dim[K]{U} = \Dim[K]{\QuotientSpace{V}{U}} = \Dim[K]{\AlgebraicDual{\QuotientSpace{V}{U}}}$.
     Injective + equal finite dimensions $\Rightarrow$ surjective.
 \end{proof}
 
@@ -363,7 +363,7 @@
     \begin{enumerate}
         \item $H$ is a hyperplane (i.e., $\Dim[K]{\QuotientSpace{V}{H}} = 1$)
         \item $\Exists :{\text{1-dim } L \Subspace V}{V = H \oplus L}$
-        \item $H = \Ker{f}$ for some nonzero $f \in \Dual{V}$
+        \item $H = \Ker{f}$ for some nonzero $f \in \AlgebraicDual{V}$
         \item $\Dim[K]{\Ann{H}} = 1$
     \end{enumerate}
     For $\Dim[K]{V} = n \in \bb{N}$: these are equivalent to $\Dim[K]{H} = n - 1$.
@@ -393,7 +393,7 @@
     
     ($\Leftarrow$) If $\Dim[K]{\Ann{H}} = 1$, pick nonzero $f \in \Ann{H}$.
     Then $H \subseteq \Ker{f}$. If $H \subsetneq \Ker{f}$, pick $v \in \Ker{f} \setminus H$.
-    Define $g \in \Dual{V}$ with $g(v) = 1$ and $g|_H = 0$ (extend a basis of $H \cup \{v\}$).
+    Define $g \in \AlgebraicDual{V}$ with $g(v) = 1$ and $g|_H = 0$ (extend a basis of $H \cup \{v\}$).
     Then $g \in \Ann{H}$ but $g \notin \Span[K]{\{f\}}$ (since $f(v) = 0$ but $g(v) = 1$), 
     contradicting $\Dim[K]{\Ann{H}} = 1$. So $H = \Ker{f}$.
     
@@ -403,9 +403,9 @@
 
 \begin{example}[Hyperplanes in Finite Dimensions]
     In $K^n$, consider the linear functional $f: K^n \to K$ defined by 
-    $f(x_1, \ldots, x_n) = \sum_{i=1}^n x_i$. Then:
+    $f(x_0, \ldots, x_{n-1}) = \sum_{i \in n} x_i$. Then:
     \[
-        H = \Ker{f} = \Set{(x_1, \ldots, x_n) \in K^n \mid x_1 + x_2 + \cdots + x_n = 0}
+        H = \Ker{f} = \Set{(x_0, \ldots, x_{n-1}) \in K^n \mid x_0 + x_1 + \cdots + x_{n-1} = 0}
     \]
     is a hyperplane with $\Dim[K]{H} = n - 1$.
     
@@ -477,7 +477,7 @@
 \label{def:dual-map}
     For $T: U \to V$, the \textbf{dual map} is:
     \[
-        \DualMap{T}: \Dual{V} \to \Dual{U}, \quad \DualMap{T}(\varphi) = \Composition{\varphi}{T}
+        \AlgebraicDualMap{T}: \AlgebraicDual{V} \to \AlgebraicDual{U}, \quad \AlgebraicDualMap{T}(\varphi) = \Composition{\varphi}{T}
     \]
 \end{definition}
 
@@ -491,10 +491,10 @@
 \begin{theorem}[Functorial Properties]
 \label{thm:dual-functor}
     \begin{enumerate}
-        \item $\DualMap{\Identity{V}} = \Identity{\Dual{V}}$
-        \item $\DualMap{(\Composition{S}{T})} = \Composition{\DualMap{T}}{\DualMap{S}}$ 
+        \item $\AlgebraicDualMap{\Identity{V}} = \Identity{\AlgebraicDual{V}}$
+        \item $\AlgebraicDualMap{(\Composition{S}{T})} = \Composition{\AlgebraicDualMap{T}}{\AlgebraicDualMap{S}}$ 
               (contravariant)
-        \item $\DualMap{(aS + bT)} = a\DualMap{S} + b\DualMap{T}$
+        \item $\AlgebraicDualMap{(aS + bT)} = a\AlgebraicDualMap{S} + b\AlgebraicDualMap{T}$
     \end{enumerate}
 \end{theorem}
 
@@ -502,24 +502,24 @@
 \label{thm:dual-inj-surj}
     For a linear map $T: U \to V$:
     \begin{enumerate}
-        \item $\DualMap{T}$ is injective $\Leftrightarrow$ $T$ is surjective
-        \item $\DualMap{T}$ is surjective $\Leftrightarrow$ $T$ is injective
+        \item $\AlgebraicDualMap{T}$ is injective $\Leftrightarrow$ $T$ is surjective
+        \item $\AlgebraicDualMap{T}$ is surjective $\Leftrightarrow$ $T$ is injective
     \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-    \textbf{(1) $\DualMap{T}$ inj $\Leftrightarrow$ $T$ surj}:
+    \textbf{(1) $\AlgebraicDualMap{T}$ inj $\Leftrightarrow$ $T$ surj}:
     
-    ($\Leftarrow$) If $T$ surjective and $\DualMap{T}(\varphi) = \Composition{\varphi}{T} = 0$,
+    ($\Leftarrow$) If $T$ surjective and $\AlgebraicDualMap{T}(\varphi) = \Composition{\varphi}{T} = 0$,
     then for any $v = T(u)$: $\varphi(v) = \varphi(T(u)) = 0$. Thus $\varphi = 0$.
     
     ($\Rightarrow$) If $T$ not surjective, pick $v_0 \notin \Rng{T}$, $v_0 \neq 0$.
     Extend $\{v_0\}$ to basis, define $\varphi$ with $\varphi(v_0) = 1$, $\varphi|_{\Rng{T}} = 0$.
-    Then $\varphi \neq 0$ but $\DualMap{T}(\varphi) = 0$.
+    Then $\varphi \neq 0$ but $\AlgebraicDualMap{T}(\varphi) = 0$.
     
-    \textbf{(2) $\DualMap{T}$ surj $\Leftrightarrow$ $T$ inj}:
+    \textbf{(2) $\AlgebraicDualMap{T}$ surj $\Leftrightarrow$ $T$ inj}:
     
-    ($\Leftarrow$) Let $T$ be injective. For any $\psi \in \Dual{U}$, we need $\varphi \in \Dual{V}$
+    ($\Leftarrow$) Let $T$ be injective. For any $\psi \in \AlgebraicDual{U}$, we need $\varphi \in \AlgebraicDual{V}$
     with $\Composition{\varphi}{T} = \psi$.
     
     Since $T$ is injective, we can define $\varphi_0: \Rng{T} \to K$ by $\varphi_0(T(u)) = \psi(u)$.
@@ -527,12 +527,12 @@
     
     Choose a complement: $V = \Rng{T} \oplus W$ (by extending a basis of $\Rng{T}$).
     Define $\varphi(v) = \varphi_0(v_R)$ where $v = v_R + v_W$.
-    Then $\DualMap{T}(\varphi) = \psi$.
+    Then $\AlgebraicDualMap{T}(\varphi) = \psi$.
     
     ($\Rightarrow$) If $T$ not injective, pick $u_0 \in \Ker{T}$, $u_0 \neq 0$.
-    Define $\psi \in \Dual{U}$ with $\psi(u_0) = 1$ (extend $\{u_0\}$ to basis).
+    Define $\psi \in \AlgebraicDual{U}$ with $\psi(u_0) = 1$ (extend $\{u_0\}$ to basis).
     
-    If $\DualMap{T}(\varphi) = \psi$ for some $\varphi$, then 
+    If $\AlgebraicDualMap{T}(\varphi) = \psi$ for some $\varphi$, then 
     $\psi(u_0) = \varphi(T(u_0)) = \varphi(0) = 0 \neq 1$. Contradiction.
 \end{proof}
 
@@ -543,7 +543,7 @@
 \label{def:evaluation}
     The \textbf{evaluation map} is:
     \[
-        \eta_V: V \to \Dual{\Dual{V}}, \quad \eta_V(v)(\varphi) = \varphi(v)
+        \eta_V: V \to \AlgebraicDual{\AlgebraicDual{V}}, \quad \eta_V(v)(\varphi) = \varphi(v)
     \]
 \end{definition}
 
@@ -559,15 +559,15 @@
 
 \begin{theorem}[Canonical Isomorphism]
 \label{thm:canonical-iso}
-    $\eta_V: V \xrightarrow{\cong} \Dual{\Dual{V}}$ iff $\Dim[K]{V} \in \bb{N}$.
+    $\eta_V: V \xrightarrow{\cong} \AlgebraicDual{\AlgebraicDual{V}}$ iff $\Dim[K]{V} \in \bb{N}$.
 \end{theorem}
 
 \begin{proof}
     ($\Leftarrow$) If $\Dim[K]{V} = n \in \bb{N}$, then 
-    $\Dim[K]{\Dual{\Dual{V}}} = \Dim[K]{\Dual{V}} = n$.
+    $\Dim[K]{\AlgebraicDual{\AlgebraicDual{V}}} = \Dim[K]{\AlgebraicDual{V}} = n$.
     Injective + equal dimensions $\Rightarrow$ isomorphism.
     
-    ($\Rightarrow$) If infinite-dim, $\Dim[K]{\Dual{\Dual{V}}} > \Dim[K]{\Dual{V}} > \Dim[K]{V}$.
+    ($\Rightarrow$) If infinite-dim, $\Dim[K]{\AlgebraicDual{\AlgebraicDual{V}}} > \Dim[K]{\AlgebraicDual{V}} > \Dim[K]{V}$.
     Cannot be surjective.
 \end{proof}
 
@@ -578,11 +578,11 @@
     \textbf{Naturality}: For $T: U \to V$, the following commutes:
     \begin{center}
     \begin{tikzcd}
-        U \arrow[r, "\eta_U"] \arrow[d, "T"'] & \Dual{\Dual{U}} \arrow[d, "\DualMap{\DualMap{T}}"] \\
-        V \arrow[r, "\eta_V"'] & \Dual{\Dual{V}}
+        U \arrow[r, "\eta_U"] \arrow[d, "T"'] & \AlgebraicDual{\AlgebraicDual{U}} \arrow[d, "\AlgebraicDualMap{\AlgebraicDualMap{T}}"] \\
+        V \arrow[r, "\eta_V"'] & \AlgebraicDual{\AlgebraicDual{V}}
     \end{tikzcd}
     \end{center}
     
-    Proof: $(\DualMap{\DualMap{T}}(\eta_U(u)))(\psi) = \eta_U(u)(\DualMap{T}(\psi)) = 
+    Proof: $(\AlgebraicDualMap{\AlgebraicDualMap{T}}(\eta_U(u)))(\psi) = \eta_U(u)(\AlgebraicDualMap{T}(\psi)) = 
     (\Composition{\psi}{T})(u) = \psi(T(u)) = \eta_V(T(u))(\psi)$.
 \end{remark}

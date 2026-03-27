@@ -17,7 +17,7 @@
     \begin{itemize}
         \item $\{(1, 0), (0, 1)\}$ in $\bb{R}^2$
         \item $\{1, X, X^2\}$ in $K[X]$
-        \item $\{e_1, e_2, e_3\}$ (standard basis) in $\bb{R}^3$
+        \item $\{e_0, e_1, e_2\}$ (standard basis) in $\bb{R}^3$
     \end{itemize}
 
     \textbf{Linearly dependent sets}:
@@ -52,13 +52,14 @@
 
     \textbf{Independent (3 vectors spanning $\bb{R}^3$)}:
     \begin{itemize}
-        \item $\{e_1, e_2, e_3\} = \{(1,0,0), (0,1,0), (0,0,1)\}$ --- the standard basis
+        \item $\{e_0, e_1, e_2\} = \{(1,0,0), (0,1,0), (0,0,1)\}$ --- the standard basis
+        \item $\{(1, 0), (1, 1)\}$ --- linearly independent, alternative basis for $\bb{R}^2$
         \item $\{(1,1,0), (1,0,1), (0,1,1)\}$ --- three non-coplanar vectors
     \end{itemize}
 
     \textbf{Dependent (more than $\dim = 3$ vectors)}:
     \begin{itemize}
-        \item $\{e_1, e_2, e_3, (1,1,1)\}$ --- any 4 vectors in $\bb{R}^3$ are dependent
+        \item $\{e_0, e_1, e_2, (1,1,1)\}$ --- any 4 vectors in $\bb{R}^3$ are dependent
     \end{itemize}
 
     \textbf{Dependent (coplanar vectors)}:
@@ -74,9 +75,9 @@
 
         % Independent: 3 axes
         \begin{scope}
-            \draw[->, very thick, blue] (0,0,0) -- (1.5,0,0) node[right] {$e_1$};
-            \draw[->, very thick, red] (0,0,0) -- (0,1.5,0) node[above right] {$e_2$};
-            \draw[->, very thick, green!60!black] (0,0,0) -- (0,0,1.5) node[above] {$e_3$};
+            \draw[->, very thick, blue] (0,0,0) -- (1.5,0,0) node[right] {$e_0$};
+            \draw[->, very thick, red] (0,0,0) -- (0,1.5,0) node[above right] {$e_1$};
+            \draw[->, very thick, green!60!black] (0,0,0) -- (0,0,1.5) node[above] {$e_2$};
             \fill (0,0,0) circle (1.5pt);
             \node at (0,-1.5,0) {Independent};
         \end{scope}
@@ -101,12 +102,12 @@
 \end{intuition}
 
 \begin{example}[Dependence Examples]\label{ex:dependence}
-    In $\bb{R}^3$ with standard basis $\{e_1, e_2, e_3\}$:
+    In $\bb{R}^3$ with standard basis $\{e_0, e_1, e_2\}$:
     \begin{itemize}
-        \item $(1, 2, 3)$ is linearly dependent on $\{e_1, e_2, e_3\}$ because
-              $(1, 2, 3) = 1 \cdot e_1 + 2 \cdot e_2 + 3 \cdot e_3 \in \Span[\bb{R}]{\{e_1, e_2, e_3\}}$.
-        \item $e_1$ is linearly \emph{independent} of $\{e_2, e_3\}$ because
-              $e_1 = (1, 0, 0) \notin \Span[\bb{R}]{\{e_2, e_3\}} = \Set{(0, y, z) \mid y, z \in \bb{R}}$.
+        \item $(1, 2, 3)$ is linearly dependent on $\{e_0, e_1, e_2\}$ because
+              $(1, 2, 3) = 1 \cdot e_0 + 2 \cdot e_1 + 3 \cdot e_2 \in \Span[\bb{R}]{\{e_0, e_1, e_2\}}$.
+        \item $e_0$ is linearly \emph{independent} of $\{e_1, e_2\}$ because
+              $e_0 = (1, 0, 0) \notin \Span[\bb{R}]{\{e_1, e_2\}} = \Set{(0, y, z) \mid y, z \in \bb{R}}$.
     \end{itemize}
 \end{example}
 
@@ -128,7 +129,7 @@
         \item[(i')] $\Forall :{v \in L}{\Span[K]{L \setminus \{v\}} \subsetneq \Span[K]{L}}$
         \item[(ii)] Every $v \in \Span[K]{L}$ has unique representation in terms of $L$
         \item[(iii)] Some $v \in \Span[K]{L}$ has unique representation
-        \item[(iv)] $0$ has unique representation (i.e., if $0 = \sum_{i=1}^n a_i \ell_i$ with
+        \item[(iv)] $0$ has unique representation (i.e., if $0 = \sum_{i \in n} a_i \ell_i$ with
               $\ell_i \in L$ distinct and $a_i \neq 0$, then $n = 0$)
     \end{enumerate}
 \end{theorem}
@@ -161,8 +162,8 @@
     This means $F = G$ and $a_\ell = b_\ell$ for all $\ell \in F$.
 
     \textbf{(i) $\Rightarrow$ (iv)} (requires field axioms):
-    Suppose $0 = \sum_{i=1}^n a_i \ell_i$ with $a_i \neq 0$ and $n \geq 1$.
-    Then $\ell_1 = -\frac{1}{a_1}\sum_{i=2}^n a_i \ell_i \in \Span[K]{L \setminus \{\ell_1\}}$,
+    Suppose $0 = \sum_{i \in n} a_i \ell_i$ with $a_i \neq 0$ and $n \geq 1$.
+    Then $\ell_0 = -\frac{1}{a_0}\sum_{i=1}^{n-1} a_i \ell_i \in \Span[K]{L \setminus \{\ell_0\}}$,
     contradicting (i').
 
     \textbf{(iv) $\Rightarrow$ (i)} (does not require field axioms):
@@ -178,6 +179,15 @@
 
     A set that is not linearly independent is called \textbf{linearly dependent}.
 \end{definition}
+
+\begin{proposition}[Zero Vector Implies Dependence]\label{prop:zero-dependent}
+    If $0 \in L$, then $L$ is linearly dependent.
+\end{proposition}
+
+\begin{proof}
+    The relation $1 \cdot 0 = 0$ is a nontrivial linear combination
+    (one term with nonzero coefficient), violating condition (iv).
+\end{proof}
 
 \begin{proposition}[Empty Set is Linearly Independent]\label{prop:empty-lin-indep}
     The empty set $\emptyset$ is linearly independent.
@@ -204,7 +214,7 @@
 
 \begin{proof}
     ($\Rightarrow$)
-    Suppose $L \Union \{v\}$ is linearly independent. By condition (i'),
+    Suppose $L \Union \{v\}$ is linearly independent. By condition (i),
     $\Span[K]{\{v\}} \Intersect \Span[K]{L} = \{0\}$.
     Since $v \in \Span[K]{\{v\}}$, if $v \in \Span[K]{L}$, then $v \in \{0\}$, so $v = 0$.
     But $\{0\} \Union L$ contains $0$, and $0 = 0 \cdot 0$ (if $0 \in L$) or $0 = 1 \cdot 0$ gives

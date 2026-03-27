@@ -44,25 +44,25 @@
 \end{compendium}
 
 \begin{compendium}[Dual Space]
-    $\Dual{V} = \Hom[K]{V}{K} \cong \DirectProd{B}{K^{(1)}} = K^B$
+    $\AlgebraicDual{V} = \Hom[K]{V}{K} \cong \DirectProd{B}{K^{(1)}} = K^B$
     
-    $\Dim{\Dual{V}} = \Dim{V}$ (finite); \quad $\Dim{\Dual{V}} = \Card{K}^\kappa > \kappa$ (infinite, Cantor)
+    $\Dim{\AlgebraicDual{V}} = \Dim{V}$ (finite); \quad $\Dim{\AlgebraicDual{V}} = \Card{K}^\kappa > \kappa$ (infinite, Cantor)
     
-    Dual basis: $b^i(b_j) = \delta_{ij}$; spans $\Dual{V}$ iff finite-dim
+    Dual basis: $b^i(b_j) = \delta_{ij}$; spans $\AlgebraicDual{V}$ iff finite-dim
     
     \textbf{Not in span example}: $\mathrm{ev}_1 \notin \Span{\{\delta_n\}}$ on $K[X]$
     
-    $V \cong \Dual{V}$ non-canonical (basis-dependent)
+    $V \cong \AlgebraicDual{V}$ non-canonical (basis-dependent)
 \end{compendium}
 
 \begin{compendium}[Annihilators]
-    $\Ann{S} = \Set{\varphi \in \Dual{V} \mid \varphi|_S = 0}$
+    $\Ann{S} = \Set{\varphi \in \AlgebraicDual{V} \mid \varphi|_S = 0}$
     
-    $\Ann{S} = \Ann{\Span{S}}$; \quad $\Ann{\{0\}} = \Dual{V}$; \quad $\Ann{V} = \{0\}$
+    $\Ann{S} = \Ann{\Span{S}}$; \quad $\Ann{\{0\}} = \AlgebraicDual{V}$; \quad $\Ann{V} = \{0\}$
     
     $\Dim{\Ann{U}} + \Dim{U} = \Dim{V}$ (finite-dim)
     
-    $\Ann{U} \cong \Dual{\QuotientSpace{V}{U}}$ (finite-dim)
+    $\Ann{U} \cong \AlgebraicDual{\QuotientSpace{V}{U}}$ (finite-dim)
 \end{compendium}
 
 \begin{compendium}[Hyperplanes]
@@ -70,18 +70,18 @@
     \begin{enumerate}
         \item[(i)] $\Dim{\QuotientSpace{V}{H}} = 1$
         \item[(ii)] $\Exists{\text{1-dim } L}{H \DirectSum L = V}$
-        \item[(iii)] $H = \Ker{f}$ for nonzero $f \in \Dual{V}$
+        \item[(iii)] $H = \Ker{f}$ for nonzero $f \in \AlgebraicDual{V}$
         \item[(iv)] $\Dim{\Ann{H}} = 1$
     \end{enumerate}
     Finite-dim only: $\Dim{H} = \Dim{V} - 1$
 \end{compendium}
 
 \begin{compendium}[Dual Map and Bidual]
-    $\DualMap{T}: \Dual{V} \to \Dual{U}$, \quad $\DualMap{T}(\varphi) = \Composition{\varphi}{T}$ (contravariant)
+    $\AlgebraicDualMap{T}: \AlgebraicDual{V} \to \AlgebraicDual{U}$, \quad $\AlgebraicDualMap{T}(\varphi) = \Composition{\varphi}{T}$ (contravariant)
     
-    $\DualMap{T}$ inj $\Leftrightarrow$ $T$ surj; \quad $\DualMap{T}$ surj $\Leftrightarrow$ $T$ inj (all dimensions)
+    $\AlgebraicDualMap{T}$ inj $\Leftrightarrow$ $T$ surj; \quad $\AlgebraicDualMap{T}$ surj $\Leftrightarrow$ $T$ inj (all dimensions)
     
-    $\eta_V: V \hookrightarrow \Dual{\Dual{V}}$ canonical; iso iff $\Dim{V} \in \bb{N}$
+    $\eta_V: V \hookrightarrow \AlgebraicDual{\AlgebraicDual{V}}$ canonical; iso iff $\Dim{V} \in \bb{N}$
     
-    Naturality: $\DualMap{\DualMap{T}} \circ \eta_U = \eta_V \circ T$
+    Naturality: $\AlgebraicDualMap{\AlgebraicDualMap{T}} \circ \eta_U = \eta_V \circ T$
 \end{compendium}

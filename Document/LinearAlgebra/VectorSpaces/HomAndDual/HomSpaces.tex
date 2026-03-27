@@ -1,155 +1,7 @@
 % Document/LinearAlgebra/VectorSpaces/HomAndDual/HomSpaces.tex
-% Phase 14: Hom Spaces and Algebraic Structures
-
-\newpage
-\section{Hom Spaces as Vector Spaces}
-
-\begin{theorem}[{$\Hom[K]{U}{V}$ is a Vector Space}]
-\label{thm:hom-vs}
-    For $K$-vector spaces $U$ and $V$, the set $\Hom[K]{U}{V}$ of all $K$-linear maps
-    $T: U \to V$ is a $K$-vector space under pointwise operations:
-    \begin{align*}
-        (S + T)(u) &= S(u) + T(u) \\
-        (aT)(u) &= a \cdot T(u)
-    \end{align*}
-\end{theorem}
-
-\begin{proof}
-    We verify all vector space axioms.
-    
-    \textbf{Closure under addition}:
-    For $S, T \in \Hom[K]{U}{V}$, we show $S + T \in \Hom[K]{U}{V}$:
-    \begin{align*}
-        (S + T)(au_1 + bu_2) &= S(au_1 + bu_2) + T(au_1 + bu_2) \\
-        &= aS(u_1) + bS(u_2) + aT(u_1) + bT(u_2) \\
-        &= a(S(u_1) + T(u_1)) + b(S(u_2) + T(u_2)) \\
-        &= a(S+T)(u_1) + b(S+T)(u_2)
-    \end{align*}
-    
-    \textbf{Closure under scalar multiplication}:
-    For $a \in K$ and $T \in \Hom[K]{U}{V}$, we show $aT \in \Hom[K]{U}{V}$:
-    \begin{align*}
-        (aT)(bu_1 + cu_2) &= a \cdot T(bu_1 + cu_2) \\
-        &= a \cdot (bT(u_1) + cT(u_2)) \\
-        &= abT(u_1) + acT(u_2) \\
-        &= b(aT)(u_1) + c(aT)(u_2)
-    \end{align*}
-    
-    \textbf{Additive identity}:
-    The zero map $0: U \to V$ defined by $0(u) = 0_V$ is in $\Hom[K]{U}{V}$, and
-    $(T + 0)(u) = T(u) + 0_V = T(u)$, so $T + 0 = T$.
-    
-    \textbf{Additive inverse}:
-    For $T \in \Hom[K]{U}{V}$, define $(-T)(u) = -T(u)$. Then $-T \in \Hom[K]{U}{V}$ since
-    $(-T)(au + bv) = -(aT(u) + bT(v)) = a(-T)(u) + b(-T)(v)$, and
-    $(T + (-T))(u) = T(u) + (-T(u)) = 0_V$, so $T + (-T) = 0$.
-    
-    \textbf{Commutativity of addition}:
-    $(S + T)(u) = S(u) + T(u) = T(u) + S(u) = (T + S)(u)$, using commutativity in $V$.
-    
-    \textbf{Associativity of addition}:
-    $((R + S) + T)(u) = (R+S)(u) + T(u) = R(u) + S(u) + T(u) = R(u) + (S+T)(u) = (R + (S+T))(u)$.
-    
-    \textbf{Compatibility of scalar and field multiplication}:
-    $((ab)T)(u) = (ab)T(u) = a(bT(u)) = a((bT)(u)) = (a(bT))(u)$, so $(ab)T = a(bT)$.
-    
-    \textbf{Identity element of scalar multiplication}:
-    $(1_K T)(u) = 1_K \cdot T(u) = T(u)$, so $1_K T = T$.
-    
-    \textbf{Distributivity of scalar multiplication over vector addition}:
-    $(a(S + T))(u) = a(S+T)(u) = a(S(u) + T(u)) = aS(u) + aT(u) = (aS + aT)(u)$.
-    
-    \textbf{Distributivity of scalar multiplication over field addition}:
-    $((a + b)T)(u) = (a+b)T(u) = aT(u) + bT(u) = (aT)(u) + (bT)(u) = (aT + bT)(u)$.
-\end{proof}
-
-\newpage
-\section{Endomorphism Algebras}
-
-\begin{definition}[Endomorphism Space]
-\label{def:end}
-    $\End[K]{V} = \Hom[K]{V}{V}$ is the space of all linear maps from $V$ to itself.
-    It carries an additional multiplication structure: composition of maps.
-    That is, for $S, T \in \End[K]{V}$, we define $S \cdot T = \Composition{S}{T}$.
-\end{definition}
-
-\begin{definition}[$K$-Algebra]
-\label{def:k-algebra}
-    A \textbf{$K$-algebra} is a $K$-vector space $A$ equipped with a bilinear multiplication
-    $\cdot: A \times A \to A$ such that $(A, +, \cdot)$ is a ring and the following
-    \textbf{compatibility} holds:
-    \[
-        a(xy) = (ax)y = x(ay) \quad \Forall :{a \in K, x, y \in A}{}
-    \]
-    
-    A $K$-algebra is \textbf{associative} if $(xy)z = x(yz)$, and \textbf{unital} if 
-    it has a multiplicative identity $1_A$.
-\end{definition}
-
-\begin{theorem}[{$\End[K]{V}$ is a Ring}]
-\label{thm:end-ring}
-    $\End[K]{V}$ is a ring with composition as multiplication:
-    \begin{itemize}
-        \item Addition: $(S + T)(v) = S(v) + T(v)$
-        \item Multiplication: $(S \cdot T)(v) = S(T(v)) = (\Composition{S}{T})(v)$
-        \item Zero: $0(v) = 0_V$
-        \item Unity: $\Identity{V}(v) = v$
-    \end{itemize}
-\end{theorem}
-
-\begin{proof}
-    $(\End[K]{V}, +)$ is abelian (Theorem~\ref{thm:hom-vs}).
-    
-    \textbf{Associativity}: $(R \cdot S) \cdot T = R \cdot (S \cdot T)$ (function composition).
-    
-    \textbf{Distributivity}: $(R \cdot (S + T))(v) = R(S(v) + T(v)) = R(S(v)) + R(T(v))$.
-    
-    \textbf{Unity}: $\Identity{V} \cdot T = T \cdot \Identity{V} = T$.
-\end{proof}
-
-\begin{theorem}[{$\End[K]{V}$ is a $K$-Algebra}]
-\label{thm:end-algebra}
-    $\End[K]{V}$ is a unital associative $K$-algebra.
-\end{theorem}
-
-\begin{proof}
-    Vector space and ring structures are established. For compatibility:
-    \[
-        ((aS) \cdot T)(v) = (aS)(T(v)) = a \cdot S(T(v)) = a \cdot (S \cdot T)(v)
-    \]
-    Similarly $(S \cdot (aT))(v) = S(a \cdot T(v)) = a \cdot S(T(v))$.
-\end{proof}
-
-\begin{theorem}[{Non-Commutativity of $\End[K]{V}$}]
-\label{thm:end-noncommutative}
-    If $\Dim[K]{V} \geq 2$, then $\End[K]{V}$ is non-commutative.
-\end{theorem}
-
-\begin{proof}
-    Since $\Dim[K]{V} \geq 2$, there exist linearly independent vectors $v_1, v_2 \in V$.
-    Extend $\{v_1, v_2\}$ to a basis $B$ of $V$ (by Zorn's lemma if $V$ is infinite-dimensional).
-    
-    Define $S, T \in \End[K]{V}$ via their action on $B$:
-    \[
-        S(v_1) = v_2, \quad S(v_2) = 0, \quad S(b) = 0 \text{ for } b \in B \setminus \{v_1, v_2\}
-    \]
-    \[
-        T(v_1) = 0, \quad T(v_2) = v_1, \quad T(b) = 0 \text{ for } b \in B \setminus \{v_1, v_2\}
-    \]
-    Extend linearly to all of $V$.
-    
-    \textbf{Compute $S \cdot T$}:
-    $(S \cdot T)(v_1) = S(T(v_1)) = S(0) = 0$.
-    $(S \cdot T)(v_2) = S(T(v_2)) = S(v_1) = v_2$.
-    
-    \textbf{Compute $T \cdot S$}:
-    $(T \cdot S)(v_1) = T(S(v_1)) = T(v_2) = v_1$.
-    $(T \cdot S)(v_2) = T(S(v_2)) = T(0) = 0$.
-    
-    Thus $(S \cdot T)(v_1) = 0 \neq v_1 = (T \cdot S)(v_1)$, so $S \cdot T \neq T \cdot S$.
-\end{proof}
-
-\newpage
+% Phase 14: Dimension of Hom Spaces
+% NOTE: Basic Hom vector space structure and Endomorphism Algebra moved to
+%       Document/LinearAlgebra/VectorSpaces/LinearMaps/HomSpaces.tex (Chapter 2)
 \section{Dimension of Hom Spaces}
 
 \begin{proposition}[{$\Hom[K]{K}{V} \cong V$}]
@@ -220,9 +72,9 @@
 \end{corollary}
 
 \begin{proof}
-    By Theorem~\ref{thm:hom-dim-categorical}, $\Hom[K]{U}{V} \cong \DirectProd{i=1}{m}{K^{(n)}}$.
+    By Theorem~\ref{thm:hom-dim-categorical}, $\Hom[K]{U}{V} \cong \DirectProd{i \in m}{K^{(n)}}$.
     Since both $m$ and $n$ are finite, finite products and coproducts coincide (biproduct), so 
-    $\DirectProd{i=1}{m}{K^{(n)}} \cong K^{m \times n}$ and thus $\Dim[K]{\Hom[K]{U}{V}} = m \cdot n$.
+    $\DirectProd{i \in m}{K^{(n)}} \cong K^{m \times n}$ and thus $\Dim[K]{\Hom[K]{U}{V}} = m \cdot n$.
 \end{proof}
 
 \begin{example}[{Dimension of $\Hom[K]{K^2}{K^3}$}]

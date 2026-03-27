@@ -1,0 +1,54 @@
+% Preamble/Commands/LinearAlgebra/InnerProduct.tex
+
+\NewDocumentCommand{\Norm}{o m}
+{
+    \IfValueTF{#1}
+    {
+        \left\| #2 \right\|_{#1}
+    }
+    {
+        \left\| #2 \right\|
+    }
+}
+
+\NewDocumentCommand{\InnerProd}{m m}
+{
+    \langle #1, #2 \rangle
+}
+
+\NewDocumentCommand{\UnitSphere}{m}
+{
+    S(#1)
+}
+
+\NewDocumentCommand{\UnitBall}{m}
+{
+    B(#1)
+}
+
+\NewDocumentCommand{\OrthComp}{m}
+{
+    {#1}^\perp
+}
+
+\NewDocumentCommand{\Proj}{m o}
+{
+    \IfValueTF{#2}
+    {
+        \operatorname{proj}_{#1}^{#2}
+    }
+    {
+        \operatorname{proj}_{#1}
+    }
+}
+
+\NewDocumentCommand{\Sym}{m o}
+{
+    \IfValueTF{#2}
+    {
+        \operatorname{Sym}_{#1}^{#2}
+    }
+    {
+        \operatorname{Sym}_{#1}
+    }
+}
