@@ -59,7 +59,12 @@
     
     \textbf{Fourth Isomorphism Theorem} (Lattice Correspondence):
     $\Set{U \Subspace[K] V \mid W \subseteq U} \xleftrightarrow{1:1} \Set{X \Subspace[K] \QuotientSpace{V}{W}}$
-    via $U \mapsto \QuotientSpace{U}{W}$ and $X \mapsto \InverseImage{\pi}{X}$
+    via $U \mapsto \QuotientSpace{U}{W}$ and $X \mapsto \InverseImage{\pi}{X}$.
+
+    Equivalently: $\SubspaceLattice{\QuotientSpace{V}{W}} \cong \Set{U \in \SubspaceLattice{V} \mid W \subseteq U}$
+    (the sublattice of $\SubspaceLattice{V}$ bounded below by $W$, i.e., the principal filter ${\uparrow}W$).
+
+    Preserves: inclusion, join ($+$), meet ($\Intersect$), dimension
 \end{compendium}
 
 

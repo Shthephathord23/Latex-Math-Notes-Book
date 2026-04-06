@@ -4,6 +4,23 @@
 \newpage
 \section{Vector Spaces}
 
+\begin{intuition}[Chapter Overview]
+    The algebraic structure of a vector space is minimal by design: a set of objects (vectors)
+    that can be added together and scaled by elements of a field, subject to the familiar rules
+    of arithmetic. Yet this sparse axiom set supports a remarkably rich theory. The key concepts
+    --- subspace, span, linear independence, basis, dimension --- arise naturally from asking
+    progressively sharper questions about how vectors combine:
+    \begin{itemize}
+        \item Which subsets are \emph{closed} under taking linear combinations? (Subspaces.)
+        \item What is the smallest such subset containing a given collection? (Span.)
+        \item When does every vector in a span have a \emph{unique} expression? (Linear independence.)
+        \item What is the most economical generating set? (Basis.)
+        \item Is the size of a basis an invariant? (Dimension.)
+    \end{itemize}
+    Each concept refines the previous one, and together they provide the vocabulary for the
+    entire subject. This chapter develops them in sequence.
+\end{intuition}
+
 \begin{remark}[Categorical Perspective]
     Linear algebra studies the category $K$-\textbf{Vect}, where the objects are $K$-vector spaces
     and the morphisms are $K$-linear transformations. This categorical perspective unifies the
@@ -248,16 +265,16 @@
     \textbf{column vectors}:
     \[
         f \longleftrightarrow
-        \ColVec{f(0) \\ f(1) \\ \vdots \\ f(n-1)}
+        \begin{pmatrix} f(0) \\ f(1) \\ \vdots \\ f(n-1) \end{pmatrix}
     \]
     For instance, the indicator functions in $K^n$ are denoted
     \[
-        e_0 = \ColVec{1 \\ 0 \\ \vdots \\ 0}, \quad
-        e_1 = \ColVec{0 \\ 1 \\ \vdots \\ 0}, \quad \ldots, \quad
-        e_{n-1} = \ColVec{0 \\ 0 \\ \vdots \\ 1}
+        e_0 = \begin{pmatrix} 1 \\ 0 \\ \vdots \\ 0 \end{pmatrix}, \quad
+        e_1 = \begin{pmatrix} 0 \\ 1 \\ \vdots \\ 0 \end{pmatrix}, \quad \ldots, \quad
+        e_{n-1} = \begin{pmatrix} 0 \\ 0 \\ \vdots \\ 1 \end{pmatrix}
     \]
     and a general element $(a_0, a_1, \ldots, a_{n-1}) \in K^n$ is written as
-    $\ColVec{a_0 \\ a_1 \\ \vdots \\ a_{n-1}}$.
+    $\begin{pmatrix} a_0 \\ a_1 \\ \vdots \\ a_{n-1} \end{pmatrix}$.
 \end{remark}
 
 \begin{example}[Polynomial Spaces]\label{ex:polynomial-space}

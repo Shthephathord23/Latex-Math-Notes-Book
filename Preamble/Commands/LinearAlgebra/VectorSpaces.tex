@@ -122,6 +122,18 @@
     }
 }
 
+% Codimension: \Codim[K]{U}{V} → codim_K(U; V)
+\NewDocumentCommand{\Codim}{o m m}
+{
+    \IfValueTF{#1}
+    {
+        \operatorname{codim}_{#1} \left( #2 ;\, #3 \right)
+    }
+    {
+        \operatorname{codim} \left( #2 ;\, #3 \right)
+    }
+}
+
 \NewDocumentCommand{\QuotientSpace}{tp m m}
 {
     \IfBooleanTF{#1}
@@ -148,8 +160,8 @@
     \text{lin.\ dep.}
 }
 
-% Lattice of all subspaces: \Sub{V} → Sub(V)
-\NewDocumentCommand{\Sub}{m}
+% Lattice of all subspaces: \SubspaceLattice{V} → Sub(V)
+\NewDocumentCommand{\SubspaceLattice}{m}
 {
     \operatorname{Sub}\!\left( #1 \right)
 }

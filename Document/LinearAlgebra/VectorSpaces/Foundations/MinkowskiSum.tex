@@ -4,6 +4,23 @@
 \newpage
 \section{Minkowski Structure on $\mathcal{P}(V)$}
 
+\begin{remark}[Why Set-Level Operations?]
+    Before studying subspaces, it is useful to have a calculus of \emph{subsets} of a
+    vector space. The Minkowski sum $A + B = \{a + b \mid a \in A,\, b \in B\}$ and the
+    scalar-set product $LA = \{\lambda a \mid \lambda \in L,\, a \in A\}$ lift the vector
+    space operations from individual vectors to subsets. These operations will reappear
+    throughout the subject:
+    \begin{itemize}
+        \item The \textbf{sum of subspaces} $U + W$ is a Minkowski sum.
+        \item \textbf{Cosets} $v + W$ are translates of a subspace.
+        \item The \textbf{subspace criterion} can be stated as $KU + KU = U$.
+    \end{itemize}
+    We establish the algebraic rules (associativity, distributivity, monotonicity) here so
+    they are available when needed later. The key subtlety is that distributivity is only
+    \emph{partial} for sets, unlike for individual vectors --- a point illustrated by
+    explicit counterexamples below.
+\end{remark}
+
 \begin{definition}[Minkowski Sum]\label{def:minkowski-sum}
     Let $V$ be a $K$-vector space and $A, B \subseteq V$. The \textbf{Minkowski sum} of $A$ and $B$ is
     \[
@@ -193,8 +210,8 @@
     Thus $x = (\lambda + \mu) \cdot \left(\frac{\lambda}{\lambda+\mu}a + \frac{\mu}{\lambda+\mu}a'\right) \in (L + M)A$.
 
     \textit{Case $\lambda + \mu = 0$}: Then $\mu = -\lambda$ and $x = \lambda(a - a')$.
-    Since $L + M \neq \{0\}$, there exist $\lambda' \in L$, $\mu' \in M$ with $\lambda' + \mu' \neq 0$.
-    Since $KA = A$ and $A + A = A$, we have $\frac{\lambda}{\lambda' + \mu'}(a - a') \in A$.
+    Since $L + M \neq \{0\}$, there exist $\lambda' \in L$ and $\mu' \in M$ such that $\lambda' + \mu' \neq 0$.
+    Now $a - a' \in A + A = A$, so $KA = A$ gives $\frac{\lambda}{\lambda' + \mu'}(a - a') \in A$.
     Thus $x = (\lambda' + \mu') \cdot \frac{\lambda}{\lambda' + \mu'}(a - a') \in (L + M)A$.
 \end{proof}
 

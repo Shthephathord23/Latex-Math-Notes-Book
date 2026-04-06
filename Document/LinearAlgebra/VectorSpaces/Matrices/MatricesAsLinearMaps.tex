@@ -1,0 +1,43 @@
+% Document/LinearAlgebra/VectorSpaces/Matrices/MatricesAsLinearMaps.tex
+% Phase 16e: Matrices as Linear Maps (Canonical Interpretation)
+
+\newpage
+\section{Matrices as Linear Maps}
+\label{sec:mat-as-lin-maps}
+
+\begin{remark}[Canonical Interpretation]
+    Since $A \in \CFMat{\kappa_2}{\kappa_1}[K]$ corresponds canonically to a linear map
+    $\Phi^{-1}(A): K^{(\kappa_1)} \to K^{(\kappa_2)}$ via the Representation Theorem
+    (Theorem~\ref{thm:rep-thm}), we treat any column-finite matrix as a linear map without
+    further comment.
+\end{remark}
+
+\begin{definition}[Kernel and Range of a Matrix]
+\label{def:mat-ker-rng}
+    For $A \in \CFMat{\kappa_2}{\kappa_1}[K]$:
+    \[
+        \Ker{A} \defeq \Set{x \in K^{(\kappa_1)} \mid Ax = 0}, \qquad
+        \Rng{A} \defeq \Set{Ax \mid x \in K^{(\kappa_1)}}
+    \]
+    where $Ax \defeq \Phi^{-1}(A)(x) = \sum_{j \in \kappa_1} x_j \cdot A(-,j) \in K^{(\kappa_2)}$
+    (finite sum since $x$ has finite support).
+\end{definition}
+
+\begin{remark}[Finite Matrices]
+    When working in $K^n$, the canonical bases are always in force, so
+    $A \in \CFMat{m}{n}[K]$ acts on $K^n$ directly via $x \mapsto Ax$.
+    For finite $m, n$, $\CFMat{m}{n}[K] = \MatSpace{m}{n}[K]$.
+\end{remark}
+
+\begin{example}[Kernel and Range]
+    Let $A = \begin{pmatrix} 1 & 2 \\ 0 & 0 \end{pmatrix} \in \CFMat{2}{2}[\bb{R}]$.
+    \begin{itemize}
+        \item $\Ker{A} = \Set{\begin{pmatrix} x \\ y \end{pmatrix} \in \bb{R}^2 \mid x + 2y = 0}
+              = \Span[\bb{R}]{\left\{\begin{pmatrix} -2 \\ 1 \end{pmatrix}\right\}}$
+        \item $\Rng{A} = \Span[\bb{R}]{\left\{\begin{pmatrix} 1 \\ 0 \end{pmatrix}\right\}}$
+              (since $A \begin{pmatrix} x \\ y \end{pmatrix}
+              = (x + 2y) \begin{pmatrix} 1 \\ 0 \end{pmatrix}$)
+    \end{itemize}
+    Note: $\Dim[\bb{R}]{\Ker{A}} + \Dim[\bb{R}]{\Rng{A}} = 1 + 1 = 2 = \Dim[\bb{R}]{\bb{R}^2}$,
+    confirming the rank--nullity theorem.
+\end{example}

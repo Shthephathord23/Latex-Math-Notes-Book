@@ -4,6 +4,28 @@
 \newpage
 \section{Bases and Dimension}
 
+\begin{remark}[Why Bases?]
+    A basis is the central concept of linear algebra. It is a set of vectors that is
+    simultaneously linearly independent (no redundancy) and generating (no gaps). Equivalently,
+    it is a set in which every vector in the space has a \textbf{unique} expression as a
+    finite linear combination.
+
+    The existence of a basis (guaranteed by Zorn's lemma) has far-reaching consequences:
+    \begin{itemize}
+        \item It reduces the study of an arbitrary vector space to the study of the
+              coordinate space $K^{(I)}$, since every space with a basis of cardinality $|I|$
+              is isomorphic to $K^{(I)}$.
+        \item It reduces the study of linear maps to the study of their values on basis
+              vectors (the universal property, Theorem~\ref{thm:vector-space-universal}).
+        \item It produces a numerical invariant --- the \textbf{dimension} --- that classifies
+              vector spaces up to isomorphism.
+    \end{itemize}
+    The fact that any two bases of the same space have the same cardinality
+    (Theorem~\ref{thm:dim-invariance}) is what makes dimension well-defined.
+    This is ultimately a consequence of the Steinitz exchange lemma
+    (Theorem~\ref{thm:steinitz}).
+\end{remark}
+
 \begin{definition}[Basis]\label{def:basis}
     Let $V$ be a $K$-vector space. A subset $B \subseteq V$ is a \textbf{basis} for $V$ if
     $B$ is both linearly independent and a generating system for $V$.
@@ -422,6 +444,28 @@
 \begin{proof}
     From Grassmann with $\Dim[K]{U \Intersect W} = \Dim[K]{\{0\}} = 0$.
 \end{proof}
+
+\begin{proposition}[All Complements Have the Same Dimension]\label{prop:complement-dim}
+    Let $U \Subspace[K] V$. If $W_1$ and $W_2$ are both complements of $U$ in $V$
+    (i.e.\ $V = U \DirectSum W_1 = U \DirectSum W_2$), then
+    $\Dim[K]{W_1} = \Dim[K]{W_2}$.
+\end{proposition}
+
+\begin{proof}
+    By Corollary~\ref{cor:direct-sum-dim}:
+    $\Dim[K]{V} = \Dim[K]{U} + \Dim[K]{W_1} = \Dim[K]{U} + \Dim[K]{W_2}$.
+    Thus $\Dim[K]{W_1} = \Dim[K]{V} - \Dim[K]{U} = \Dim[K]{W_2}$.
+\end{proof}
+
+\begin{definition}[Codimension]\label{def:codimension}
+    Let $U \Subspace[K] V$. The \textbf{codimension} of $U$ in $V$ is
+    \[
+        \Codim[K]{U}{V} \defeq \Dim[K]{W}
+    \]
+    where $W$ is any complement of $U$ in $V$ (well-defined by
+    Proposition~\ref{prop:complement-dim}). Equivalently,
+    $\Codim[K]{U}{V} = \Dim[K]{V} - \Dim[K]{U}$ when $V$ is finite-dimensional.
+\end{definition}
 
 \begin{proposition}[Basis Union Lemma]\label{prop:basis-union}
     If $(U_i)_{i \in I}$ is a direct sum family and $B_i$ is a basis for $U_i$, then

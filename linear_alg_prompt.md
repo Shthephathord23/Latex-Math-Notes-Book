@@ -201,7 +201,7 @@ When drawing 3D figures (planes, lines in $\mathbb{R}^3$), define proper unit ve
 | **Fundamental** | `\Ker{T}`, `\Rng{T}`, `\Rank{T}`, `\Nullity{T}` |
 | **Dimension** | `\Dim[K]{V}` |
 | **Subspace Lattice** | `\Sub{V}` → $\operatorname{Sub}(V)$ (set of all subspaces of $V$, ordered by inclusion) |
-| **Matrix Spaces** | `\MatSpace{X}{Y}[K]` → $\mathrm{Mat}_{X,Y}(K)$ (all functions $X \times Y \to K$, no finiteness); `\CFMat{X}{Y}[K]` → $\mathrm{Mat}_{X,(Y)}(K)$ (column-finite: for each $j \in Y$, $A(-,j) \in K^{(X)}$) |
+| **Matrix Spaces** | `\MatSpace{Y}{X}[K]` → $\mathrm{Mat}_{Y,X}(K)$ (all functions $Y \times X \to K$; X = col/source, Y = row/target); `\CFMat{Y}{X}[K]` → $\mathrm{Mat}_{Y,(X)}(K)$ (column-finite: for each $j \in X$, $A(-,j) \in K^{(Y)}$). Convention: for $f: K^X \to K^Y$, the matrix lies in $\mathrm{Mat}_{Y,X}(K)$. |
 | **Matrices** | `\Transpose{A}`, `\Adjoint{A}`, `\Hermitian{A}`, `\TensorProduct[K]{U}{V}`, `\Hadamard{A}{B}`, `\KroneckerProduct[K]{A}{B}` |
 | **Matrix Rep** | `\MatrixRep{T}` → $[T]$; `\MatrixRep{T}[\mathcal{B}]` → $[T]_{\mathcal{B}}$; `\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]` → $[T]_{\mathcal{B}_U}^{\mathcal{B}_V}$ |
 | **Spectral** | `\Det{A}`, `\Trace{A}`, `\Adjugate{A}`, `\Spectrum{T}`, `\Eigenspace{T}{\lambda}`, `\GenEigenspace{T}{\lambda}` |
@@ -637,6 +637,8 @@ Each of the following concepts MUST have examples and non-examples in $\mathbb{R
 15. **Grassmann formula**: $\Dim[K]{U + W} + \Dim[K]{U \Intersect W} = \Dim[K]{U} + \Dim[K]{W}$
     - **Proof**: Extend basis of $U \Intersect W$ to bases of $U$ and $W$ separately, show union is basis of $U + W$
     - **Direct sum corollary**: $\Dim[K]{U \DirectSum W} = \Dim[K]{U} + \Dim[K]{W}$ (since $U \Intersect W = \{0\}$)
+    - **All complements have the same dimension**: If $V = U \DirectSum W_1 = U \DirectSum W_2$, then $\Dim[K]{W_1} = \Dim[K]{W_2}$. Proof: both equal $\Dim[K]{V} - \Dim[K]{U}$.
+    - **Codimension**: $\Codim[K]{U}{V} \defeq \Dim[K]{W}$ where $W$ is any complement of $U$ in $V$ (well-defined by the above). Equivalently $\Dim[K]{V} - \Dim[K]{U}$ in finite dimensions.
     - **Basis union lemma**: If $(U_i)_{i \in I}$ is a direct sum family and $B_i$ is a basis for $U_i$, then $\bigcup_{i \in I} B_i$ is a basis for $\DirectSum{i \in I}{U_i}$
       - **Proof**: Generating clear (each $u_i \in \Span[K]{B_i}$). Lin. indep. by Phase 5 item 5: direct sum family ⟹ union of lin. indep. sets is lin. indep.
     - **Arbitrary direct sum**: $\Dim[K]{\DirectSum{i \in I}{U_i}} = \sum_{i \in I} \Dim[K]{U_i}$ (follows from basis union lemma)
@@ -892,6 +894,10 @@ $$\Span[K]{S} = \BigIntersect \Set{U \Subspace[K] V \mid S \subseteq U} = \Set{\
 7. **Images and Preimages of Subspaces**:
    - $\DirectImage{T}{W}$ is subspace when $W$ is subspace
    - $\InverseImage{T}{W}$ is subspace when $W$ is subspace
+   - **Image-Preimage Formulas** (lattice-theoretic, no dimension needed):
+     - $\InverseImage{T}{\DirectImage{T}{W}} = W + \Ker{T}$ for $W \Subspace U$
+     - $\DirectImage{T}{\InverseImage{T}{W'}} = W' \cap \Rng{T}$ for $W' \Subspace V$
+
 
 8. **Fundamental Subspaces**:
    - $\Ker{T} = \InverseImage{T}{\{0\}}$
@@ -926,26 +932,31 @@ $$\Span[K]{S} = \BigIntersect \Set{U \Subspace[K] V \mid S \subseteq U} = \Set{\
 \begin{theorem}[Characterizations of Injectivity]
     For $T: U \to V$ linear, TFAE:
     \begin{enumerate}
-        \item $T$ is injective
         \item $\Ker{T} = \{0\}$
+        \item $T$ is injective
+        \item $\InverseImage{T}{\DirectImage{T}{W}} = W$ for every $W \Subspace U$
+        \item $W \mapsto \DirectImage{T}{W}$ is injective on the subspace lattice of $U$
+        \item $\Dim[K]{\DirectImage{T}{W}} = \Dim[K]{W}$ for every $W \Subspace U$
         \item $T$ sends every linearly independent set to linearly independent set
         \item $T$ sends every basis to linearly independent set
         \item $T$ sends some basis to linearly independent set
-        \item $T$ is a split monomorphism (has left inverse, when $U \neq \{0\}$)
+        \item $T$ is a split monomorphism (has left inverse)
         \item $T$ is monic (left-cancellable)
     \end{enumerate}
 \end{theorem}
 ```
 
-**Proof order**: (1)⟺(2)⟹(3)⟹(4)⟹(5)⟹(6)⟹(7)⟹(2).
+**Proof**: one chain (1)⟹(2)⟹(3)⟹(4)⟹(5)⟹(6)⟹(7)⟹(8)⟹(9)⟹(10)⟹(1).
 
-**Proof elaborations**:
-- **(1)⟺(2)**: $T(u_1)=T(u_2) \Rightarrow T(u_1-u_2)=0 \Rightarrow u_1-u_2 \in \Ker{T}$
-- **(2)⟹(3)**: $\sum a_i T(\ell_i) = 0 \Rightarrow T(\sum a_i \ell_i) = 0 \Rightarrow \sum a_i \ell_i \in \Ker{T} = \{0\}$
-- **(3)⟹(4)⟹(5)**: Every basis is lin indep → trivial implications
-- **(5)⟹(6)**: Some basis $B$ sent to lin indep set $T[B]$. Extend $T[B]$ to basis of $V$, define $S(T(b))=b$, $S(c)=0$ on extension. By universal property $S \circ T = \mathrm{id}_U$
-- **(6)⟹(7)**: If $S \circ T = \mathrm{id}$, then $T \circ S_1 = T \circ S_2 \Rightarrow S_1 = S \circ T \circ S_1 = S \circ T \circ S_2 = S_2$
-- **(7)⟹(2)**: For $u \in \Ker{T}$, map $S_u: K \to U$ by $S_u(a)=au$. Then $T \circ S_u = T \circ 0$, so $S_u = 0$, so $u=0$
+- **(1)⟹(2)**: $T(u_1)=T(u_2) \Rightarrow T(u_1-u_2)=0 \Rightarrow u_1-u_2 \in \Ker{T} = \{0\}$
+- **(2)⟹(3)**: $u \in T^{-1}[T[W]] \Rightarrow T(u)=T(w) \Rightarrow u=w \in W$ by injectivity
+- **(3)⟹(4)**: $T[W_1]=T[W_2] \Rightarrow W_1=T^{-1}[T[W_1]]=T^{-1}[T[W_2]]=W_2$
+- **(4)⟹(5)**: If $\dim(T[W])<\dim(W)$, then $\exists\, 0\neq k \in \Ker{T}\cap W$, so $T[\langle k\rangle]=\{0\}=T[\{0\}]$ but $\langle k\rangle \neq \{0\}$, contradicting (4)
+- **(5)⟹(6)**: If $L$ lin indep and $\sum a_i T(\ell_i)=0$ with some $a_i\neq 0$, then $W=\langle\ell_0,...,\ell_{n-1}\rangle$ has $\dim(W)=n$ but $\dim(T[W])<n$
+- **(6)⟹(7)⟹(8)**: Every basis is lin indep → trivial
+- **(8)⟹(9)**: Extend $T[B]$ to basis of $V$, define $S(T(b))=b$, $S(c)=0$. Then $S \circ T = \mathrm{id}_U$
+- **(9)⟹(10)**: $T \circ S_1 = T \circ S_2 \Rightarrow S_1 = S \circ T \circ S_1 = S \circ T \circ S_2 = S_2$
+- **(10)⟹(1)**: Inclusion $\iota: \Ker{T}\hookrightarrow U$ and zero map: $T\circ\iota = T\circ 0$, so $\iota=0$, so $\Ker{T}=\{0\}$
 
 ### Surjectivity
 
@@ -953,26 +964,31 @@ $$\Span[K]{S} = \BigIntersect \Set{U \Subspace[K] V \mid S \subseteq U} = \Set{\
 \begin{theorem}[Characterizations of Surjectivity]
     For $T: U \to V$ linear, TFAE:
     \begin{enumerate}
+        \item $\Rng{T} = V$
         \item $T$ is surjective
-        \item $\DirectImage{T}{U} = V$
+        \item $\DirectImage{T}{\InverseImage{T}{W}} = W$ for every $W \Subspace V$
+        \item $W \mapsto \InverseImage{T}{W}$ is injective on the subspace lattice of $V$
+        \item $\Codim[K]{\InverseImage{T}{W}}{U} = \Codim[K]{W}{V}$ for every $W \Subspace V$
         \item $T$ sends every generating system to generating system
         \item $T$ sends every basis to generating system
         \item $T$ sends some basis to generating system
-        \item $T$ is a split epimorphism (has right inverse, when $V \neq \{0\}$)
+        \item $T$ is a split epimorphism (has right inverse)
         \item $T$ is epic (right-cancellable)
     \end{enumerate}
 \end{theorem}
 ```
 
-**Proof order**: (1)⟺(2)⟹(3)⟹(4)⟹(5)⟹(6)⟹(7)⟹(2).
+**Proof**: one chain (1)⟹(2)⟹(3)⟹(4)⟹(5)⟹(6)⟹(7)⟹(8)⟹(9)⟹(10)⟹(1).
 
-**Proof elaborations**:
-- **(1)⟺(2)**: Definition of surjectivity
-- **(2)⟹(3)**: By Span-Image commute: $\Rng{T} = T(\Span{G}) = \Span{T(G)}$
-- **(3)⟹(4)⟹(5)**: Every basis is a generating set → trivial implications
-- **(5)⟹(6)**: Some basis $B$ sent to gen set $T[B]$. Pick any $V$-basis, express each in $\Span{T[B]}$, define $S$ by preimage, extend linearly. Then $T \circ S = \mathrm{id}_V$
-- **(6)⟹(7)**: If $T \circ S = \mathrm{id}$, then $S_1 \circ T = S_2 \circ T \Rightarrow S_1 = S_1 \circ T \circ S = S_2 \circ T \circ S = S_2$
-- **(7)⟹(2)**: Consider $\pi: V \to V/\Rng{T}$ and $0: V \to V/\Rng{T}$. Since $\pi \circ T = 0 \circ T$, epicness gives $\pi = 0$, so $V = \Rng{T}$
+- **(1)⟹(2)**: Definition of surjectivity
+- **(2)⟹(3)**: $T[T^{-1}[W]] = W \cap \Rng{T} = W \cap V = W$
+- **(3)⟹(4)**: $T^{-1}[W_1]=T^{-1}[W_2] \Rightarrow W_1=T[T^{-1}[W_1]]=T[T^{-1}[W_2]]=W_2$
+- **(4)⟹(5)**: First $\Rng{T}=V$: $T^{-1}[\Rng{T}]=U=T^{-1}[V]$, injectivity gives $\Rng{T}=V$. Then pick complement $C$ of $T^{-1}[W]$; show $T(C)$ complements $W$ in $V$; $T|_C$ injective (ker⊆T⁻¹[W], ∩C={0}), so dim(C)=dim(T(C)) by inj char (5). Thus codim=codim.
+- **(5)⟹(6)**: $W=\Rng{T}$: $T^{-1}[\Rng{T}]=U$, so $\operatorname{codim}(U;U)=0$, hence $\operatorname{codim}(\Rng{T};V)=0$, so $\Rng{T}=V$. Then span-image gives gen→gen.
+- **(6)⟹(7)⟹(8)**: Every basis is a generating set → trivial
+- **(8)⟹(9)**: Express $V$-basis in $\Span{T[B]}$, define right inverse. $T \circ S = \mathrm{id}_V$
+- **(9)⟹(10)**: $S_1 \circ T = S_2 \circ T \Rightarrow S_1 = S_1 \circ T \circ S = S_2 \circ T \circ S = S_2$
+- **(10)⟹(1)**: Projection $\pi$ onto complement of $\Rng{T}$: $\pi \circ T = 0 \circ T$, epic gives $\pi=0$, so $\Rng{T}=V$
 
 ### Bijectivity
 
@@ -980,8 +996,10 @@ $$\Span[K]{S} = \BigIntersect \Set{U \Subspace[K] V \mid S \subseteq U} = \Set{\
 \begin{theorem}[Characterizations of Bijectivity]
     For $T: U \to V$ linear, TFAE:
     \begin{enumerate}
-        \item $T$ is bijective
-        \item $T$ is injective and surjective
+        \item $T$ is bijective (injective and surjective)
+        \item $T^{-1}[T[W]] = W$ for all $W \Subspace U$ and $T[T^{-1}[W']] = W'$ for all $W' \Subspace V$
+        \item $W \mapsto T[W]$ is a lattice isomorphism, with inverse $W' \mapsto T^{-1}[W']$
+        \item $\Dim{T[W]} = \Dim{W}$ for all $W \Subspace U$ and $\operatorname{codim}(T^{-1}[W']; U) = \operatorname{codim}(W'; V)$ for all $W' \Subspace V$
         \item $T$ sends every basis to a basis
         \item $T$ sends some basis to a basis
         \item $T$ is an isomorphism (has two-sided linear inverse)
@@ -990,15 +1008,16 @@ $$\Span[K]{S} = \BigIntersect \Set{U \Subspace[K] V \mid S \subseteq U} = \Set{\
 \end{theorem}
 ```
 
-**Proof order**: (1)⟺(2)⟹(3)⟹(4)⟹(5)⟹(6)⟹(2).
+**Proof**: one chain (1)⟹(2)⟹(3)⟹(4)⟹(5)⟹(6)⟹(7)⟹(8)⟹(1). All steps except (6)⟹(7) follow by combining injectivity and surjectivity characterizations.
 
-**Proof elaborations**:
-- **(1)⟺(2)**: Definition of bijectivity
-- **(2)⟹(3)**: Use injectivity char (3): $T[B]$ lin indep. Use surjectivity char (4): $T[B]$ generates. So $T[B]$ is basis
-- **(3)⟹(4)**: Every basis is some basis
-- **(4)⟹(5)**: $T[B]$ is basis ⟹ lin indep (so injective by char (5)⟹(2)) and generates (so surjective by char (5)⟹(2)). Thus bijective. Show $T^{-1}$ is linear: $T(au_1+bu_2) = av_1+bv_2 \Rightarrow T^{-1}(av_1+bv_2) = au_1+bu_2$
-- **(5)⟹(6)**: Has left inverse ⟹ monic (by char (6)⟹(7)). Has right inverse ⟹ epic (by char (6)⟹(7))
-- **(6)⟹(2)**: Monic ⟹ injective (by char (7)⟹(2)). Epic ⟹ surjective (by char (7)⟹(2))
+- **(1)⟹(2)**: Inj char (2)⟹(3) + surj char (2)⟹(3)
+- **(2)⟹(3)**: Mutual inverses on lattices, both order-preserving
+- **(3)⟹(4)**: Lattice iso injective on both sides ⟹ inj char (4)⟹(5) + surj char (4)⟹(5)
+- **(4)⟹(5)**: dim preserved ⟹ inj char (5)⟹(6): lin indep→lin indep. codim preserved ⟹ surj char (5)⟹(7): basis→gen. Combining: basis→basis.
+- **(5)⟹(6)**: Every basis is some basis
+- **(6)⟹(7)**: $T[B]$ basis ⟹ ker=0 (inj char (8)⟹(1)) and Rng=V (surj char (8)⟹(1)). Show $T^{-1}$ is linear: $T(au_1+bu_2) = av_1+bv_2$, apply $T^{-1}$.
+- **(7)⟹(8)**: Left inverse ⟹ monic (inj char (9)⟹(10)). Right inverse ⟹ epic (surj char (9)⟹(10)).
+- **(8)⟹(1)**: Monic ⟹ ker=0 (inj char (10)⟹(1)). Epic ⟹ Rng=V (surj char (10)⟹(1)).
 
 **Definition: Inverse Linear Map**: For a bijective linear map $T: U \to V$, its inverse $T^{-1}: V \to U$ is linear.
 
@@ -1108,7 +1127,22 @@ $$\Span[K]{S} = \BigIntersect \Set{U \Subspace[K] V \mid S \subseteq U} = \Set{\
 
 ## Phase 16: Matrices
 
-### Motivation (open the chapter with this remark — before any definition)
+### Narrative overview
+
+The chapter tells the following story:
+
+1. **Scalar arrays exist**: Given a linear map $T: U \to V$ and ordered bases, $T$ is uniquely determined by a family of scalars $(A_{ij})$ with finitely many nonzero entries per column. This *motivates* defining matrices.
+2. **Matrices are functions**: We define $\MatSpace{Y}{X}[K] = K^{Y \times X}$ (maximum generality) and the column-finite subspace $\CFMat{Y}{X}[K]$. These are purely combinatorial objects — grids of scalars.
+3. **The Representation Theorem** (top billing): The column-finite matrices $\CFMat{\kappa_2}{\kappa_1}[K]$ are *canonically isomorphic* to $\Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}}$, because $K^{(\kappa)}$ has the canonical basis. This is *the* reason matrices matter. As a corollary, $V \cong \Hom[K]{K}{V}$ (the $\kappa_1 = 1$ special case): column matrices *are* vectors.
+4. **Matrix operations by transport of structure**: Matrix multiplication is *defined* as the unique operation making $\Phi$ an algebra morphism. The entry formula $(AB)_{ij} = \sum_k A_{ik} B_{kj}$ is *derived* as a theorem. Associativity, distributivity, identity — all inherited from composition for free.
+5. **The action map and general matrices**: Every $A \in \MatSpace{Y}{X}[K]$ defines $\mu_A: K^{(X)} \to K^Y$ by $(\mu_A(x))_i = \sum_j A_{ij} x_j$. Column-finiteness of $A$ is equivalent to $\operatorname{im}(\mu_A) \subseteq K^{(Y)}$. The entry formula for multiplication extends to cases where the sums converge, but this is not our concern in linear algebra — we work primarily with finite-dimensional spaces.
+6. **The commutative diagram** (characterization theorem): For abstract spaces $U$, $V$ with ordered bases, $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]$ is the unique column-finite matrix making the coordinate square commute. **Always written with basis indices**, even for canonical bases ($\MatrixRep{T}[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}}]$). The evaluation formula, the coordinate formula $\CoordVec{T(v)}[\mathcal{B}_V] = \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] \cdot \CoordVec{v}[\mathcal{B}_U]$, and the composition rule $\MatrixRep{\Composition{S}{T}}[\mathcal{B}_U][\mathcal{B}_W] = \MatrixRep{S}[\mathcal{B}_V][\mathcal{B}_W] \cdot \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]$ all fall out as corollaries of step 4. The identification $V \cong \Hom[K]{K}{V}$ from step 3 then explains why matrix-times-vector is composition: $\Hom[K]{U}{V} \times \Hom[K]{K}{U} \to \Hom[K]{K}{V}$.
+
+**File structure**: Steps 1–5 go in `MatrixSpaces.tex`. Step 6 goes in `MatrixOfMap.tex`. Then `MatricesAsLinearMaps.tex` and `LinearSystems.tex` follow unchanged.
+
+---
+
+### Motivation (open the chapter with this — before any definition)
 
 **Remark (Why Matrices?)**
 
@@ -1117,7 +1151,7 @@ We have built a rich theory of linear maps. But working with abstract maps is cu
 - **Computable** (finding $T(v)$ for any $v$ reduces to arithmetic on scalars),
 - **Composable** (the matrix of $\Composition{S}{T}$ is determined by the matrices of $S$ and $T$).
 
-However, the array itself depends on the choice of ordered bases. To define things properly, we first define the **matrix of $T$ as a linear map** (a basis-dependent isomorphism $K^{(\kappa_1)} \to K^{(\kappa_2)}$), and then separately define **matrices as purely combinatorial objects** (arrays of scalars). The connection between these two notions is made precise by the fundamental isomorphism of **16c**.
+The array depends on the choice of ordered bases. We begin by formalizing the existence of this array, then define matrices as purely combinatorial objects (grids of scalars). The **Representation Theorem** establishes that the column-finite ones are *exactly* the linear maps between free modules with canonical bases. Matrix operations are then defined by **transport of structure** from composition of linear maps, and the classical **commutative diagram** characterizes the matrix of an abstract linear map.
 
 ---
 
@@ -1130,214 +1164,223 @@ and for each fixed $j$, only finitely many $A_{ij}$ are nonzero.
 
 **Proof**: Each $T(b_j) \in V$. Since $\mathcal{B}_V$ is a basis of $V$, every vector in $V$ has a unique expression as a finite linear combination of $(c_i)_{i \in I}$. Applying this to $T(b_j)$ gives the unique scalars $A_{ij} = \CoordVec{T(b_j)}[\mathcal{B}_V](i)$, with only finitely many nonzero (finite support by definition of a basis). $\checkmark$
 
-**Remark**: The double index $(i,j)$ is the fundamental datum of the chapter: $i$ picks the row (the target basis vector $c_i$) and $j$ picks the column (the source basis vector $b_j$). The family $(A_{ij})_{i \in I,\, j \in J}$ is the **matrix of $T$** with respect to $\mathcal{B}_U$ and $\mathcal{B}_V$. Everything that follows — column formula, matrix-times-vector, matrix multiplication — is a consequence of this single fact together with linearity.
+**Remark (The Fundamental Datum)**: The double index $(i,j)$ is the fundamental datum of the chapter: $i$ picks the row (the target basis vector $c_i$) and $j$ picks the column (the source basis vector $b_j$). The family $(A_{ij})_{i \in I,\, j \in J}$ is the **matrix of $T$** with respect to $\mathcal{B}_U$ and $\mathcal{B}_V$. Everything that follows — evaluation formula, matrix-times-vector, matrix multiplication — is a consequence of this single fact together with linearity. The key question is: *what is a matrix, as a mathematical object, independent of the linear map that produced it?*
 
 ---
 
-### 16a: Matrix of a Linear Map
+### 16a: Matrix Spaces $\MatSpace{Y}{X}[K]$ and $\CFMat{Y}{X}[K]$
 
-**Setup**: Let $U$ and $V$ be $K$-vector spaces with ordered bases $\mathcal{B}_U = (b_j)_{j \in J}$ and $\mathcal{B}_V = (c_i)_{i \in I}$, where $|J| = \kappa_1$ and $|I| = \kappa_2$ are cardinals. Let $T: U \to V$ be a $K$-linear map. Recall the coordinate isomorphisms $\phi_{\mathcal{B}_U}: U \xrightarrow{\sim} K^{(\kappa_1)}$ and $\phi_{\mathcal{B}_V}: V \xrightarrow{\sim} K^{(\kappa_2)}$ from Phase 7.
-
-**Why $K^{(I)}$?** As established in Phase 7, abstract vector spaces have no canonical basis — any basis requires an arbitrary choice. The spaces $K^{(I)}$ are the exception: they carry the canonical basis $(e_i)_{i \in I}$, intrinsically defined by the function-space structure. This is the key reason we factor $T$ through coordinate spaces: once we pass to $K^{(\kappa_1)} \to K^{(\kappa_2)}$, the canonical bases are automatically available. The resulting map $[T]_{\mathcal{B}_U}^{\mathcal{B}_V}$ can then be interrogated on each $e_j$ — yielding the column formula — and stored as a plain array of scalars. **Matrices exist to exploit the canonical structure of $K^{(I)}$.**
-
-1. **Definition (Matrix of $T$ w.r.t. $\mathcal{B}_U$, $\mathcal{B}_V$)**:
-   - The **matrix of $T$ with respect to $\mathcal{B}_U$ and $\mathcal{B}_V$**  is the $K$-linear map
-     \[
-         [T]_{\mathcal{B}_U}^{\mathcal{B}_V} \defeq \Composition{\phi_{\mathcal{B}_V}}{\Composition{T}{\phi_{\mathcal{B}_U}^{-1}}} : K^{(\kappa_1)} \to K^{(\kappa_2)}
-     \]
-     This is the map making the following square commute:
-     ```
-     📊 DIAGRAM: commutative square
-       U  --T-->  V
-       |          |
-      φ_BU      φ_BV
-       |          |
-       ↓          ↓
-     K^(κ₁) --> K^(κ₂)
-              [T]
-     ```
-   - In other words, $[T]_{\mathcal{B}_U}^{\mathcal{B}_V}$ expresses $T$ in coordinate language: it takes the coordinates of $u$ in $\mathcal{B}_U$ and returns the coordinates of $T(u)$ in $\mathcal{B}_V$.
-   - **Note**: This definition requires **ordered** bases (to have a specific coordinate isomorphism); unordered bases give only an isomorphism up to reordering.
-
-2. **Theorem (Column Formula)**:
-   - The $j$-th column of $[T]_{\mathcal{B}_U}^{\mathcal{B}_V}$ (i.e., its value on $e_j \in K^{(\kappa_1)}$) equals the coordinate vector $\phi_{\mathcal{B}_V}(T(b_j))$.
-   - **Proof**: $[T]_{\mathcal{B}_U}^{\mathcal{B}_V}(e_j) = \phi_{\mathcal{B}_V}(T(\phi_{\mathcal{B}_U}^{-1}(e_j))) = \phi_{\mathcal{B}_V}(T(b_j))$.
-   - **Practical consequence**: To compute $[T]_{\mathcal{B}_U}^{\mathcal{B}_V}$, apply $T$ to each basis vector $b_j \in \mathcal{B}_U$, express the result $T(b_j)$ in the basis $\mathcal{B}_V$, and place those coordinates as the $j$-th column.
-   - **Explicit entry**: Denote the scalars by $a_{ij}$ where $T(b_j) = \sum_{i} a_{ij} c_i$. Then $(\phi_{\mathcal{B}_V}(T(b_j)))_i = a_{ij}$, so the $(i,j)$-entry of the matrix equals $a_{ij}$.
-
-3. **Proposition (Matrix-times-vector formula)**:
-   - **Motivation**: The column formula gives the action of $[T]_{\mathcal{B}_U}^{\mathcal{B}_V}$ on every canonical basis vector $e_j$. Any $x = \sum_j x_j e_j \in K^{(\kappa_1)}$ (a finite sum) is determined by its coordinates $(x_j)$. Linearity of $[T]_{\mathcal{B}_U}^{\mathcal{B}_V}$ then forces:
-     \[
-         [T]_{\mathcal{B}_U}^{\mathcal{B}_V}(x)
-         = \sum_j x_j \cdot [T]_{\mathcal{B}_U}^{\mathcal{B}_V}(e_j)
-         = \sum_j x_j \cdot \phi_{\mathcal{B}_V}(T(b_j))
-     \]
-     Taking the $i$-th coordinate of both sides and using $a_{ij}$ for the entries:
-     \[
-         \left([T]_{\mathcal{B}_U}^{\mathcal{B}_V}(x)\right)_i = \sum_j a_{ij} x_j
-     \]
-     This is exactly the $i$-th row of $A$ dotted with $x$: the standard row-by-column product $(Ax)_i = \sum_j A_{ij} x_j$. The formula $[T]x = Ax$ is therefore **not a definition** — it is a **theorem** that follows solely from linearity and the column formula.
-   - **Statement**: For any $u \in U$,
-     \[
-         \CoordVec{T(u)}[\mathcal{B}_V] = [T]_{\mathcal{B}_U}^{\mathcal{B}_V} \cdot \CoordVec{u}[\mathcal{B}_U]
-     \]
-   - **Proof**: Let $x = \CoordVec{u}[\mathcal{B}_U]$, so $u = \sum_j x_j b_j$. Then $T(u) = \sum_j x_j T(b_j) = \sum_j x_j \sum_i a_{ij} c_i = \sum_i \left(\sum_j a_{ij} x_j\right) c_i$. Hence the $i$-th coordinate of $T(u)$ in $\mathcal{B}_V$ is $\sum_j a_{ij} x_j = (Ax)_i$. $\checkmark$
-
-4. **Composition rule**:
-   - If $S: V \to W$ has matrix $[S]_{\mathcal{B}_V}^{\mathcal{B}_W}$, then the matrix of $\Composition{S}{T}$ is $[S]_{\mathcal{B}_V}^{\mathcal{B}_W} \circ [T]_{\mathcal{B}_U}^{\mathcal{B}_V}$ (composition of the two maps $K^{(\kappa_1)} \to K^{(\kappa_2)} \to K^{(\kappa_3)}$).
-
----
-
-### 16b: Matrix Spaces $\MatSpace{X}{Y}[K]$ and $\CFMat{X}{Y}[K]$
-
-**Motivation**: We now define matrices as *purely set-theoretic objects* — functions on a product of index sets — independent of any vector spaces. Two levels of structure arise naturally:
-
-- The **general matrix space** $\MatSpace{X}{Y}[K] = K^{X \times Y}$ consists of all functions $X \times Y \to K$, with pointwise addition and scalar multiplication inherited from the product vector space structure. No finiteness condition is imposed.
-- The **column-finite matrix space** $\CFMat{X}{Y}[K]$ is the subspace of matrices with finite support in each column. Column-finiteness is not arbitrary: it is the condition that $T(b_j) \in V$ imposes when expressing a linear map in a basis (each image is a *finite* linear combination of basis vectors).
-
-**Motivation for matrix operations (transport of structure)**:
-Matrix addition on $\MatSpace{X}{Y}[K]$ needs no extra motivation — it is the pointwise addition of functions. Matrix multiplication has no natural a priori definition, and is *forced upon us* by requiring the isomorphism $\Phi: \Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}} \xrightarrow{\sim} \CFMat{\kappa_2}{\kappa_1}[K]$ of **16c** to be an algebra morphism: since $\End[K]{K^{(\kappa)}}$ is a $K$-algebra with composition as multiplication, requiring $\Phi(\Composition{S}{T}) = \Phi(S) \cdot \Phi(T)$ forces $(AB)_{ij} = \sum_k A_{ik} B_{kj}$. Since composition involves only column-finite maps (those landing in $K^{(\kappa_2)}$), multiplication is defined only for column-finite matrices.
-
-In other words: **matrix addition is defined on all matrices (product space structure); matrix multiplication is defined only for column-finite matrices, and its formula is transported from composition of linear maps.**
+**Convention**: $X$ = column/source index set, $Y$ = row/target index set. For a linear map $f: K^{(X)} \to K^{(Y)}$, the matrix lies in $\CFMat{Y}{X}[K]$. This keeps alphabetical order aligned with function notation.
 
 1. **Definitions**:
 
-   **General matrix space**: Let $X, Y$ be sets (row and column index sets). A **$(X \times Y)$-matrix with entries in $K$** is a function
+   **General matrix space**: Let $X, Y$ be sets (column and row index sets, respectively). A **$(Y \times X)$-matrix with entries in $K$** is a function
      \[
-         A: X \times Y \to K
+         A: Y \times X \to K
      \]
-     Write $A_{ij}$ for $A(i,j)$ (row index $i \in X$, column index $j \in Y$). The set of all such matrices is
+     Write $A_{ij}$ for $A(i,j)$ (row index $i \in Y$, column index $j \in X$). The set of all such matrices is
      \[
-         \MatSpace{X}{Y}[K] \defeq K^{X \times Y}
+         \MatSpace{Y}{X}[K] \defeq K^{Y \times X}
      \]
-     with no finiteness condition. For cardinals $\kappa_1, \kappa_2$, write $\MatSpace{\kappa_2}{\kappa_1}[K]$ ($\kappa_2$ rows, $\kappa_1$ columns).
+     with no finiteness condition imposed. For cardinals $\kappa_1, \kappa_2$, write $\MatSpace{\kappa_2}{\kappa_1}[K]$ ($\kappa_2$ rows, $\kappa_1$ columns).
 
-   **Column-finite matrix space**: A matrix $A \in \MatSpace{X}{Y}[K]$ is **column-finite** if for each $j \in Y$, the column $A(-,j): i \mapsto A_{ij}$ has **finite support**: $A_{ij} = 0$ for all but finitely many $i \in X$. Equivalently, $A(-,j) \in K^{(X)}$ for all $j$. The set of column-finite matrices is
+   **Scope remark**: The general space $\MatSpace{Y}{X}[K]$ imposes no finiteness condition. In this chapter, most results concern the column-finite subspace $\CFMat{Y}{X}[K]$, which captures exactly the linear maps $K^{(\kappa_1)} \to K^{(\kappa_2)}$ (Theorem 16b.1). The larger space $\MatSpace{Y}{X}[K]$ becomes essential in functional analysis, where bounded operators on sequence spaces are represented by infinite matrices with no column-finiteness requirement — convergence replaces finite support as the operative condition.
+
+   **Column-finite matrix space**: A matrix $A \in \MatSpace{Y}{X}[K]$ is **column-finite** if for each $j \in X$, the column $A(-,j): i \mapsto A_{ij}$ has **finite support**: $A_{ij} = 0$ for all but finitely many $i \in Y$. Equivalently, $A(-,j) \in K^{(Y)}$ for all $j$. The set of column-finite matrices is
      \[
-         \CFMat{X}{Y}[K] \defeq \Set{A \in \MatSpace{X}{Y}[K] \mid \forall j \in Y,\ A(-,j) \in K^{(X)}}
+         \CFMat{Y}{X}[K] \defeq \Set{A \in \MatSpace{Y}{X}[K] \mid \forall j \in X,\ A(-,j) \in K^{(Y)}}
      \]
-     This is a **subspace** of $\MatSpace{X}{Y}[K]$: for $A, B \in \CFMat{X}{Y}[K]$ and $\lambda \in K$, one has $(A+B)(-,j) = A(-,j) + B(-,j) \in K^{(X)}$ and $(\lambda A)(-,j) = \lambda A(-,j) \in K^{(X)}$.
+     This is a **subspace** of $\MatSpace{Y}{X}[K]$: for $A, B \in \CFMat{Y}{X}[K]$ and $\lambda \in K$, one has $(A+B)(-,j) = A(-,j) + B(-,j) \in K^{(Y)}$ and $(\lambda A)(-,j) = \lambda A(-,j) \in K^{(Y)}$.
 
-   **Currying**: A matrix $A \in \MatSpace{X}{Y}[K]$ is equivalently a function $j \mapsto A(-,j) \in K^X$ (column map). For column-finite matrices: $\CFMat{X}{Y}[K] \cong (K^{(X)})^Y$ — functions from $Y$ to finitely-supported column vectors. This is **not** $K^{(X \times Y)}$: the latter requires globally finite support (only finitely many nonzero entries total), strictly stronger than column-finiteness when $Y$ is infinite.
+   **Currying**: A matrix $A \in \MatSpace{Y}{X}[K]$ is equivalently a function $j \mapsto A(-,j) \in K^Y$ (column map). For column-finite matrices: $\CFMat{Y}{X}[K] \cong (K^{(Y)})^X$ — functions from $X$ to finitely-supported column vectors. This is **not** $K^{(Y \times X)}$: the latter requires globally finite support (only finitely many nonzero entries total), strictly stronger than column-finiteness when $X$ is infinite.
 
-2. **Vector space structure — matrix addition and scalar multiplication**:
+2. **Vector space structure** (matrix addition and scalar multiplication):
 
-   Since $\MatSpace{X}{Y}[K] = K^{X \times Y}$ is a product of copies of $K$, it is a $K$-vector space with pointwise operations:
+   Since $\MatSpace{Y}{X}[K] = K^{Y \times X}$ is a product of copies of $K$, it is a $K$-vector space with pointwise operations:
    \[
        (A + B)_{ij} \defeq A_{ij} + B_{ij}, \qquad (\lambda A)_{ij} \defeq \lambda A_{ij}, \qquad 0_{ij} \defeq 0
    \]
-   These are defined for **all** $A, B \in \MatSpace{X}{Y}[K]$, with no finiteness condition required. Since $\CFMat{X}{Y}[K]$ is a subspace (item 1), it is itself a $K$-vector space under the same operations.
+   These are defined for **all** $A, B \in \MatSpace{Y}{X}[K]$, with no finiteness condition required. Since $\CFMat{Y}{X}[K]$ is a subspace (item 1), it is itself a $K$-vector space under the same operations.
 
-   **Compatibility with $\Phi$**: The isomorphism $\Phi: \Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}} \xrightarrow{\sim} \CFMat{\kappa_2}{\kappa_1}[K]$ of **16c** is $K$-linear with respect to these definitions, since $\Phi(S+T)_{ij} = ((S+T)(e_j))_i = (S(e_j))_i + (T(e_j))_i = \Phi(S)_{ij} + \Phi(T)_{ij}$ and similarly for scalar multiplication. Thus the entrywise formulas are the *unique* definitions making $\Phi$ a linear map.
-
-3. **Standard matrix operations** (state and prove):
-   - **Matrix multiplication** (column-finite only):
-
-     **Setup**: Let $A \in \CFMat{X}{Z}[K]$ and $B \in \CFMat{Z}{Y}[K]$.
-
-     **Motivation**: We want $A \cdot B$ to correspond to composing the associated linear maps — i.e., if $T_A = \Phi^{-1}(A)$ and $T_B = \Phi^{-1}(B)$, then $AB$ should equal $\Phi(\Composition{T_A}{T_B})$.
-
-     **Derivation of entry formula**: Compute the $j$-th column of $\Phi(\Composition{T_A}{T_B})$ using the column formula:
-     \[
-         \Phi(\Composition{T_A}{T_B})(-,j) = (\Composition{T_A}{T_B})(e_j) = T_A(T_B(e_j)) = T_A(B(-,j))
-     \]
-     Now apply the matrix-times-vector formula (proved in **16a.3**) to $T_A$ acting on $B(-,j) = \sum_k B_{kj} e_k$ (finite sum since $B(-,j) \in K^{(Z)}$ by column-finiteness of $B$):
-     \[
-         T_A(B(-,j)) = \sum_k B_{kj} \cdot T_A(e_k) = \sum_k B_{kj} \cdot A(-,k)
-     \]
-     The $i$-th entry of this column is:
-     \[
-         (AB)_{ij} \defeq \sum_{k \in Z} A_{ik} B_{kj}
-     \]
-     **Proof of well-definedness**: For fixed $j$, let $S_j = \{k \in Z : B_{kj} \neq 0\}$; this is finite by column-finiteness of $B$. Then $(AB)_{ij} = \sum_{k \in S_j} A_{ik} B_{kj}$ is a finite sum in $K$, well-defined for all $i$. Moreover, $\{i : (AB)_{ij} \neq 0\} \subseteq \bigcup_{k \in S_j} \{i : A_{ik} \neq 0\}$ is a finite union of finite sets (column-finiteness of $A$), so $(AB)(-,j) \in K^{(X)}$. Thus $AB \in \CFMat{X}{Y}[K]$. $\checkmark$
-
-     **Why column-finite only**: Without column-finiteness of $B$, the sum $\sum_k A_{ik} B_{kj}$ may be infinite. Without column-finiteness of $A$, the result $AB$ may fail to be column-finite (its columns may have infinite support). Column-finiteness of both factors is the minimal condition ensuring the product is well-defined and stays in $\CFMat{X}{Y}[K]$.
-   - **Hadamard product**: $(\Hadamard{A}{B})_{ij} = A_{ij} B_{ij}$ (pointwise; same size matrices only; defined on all of $\MatSpace{X}{Y}[K]$, and column-finiteness is preserved)
-   - **Kronecker product**: $\KroneckerProduct[K]{A}{B}$ (block matrix structure)
-   - **Transpose**: $(\Transpose{A})_{ij} = A_{ji}$; the transpose of $A \in \MatSpace{X}{Y}[K]$ lies in $\MatSpace{Y}{X}[K]$. The transpose of a column-finite matrix $A \in \CFMat{X}{Y}[K]$ is **not** in general column-finite as an element of $\MatSpace{Y}{X}[K]$: transposing turns columns of $A$ into rows of $\Transpose{A}$, and each row of $\Transpose{A}$ may have infinite support even if each column of $A$ does not. For finite matrices (both $X$ and $Y$ finite), $\Transpose{A} \in \CFMat{Y}{X}[K]$ always.
-   - **Hermitian conjugate (conjugate transpose)**: $\Hermitian{A} \defeq \overline{\Transpose{A}}$, i.e. $(\Hermitian{A})_{ij} = \overline{A_{ji}}$. This requires $K$ to carry a conjugation involution (e.g. $K = \mathbb{C}$). Same column-finiteness caveat as for transpose.
-   - **Determinant** (forward reference — fully developed in Chapter 7, Multilinear Algebra):
-     - **Leibniz formula** (for square $n \times n$ matrices over a commutative ring):
-       \[
-           \Det{A} = \sum_{\sigma \in S_n} \operatorname{sgn}(\sigma) \prod_{i=1}^{n} A_{i,\sigma(i)}
-       \]
-       This formula will be derived in Chapter 7 as the unique alternating multilinear form normalized by $\Det{I_n} = 1$.
-     - **Rank-based characterization**: $\Det{A} \neq 0$ iff $A$ is invertible (equivalently, $\Rank{A} = n$). State this as a theorem to be proved in Chapter 7.
-     - For now: use $\Det{A}$ as notation and rely on the Leibniz formula when needed for small matrices.
-
-4. **Sizes**:
-   - **General matrices**: $\MatSpace{X}{Y}[K] = K^{X \times Y}$, canonically isomorphic to the product $\prod_{j \in Y} K^X$ (one copy of $K^X$ per column).
-   - **Column-finite matrices**: Via currying, $\CFMat{X}{Y}[K] \cong \left(K^{(X)}\right)^Y$ — functions from $Y$ to finitely-supported column vectors. Explicitly, $A \leftrightarrow (A(-,j))_{j \in Y}$ is a bijection between $\CFMat{X}{Y}[K]$ and functions $Y \to K^{(X)}$.
-   - **Contrast with $K^{(X \times Y)}$**: The space $K^{(X \times Y)}$ requires globally finite support (only finitely many nonzero entries in total). This is strictly stronger than column-finiteness when $Y$ is infinite: a column-finite matrix may have infinitely many nonzero columns, each individually finite.
+3. **Sizes**:
+   - **General matrices**: $\MatSpace{Y}{X}[K] = K^{Y \times X}$, canonically isomorphic to the product $\prod_{j \in X} K^Y$ (one copy of $K^Y$ per column).
+   - **Column-finite matrices**: Via currying, $\CFMat{Y}{X}[K] \cong \left(K^{(Y)}\right)^X$ — functions from $X$ to finitely-supported column vectors.
+   - **Contrast with $K^{(Y \times X)}$**: The space $K^{(Y \times X)}$ requires globally finite support (only finitely many nonzero entries in total). This is strictly stronger than column-finiteness when $X$ is infinite: a column-finite matrix may have infinitely many nonzero columns, each individually finite.
 
 ---
 
-### 16c: The Fundamental Isomorphism $\Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}} \cong \CFMat{\kappa_2}{\kappa_1}[K]$
+### 16b: The Representation Theorem
 
-1. **Theorem**: There is a canonical $K$-linear isomorphism
+This is the first deep fact about matrices: column-finite matrices *are* linear maps between free modules.
+
+1. **Theorem (Representation Theorem)**: There is a canonical $K$-linear isomorphism
    \[
        \Phi: \Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}} \xrightarrow{\sim} \CFMat{\kappa_2}{\kappa_1}[K],
-       \qquad T \mapsto \MatrixRep{T}, \quad \MatrixRep{T}_{ij} \defeq (T(e_j))_i
+       \qquad T \mapsto \MatrixRep{T}[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}],
+       \quad \MatrixRep{T}[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]_{ij} \defeq (T(e_j))_i
    \]
-   i.e. the $(i,j)$-entry of $\MatrixRep{T}$ is the $i$-th coordinate of $T(e_j)$ in $K^{(\kappa_2)}$. The codomain is $\CFMat{\kappa_2}{\kappa_1}[K]$ (not the larger $\MatSpace{\kappa_2}{\kappa_1}[K]$): column-finiteness is not imposed externally but is a *consequence* of $T$ mapping into $K^{(\kappa_2)}$.
+   where $\mathcal{E}_{\kappa}$ denotes the canonical ordered basis $(e_i)_{i \in \kappa}$ of $K^{(\kappa)}$. The $(i,j)$-entry is the $i$-th coordinate of $T(e_j)$. The codomain is $\CFMat{\kappa_2}{\kappa_1}[K]$ (not the larger $\MatSpace{\kappa_2}{\kappa_1}[K]$): column-finiteness is not imposed externally but is a *consequence* of $T$ mapping into $K^{(\kappa_2)}$.
 
-   - **Well-definedness** (image lands in $\CFMat{\kappa_2}{\kappa_1}[K]$): Each $T(e_j) \in K^{(\kappa_2)}$ has finite support in $i$, so $\MatrixRep{T}(-,j) \in K^{(\kappa_2)}$, i.e. $\MatrixRep{T}$ is column-finite. $\checkmark$
-   - **$K$-linearity of $\Phi$**: $(\MatrixRep{\alpha T + \beta S})_{ij} = ((\alpha T{+}\beta S)(e_j))_i = \alpha \MatrixRep{T}_{ij} + \beta \MatrixRep{S}_{ij}$. $\checkmark$
-   - **Injectivity**: If $\MatrixRep{T} = 0$, then $T(e_j) = 0$ for all $j$, so $T = 0$ (linear maps determined by basis values). $\checkmark$
-   - **Surjectivity + matrix-times-column formula**: Given $A \in \CFMat{\kappa_2}{\kappa_1}[K]$, define $T_A(e_j) \defeq A(-,j) \in K^{(\kappa_2)}$ (well-defined since $A$ is column-finite) and extend linearly. Then $\MatrixRep{T_A} = A$. Moreover, for any $x = \sum_j x_j e_j \in K^{(\kappa_1)}$ (a finite sum):
+   **Remark (Convention: why $(T(e_j))_i$ and not $(T(e_i))_j$?)**: The definition $([T])_{ij} = (T(e_j))_i$ is a choice. We could equally define the $(i,j)$-entry as $(T(e_i))_j$, which would identify $\Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}}$ with $\CFMat{\kappa_1}{\kappa_2}[K]$ (a $\kappa_1 \times \kappa_2$ matrix) — arguably more natural since the dimensions match the order $(\kappa_1, \kappa_2)$. The classical convention reverses these dimensions, but has the compensating advantage that matrix multiplication follows the familiar left-to-right reading order: a $\kappa_2 \times \kappa_1$ matrix times a $\kappa_1 \times \kappa_3$ matrix yields a $\kappa_2 \times \kappa_3$ matrix, with adjacent indices contracting. Under the alternative convention, the same contraction would require the reverse order. We follow the classical convention throughout.
+
+   - **Well-definedness** (image lands in $\CFMat{\kappa_2}{\kappa_1}[K]$): Each $T(e_j) \in K^{(\kappa_2)}$ has finite support in $i$, so $\MatrixRep{T}[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}](-,j) \in K^{(\kappa_2)}$, i.e. the matrix is column-finite. $\checkmark$
+   - **$K$-linearity of $\Phi$**: $\MatrixRep{\alpha T + \beta S}[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]_{ij} = ((\alpha T{+}\beta S)(e_j))_i = \alpha \MatrixRep{T}[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]_{ij} + \beta \MatrixRep{S}[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]_{ij}$. $\checkmark$
+   - **Injectivity**: If $\MatrixRep{T}[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}] = 0$, then $T(e_j) = 0$ for all $j$, so $T = 0$ (linear maps determined by basis values). $\checkmark$
+   - **Surjectivity + matrix-times-column formula**: Given $A \in \CFMat{\kappa_2}{\kappa_1}[K]$, define $T_A(e_j) \defeq A(-,j) \in K^{(\kappa_2)}$ (well-defined since $A$ is column-finite) and extend linearly. Then $\MatrixRep{T_A}[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}] = A$. Moreover, for any $x = \sum_j x_j e_j \in K^{(\kappa_1)}$ (a finite sum):
      \[
          T_A(x) = \sum_j x_j A(-,j), \qquad (T_A(x))_i = \sum_j A_{ij} x_j = (Ax)_i
      \]
-     so $T_A(x) = Ax$, i.e. $\ColVec{T_A(x)} = A \cdot \ColVec{x}$. Every $A \in \CFMat{\kappa_2}{\kappa_1}[K]$ acts on $K^{(\kappa_1)} \to K^{(\kappa_2)}$ by left multiplication. $\checkmark$
+     so $T_A(x) = Ax$. Every $A \in \CFMat{\kappa_2}{\kappa_1}[K]$ acts on $K^{(\kappa_1)} \to K^{(\kappa_2)}$ by left multiplication. $\checkmark$
 
-   **Remark**: A general matrix $A \in \MatSpace{\kappa_2}{\kappa_1}[K]$ also acts on $K^{(\kappa_1)}$ by $x \mapsto Ax$ (the sum $\sum_j A_{ij} x_j$ is finite since $x$ has finite support), but the result lies in $K^{\kappa_2}$, not necessarily in $K^{(\kappa_2)}$. Column-finiteness of $A$ is precisely the condition guaranteeing $Ax \in K^{(\kappa_2)}$.
+2. **Special cases**:
+   - **Zero matrix = zero map**: $\MatrixRep{0}[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]_{ij} = (0 \cdot e_j)_i = 0$. $\checkmark$
+   - **Identity matrix = identity map**: $\MatrixRep{\Identity{K^{(\kappa)}}}[\mathcal{E}_\kappa][\mathcal{E}_\kappa]_{ij} = (e_j)_i = \delta_{ij} = (I_\kappa)_{ij}$. $\checkmark$
+   - **Scalar matrix**: $\MatrixRep{\lambda \Identity{K^{(\kappa)}}}[\mathcal{E}_\kappa][\mathcal{E}_\kappa] = \lambda I_\kappa$. $\checkmark$
 
-2. **Special cases (must verify explicitly)**:
-   - **Zero matrix = zero map**: $\MatrixRep{0}_{ij} = (0 \cdot e_j)_i = 0$. $\checkmark$
-   - **Identity matrix = identity map**: $\MatrixRep{\Identity{K^{(\kappa)}}}_{ij} = (e_j)_i = \delta_{ij} = (I_\kappa)_{ij}$. $\checkmark$
-   - **Scalar matrix**: $\MatrixRep{\lambda \Identity{K^{(\kappa)}}} = \lambda I_\kappa$. $\checkmark$
+3. **Corollary ($V \cong \Hom[K]{K}{V}$)**: Every $v \in V$ determines a unique $K$-linear map $\lambda_v: K \to V$, $\alpha \mapsto \alpha v$. The assignment $v \mapsto \lambda_v$ is a natural isomorphism $V \xrightarrow{\sim} \Hom[K]{K}{V}$: $K$-linear, injective ($\lambda_v = 0 \Rightarrow v = \lambda_v(1) = 0$), surjective ($\varphi = \lambda_{\varphi(1)}$).
 
-3. **Matrix-times-column for general bases**:
-   - For $U$, $V$ with ordered bases $\mathcal{B}_U$, $\mathcal{B}_V$ and $T: U \to V$, the formula from surjectivity above applies to $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] = \phi_{\mathcal{B}_V} \circ T \circ \phi_{\mathcal{B}_U}^{-1}$. For any $v \in U$:
-     \[
-         \ColVec{T(v)}[\mathcal{B}_V] = \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] \cdot \ColVec{v}[\mathcal{B}_U]
-     \]
-     **Proof**: $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] \cdot \phi_{\mathcal{B}_U}(v) = (\phi_{\mathcal{B}_V} \circ T \circ \phi_{\mathcal{B}_U}^{-1})(\phi_{\mathcal{B}_U}(v)) = \phi_{\mathcal{B}_V}(T(v)) = \ColVec{T(v)}[\mathcal{B}_V]$. $\checkmark$
-   - **This is the operational content of the definition in 16a**: the matrix transforms coordinate columns.
-
-4. **Composition = matrix multiplication**:
-   - $\Phi(\Composition{S}{T}) = \Phi(S) \cdot \Phi(T)$, i.e. $\MatrixRep{\Composition{S}{T}} = \MatrixRep{S} \cdot \MatrixRep{T}$.
-   - **Proof using the matrix-times-column formula**: For any $x \in K^{(\kappa_1)}$:
-     \[
-         \MatrixRep{\Composition{S}{T}} \cdot x = (\Composition{S}{T})(x) = S(T(x)) = S(\MatrixRep{T} \cdot x) = \MatrixRep{S} \cdot (\MatrixRep{T} \cdot x) = (\MatrixRep{S} \cdot \MatrixRep{T}) \cdot x
-     \]
-     Since this holds for all $x$, $\MatrixRep{\Composition{S}{T}} = \MatrixRep{S} \cdot \MatrixRep{T}$. $\checkmark$
-   - **Corollary**: $\Phi$ is an isomorphism of $K$-algebras $\End[K]{K^{(\kappa)}} \xrightarrow{\sim} \CFMat{\kappa}{\kappa}[K]$:
-     - Adding maps ↔ adding matrices
-     - Composing maps ↔ multiplying matrices
-     - Zero map ↔ zero matrix
-     - Identity map ↔ identity matrix
-
-5. **General Hom via bases**:
-   - For $U$, $V$ with ordered bases $\mathcal{B}_U$, $\mathcal{B}_V$, the map $T \mapsto \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]$ is a $K$-linear isomorphism:
-     \[
-         \Hom[K]{U}{V} \xrightarrow{\;\sim\;} \CFMat{|\mathcal{B}_V|}{|\mathcal{B}_U|}[K]
-     \]
-     The isomorphism lands in the **column-finite** space: for any $T \in \Hom[K]{U}{V}$ and any $j \in \mathcal{B}_U$, the image $T(b_j) \in V$ has finite support in $\mathcal{B}_V$ (by definition of a basis), so the $j$-th column of $\MatrixRep{T}$ is finitely supported. Different choices of bases yield different but isomorphic identifications (related by change-of-basis matrices, Phase 17).
+   This is the $\kappa_1 = 1$ special case of the Representation Theorem: $\CFMat{\kappa_2}{1}[K] \cong \Hom[K]{K}{K^{(\kappa_2)}} \cong K^{(\kappa_2)}$. Column matrices with $\kappa_2$ rows *are* vectors in $K^{(\kappa_2)}$. More generally, for any $V$ with ordered basis $\mathcal{B}_V = (c_i)_{i \in I}$, the coordinate vector $\CoordVec{v}[\mathcal{B}_V]$ **is** the matrix $\MatrixRep{\lambda_v}[(1)][\mathcal{B}_V]$ — an $I \times \{1\}$ column matrix. The coordinate representation of a vector and the matrix representation of a linear map are literally the same object.
 
 ---
 
-<!-- ### 16d: Block Matrices (with all the proofs)
-1. **Block matrix**: Matrix with matrix entries that unravel to rectangles
-2. **Compatibility**: Row blocks must have same height, column blocks same width
-3. **Unraveling morphism property**: For operations $\circ \in \{+, \cdot, \otimes_K, \circ_{\text{Hadamard}}\}$:
-   - $\text{unravel}(A \circ B) = \text{unravel}(A) \circ \text{unravel}(B)$
-   - i.e., partition into blocks → apply operation as block matrices → unravel = operate as regular matrices -->
+### 16c: Matrix Operations by Transport of Structure
+
+Matrix addition is pointwise (product space structure, no extra work). Matrix multiplication is *forced* by the Representation Theorem.
+
+1. **Matrix multiplication** (defined by transport from composition):
+
+   **Definition**: For $A \in \CFMat{Y}{Z}[K]$ and $B \in \CFMat{Z}{X}[K]$, define $AB \defeq \Phi(\Composition{\Phi^{-1}(A)}{\Phi^{-1}(B)})$, i.e. the product is the unique matrix corresponding to the composition of the associated linear maps.
+
+   **Theorem (Entry Formula)**: The transported multiplication has the entry formula
+   \[
+       (AB)_{ij} = \sum_{k \in Z} A_{ik} B_{kj}
+   \]
+
+   **Derivation**: Let $T_A = \Phi^{-1}(A)$ and $T_B = \Phi^{-1}(B)$. Evaluate the $j$-th column:
+   \[
+       \Phi(\Composition{T_A}{T_B})(-,j) = (\Composition{T_A}{T_B})(e_j) = T_A(T_B(e_j)) = T_A(B(-,j))
+   \]
+   Since $B(-,j) = \sum_k B_{kj} e_k \in K^{(Z)}$ (finite sum by column-finiteness of $B$), linearity of $T_A$ gives:
+   \[
+       T_A(B(-,j)) = \sum_k B_{kj} \cdot T_A(e_k) = \sum_k B_{kj} \cdot A(-,k)
+   \]
+   The $i$-th entry: $(AB)_{ij} = \sum_{k \in Z} A_{ik} B_{kj}$. $\checkmark$
+
+   **Well-definedness (direct verification)**: For fixed $j$, let $S_j = \{k \in Z : B_{kj} \neq 0\}$; this is finite by column-finiteness of $B$. Then $(AB)_{ij} = \sum_{k \in S_j} A_{ik} B_{kj}$ is a finite sum. Moreover, $\{i : (AB)_{ij} \neq 0\} \subseteq \bigcup_{k \in S_j} \{i : A_{ik} \neq 0\}$ is a finite union of finite sets (column-finiteness of $A$), so $(AB)(-,j) \in K^{(Y)}$ and $AB \in \CFMat{Y}{X}[K]$. $\checkmark$
+
+2. **Properties inherited from composition** (all free — no index calculations needed):
+   - **Associativity**: $(AB)C = A(BC)$ — inherited from $\Composition{(\Composition{R}{S})}{T} = \Composition{R}{(\Composition{S}{T})}$.
+   - **Bilinearity**: $A(B + C) = AB + AC$, $(A + B)C = AC + BC$, $\lambda(AB) = (\lambda A)B = A(\lambda B)$ — inherited from linearity of composition.
+   - **Identity**: $I_\kappa \cdot A = A$ and $A \cdot I_\kappa = A$ — inherited from $\Composition{\Identity{}}{T} = T = \Composition{T}{\Identity{}}$.
+   - **Zero**: $0 \cdot A = 0$ and $A \cdot 0 = 0$ — inherited from composing with the zero map.
+
+   **Corollary ($K$-algebra isomorphism)**: $\Phi$ is an isomorphism of $K$-algebras $\End[K]{K^{(\kappa)}} \xrightarrow{\sim} \CFMat{\kappa}{\kappa}[K]$:
+   adding maps $\leftrightarrow$ adding matrices, composing maps $\leftrightarrow$ multiplying matrices, zero map $\leftrightarrow$ zero matrix, identity map $\leftrightarrow$ identity matrix.
+
+3. **Other matrix operations** (purely combinatorial — defined on all of $\MatSpace{Y}{X}[K]$ unless noted):
+   - **Hadamard product**: $(\Hadamard{A}{B})_{ij} = A_{ij} B_{ij}$ (pointwise; same-size matrices; column-finiteness preserved)
+   - **Transpose**: $(\Transpose{A})_{ij} = A_{ji}$; sends $\MatSpace{Y}{X}[K]$ to $\MatSpace{X}{Y}[K]$. The transpose of $A \in \CFMat{Y}{X}[K]$ is **not** in general column-finite in $\MatSpace{X}{Y}[K]$: columns of $A$ become rows of $\Transpose{A}$, which may have infinite support. For finite $X, Y$: always column-finite.
+   - **Hermitian conjugate**: $(\Hermitian{A})_{ij} = \overline{A_{ji}}$ (requires conjugation on $K$, e.g. $K = \bb{C}$). Same column-finiteness caveat as transpose.
+   - **Determinant** (forward reference — Chapter 7, Multilinear Algebra): Leibniz formula $\Det{A} = \sum_{\sigma \in S_n} \operatorname{sgn}(\sigma) \prod_i A_{i,\sigma(i)}$ for square finite matrices; derived as unique alternating multilinear form with $\Det{I_n} = 1$.
 
 ---
 
-### 16e: Matrices as Linear Maps (Canonical Interpretation)
-- Since $A \in \CFMat{\kappa_2}{\kappa_1}[K]$ corresponds canonically to a linear map $\Phi^{-1}(A): K^{(\kappa_1)} \to K^{(\kappa_2)}$ via the isomorphism of **16c**, we treat any column-finite matrix as a linear map without further comment. This is **not** an abuse of notation — it is a direct consequence of the definition.
+### 16d: The Action Map and General Matrices
+
+1. **Proposition (Action Map)**: Every $A \in \MatSpace{Y}{X}[K]$ defines a $K$-linear map
+   \[
+       \mu_A: K^{(X)} \to K^Y, \qquad (\mu_A(x))_i \defeq \sum_{j \in X} A_{ij} x_j
+   \]
+   The sum is finite (since $x$ has finite support), so $\mu_A$ is well-defined. Column-finiteness of $A$ is equivalent to $\operatorname{im}(\mu_A) \subseteq K^{(Y)}$: i.e. $A$ is column-finite if and only if $\mu_A$ restricts to a map $K^{(X)} \to K^{(Y)}$.
+
+   **Proof**: If $A$ is column-finite, then for any $x \in K^{(X)}$, $\mu_A(x) = \sum_{j \in \operatorname{supp}(x)} x_j A(-,j)$ is a finite sum of elements of $K^{(Y)}$, so $\mu_A(x) \in K^{(Y)}$. Conversely, if $\mu_A(e_j) = A(-,j) \in K^{(Y)}$ for all $j$, then $A$ is column-finite. $\checkmark$
+
+2. **When is multiplication of general matrices defined?** The entry formula $(AB)_{ij} = \sum_k A_{ik} B_{kj}$ requires the sum to be finite. This is guaranteed when $B$ is column-finite (then $B_{kj} \neq 0$ for finitely many $k$). So one can multiply $A \in \MatSpace{Y}{Z}[K]$ by $B \in \CFMat{Z}{X}[K]$ to get $AB \in \MatSpace{Y}{X}[K]$ — but the result need not be column-finite (this requires $A$ to also be column-finite). Column-finiteness of both factors is the minimal condition ensuring the product is well-defined *and* stays in $\CFMat{Y}{X}[K]$.
+
+3. **Scope remark**: The entry formula extends beyond column-finite matrices whenever the sums converge (e.g. for bounded operators on $\ell^2$ in functional analysis, where convergence replaces finite support). This is not the concern of linear algebra proper, where we work primarily with finite-dimensional vector spaces (for which $\CFMat{m}{n}[K] = \MatSpace{m}{n}[K]$ and all conditions are automatic).
+
+---
+
+### 16e: Matrix of a Linear Map (The Commutative Diagram)
+
+This section gives the matrix of an abstract linear map $T: U \to V$ with respect to ordered bases. The diagram is not the *definition* of matrix (that was 16a), but the *definition* of "the matrix of a linear map" — and that is the concept that deserves emphasis.
+
+**Setup**: Let $U$ and $V$ be $K$-vector spaces with ordered bases $\mathcal{B}_U = (b_j)_{j \in J}$ and $\mathcal{B}_V = (c_i)_{i \in I}$, where $|J| = \kappa_1$ and $|I| = \kappa_2$. Let $T: U \to V$ be $K$-linear. Recall the coordinate isomorphisms $\phi_{\mathcal{B}_U}: U \xrightarrow{\sim} K^{(\kappa_1)}$ and $\phi_{\mathcal{B}_V}: V \xrightarrow{\sim} K^{(\kappa_2)}$.
+
+**Why $K^{(I)}$?** Abstract vector spaces have no canonical basis — any basis requires an arbitrary choice. The spaces $K^{(I)}$ are the exception: they carry the canonical basis $(e_i)_{i \in I}$, intrinsically defined by the function-space structure. This is why we factor $T$ through coordinate spaces: once we pass to $K^{(\kappa_1)} \to K^{(\kappa_2)}$, the canonical bases are available and the Representation Theorem (16b) applies. **Matrices exist to exploit the canonical structure of $K^{(I)}$.**
+
+1. **Definition (Matrix of $T$ w.r.t.\ $\mathcal{B}_U$, $\mathcal{B}_V$)**:
+   The **matrix of $T$ with respect to $\mathcal{B}_U$ and $\mathcal{B}_V$** is the unique element $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] \in \CFMat{\kappa_2}{\kappa_1}[K]$ making the following square commute:
+   ```
+   DIAGRAM: commutative square
+     U  ---T--->  V
+     |            |
+    φ_{B_U}     φ_{B_V}
+     |            |
+     ↓            ↓
+   K^(κ₁) ----> K^(κ₂)
+       [T]_{B_U}^{B_V}
+   ```
+   Explicitly, $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] = \Phi(\Composition{\phi_{\mathcal{B}_V}}{\Composition{T}{\phi_{\mathcal{B}_U}^{-1}}})$, i.e. the matrix (under $\Phi$) of the composite $K^{(\kappa_1)} \xrightarrow{\phi_{\mathcal{B}_U}^{-1}} U \xrightarrow{T} V \xrightarrow{\phi_{\mathcal{B}_V}} K^{(\kappa_2)}$ with respect to the canonical bases.
+
+   - The matrix is automatically column-finite (the linear map $\Composition{\phi_{\mathcal{B}_V}}{\Composition{T}{\phi_{\mathcal{B}_U}^{-1}}}$ maps into $K^{(\kappa_2)}$, so the Representation Theorem applies).
+   - This definition requires **ordered** bases; unordered bases give only an isomorphism up to reordering.
+   - **Notation**: Always write $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]$ with basis indices, even when the bases are canonical: $\MatrixRep{T}[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]$.
+
+2. **Theorem (Evaluation Formula)**:
+   The $j$-th column of $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]$ equals the coordinate vector $\phi_{\mathcal{B}_V}(T(b_j))$. Explicitly, if $T(b_j) = \sum_i a_{ij} c_i$, then the $(i,j)$-entry is $a_{ij}$.
+
+   **Proof**: The composite evaluated at $e_j$ gives $\phi_{\mathcal{B}_V}(T(\phi_{\mathcal{B}_U}^{-1}(e_j))) = \phi_{\mathcal{B}_V}(T(b_j))$. The $i$-th component is $a_{ij}$. $\checkmark$
+
+   **Practical consequence**: To compute $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$: apply $T$ to each $b_j$, express $T(b_j)$ in $\mathcal{B}_V$, place those coordinates as the $j$-th column:
+   \[
+       \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+       = \begin{pmatrix}
+           | & | & \cdots & | \\
+           \CoordVec[\mathcal{B}_V]{T(b_1)} & \CoordVec[\mathcal{B}_V]{T(b_2)}
+           & \cdots & \CoordVec[\mathcal{B}_V]{T(b_{\kappa_1})} \\
+           | & | & \cdots & |
+       \end{pmatrix}
+   \]
+   where $\mathcal{B}_U = (b_1, b_2, \ldots, b_{\kappa_1})$.
+
+3. **Corollary (Coordinate Formula)**: For any $v \in U$:
+   \[
+       \CoordVec{T(v)}[\mathcal{B}_V] = \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] \cdot \CoordVec{v}[\mathcal{B}_U]
+   \]
+
+   **Proof**: This is the matrix-times-column formula of 16b.1 applied to the linear map $\Composition{\phi_{\mathcal{B}_V}}{\Composition{T}{\phi_{\mathcal{B}_U}^{-1}}}$:
+   $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] \cdot \phi_{\mathcal{B}_U}(v) = (\Composition{\phi_{\mathcal{B}_V}}{\Composition{T}{\phi_{\mathcal{B}_U}^{-1}}})(\phi_{\mathcal{B}_U}(v)) = \phi_{\mathcal{B}_V}(T(v)) = \CoordVec{T(v)}[\mathcal{B}_V]$. $\checkmark$
+
+   **Remark**: The formula $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] \cdot x = Ax$ is a **theorem**, not a definition. It follows from the Representation Theorem and linearity.
+
+4. **Corollary (Composition = Multiplication)**: For composable $T: U \to V$, $S: V \to W$ with ordered bases $\mathcal{B}_U$, $\mathcal{B}_V$, $\mathcal{B}_W$:
+   \[
+       \MatrixRep{\Composition{S}{T}}[\mathcal{B}_U][\mathcal{B}_W] = \MatrixRep{S}[\mathcal{B}_V][\mathcal{B}_W] \cdot \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]
+   \]
+
+   **Proof**: By the coordinate formula, for any $v \in U$:
+   $\MatrixRep{\Composition{S}{T}}[\mathcal{B}_U][\mathcal{B}_W] \cdot \CoordVec{v}[\mathcal{B}_U] = \CoordVec{S(T(v))}[\mathcal{B}_W] = \MatrixRep{S}[\mathcal{B}_V][\mathcal{B}_W] \cdot \CoordVec{T(v)}[\mathcal{B}_V] = \MatrixRep{S}[\mathcal{B}_V][\mathcal{B}_W] \cdot \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] \cdot \CoordVec{v}[\mathcal{B}_U]$.
+   Since this holds for all $v$ and $\phi_{\mathcal{B}_U}$ is surjective, the matrices are equal. $\checkmark$
+
+5. **Remark (Matrix-times-vector as composition via $V \cong \Hom[K]{K}{V}$)**:
+   The identification $V \cong \Hom[K]{K}{V}$ from 16b.3 explains the coordinate formula as a special case of composition = multiplication. For $T: U \to V$ and $u \in U$, the composition $\Composition{T}{\lambda_u}: K \to V$ sends $1 \mapsto T(u)$, so $\MatrixRep{\Composition{T}{\lambda_u}}[(1)][\mathcal{B}_V] = \CoordVec{T(u)}[\mathcal{B}_V]$. By item 4:
+   \[
+       \CoordVec{T(u)}[\mathcal{B}_V] = \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] \cdot \MatrixRep{\lambda_u}[(1)][\mathcal{B}_U] = \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] \cdot \CoordVec{u}[\mathcal{B}_U]
+   \]
+   The shared summation index — column index of $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]$ paired with row index of $\CoordVec{u}[\mathcal{B}_U]$ — is forced by composition: $\Hom[K]{U}{V} \times \Hom[K]{K}{U} \to \Hom[K]{K}{V}$ contracts the middle space $U$. **Matrix-times-vector is not a separate operation; it is matrix multiplication applied to a column matrix.**
+
+6. **Theorem (General Hom via Bases)**:
+   For $U$, $V$ with ordered bases $\mathcal{B}_U$, $\mathcal{B}_V$, the map $T \mapsto \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]$ is a $K$-linear isomorphism:
+   \[
+       \Hom[K]{U}{V} \xrightarrow{\;\sim\;} \CFMat{|\mathcal{B}_V|}{|\mathcal{B}_U|}[K]
+   \]
+   The isomorphism lands in $\CFMat{}{}$: for any $T$ and any $b_j \in \mathcal{B}_U$, the image $T(b_j) \in V$ has finite support in $\mathcal{B}_V$ (by definition of basis), so each column is finitely supported. Different basis choices yield different but isomorphic identifications (related by change-of-basis matrices, Phase 17).
+
+---
+
+### 16f: Matrices as Linear Maps (Canonical Interpretation)
+- Since $A \in \CFMat{\kappa_2}{\kappa_1}[K]$ corresponds canonically to a linear map $\Phi^{-1}(A): K^{(\kappa_1)} \to K^{(\kappa_2)}$ via the Representation Theorem (16b), we treat any column-finite matrix as a linear map without further comment. This is **not** an abuse of notation — it is a direct consequence of the isomorphism.
 - In particular, $\Ker{A}$ and $\Rng{A}$ are well-defined:
   \[
       \Ker{A} \defeq \Set{x \in K^{(\kappa_1)} \mid Ax = 0}, \qquad \Rng{A} \defeq \Set{Ax \mid x \in K^{(\kappa_1)}}
@@ -1347,7 +1390,62 @@ In other words: **matrix addition is defined on all matrices (product space stru
 
 ---
 
-### 16f: Linear Systems
+### 16g: Rank and Nullity Invariance; Change of Bases Formula
+
+7. **Theorem (Rank and Nullity are Basis-Independent)**:
+   For $T: U \to V$ with any ordered bases $\mathcal{B}_U$, $\mathcal{B}_V$:
+   \[
+       \Rank{T} = \Rank{\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]}, \qquad \Nullity{T} = \Nullity{\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]}
+   \]
+   **Proof**: The commutative square gives $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] = \phi_{\mathcal{B}_V} \circ T \circ \phi_{\mathcal{B}_U}^{-1}$. Pre- and post-composing with isomorphisms does not change rank or nullity, because isomorphisms send subspaces to isomorphic subspaces (preserving dimension). Explicitly:
+   - $\Rng{\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]} = \phi_{\mathcal{B}_V}(\Rng{T})$, so $\Rank{\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]} = \Dim{\phi_{\mathcal{B}_V}(\Rng{T})} = \Dim{\Rng{T}} = \Rank{T}$.
+   - $\Ker{\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]} = \phi_{\mathcal{B}_U}(\Ker{T})$, so $\Nullity{\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]} = \Dim{\phi_{\mathcal{B}_U}(\Ker{T})} = \Dim{\Ker{T}} = \Nullity{T}$. $\checkmark$
+
+   **Consequence**: $\Rank{T}$ and $\Nullity{T}$ can be computed from any matrix representation; the choice of bases is irrelevant.
+
+8. **Theorem (Change of Bases Formula)**:
+   Let $T: U \to V$, and let $\mathcal{B}_U$, $\mathcal{C}_U$ be two ordered bases of $U$, and $\mathcal{B}_V$, $\mathcal{C}_V$ two ordered bases of $V$. Then:
+   \[
+       \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]
+       = \MatrixRep{\Id_V}[\mathcal{C}_V][\mathcal{B}_V]
+         \cdot \MatrixRep{T}[\mathcal{C}_U][\mathcal{C}_V]
+         \cdot \MatrixRep{\Id_U}[\mathcal{B}_U][\mathcal{C}_U]
+   \]
+   **Proof**: Apply the composition formula (item 4) to $T = \Id_V \circ T \circ \Id_U$, routing through the intermediate bases $\mathcal{C}_U$ on $U$ and $\mathcal{C}_V$ on $V$:
+   \[
+       \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]
+       = \MatrixRep{\Id_V \circ T \circ \Id_U}[\mathcal{B}_U][\mathcal{B}_V]
+       = \MatrixRep{\Id_V}[\mathcal{C}_V][\mathcal{B}_V] \cdot \MatrixRep{T}[\mathcal{C}_U][\mathcal{C}_V] \cdot \MatrixRep{\Id_U}[\mathcal{B}_U][\mathcal{C}_U]
+   \checkmark
+   \]
+   **Diagram**: The commutative square from 16e extends to a $3 \times 2$ grid: two levels of coordinate spaces, connected vertically by the identity-map matrices:
+   ```
+   DIAGRAM: 3×2 commutative grid
+         U ----------T---------> V
+         |                       |
+      φ_{B_U}               φ_{B_V}
+         |                       |
+       K^k1 ---[T]_{B_U}^{B_V}-> K^k2
+         |                       |
+   [Id_U]_{B_U}^{C_U}      [Id_V]_{C_V}^{B_V}
+         |                       |
+       K^k1 ---[T]_{C_U}^{C_V}-> K^k2
+         |                       |
+      φ_{C_U}               φ_{C_V}
+         |                       |
+         U ----------T---------> V
+   ```
+   (The outer rows are just $U$ and $V$ again; the two copies of $K^{\kappa_1}$ differ only in which basis they use.)
+
+   **Remark**: The matrices $\MatrixRep{\Id_V}[\mathcal{B}_V][\mathcal{C}_V]$ and $\MatrixRep{\Id_V}[\mathcal{C}_V][\mathcal{B}_V]$ are the **change of basis matrices** for $V$. They are studied in depth in Phase 17.
+
+**Examples**:
+- **Example 1**: $U = V = \mathbb{R}^2$, $\mathcal{B} = (e_1, e_2)$ (standard), $\mathcal{C} = (e_1 + e_2, e_2)$. Let $T(x,y) = (2x+y, x)$. Compute $\MatrixRep{T}[\mathcal{B}][\mathcal{B}]$, then $\MatrixRep{\Id}[\mathcal{B}][\mathcal{C}]$ and $\MatrixRep{\Id}[\mathcal{C}][\mathcal{B}]$, and verify the change of bases formula gives $\MatrixRep{T}[\mathcal{C}][\mathcal{C}]$.
+- **Example 2**: $T: \mathbb{R}^2 \to \mathbb{R}^3$, $T(x,y) = (x, x+y, y)$. Compute $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]$ for $\mathcal{B}_U = (e_1, e_2)$, $\mathcal{B}_V = (e_1, e_2, e_3)$; then recompute for $\mathcal{C}_U = (e_1+e_2, e_1-e_2)$ and $\mathcal{C}_V = (e_1+e_2, e_2, e_3)$ and verify the formula.
+
+---
+
+### 16h: Linear Systems
 1. **Homogeneous system**: $Ax = 0$
    - Solution space = $\Ker{T_A}$ where $T_A: K^{(\kappa_1)} \to K^{(\kappa_2)}$
    - Always a subspace
@@ -1359,24 +1457,137 @@ In other words: **matrix addition is defined on all matrices (product space stru
 
 ---
 
-## Phase 17: Change of Basis and Gaussian Elimination
+## Phase 17: Change of Basis Matrices; Inj/Surj/Bij via Matrices; Invertibility
 
-1. **Change of basis matrices**: Invertible; columns are coordinates of new basis in terms of old
-   - 📊 **DIAGRAM**: Commutative square $V \xrightarrow{T} W$ with coordinate maps $K^n \to K^m$
-2. **Similarity**: $A' = P^{-1}AP$ for endomorphisms
-3. **Equivalence**: $A' = QAP^{-1}$ for general linear maps
-4. **RREF, CREF, REF** as equivalence relations
-5. **Kernel/Range invariance** under row/column operations
+### 17a: Change of Basis Matrices
 
-### RREF/CREF and Map Properties
-6. **Injectivity**: RREF has no zero rows iff injective (full column rank)
-7. **Surjectivity**: CREF has no zero columns iff surjective (full row rank)
-8. **Bijectivity**: Square matrix in RREF = identity iff bijective
+1. **Definition**: For a $K$-vector space $V$ with two ordered bases $\mathcal{B}$ and $\mathcal{C}$, the **change of basis matrix from $\mathcal{B}$ to $\mathcal{C}$** is:
+   \[
+       \CoB{\mathcal{B}}{\mathcal{C}} \defeq \MatrixRep{\Id_V}[\mathcal{B}][\mathcal{C}]
+   \]
+   Its $j$-th column is $\CoordVec{b_j}[\mathcal{C}]$ — the coordinate vector of the $j$-th basis vector of $\mathcal{B}$ expressed in basis $\mathcal{C}$.
 
-### Gauss-Jordan Elimination for Inverses
-9. **Left inverse** (when injective): Augment $[A | I]$, row reduce to $[R | L]$, then $LA = R$
-10. **Right inverse** (when surjective): Augment $\begin{pmatrix} A \\ I \end{pmatrix}$, column reduce
-11. **Two-sided inverse**: $[A | I] \to [I | A^{-1}]$ via Gauss-Jordan
+2. **Properties** (all immediate from the evaluation formula and composition = multiplication):
+   - $\CoordVec{v}[\mathcal{C}] = \CoB{\mathcal{B}}{\mathcal{C}} \cdot \CoordVec{v}[\mathcal{B}]$ for all $v \in V$
+   - $\CoB{\mathcal{B}}{\mathcal{C}} \cdot \CoB{\mathcal{C}}{\mathcal{B}} = I$ (from $\Id_V \circ \Id_V = \Id_V$)
+   - Hence $\CoB{\mathcal{B}}{\mathcal{C}}$ is always invertible, with $(\CoB{\mathcal{B}}{\mathcal{C}})^{-1} = \CoB{\mathcal{C}}{\mathcal{B}}$
+   - The base change formula from 16h.8 reads: $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] = \CoB{\mathcal{C}_V}{\mathcal{B}_V} \cdot \MatrixRep{T}[\mathcal{C}_U][\mathcal{C}_V] \cdot \CoB{\mathcal{B}_U}{\mathcal{C}_U}$
+
+3. **Equivalence and Similarity**:
+   - **Equivalence** (general $T: U \to V$, $\Dim U = n$, $\Dim V = m$): matrices $A, B \in \CFMat{m}{n}[K]$ are **equivalent** if $A = Q B P^{-1}$ for invertible $P \in \CFMat{n}{n}[K]$, $Q \in \CFMat{m}{m}[K]$. The change of bases formula shows any two matrix representations of $T$ are equivalent (with $P = \CoB{\mathcal{B}_U}{\mathcal{C}_U}$, $Q = \CoB{\mathcal{C}_V}{\mathcal{B}_V}$).
+   - **Similarity** (endomorphisms $T: V \to V$, single basis): $A, B \in \CFMat{n}{n}[K]$ are **similar** if $A = P^{-1} B P$. The representations $\MatrixRep{T}[\mathcal{B}]$ and $\MatrixRep{T}[\mathcal{C}]$ are always similar (with $P = \CoB{\mathcal{B}}{\mathcal{C}}$).
+   - **Rank is invariant** under both equivalence and similarity (16h.7).
+
+4. **RREF, CREF, REF** as canonical representatives of equivalence classes under row/column operations (Gaussian elimination as a systematic change of basis).
+
+### 17b: Change of Basis as Automorphism of $K^n$
+
+5. **The coordinate space picture**: When $\Dim[K]{V} = n$, each ordered basis $\mathcal{B}$ of $V$ identifies $V \cong K^n$ via $\phi_{\mathcal{B}}$. A different basis $\mathcal{C}$ gives a different identification $V \cong K^n$ via $\phi_{\mathcal{C}}$. Both identifications land in the *same* $K^n$, but they encode the coordinates of each $v \in V$ differently: $v$ has $\mathcal{B}$-coordinates $\CoordVec{v}[\mathcal{B}] \in K^n$ and $\mathcal{C}$-coordinates $\CoordVec{v}[\mathcal{C}] \in K^n$.
+
+6. **Automorphism interpretation**: The change of basis matrix $\CoB{\mathcal{B}}{\mathcal{C}} \in \CFMat{n}{n}[K]$, viewed as a linear map $K^n \to K^n$ (via 16f), is an **automorphism of $K^n$** (an invertible endomorphism). It is the unique automorphism converting $\mathcal{B}$-coordinates into $\mathcal{C}$-coordinates for all vectors simultaneously:
+   \[
+       \CoB{\mathcal{B}}{\mathcal{C}}: K^n \xrightarrow{\sim} K^n, \qquad \CoordVec{v}[\mathcal{B}] \mapsto \CoordVec{v}[\mathcal{C}]
+   \]
+
+7. **Why "change of basis" is meaningful in $K^n$**: In an abstract vector space $V$, vectors have no intrinsic coordinates — a basis must be chosen. In $K^n$, every vector is already a coordinate tuple, but the canonical basis $\mathcal{E}$ is just one of many possible bases. A change of basis in $K^n$ is an automorphism that re-encodes the same abstract vector under a new coordinate system: $[v]^{\mathcal{B}}$ and $[v]^{\mathcal{C}}$ are two tuples in $K^n$ both referring to the same $v \in K^n$, and $\CoB{\mathcal{B}}{\mathcal{C}}$ is the automorphism converting between them.
+
+**Examples**:
+- **Example 1** (change of basis matrix): $V = \mathbb{R}^2$, $\mathcal{B} = (e_1, e_2)$, $\mathcal{C} = (e_1 + e_2, e_2)$. Compute $\CoB{\mathcal{B}}{\mathcal{C}}$ (columns: $\CoordVec{e_1}[\mathcal{C}]$, $\CoordVec{e_2}[\mathcal{C}]$) and verify that it converts $(3, 5)^{\mathcal{B}}$ to the correct $\mathcal{C}$-coordinates.
+- **Example 2** (automorphism): View $\CoB{\mathcal{B}}{\mathcal{C}}$ from Example 1 as a linear map $\mathbb{R}^2 \to \mathbb{R}^2$. Compute its matrix, check it is invertible, and verify $(\CoB{\mathcal{B}}{\mathcal{C}})^{-1} = \CoB{\mathcal{C}}{\mathcal{B}}$.
+- **Example 3**: For $T: \mathbb{R}^2 \to \mathbb{R}^2$, $T(x,y) = (2x+y, x+y)$, compute $\MatrixRep{T}[\mathcal{C}][\mathcal{C}]$ from $\MatrixRep{T}[\mathcal{B}][\mathcal{B}]$ via the change of bases formula, and verify directly.
+
+### 17c: Injectivity, Surjectivity, Bijectivity via Matrices
+
+**Substitution Principle**: Every characterization of $T$ from Phase 10 yields an equivalent characterization with $T$ replaced by $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]$ (for any ordered bases). More precisely: $T$ satisfies property $P$ if and only if $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]$ satisfies property $P$.
+
+**Proof**: $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] = \phi_{\mathcal{B}_V} \circ T \circ \phi_{\mathcal{B}_U}^{-1}$ is a conjugate of $T$ by isomorphisms. Isomorphisms preserve and reflect all structural properties: injectivity, surjectivity, kernel and image dimensions, etc. Hence $T$ has any such property iff $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]$ does. $\checkmark$
+
+**Additional Matrix Characterizations of Injectivity** ($T: U \to V$, $\Dim[K]{U} = n \leq m = \Dim[K]{V}$):
+
+```latex
+\begin{theorem}[Matrix Characterizations of Injectivity]
+    For $T: U \to V$ $K$-linear, the following are equivalent to the 10 characterizations of Phase 10:
+    \begin{enumerate}
+        \setcounter{enumi}{10}
+        \item For every ordered basis $\mathcal{B}_U$ of $U$, there exists an ordered basis $\mathcal{B}_V$ of $V$ such that
+              \[ \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] = \begin{pmatrix} I_n \\ 0 \end{pmatrix} \]
+        \item There exist ordered bases $\mathcal{B}_U$ of $U$ and $\mathcal{B}_V$ of $V$ such that
+              \[ \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] = \begin{pmatrix} I_n \\ 0 \end{pmatrix} \]
+        \item For every $w \in V$, the system $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]\, x = \CoordVec{w}[\mathcal{B}_V]$ has at most one solution $x \in K^n$ (for any ordered bases).
+    \end{enumerate}
+\end{theorem}
+```
+
+**Proofs**:
+- **(11) is a reformulation of Phase 10 characterization (7)** ("$T$ sends every basis to a lin.\ indep.\ set"): Given $\mathcal{B}_U = (b_1, \ldots, b_n)$, by (7) the set $\{T(b_1), \ldots, T(b_n)\}$ is lin.\ indep.\ in $V$. Extend it to an ordered basis $\mathcal{B}_V = (T(b_1), \ldots, T(b_n), c_{n+1}, \ldots, c_m)$ of $V$. Then the $j$-th column of $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]$ is $\CoordVec{T(b_j)}[\mathcal{B}_V] = e_j \in K^m$, giving exactly $\begin{pmatrix} I_n \\ 0 \end{pmatrix}$.
+- **(12) is a reformulation of Phase 10 characterization (8)** ("$T$ sends some basis to a lin.\ indep.\ set"): Same construction, for one chosen basis.
+- **(13) is a reformulation of Phase 10 characterization (2)** (set-theoretic injectivity): The system $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]\, x = \CoordVec{w}[\mathcal{B}_V]$ is the coordinate form of $T(v) = w$ (via the coordinate formula). At most one solution $x$ $\Leftrightarrow$ at most one preimage $v = \phi_{\mathcal{B}_U}^{-1}(x)$. $\checkmark$
+
+**Dual Characterizations of Surjectivity** ($T: U \to V$, $\Dim[K]{V} = m \leq n = \Dim[K]{U}$):
+
+```latex
+\begin{theorem}[Matrix Characterizations of Surjectivity]
+    For $T: U \to V$ $K$-linear, the following are equivalent to the 10 characterizations of Phase 10:
+    \begin{enumerate}
+        \setcounter{enumi}{10}
+        \item For every ordered basis $\mathcal{B}_V$ of $V$, there exists an ordered basis $\mathcal{B}_U$ of $U$ such that
+              \[ \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] = \begin{pmatrix} I_m & 0 \end{pmatrix} \]
+        \item There exist ordered bases $\mathcal{B}_U$ of $U$ and $\mathcal{B}_V$ of $V$ such that
+              \[ \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] = \begin{pmatrix} I_m & 0 \end{pmatrix} \]
+        \item For every $w \in V$, the system $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]\, x = \CoordVec{w}[\mathcal{B}_V]$ has at least one solution $x \in K^n$ (for any ordered bases).
+    \end{enumerate}
+\end{theorem}
+```
+
+**Proofs** (dual to injectivity):
+- **(11) is a reformulation of surjectivity characterization (7)** ("$T$ sends every basis to a generating set"): Given $\mathcal{B}_V = (c_1, \ldots, c_m)$, by (7) $T(\mathcal{B}_U)$ generates $V$ for any $\mathcal{B}_U$. Choose $\mathcal{B}_U$ by picking $u_1, \ldots, u_m$ with $T(u_i) = c_i$ (possible since $T$ is surjective — take any preimages) and extending $(u_1, \ldots, u_m)$ to a basis $\mathcal{B}_U = (u_1, \ldots, u_m, d_{m+1}, \ldots, d_n)$ of $U$. The $j$-th column of $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]$ for $j \leq m$ is $\CoordVec{T(u_j)}[\mathcal{B}_V] = e_j$, and for $j > m$ any vector; this gives $\begin{pmatrix} I_m & * \end{pmatrix}$. To get $\begin{pmatrix} I_m & 0 \end{pmatrix}$, replace $d_j$ by $d_j - \sum_i (\CoordVec{T(d_j)}[\mathcal{B}_V])_i u_i$ so that $T(d_j') \in \Ker(\phi_{\mathcal{B}_V}$ restricted to first $m$ coords$)$... [*clean this argument: pick $u_{m+1}, \ldots, u_n \in \Ker T$, which has dimension $n-m$, as the remaining basis vectors*]. Then $T(u_j) = 0$ for $j > m$, giving exactly $\begin{pmatrix} I_m & 0 \end{pmatrix}$.
+- **(12) is a reformulation of surjectivity characterization (8)** ("some basis to generating set"): Same for one chosen $\mathcal{B}_V$.
+- **(13) is a reformulation of surjectivity characterization (2)** (surjectivity): $T(v) = w$ has at least one solution $v$ $\Leftrightarrow$ at least one solution $x = \phi_{\mathcal{B}_U}(v)$ in coordinates. $\checkmark$
+
+**Bijectivity**: Combining injective characterizations (11)/(12) with surjective ones: $T$ is bijective iff there exist bases with $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] = I_n$ (and necessarily $n = m$); iff every system $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] x = b$ has exactly one solution.
+
+**RREF/CREF characterizations**:
+- **Injectivity**: RREF of $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]$ has no zero rows $\Leftrightarrow$ full column rank $\Leftrightarrow$ $T$ injective
+- **Surjectivity**: CREF has no zero columns $\Leftrightarrow$ full row rank $\Leftrightarrow$ $T$ surjective
+- **Bijectivity**: $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]$ in RREF equals $I_n$ $\Leftrightarrow$ $T$ bijective (and $n = m$)
+
+**Examples**:
+- **Example 1**: $T: \mathbb{R}^2 \to \mathbb{R}^3$, $T(x,y) = (x, y, 0)$. Show explicitly for $\mathcal{B}_U = (e_1, e_2)$ that the matrix has the form $\begin{pmatrix} I_2 \\ 0 \end{pmatrix}$ after choosing the right basis for $\mathbb{R}^3$.
+- **Example 2**: $T: \mathbb{R}^3 \to \mathbb{R}^2$, $T(x,y,z) = (x,y)$. Construct $\mathcal{B}_U$ and $\mathcal{B}_V$ such that $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] = \begin{pmatrix} I_2 & 0 \end{pmatrix}$.
+- **Example 3**: $T: \mathbb{R}^2 \to \mathbb{R}^2$, $T(x,y) = (x+y, x+y)$. Not injective, not surjective. Show no choice of bases gives the normal forms above.
+
+### 17d: Invertibility
+
+**Theorem**: Let $T: U \xrightarrow{\sim} V$ be a $K$-linear isomorphism with ordered bases $\mathcal{B}_U$, $\mathcal{B}_V$. Then:
+\[
+    \left(\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]\right)^{-1} = \MatrixRep{T^{-1}}[\mathcal{B}_V][\mathcal{B}_U]
+\]
+**Proof**: Apply the composition formula (16e item 4) to $T^{-1} \circ T = \Id_U$ and $T \circ T^{-1} = \Id_V$:
+\[
+    \MatrixRep{T^{-1}}[\mathcal{B}_V][\mathcal{B}_U] \cdot \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]
+    = \MatrixRep{T^{-1} \circ T}[\mathcal{B}_U][\mathcal{B}_U]
+    = \MatrixRep{\Id_U}[\mathcal{B}_U][\mathcal{B}_U]
+    = I_n
+\]
+and symmetrically $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] \cdot \MatrixRep{T^{-1}}[\mathcal{B}_V][\mathcal{B}_U] = I_m$. The two matrices are mutual inverses. $\checkmark$
+
+**Corollary ($T$ invertible $\Leftrightarrow$ matrix invertible)**: $T: U \to V$ is an isomorphism if and only if $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]$ is an invertible matrix, for any (equivalently, some) ordered bases $\mathcal{B}_U$, $\mathcal{B}_V$.
+
+**Proof**:
+- ($\Rightarrow$): If $T$ is an isomorphism, the theorem gives $\MatrixRep{T^{-1}}[\mathcal{B}_V][\mathcal{B}_U]$ as its matrix inverse.
+- ($\Leftarrow$): If $A = \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]$ is invertible, define $S \defeq \phi_{\mathcal{B}_U}^{-1} \circ A^{-1} \circ \phi_{\mathcal{B}_V}: V \to U$. This is $K$-linear and satisfies $S \circ T = \Id_U$, $T \circ S = \Id_V$ (verified by applying the composition formula). Hence $T$ is an isomorphism.
+- **Independence of bases**: If $\MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V]$ is invertible for one pair, then by the change of bases formula $\MatrixRep{T}[\mathcal{C}_U][\mathcal{C}_V] = \CoB{\mathcal{B}_V}{\mathcal{C}_V} \cdot \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] \cdot \CoB{\mathcal{C}_U}{\mathcal{B}_U}$, a product of invertible matrices, hence invertible for every pair. $\checkmark$
+
+**Examples**:
+- **Example 1**: $T: \mathbb{R}^2 \to \mathbb{R}^2$, $T(x,y) = (2x+y, x+y)$. Compute $\MatrixRep{T}[\mathcal{E}][\mathcal{E}] = \begin{pmatrix} 2 & 1 \\ 1 & 1 \end{pmatrix}$, verify it is invertible, compute $\MatrixRep{T}[\mathcal{E}][\mathcal{E}]^{-1} = \begin{pmatrix} 1 & -1 \\ -1 & 2 \end{pmatrix}$, and check that this equals $\MatrixRep{T^{-1}}[\mathcal{E}][\mathcal{E}]$ by computing $T^{-1}$ directly.
+- **Example 2**: $T: \mathbb{R}^2 \to \mathbb{R}^2$, $T(x,y) = (x+y, x+y)$. The matrix $\begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix}$ is not invertible ($\det = 0$), confirming $T$ is not an isomorphism.
+- **Example 3**: Verify for Example 1 that the corollary is basis-independent: compute $\MatrixRep{T}[\mathcal{C}][\mathcal{C}]$ for $\mathcal{C} = (e_1+e_2, e_2)$ and check it is also invertible.
+
+### 17e: Gauss-Jordan Elimination for Inverses
+
+1. **Left inverse** (when injective): Augment $[A \mid I_m]$, row-reduce to $[R \mid L]$; then $LA = R$ (if $A$ has full column rank, $R$ has no zero rows and $L$ is a left inverse).
+2. **Right inverse** (when surjective): Augment $\begin{pmatrix} A \\ I_n \end{pmatrix}$, column-reduce; symmetric to the above.
+3. **Two-sided inverse**: $[A \mid I_n] \to [I_n \mid A^{-1}]$ via Gauss-Jordan (valid iff $A$ is square and invertible).
 
 ---
 
@@ -1544,6 +1755,10 @@ In other words: **matrix addition is defined on all matrices (product space stru
 
 **Corollary (Rank-Nullity)**: This provides an alternative derivation of rank-nullity via dimensions.
 
+**Worked Example** (after proof and corollary): Take $T: \bb{R}^3 \to \bb{R}^2$ defined by $T(x,y,z) = (x+y, y+z)$. Compute $\Ker{T} = \Span{(1,-1,1)}$ (a line), show $\Rng{T} = \bb{R}^2$ (surjective), then explicitly describe the isomorphism $\tilde{T}: \QuotientSpace{\bb{R}^3}{\Ker{T}} \to \bb{R}^2$ by showing what specific cosets (lines parallel to $(1,-1,1)$) map to what specific vectors. Include dimension check: $3 - 1 = 2$.
+
+📊 **FIGURE** (TikZ): 3D view of $\bb{R}^3$ with parallel lines along $(1,-1,1)$ (the cosets), arrow $\tilde{T}$ to $\bb{R}^2$ with colored points showing where each coset lands.
+
 ### Second Isomorphism Theorem
 
 📊 **DIAGRAM**: Diamond with $U$, $W$, $U+W$, $U \Intersect W$ and quotient isomorphism
@@ -1558,6 +1773,10 @@ In other words: **matrix addition is defined on all matrices (product space stru
 ```
 
 **Proof**: Consider inclusion $\iota: U \hookrightarrow U + W$ composed with projection $\pi: U + W \to \Quotient{(U+W)}{W}$. Show $\Ker{\Composition{\pi}{\iota}} = U \Intersect W$. Apply first isomorphism theorem.
+
+**Worked Example** (after proof, before corollary): Take $V = \bb{R}^3$, $U =$ $xy$-plane, $W =$ $xz$-plane. Then $U + W = \bb{R}^3$, $U \cap W =$ $x$-axis. Left side: $\bb{R}^3/W$ collapses the $xz$-plane, leaving only the $y$-direction ($\cong \bb{R}$). Right side: $U/(U \cap W)$ collapses the $x$-axis within the $xy$-plane, again leaving the $y$-direction ($\cong \bb{R}$). Two different ways of "projecting onto the $y$-axis."
+
+📊 **FIGURE** (TikZ): Subspace diamond ($U+W$, $U$, $W$, $U \cap W$) on the left, arrows $/W$ and $/(U \cap W)$ leading to the two quotients on the right, with $\cong$ between them.
 
 **Corollary (Grassmann via Isomorphism)**:
 - From $\Quotient{(U + W)}{W} \cong \Quotient{U}{(U \Intersect W)}$, we get $\Dim[K]{\Quotient{(U + W)}{W}} = \Dim[K]{\Quotient{U}{(U \Intersect W)}}$
@@ -1578,11 +1797,25 @@ In other words: **matrix addition is defined on all matrices (product space stru
 \end{theorem}
 ```
 
+**Worked Example** (after proof, before corollary): Take $V = \bb{R}^3$, $U = \Span{e_0}$ ($x$-axis), $W = \Span{e_0, e_1}$ ($xy$-plane). Stage 1: $V/U$ collapses the $x$-axis, giving a 2D space parameterized by $(y,z)$; the image $W/U$ is the $y$-line in this quotient. Stage 2: $(V/U)/(W/U)$ further collapses the $y$-direction, leaving 1D parameterized by $z$. All at once: $V/W$ collapses the $xy$-plane, also 1D parameterized by $z$. Collapsing in two stages = collapsing all at once.
+
+📊 **FIGURE** (TikZ): Flow diagram --- $\bb{R}^3$ at left, two paths to $\bb{R}_{(z)}$: top path via two-stage collapsing ($\bb{R}^3 \to \bb{R}^2_{(y,z)} \to \bb{R}_{(z)}$), bottom path direct ($\bb{R}^3 \to \bb{R}_{(z)}$), with $\cong$ between the endpoints.
+
 **Corollary (Dimension Formula)**: We cannot subtract dimensions of subspaces in general, but we can "cancel" them due to the third isomorphism theorem.
 
 ### Fourth (Lattice) Isomorphism Theorem
 
-Correspondence between subspaces of $\Quotient{V}{W}$ and subspaces of $V$ containing $W$.
+Bijective correspondence between subspaces of $\Quotient{V}{W}$ and subspaces of $V$ containing $W$.
+
+Equivalently (using $\SubspaceLattice{V}$ macro): $\SubspaceLattice{\QuotientSpace{V}{W}} \cong \Set{U \in \SubspaceLattice{V} \mid W \subseteq U}$ --- the subspace lattice of the quotient is isomorphic to the sublattice of $\SubspaceLattice{V}$ bounded below by $W$ (the principal filter ${\uparrow}W$). Quotienting by $W$ "cuts off" everything below $W$ in the lattice and relabels what remains.
+
+Maps: $U \mapsto \QuotientSpace{U}{W}$ (forward) and $X \mapsto \pi^{-1}(X)$ (inverse). Preserves: inclusion, join ($+$), meet ($\cap$), dimension.
+
+Prove all four properties explicitly (not just "element-chasing"): (1) inclusion via $\Psi$ order-preserving; (2) join by element chase through coset representatives; (3) meet by applying $\Psi$ to both sides; (4) by definition.
+
+**Worked Example** (after proof): Take $V = \bb{R}^3$, $W = \Span{e_0}$ ($x$-axis), so $V/W \cong \bb{R}^2$. Subspaces of $V$ containing $W$: the $x$-axis itself, every plane through the origin containing it (e.g., $xy$-plane, $xz$-plane), and $\bb{R}^3$. Subspaces of $V/W \cong \bb{R}^2$: $\{0\}$, every line through the origin, and $\bb{R}^2$. The correspondence maps planes containing $W$ to lines in $\bb{R}^2$ (e.g., $xy$-plane $\mapsto$ $y$-axis, $xz$-plane $\mapsto$ $z$-axis). Include a TikZ diagram showing two Hasse diagrams side by side with the $\Phi$ arrow between them.
+
+📊 **FIGURE** (TikZ): Two Hasse diagrams side-by-side --- left shows $\Set{U \in \SubspaceLattice{V} \mid W \subseteq U}$, right shows $\SubspaceLattice{V/W}$, with matching nodes at each level.
 
 ---
 
@@ -1606,7 +1839,7 @@ Correspondence between subspaces of $\Quotient{V}{W}$ and subspaces of $V$ conta
 1. First: $\QuotientSpace{U}{\Ker{T}} \cong \Rng{T}$ → Rank-Nullity
 2. Second: $\QuotientSpace{(U+W)}{W} \cong \QuotientSpace{U}{(U \cap W)}$ → Grassmann
 3. Third: $\QuotientSpace{(\QuotientSpace{V}{U})}{(\QuotientSpace{W}{U})} \cong \QuotientSpace{V}{W}$
-4. Fourth: Lattice correspondence subspaces containing $W \leftrightarrow$ subspaces of $\QuotientSpace{V}{W}$
+4. Fourth: Lattice correspondence subspaces containing $W \leftrightarrow$ subspaces of $\QuotientSpace{V}{W}$; equivalently $\SubspaceLattice{\QuotientSpace{V}{W}} \cong \Set{U \in \SubspaceLattice{V} \mid W \subseteq U}$
 
 **Critical Counterexample**: Cardinal subtraction fails for hyperplane check in infinite dims
 

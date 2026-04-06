@@ -1,0 +1,375 @@
+% Document/LinearAlgebra/VectorSpaces/Matrices/MatrixOfMap.tex
+% Phase 16e: Matrix of a Linear Map (The Commutative Diagram)
+
+\newpage
+\section{Matrix of a Linear Map}
+\label{sec:matrix-of-map}
+
+This section gives the matrix of an abstract linear map $T: U \to V$ with respect to
+ordered bases. The commutative diagram is not the \emph{definition} of matrix
+(that was Section~\ref{sec:mat-spaces}), but the \emph{definition} of ``the matrix of a
+linear map'' --- and that is the concept that deserves emphasis.
+
+\begin{remark}[{Why $K^{(I)}$?}]
+    Abstract vector spaces have no canonical basis --- any basis requires an arbitrary choice.
+    The spaces $K^{(I)}$ are the exception: they carry the canonical basis $(e_i)_{i \in I}$,
+    intrinsically defined by the function-space structure. This is the key reason we factor $T$
+    through coordinate spaces: once we pass to $K^{(\kappa_1)} \to K^{(\kappa_2)}$, the
+    canonical bases are automatically available and the Representation Theorem
+    (Theorem~\ref{thm:rep-thm}) applies.
+    \textbf{Matrices exist to exploit the canonical structure of $K^{(I)}$.}
+\end{remark}
+
+\subsection{Definition and Evaluation Formula}
+
+Let $U$ and $V$ be $K$-vector spaces with ordered bases $\mathcal{B}_U = (b_j)_{j \in J}$ and
+$\mathcal{B}_V = (c_i)_{i \in I}$, where $|J| = \kappa_1$ and $|I| = \kappa_2$.
+Let $T: U \to V$ be $K$-linear. Recall the coordinate isomorphisms
+$\phi_{\mathcal{B}_U}: U \xrightarrow{\sim} K^{(\kappa_1)}$ and
+$\phi_{\mathcal{B}_V}: V \xrightarrow{\sim} K^{(\kappa_2)}$ from Theorem~\ref{thm:coord-bijection}.
+
+\begin{definition}[Matrix of $T$ w.r.t.\ $\mathcal{B}_U$, $\mathcal{B}_V$]
+\label{def:matrix-of-map}
+    The \textbf{matrix of $T$ with respect to $\mathcal{B}_U$ and $\mathcal{B}_V$} is the
+    unique element
+    $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T} \in \CFMat{\kappa_2}{\kappa_1}[K]$
+    making the following square commute:
+    \[
+    \begin{tikzcd}
+        U \arrow[r, "T"] \arrow[d, "\phi_{\mathcal{B}_U}"'] &
+        V \arrow[d, "\phi_{\mathcal{B}_V}"] \\
+        K^{(\kappa_1)} \arrow[r,
+            "{\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}}"'] &
+        K^{(\kappa_2)}
+    \end{tikzcd}
+    \]
+    Explicitly,
+    $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+    = \Phi(\Composition{\phi_{\mathcal{B}_V}}{\Composition{T}{\phi_{\mathcal{B}_U}^{-1}}})$,
+    i.e.\ the matrix (under $\Phi$ from Theorem~\ref{thm:rep-thm}) of the composite
+    $K^{(\kappa_1)} \xrightarrow{\phi_{\mathcal{B}_U}^{-1}} U \xrightarrow{T} V
+    \xrightarrow{\phi_{\mathcal{B}_V}} K^{(\kappa_2)}$ with respect to the canonical bases.
+\end{definition}
+
+\begin{remark}
+    \leavevmode
+    \begin{itemize}
+        \item The matrix is automatically column-finite: the linear map
+              $\Composition{\phi_{\mathcal{B}_V}}{\Composition{T}{\phi_{\mathcal{B}_U}^{-1}}}$
+              maps into $K^{(\kappa_2)}$, so the Representation Theorem applies.
+        \item This definition requires \textbf{ordered} bases (to have a specific coordinate
+              isomorphism); unordered bases give only an isomorphism up to reordering.
+        \item \textbf{Notation}: Always write
+              $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$ with basis indices, even when the
+              bases are canonical:
+              $\CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{T}$.
+    \end{itemize}
+\end{remark}
+
+\begin{theorem}[Evaluation Formula]
+\label{thm:column-formula}
+    The $j$-th column of $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$ (i.e., the value
+    of the associated linear map on $e_j \in K^{(\kappa_1)}$) equals the coordinate vector
+    $\phi_{\mathcal{B}_V}(T(b_j))$. Explicitly, if
+    $T(b_j) = \sum_{i \in I} a_{ij}\, c_i$, then the $(i,j)$-entry of the matrix is $a_{ij}$.
+\end{theorem}
+
+\begin{proof}
+    The composite evaluated at $e_j$ gives
+    $\phi_{\mathcal{B}_V}(T(\phi_{\mathcal{B}_U}^{-1}(e_j)))
+    = \phi_{\mathcal{B}_V}(T(b_j))$.
+    The $i$-th component is
+    $(\phi_{\mathcal{B}_V}(T(b_j)))_i = a_{ij}$.
+\end{proof}
+
+\begin{remark}[Practical Consequence]
+    To compute $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$: apply $T$ to each basis vector
+    $b_j \in \mathcal{B}_U$, express the result $T(b_j)$ in the basis $\mathcal{B}_V$,
+    and place those coordinates as the $j$-th column:
+    \[
+        \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+        = \begin{pmatrix}
+            \vert & \vert & & \vert \\[4pt]
+            \CoordVec[\mathcal{B}_V]{T(b_1)} & \CoordVec[\mathcal{B}_V]{T(b_2)}
+            & \cdots & \CoordVec[\mathcal{B}_V]{T(b_{\kappa_1})} \\[4pt]
+            \vert & \vert & & \vert
+        \end{pmatrix}
+    \]
+    where $\mathcal{B}_U = (b_1, b_2, \ldots, b_{\kappa_1})$.
+\end{remark}
+
+\subsection{Coordinate Formula and Composition}
+
+\begin{corollary}[Coordinate Formula]
+\label{prop:coord-formula}
+    For any $v \in U$:
+    \[
+        \CoordVec[\mathcal{B}_V]{T(v)}
+        = \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+          \cdot \CoordVec[\mathcal{B}_U]{v}
+    \]
+\end{corollary}
+
+\begin{proof}
+    This is the matrix-times-column formula of Theorem~\ref{thm:rep-thm} applied to the
+    linear map
+    $\Composition{\phi_{\mathcal{B}_V}}{\Composition{T}{\phi_{\mathcal{B}_U}^{-1}}}$:
+    \[
+        \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T} \cdot \phi_{\mathcal{B}_U}(v)
+        = (\Composition{\phi_{\mathcal{B}_V}}{\Composition{T}{\phi_{\mathcal{B}_U}^{-1}}})
+          (\phi_{\mathcal{B}_U}(v))
+        = \phi_{\mathcal{B}_V}(T(v))
+        = \CoordVec[\mathcal{B}_V]{T(v)} \qedhere
+    \]
+\end{proof}
+
+\begin{remark}[Matrix-Times-Vector]
+    The formula
+    $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T} \cdot x = Ax$ is a \textbf{theorem},
+    not a definition. It follows from the Representation Theorem and linearity.
+    Explicitly, if $A_{ij}$ are the entries and $x = \CoordVec[\mathcal{B}_U]{v}$, then
+    \[
+        \bigl(\CoordVec[\mathcal{B}_V]{T(v)}\bigr)_i = \sum_{j} A_{ij}\, x_j
+    \]
+    This is the standard row-by-column product $(Ax)_i = \sum_j A_{ij} x_j$.
+\end{remark}
+
+\begin{corollary}[Composition Equals Multiplication]
+\label{thm:comp-mult}
+    For composable $T: U \to V$, $S: V \to W$ with ordered bases
+    $\mathcal{B}_U$, $\mathcal{B}_V$, $\mathcal{B}_W$:
+    \[
+        \CoordMatrix[\mathcal{B}_U][\mathcal{B}_W]{\Composition{S}{T}}
+        = \CoordMatrix[\mathcal{B}_V][\mathcal{B}_W]{S}
+          \cdot \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+    \]
+\end{corollary}
+
+\begin{proof}
+    By the coordinate formula, for any $v \in U$:
+    \begin{align*}
+        \CoordMatrix[\mathcal{B}_U][\mathcal{B}_W]{\Composition{S}{T}}
+        \cdot \CoordVec[\mathcal{B}_U]{v}
+        &= \CoordVec[\mathcal{B}_W]{S(T(v))} \\
+        &= \CoordMatrix[\mathcal{B}_V][\mathcal{B}_W]{S}
+           \cdot \CoordVec[\mathcal{B}_V]{T(v)} \\
+        &= \CoordMatrix[\mathcal{B}_V][\mathcal{B}_W]{S}
+           \cdot \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+           \cdot \CoordVec[\mathcal{B}_U]{v}
+    \end{align*}
+    Since this holds for all $v$ and $\phi_{\mathcal{B}_U}$ is surjective, the matrices
+    are equal.
+\end{proof}
+
+\subsection{Vectors as Maps}
+
+\begin{remark}[Matrix-Times-Vector as Composition via {$V \cong \Hom[K]{K}{V}$}]
+\label{rem:mat-times-vec-composition}
+    The identification $V \cong \Hom[K]{K}{V}$ from
+    Remark~\ref{rem:vec-as-hom} explains the coordinate formula as a special case
+    of composition equals multiplication. For $T: U \to V$ and $u \in U$, the composition
+    $\Composition{T}{\lambda_u}: K \to V$ sends $1 \mapsto T(u)$, so
+    $\CoordMatrix[(1)][\mathcal{B}_V]{\Composition{T}{\lambda_u}}
+    = \CoordVec[\mathcal{B}_V]{T(u)}$.
+    By Corollary~\ref{thm:comp-mult}:
+    \[
+        \CoordVec[\mathcal{B}_V]{T(u)}
+        = \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+          \cdot \CoordMatrix[(1)][\mathcal{B}_U]{\lambda_u}
+        = \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+          \cdot \CoordVec[\mathcal{B}_U]{u}
+    \]
+    The shared summation index --- column index of
+    $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$ paired with row index of
+    $\CoordVec[\mathcal{B}_U]{u}$ --- is forced by composition:
+    $\Hom[K]{U}{V} \times \Hom[K]{K}{U} \to \Hom[K]{K}{V}$ contracts the middle space $U$.
+    \textbf{Matrix-times-vector is not a separate operation; it is matrix multiplication
+    applied to a column matrix.}
+\end{remark}
+
+\begin{remark}[Coordinate Vectors and Matrices as the Same Construction]
+    Both coordinate vectors and matrices are instances of the same construction:
+    \textbf{transport to canonical spaces via coordinate isomorphisms}.
+    \begin{itemize}
+        \item For a vector $v \in V$ (equivalently, a map
+              $\lambda_v \in \Hom[K]{K}{V}$ via Theorem~\ref{thm:hom-k-v-iso}),
+              the chain is
+              \[
+                  V \xrightarrow{\;\phi_{\mathcal{B}}\;} K^{(I)}
+                  \;\cong\; \CFMat{I}{\{*\}}[K]
+              \]
+              The coordinate vector $\CoordVec[\mathcal{B}]{v} = \phi_{\mathcal{B}}(v)$
+              is a column matrix with row-index set $I$ and a singleton column-index set.
+        \item For a map $T \in \Hom[K]{U}{V}$, the chain is
+              \[
+                  \Hom[K]{U}{V}
+                  \xrightarrow{\;\phi_{\mathcal{B}_V} \circ (-) \circ
+                  \phi_{\mathcal{B}_U}^{-1}\;}
+                  \Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}}
+                  \;\cong\; \CFMat{\kappa_2}{\kappa_1}[K]
+              \]
+              The matrix
+              $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$
+              is the image of $T$ under this composite.
+    \end{itemize}
+    Both chains have the same structure: abstract object $\to$ concrete canonical
+    space $\to$ grid of numbers. We usually \emph{stop one step earlier} for vectors,
+    because a column vector already looks like a (degenerate) grid --- there is nothing to
+    gain by writing it as a $\kappa \times 1$ matrix.
+
+    The apparent asymmetry in the notation reflects only the degeneracy of the source basis
+    when the source is $K$: the notation $\CoordVec[\mathcal{B}]{v}$ carries one basis
+    superscript because the source basis $\{1\}$ of $K$ is canonical and requires no choice.
+    The notation $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$ carries two because both
+    source and target have non-trivial bases.
+\end{remark}
+
+\subsection{General Hom via Bases}
+
+\begin{theorem}[{$\Hom[K]{U}{V} \cong \CFMat{|\mathcal{B}_V|}{|\mathcal{B}_U|}[K]$}]
+\label{thm:hom-cfmat}
+    For $U$, $V$ with ordered bases $\mathcal{B}_U$, $\mathcal{B}_V$, the map
+    $T \mapsto \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$ is a $K$-linear isomorphism:
+    \[
+        \Hom[K]{U}{V} \xrightarrow{\;\sim\;}
+        \CFMat{|\mathcal{B}_V|}{|\mathcal{B}_U|}[K]
+    \]
+    The isomorphism lands in the \textbf{column-finite} space: for any
+    $T \in \Hom[K]{U}{V}$ and any $b_j \in \mathcal{B}_U$, the image $T(b_j) \in V$ has
+    finite support in $\mathcal{B}_V$ (by definition of a basis), so the $j$-th column of
+    $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$ is finitely supported.
+\end{theorem}
+
+\begin{proof}
+    Compose the coordinate isomorphisms:
+    \[
+    \begin{tikzcd}[column sep=huge]
+        \Hom[K]{U}{V}
+        \arrow[r, "\sim", "{\phi_{\mathcal{B}_V} \circ (-) \circ \phi_{\mathcal{B}_U}^{-1}}"']
+        & \Hom[K]{K^{(|\mathcal{B}_U|)}}{K^{(|\mathcal{B}_V|)}}
+        \arrow[r, "\sim", "\Phi"']
+        & \CFMat{|\mathcal{B}_V|}{|\mathcal{B}_U|}[K]
+    \end{tikzcd}
+    \]
+    The first map sends $T$ to
+    $\Composition{\phi_{\mathcal{B}_V}}{\Composition{T}{\phi_{\mathcal{B}_U}^{-1}}}$
+    and is a $K$-linear isomorphism (conjugation by fixed isomorphisms). The second is $\Phi$
+    from Theorem~\ref{thm:rep-thm}. Their composition is the desired isomorphism.
+\end{proof}
+
+\begin{remark}
+    Different choices of bases yield different but isomorphic identifications (related by
+    change-of-basis matrices).
+\end{remark}
+
+\begin{example}[Matrix of a Linear Map --- Standard Bases]
+\label{ex:matrix-of-map}
+    Let $T: \bb{R}^3 \to \bb{R}^2$ be defined by $T(x,y,z) = (x + 2y, 3z)$. With the
+    standard ordered bases $\mathcal{B}_U = (e_0, e_1, e_2)$ on $\bb{R}^3$ and
+    $\mathcal{B}_V = (e_0, e_1)$ on $\bb{R}^2$:
+    \begin{align*}
+        T(e_0) &= (1, 0) = 1 \cdot e_0 + 0 \cdot e_1 \\
+        T(e_1) &= (2, 0) = 2 \cdot e_0 + 0 \cdot e_1 \\
+        T(e_2) &= (0, 3) = 0 \cdot e_0 + 3 \cdot e_1
+    \end{align*}
+    Placing these as columns:
+    \[
+        \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+        = \begin{pmatrix} 1 & 2 & 0 \\ 0 & 0 & 3 \end{pmatrix}
+    \]
+\end{example}
+
+\begin{example}[Matrix of a Linear Map --- Non-Standard Basis]
+\label{ex:matrix-of-map-nonstandard}
+    Let $D: \bb{R}_{\leq 2}[x] \to \bb{R}_{\leq 2}[x]$ be the derivative on polynomials of
+    degree $\leq 2$, with ordered basis $\mathcal{B} = (1, x, x^2)$:
+    \begin{align*}
+        D(1) &= 0 = 0 \cdot 1 + 0 \cdot x + 0 \cdot x^2 \\
+        D(x) &= 1 = 1 \cdot 1 + 0 \cdot x + 0 \cdot x^2 \\
+        D(x^2) &= 2x = 0 \cdot 1 + 2 \cdot x + 0 \cdot x^2
+    \end{align*}
+    So:
+    \[
+        \CoordMatrix[\mathcal{B}][\mathcal{B}]{D}
+        = \begin{pmatrix} 0 & 1 & 0 \\ 0 & 0 & 2 \\ 0 & 0 & 0 \end{pmatrix}
+    \]
+\end{example}
+
+\subsection{Examples of the Coordinate Formula}
+
+\begin{example}[{$\CoordVec[\mathcal{B}_V]{T(v)} = \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T} \cdot \CoordVec[\mathcal{B}_U]{v}$} --- I]
+    With $T$, $\mathcal{B}_U$, $\mathcal{B}_V$ as in Example~\ref{ex:matrix-of-map}, let
+    $v = (1, -1, 2) \in \bb{R}^3$. Then $\CoordVec[\mathcal{B}_U]{v}
+    = \begin{psmallmatrix} 1 \\ -1 \\ 2 \end{psmallmatrix}$ and:
+    \[
+        \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T} \cdot \CoordVec[\mathcal{B}_U]{v}
+        = \begin{pmatrix} 1 & 2 & 0 \\ 0 & 0 & 3 \end{pmatrix}
+          \begin{pmatrix} 1 \\ -1 \\ 2 \end{pmatrix}
+        = \begin{pmatrix} 1 - 2 \\ 6 \end{pmatrix}
+        = \begin{pmatrix} -1 \\ 6 \end{pmatrix}
+    \]
+    Direct check: $T(1, -1, 2) = (1 + 2(-1),\, 3 \cdot 2) = (-1, 6)$, so
+    $\CoordVec[\mathcal{B}_V]{T(v)}
+    = \begin{psmallmatrix} -1 \\ 6 \end{psmallmatrix}$. $\checkmark$
+\end{example}
+
+\begin{example}[{$\CoordVec[\mathcal{B}]{D(p)} = \CoordMatrix[\mathcal{B}][\mathcal{B}]{D} \cdot \CoordVec[\mathcal{B}]{p}$} --- II]
+    With $D$ and $\mathcal{B} = (1, x, x^2)$ as in
+    Example~\ref{ex:matrix-of-map-nonstandard}, let $p = 3 + x - 2x^2$. Then
+    $\CoordVec[\mathcal{B}]{p}
+    = \begin{psmallmatrix} 3 \\ 1 \\ -2 \end{psmallmatrix}$ and:
+    \[
+        \CoordMatrix[\mathcal{B}][\mathcal{B}]{D} \cdot \CoordVec[\mathcal{B}]{p}
+        = \begin{pmatrix} 0 & 1 & 0 \\ 0 & 0 & 2 \\ 0 & 0 & 0 \end{pmatrix}
+          \begin{pmatrix} 3 \\ 1 \\ -2 \end{pmatrix}
+        = \begin{pmatrix} 1 \\ -4 \\ 0 \end{pmatrix}
+    \]
+    Direct check: $D(3 + x - 2x^2) = 1 - 4x$, so
+    $\CoordVec[\mathcal{B}]{D(p)}
+    = \begin{psmallmatrix} 1 \\ -4 \\ 0 \end{psmallmatrix}$. $\checkmark$
+\end{example}
+
+\subsection{Examples of Composition Equals Multiplication}
+
+\begin{example}[{$\CoordMatrix[\mathcal{B}_U][\mathcal{B}_W]{\Composition{S}{T}} = \CoordMatrix[\mathcal{B}_V][\mathcal{B}_W]{S} \cdot \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$} --- I]
+    Let $T: \bb{R}^2 \to \bb{R}^2$ be $T(x,y) = (x + y, x - y)$ and
+    $S: \bb{R}^2 \to \bb{R}^2$ be $S(x,y) = (2x, y)$, all with the standard basis
+    $\mathcal{B} = (e_0, e_1)$.
+    \[
+        \CoordMatrix[\mathcal{B}][\mathcal{B}]{T}
+        = \begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix}, \qquad
+        \CoordMatrix[\mathcal{B}][\mathcal{B}]{S}
+        = \begin{pmatrix} 2 & 0 \\ 0 & 1 \end{pmatrix}
+    \]
+    Matrix product:
+    \[
+        \CoordMatrix[\mathcal{B}][\mathcal{B}]{S}
+        \cdot \CoordMatrix[\mathcal{B}][\mathcal{B}]{T}
+        = \begin{pmatrix} 2 & 0 \\ 0 & 1 \end{pmatrix}
+          \begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix}
+        = \begin{pmatrix} 2 & 2 \\ 1 & -1 \end{pmatrix}
+    \]
+    Direct check: $(\Composition{S}{T})(x,y) = S(x+y, x-y) = (2(x+y), x-y)
+    = (2x + 2y, x - y)$, so
+    \[
+        \CoordMatrix[\mathcal{B}][\mathcal{B}]{\Composition{S}{T}}
+        = \begin{pmatrix} 2 & 2 \\ 1 & -1 \end{pmatrix} \quad \checkmark
+    \]
+\end{example}
+
+\begin{example}[{$\CoordMatrix[\mathcal{B}][\mathcal{B}]{\Composition{D}{D}} = \bigl(\CoordMatrix[\mathcal{B}][\mathcal{B}]{D}\bigr)^2$} --- II]
+    With $D$ and $\mathcal{B} = (1, x, x^2)$ as in
+    Example~\ref{ex:matrix-of-map-nonstandard}:
+    \[
+        \bigl(\CoordMatrix[\mathcal{B}][\mathcal{B}]{D}\bigr)^2
+        = \begin{pmatrix} 0 & 1 & 0 \\ 0 & 0 & 2 \\ 0 & 0 & 0 \end{pmatrix}
+          \begin{pmatrix} 0 & 1 & 0 \\ 0 & 0 & 2 \\ 0 & 0 & 0 \end{pmatrix}
+        = \begin{pmatrix} 0 & 0 & 2 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{pmatrix}
+    \]
+    Direct check: $D^2(1) = 0$, $D^2(x) = D(1) = 0$, $D^2(x^2) = D(2x) = 2$, so
+    \[
+        \CoordMatrix[\mathcal{B}][\mathcal{B}]{D^2}
+        = \begin{pmatrix} 0 & 0 & 2 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{pmatrix}
+        \quad \checkmark
+    \]
+\end{example}

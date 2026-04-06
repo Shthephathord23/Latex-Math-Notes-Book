@@ -1,13 +1,28 @@
 % Preamble/Commands/LinearAlgebra/Matrices.tex
+% Convention: for f: K^X -> K^Y, the matrix lies in Mat_{Y,X}(K)
+% Usage: \MatSpace{Y}{X}[K] → Mat_{Y,X}(K)  (#1 = rows/target, #2 = cols/source)
+% Usage: \CFMat{Y}{X}[K]   → Mat_{Y,(X)}(K)  (column-finite)
 
 \NewDocumentCommand{\MatSpace}{m m o}
 {
     \IfValueTF{#3}
     {
-        M_{#1 \times #2} \left( #3 \right)
+        \operatorname{Mat}_{#1, #2} \left( #3 \right)
     }
     {
-        M_{#1 \times #2}
+        \operatorname{Mat}_{#1, #2}
+    }
+}
+
+% Column-finite matrix space: \CFMat{Y}{X}[K] → Mat_{Y,(X)}(K)
+\NewDocumentCommand{\CFMat}{m m o}
+{
+    \IfValueTF{#3}
+    {
+        \operatorname{Mat}_{#1, (#2)} \left( #3 \right)
+    }
+    {
+        \operatorname{Mat}_{#1, (#2)}
     }
 }
 
@@ -77,50 +92,24 @@
 {
     \IfValueTF{#2}
     {
-        \begin{pmatrix} #3 \end{pmatrix}_{#1}^{#2}
+        \left[#3\right]_{#1}^{#2}
     }
     {
         \IfValueTF{#1}
         {
-            \begin{pmatrix} #3 \end{pmatrix}_{#1}
+            \left[#3\right]_{#1}
         }
         {
-            \begin{pmatrix} #3 \end{pmatrix}
+            \left[#3\right]
         }
     }
 }
 
 
-% % Column vector: \ColVec{a_0 \\ a_1 \\ \vdots \\ a_{n-1}}
-% % Optional base: \ColVec{a_0 \\ a_1}[\mathcal{B}]  →  (...) with subscript B
-% \NewDocumentCommand{\ColVec}{m o}
-% {
-%     \IfValueTF{#2}
-%     {
-%         \begin{pmatrix} #1 \end{pmatrix}_{#2}
-%     }
-%     {
-%         \begin{pmatrix} #1 \end{pmatrix}
-%     }
-% }
+% Identity matrix: \IdentityMat{\kappa} → I_{\kappa}
+\NewDocumentCommand{\IdentityMat}{m}
+{
+    I_{#1}
+}
 
-% % Matrix representation with optional bases:
-% %   \MatrixRep{T}              gives [T]
-% %   \MatrixRep{T}[\mathcal{B}] gives [T]_{\mathcal{B}}
-% %   \MatrixRep{T}[\mathcal{B}_U][\mathcal{B}_V] gives [T]_{\mathcal{B}_U}^{\mathcal{B}_V}
-% \NewDocumentCommand{\MatrixRep}{m o o}
-% {
-%     \IfValueTF{#3}
-%     {
-%         [#1]_{#2}^{#3}
-%     }
-%     {
-%         \IfValueTF{#2}
-%         {
-%             [#1]_{#2}
-%         }
-%         {
-%             [#1]
-%         }
-%     }
-% }
+

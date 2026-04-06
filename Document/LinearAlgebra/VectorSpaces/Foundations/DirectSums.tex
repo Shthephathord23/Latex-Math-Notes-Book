@@ -4,6 +4,26 @@
 \newpage
 \section{Internal Direct Sums}
 
+\begin{remark}[Motivation]
+    A sum $U_1 + U_2 + \cdots + U_k$ of subspaces always produces a subspace, but the
+    decomposition of a vector $v = u_1 + u_2 + \cdots + u_k$ may not be unique: different
+    choices of $u_i \in U_i$ can give the same $v$. When the decomposition \emph{is} unique
+    for every vector in the sum, we have a \textbf{direct sum} --- the strongest and most
+    useful way subspaces can combine.
+
+    Direct sums are the subspace-level analogue of linear independence: linear independence
+    says each \emph{vector} in a set contributes a genuinely new direction; a direct sum says
+    each \emph{subspace} in a family contributes a genuinely new piece of the space. The two
+    notions are formally connected by Proposition~\ref{prop:lin-indep-direct-sum}: a set of
+    vectors is linearly independent if and only if the one-dimensional subspaces they span
+    form a direct sum family.
+
+    In practice, direct sum decompositions appear whenever we decompose a space into
+    independent components --- coordinate axes, eigenspaces, invariant subspaces --- and
+    the uniqueness of the decomposition is what makes computations in the components
+    unambiguous.
+\end{remark}
+
 \begin{remark}[Duality with Linear Independence]
     The characterizations of internal direct sums are \textbf{similar} to those of linear independence:
     \begin{itemize}

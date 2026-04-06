@@ -4,6 +4,32 @@
 \newpage
 \section{Linear Transformations}
 
+\begin{intuition}[Chapter Overview]
+    Chapter~1 built the objects of linear algebra: vector spaces, subspaces, bases, and
+    dimension. This chapter introduces the \textbf{morphisms} --- functions between vector
+    spaces that respect the linear structure. A linear map $T: U \to V$ is one that commutes
+    with addition and scalar multiplication; equivalently, it sends linear combinations to
+    linear combinations.
+
+    The theory of linear maps is organized around three themes:
+    \begin{itemize}
+        \item \textbf{Determination by basis values.} A linear map is completely specified by
+              its values on a basis (the universal property). This is the fundamental reason
+              that bases are useful: they reduce infinite data (the action of $T$ on every
+              vector) to finite data (the action on finitely many basis vectors).
+        \item \textbf{Fundamental subspaces.} Every linear map $T$ carries two canonical
+              subspaces: its \textbf{kernel} $\Ker{T} \Subspace[K] U$ (what $T$ collapses to
+              zero) and its \textbf{range} $\Rng{T} \Subspace[K] V$ (what $T$ actually hits).
+              The interplay between these two subspaces governs the structure of $T$.
+        \item \textbf{Injectivity, surjectivity, and their characterizations.} The classical
+              properties of functions specialize to a rich web of equivalent conditions for
+              linear maps, connecting set-theoretic, lattice-theoretic, dimensional, and
+              categorical viewpoints.
+    \end{itemize}
+    The chapter culminates in the \textbf{rank-nullity theorem}, which relates the dimensions
+    of the kernel and range and provides the quantitative backbone for much of what follows.
+\end{intuition}
+
 \begin{intuition}[The Category $K$-Vect]
     Having defined vector spaces as the objects of study, we now define the \textbf{morphisms}
     between them. In category-theoretic terms, a $K$-vector space homomorphism is a function
@@ -138,6 +164,24 @@
 
 \newpage
 \section{Universal Property of Vector Spaces}
+
+\begin{remark}[Why the Universal Property Matters]
+    The universal property is the single most important structural fact about bases. It says
+    that a linear map out of $V$ is \emph{completely and freely} determined by an arbitrary
+    assignment of values on the basis vectors --- no constraints, no compatibility conditions.
+    This has two immediate practical consequences:
+    \begin{itemize}
+        \item \textbf{Construction}: To define a linear map $T: V \to W$, it suffices to
+              specify $T(b)$ for each basis vector $b \in B$ and declare ``extend linearly.''
+              The universal property guarantees that a unique linear map with these values
+              exists.
+        \item \textbf{Equality}: To show two linear maps $S, T: V \to W$ are equal, it
+              suffices to check $S(b) = T(b)$ for all $b \in B$. The universal property
+              (uniqueness) does the rest.
+    \end{itemize}
+    In categorical language, a vector space with basis is a \textbf{free object}: the basis
+    plays the role of ``generators'' with no ``relations'' imposed.
+\end{remark}
 
 \begin{theorem}[Universal Property of Vector Spaces (Free Object)]%
     \label{thm:vector-space-universal}
@@ -304,6 +348,24 @@
 \newpage
 \section{Fundamental Subspaces}
 
+\begin{remark}[Motivation]
+    Every linear map $T: U \to V$ naturally singles out two subspaces that encode the
+    essential information about $T$:
+    \begin{itemize}
+        \item The \textbf{kernel} $\Ker{T} = \{u \in U \mid T(u) = 0\}$: the set of
+              vectors that $T$ ``kills.'' The kernel measures the \emph{non-injectivity}
+              of $T$ --- the larger the kernel, the more information $T$ destroys. In
+              particular, $T$ is injective if and only if $\Ker{T} = \{0\}$.
+        \item The \textbf{range} $\Rng{T} = \{T(u) \mid u \in U\}$: the set of vectors
+              that $T$ actually produces. The range measures the \emph{reach} of $T$ ---
+              $T$ is surjective if and only if $\Rng{T} = V$.
+    \end{itemize}
+    The rank-nullity theorem (Theorem~\ref{thm:rank-nullity}) will show that the dimensions
+    of these two subspaces are complementary: $\Dim{U} = \Dim{\Ker{T}} + \Dim{\Rng{T}}$.
+    Intuitively, the ``budget'' of dimensions in the domain is split between what $T$
+    collapses and what $T$ covers.
+\end{remark}
+
 \begin{definition}[Kernel]\label{def:kernel}
     The \textbf{kernel} (or \textbf{null space}) of a linear map $T: U \to V$ is
     \[
@@ -331,6 +393,42 @@
     
     \textbf{(2)}: This is a special case of Proposition~\ref{prop:image-preimage-subspace}(1) with $W = U$.
 \end{proof}
+
+\begin{proposition}[Image-Preimage Formulas]\label{prop:image-preimage-formulas}
+    Let $T: U \to V$ be a linear map. For any subspace $W \Subspace[K] U$ and any
+    subspace $W' \Subspace[K] V$:
+    \begin{enumerate}
+        \item $\InverseImage{T}{\DirectImage{T}{W}} = W + \Ker{T}$
+        \item $\DirectImage{T}{\InverseImage{T}{W'}} = W' \cap \Rng{T}$
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    \textbf{(1)}: ($\supseteq$): If $u \in W$, then $T(u) \in \DirectImage{T}{W}$, so
+    $u \in \InverseImage{T}{\DirectImage{T}{W}}$. If $u \in \Ker{T}$, then
+    $T(u) = 0 \in \DirectImage{T}{W}$ (since $0 = T(0) \in \DirectImage{T}{W}$),
+    so $u \in \InverseImage{T}{\DirectImage{T}{W}}$. Thus
+    $W + \Ker{T} \subseteq \InverseImage{T}{\DirectImage{T}{W}}$.
+
+    ($\subseteq$): Let $u \in \InverseImage{T}{\DirectImage{T}{W}}$, so
+    $T(u) \in \DirectImage{T}{W}$, i.e.\ $T(u) = T(w)$ for some $w \in W$.
+    Then $T(u - w) = 0$, so $u - w \in \Ker{T}$, hence
+    $u = w + (u - w) \in W + \Ker{T}$.
+
+    \textbf{(2)}: ($\subseteq$): Let $v \in \DirectImage{T}{\InverseImage{T}{W'}}$, so
+    $v = T(u)$ for some $u \in \InverseImage{T}{W'}$, meaning $T(u) \in W'$.
+    Thus $v = T(u) \in W'$ and $v \in \Rng{T}$, so $v \in W' \cap \Rng{T}$.
+
+    ($\supseteq$): Let $v \in W' \cap \Rng{T}$. Then $v \in W'$ and $v = T(u)$ for some
+    $u \in U$. Since $T(u) = v \in W'$, we have $u \in \InverseImage{T}{W'}$, so
+    $v = T(u) \in \DirectImage{T}{\InverseImage{T}{W'}}$.
+\end{proof}
+
+\begin{remark}
+    Part (1) says: pulling back the image of $W$ recovers $W$ ``up to the kernel.''
+    Part (2) says: pushing forward the preimage of $W'$ recovers only the part of
+    $W'$ that $T$ actually hits.
+\end{remark}
 
 \begin{definition}[Rank and Nullity]\label{def:rank-nullity}
     For a linear map $T: U \to V$:

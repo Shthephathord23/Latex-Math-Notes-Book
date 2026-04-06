@@ -1,0 +1,486 @@
+% Document/LinearAlgebra/VectorSpaces/Matrices/ChangeOfBasis.tex
+% Phase 17: Change of Basis Matrices; Inj/Surj/Bij via Matrices; Invertibility
+
+\newpage
+\section{Change of Basis}
+\label{sec:change-of-basis}
+
+\subsection{Change of Basis Matrices}
+
+\begin{definition}[Change of Basis Matrix]
+\label{def:cob-matrix}
+    Let $V$ be a $K$-vector space with two ordered bases $\mathcal{B}$ and $\mathcal{C}$.
+    The \textbf{change of basis matrix from $\mathcal{B}$ to $\mathcal{C}$} is:
+    \[
+        \CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{V}}
+    \]
+    Its $j$-th column is $\CoordVec[\mathcal{C}]{b_j}$ --- the coordinate vector of the
+    $j$-th basis vector of $\mathcal{B}$ expressed in basis $\mathcal{C}$.
+\end{definition}
+
+\begin{proposition}[Properties of Change of Basis Matrices]
+\label{prop:cob-properties}
+    Let $V$ be a $K$-vector space with ordered bases $\mathcal{B}$ and $\mathcal{C}$.
+    \begin{enumerate}
+        \item \textbf{Coordinate conversion}:
+              $\CoordVec[\mathcal{C}]{v}
+              = \CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{V}}
+                \cdot \CoordVec[\mathcal{B}]{v}$
+              for all $v \in V$.
+        \item \textbf{Invertibility}:
+              $\CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{V}}
+               \cdot \CoordMatrix[\mathcal{C}][\mathcal{B}]{\Identity{V}} = I$,
+               i.e.\
+              $\bigl(\CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{V}}\bigr)^{-1}
+              = \CoordMatrix[\mathcal{C}][\mathcal{B}]{\Identity{V}}$.
+        \item The change of basis formula (Theorem~\ref{thm:change-of-bases}) reads:
+              \[
+                  \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+                  = \CoordMatrix[\mathcal{C}_V][\mathcal{B}_V]{\Identity{V}}
+                    \cdot \CoordMatrix[\mathcal{C}_U][\mathcal{C}_V]{T}
+                    \cdot \CoordMatrix[\mathcal{B}_U][\mathcal{C}_U]{\Identity{U}}
+              \]
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    (1) is the coordinate formula (Corollary~\ref{prop:coord-formula}) applied to
+    $\Identity{V}$.
+    (2) follows from Corollary~\ref{thm:comp-mult} applied to
+    $\Composition{\Identity{V}}{\Identity{V}} = \Identity{V}$:
+    \[
+        \CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{V}}
+        \cdot \CoordMatrix[\mathcal{C}][\mathcal{B}]{\Identity{V}}
+        = \CoordMatrix[\mathcal{B}][\mathcal{B}]{\Identity{V}}
+        = I \qedhere
+    \]
+\end{proof}
+
+\subsection{Change of Basis as an Automorphism of $K^n$}
+
+\begin{remark}[Automorphism Interpretation]
+\label{rem:cob-automorphism}
+    When $\Dim[K]{V} = n$, each ordered basis $\mathcal{B}$ identifies $V \cong K^n$ via
+    $\phi_{\mathcal{B}}$. A second basis $\mathcal{C}$ gives a second identification
+    $V \cong K^n$ via $\phi_{\mathcal{C}}$. Both land in the \emph{same} $K^n$, encoding each
+    $v \in V$ as two different coordinate tuples:
+    $\CoordVec[\mathcal{B}]{v} \in K^n$ and $\CoordVec[\mathcal{C}]{v} \in K^n$.
+
+    The change of basis matrix
+    $\CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{V}} \in \CFMat{n}{n}[K]$,
+    viewed as a linear map $K^n \to K^n$ (Section~\ref{sec:mat-as-lin-maps}), is an
+    \textbf{automorphism of $K^n$}: it is an invertible endomorphism that converts
+    $\mathcal{B}$-coordinates into $\mathcal{C}$-coordinates for every vector simultaneously.
+    This is the correct setting in which to speak of ``change of basis'': it is not a change
+    of the space $K^n$, but a change of how vectors in the same space are coordinatised.
+\end{remark}
+
+\subsection{Examples}
+
+\begin{example}[Computing a Change of Basis Matrix]
+\label{ex:cob-R2}
+    Let $V = \bb{R}^2$, $\mathcal{B} = (e_0, e_1)$ (standard),
+    $\mathcal{C} = (e_0 + e_1,\, e_1)$.
+
+    Express each $b_j \in \mathcal{B}$ in $\mathcal{C}$:
+    $e_0 = 1 \cdot (e_0+e_1) + (-1) \cdot e_1$, so
+    $\CoordVec[\mathcal{C}]{e_0} = \begin{psmallmatrix}1\\-1\end{psmallmatrix}$; and
+    $e_1 = 0 \cdot (e_0+e_1) + 1 \cdot e_1$, so
+    $\CoordVec[\mathcal{C}]{e_1} = \begin{psmallmatrix}0\\1\end{psmallmatrix}$.
+    Hence:
+    \[
+        \CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{}}
+        = \begin{pmatrix} 1 & 0 \\ -1 & 1 \end{pmatrix}
+    \]
+    Verify coordinate conversion: for $v = (3,5)$,
+    $\CoordVec[\mathcal{B}]{v} = \begin{psmallmatrix}3\\5\end{psmallmatrix}$ and
+    \[
+        \CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{}}
+        \cdot \CoordVec[\mathcal{B}]{v}
+        = \begin{pmatrix}1&0\\-1&1\end{pmatrix}\begin{pmatrix}3\\5\end{pmatrix}
+        = \begin{pmatrix}3\\2\end{pmatrix}
+        = \CoordVec[\mathcal{C}]{v}
+    \]
+    Direct check: $v = (3,5) = 3(e_0+e_1) + 2 e_1$ $\checkmark$.
+
+    The inverse:
+    $\CoordMatrix[\mathcal{C}][\mathcal{B}]{\Identity{}}
+    = \begin{pmatrix}1&0\\1&1\end{pmatrix}$ (columns are $\mathcal{C}$-vectors in
+    $\mathcal{B}$-coords), and indeed
+    $\begin{pmatrix}1&0\\-1&1\end{pmatrix}
+     \begin{pmatrix}1&0\\1&1\end{pmatrix}
+     = I$ $\checkmark$.
+\end{example}
+
+\begin{example}[Change of Basis for an Endomorphism]
+    With $T(x,y) = (2x+y,\, x)$ and bases $\mathcal{B}$, $\mathcal{C}$ from
+    Example~\ref{ex:cob-R2}, the change of bases formula gives (cf.\
+    Example~\ref{ex:cob-endomorphism}):
+    \[
+        \CoordMatrix[\mathcal{C}][\mathcal{C}]{T}
+        = \CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{}}
+          \cdot \CoordMatrix[\mathcal{B}][\mathcal{B}]{T}
+          \cdot \CoordMatrix[\mathcal{C}][\mathcal{B}]{\Identity{}}
+        = \begin{pmatrix}1&0\\-1&1\end{pmatrix}
+          \begin{pmatrix}2&1\\1&0\end{pmatrix}
+          \begin{pmatrix}1&0\\1&1\end{pmatrix}
+        = \begin{pmatrix} 3 & 1 \\ -2 & -1 \end{pmatrix}
+    \]
+\end{example}
+
+\subsection{Injectivity, Surjectivity, Bijectivity via Matrices}
+
+\begin{remark}[Substitution Principle]
+\label{rem:substitution-principle}
+    Every characterization of $T$ from the theorems of
+    Section~\ref{sec:inj-surj-bij} yields an equivalent characterization with $T$ replaced
+    by any matrix $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$ representing it.
+    Precisely: $T$ satisfies property $P$ if and only if
+    $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$ satisfies property $P$.
+
+    \textit{Reason}: $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+    = \Composition{\phi_{\mathcal{B}_V}}{\Composition{T}{\phi_{\mathcal{B}_U}^{-1}}}$
+    is a conjugate of $T$ by isomorphisms. Isomorphisms preserve and reflect every structural
+    property: injectivity, surjectivity, kernel dimension, image dimension, etc.
+\end{remark}
+
+\begin{theorem}[Matrix Characterizations of Injectivity]
+\label{thm:mat-inj}
+    Let $T: U \to V$ be $K$-linear with $\kappa_1 = \Dim[K]{U} \leq \Dim[K]{V} = \kappa_2$.
+    Each of the following is equivalent to $T$ being injective:
+    \begin{enumerate}
+        \item For every ordered basis $\mathcal{B}_U$ of $U$, there exists an ordered basis
+              $\mathcal{B}_V$ of $V$ such that:
+              \[
+                  \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+                  = \begin{pmatrix} I_{\kappa_1} \\ 0 \end{pmatrix}
+              \]
+        \item There exist ordered bases $\mathcal{B}_U$ of $U$ and $\mathcal{B}_V$ of $V$
+              such that:
+              \[
+                  \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+                  = \begin{pmatrix} I_{\kappa_1} \\ 0 \end{pmatrix}
+              \]
+        \item For every $w \in V$, the system
+              $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}\, x = \CoordVec[\mathcal{B}_V]{w}$
+              has at most one solution $x \in K^{(\kappa_1)}$ (for any ordered bases).
+        \item The columns of $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$ are linearly
+              independent (for any ordered bases $\mathcal{B}_U$, $\mathcal{B}_V$).
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    \leavevmode
+    \begin{enumerate}
+        \item Reformulation of: ``$T$ sends every basis to a linearly independent set.''
+              Given $\mathcal{B}_U = (b_1, \ldots, b_{\kappa_1})$, by injectivity
+              $\{T(b_1), \ldots, T(b_{\kappa_1})\}$ is linearly independent in $V$. Extend
+              it to an ordered basis
+              $\mathcal{B}_V = (T(b_1), \ldots, T(b_{\kappa_1}),
+              c_{\kappa_1+1}, \ldots, c_{\kappa_2})$ of $V$.
+              The $j$-th column of $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$ is
+              $\CoordVec[\mathcal{B}_V]{T(b_j)} = e_j \in K^{(\kappa_2)}$, giving exactly
+              $\begin{pmatrix} I_{\kappa_1} \\ 0 \end{pmatrix}$. Conversely, if such a
+              $\mathcal{B}_V$ exists then the columns are the first $\kappa_1$ standard
+              basis vectors, hence linearly independent, so $T$ is injective
+              (Remark~\ref{rem:substitution-principle}).
+
+        \item Reformulation of: ``$T$ sends some basis to a linearly independent set.''
+              The same argument applied to one chosen basis.
+
+        \item Reformulation of set-theoretic injectivity: the system
+              $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}\, x
+              = \CoordVec[\mathcal{B}_V]{w}$
+              is the coordinate form of $T(v) = w$ (coordinate formula). At most one
+              coordinate solution $x$ is equivalent to at most one preimage
+              $v = \phi_{\mathcal{B}_U}^{-1}(x)$.
+
+        \item Reformulation of: ``$T$ sends every basis to a linearly independent set.''
+              The $j$-th column of $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$ is
+              $\phi_{\mathcal{B}_V}(T(b_j))$.
+              Since $\phi_{\mathcal{B}_V}$ is an isomorphism, the columns are linearly
+              independent iff $T(b_1), \ldots, T(b_{\kappa_1})$ are linearly independent
+              iff $T$ sends $\mathcal{B}_U$ to a linearly independent set.
+              This holds for every $\mathcal{B}_U$ iff $T$ sends every basis to a linearly
+              independent set, which is characterization~(7) of
+              Theorem~\ref{thm:injectivity}. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\begin{theorem}[Matrix Characterizations of Surjectivity]
+\label{thm:mat-surj}
+    Let $T: U \to V$ be $K$-linear with $\kappa_2 = \Dim[K]{V} \leq \Dim[K]{U} = \kappa_1$.
+    Each of the following is equivalent to $T$ being surjective:
+    \begin{enumerate}
+        \item For every ordered basis $\mathcal{B}_V$ of $V$, there exists an ordered basis
+              $\mathcal{B}_U$ of $U$ such that:
+              \[
+                  \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+                  = \begin{pmatrix} I_{\kappa_2} & 0 \end{pmatrix}
+              \]
+        \item There exist ordered bases $\mathcal{B}_U$ of $U$ and $\mathcal{B}_V$ of $V$
+              such that:
+              \[
+                  \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+                  = \begin{pmatrix} I_{\kappa_2} & 0 \end{pmatrix}
+              \]
+        \item For every $w \in V$, the system
+              $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}\, x = \CoordVec[\mathcal{B}_V]{w}$
+              has at least one solution $x \in K^{(\kappa_1)}$ (for any ordered bases).
+        \item The columns of $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$ generate
+              $K^{(\kappa_2)}$ (for any ordered bases $\mathcal{B}_U$, $\mathcal{B}_V$).
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    \leavevmode
+    \begin{enumerate}
+        \item Reformulation of: ``$T$ sends every basis to a generating set.'' Given
+              $\mathcal{B}_V = (c_1, \ldots, c_{\kappa_2})$, since $T$ is surjective pick
+              $u_i \in U$ with $T(u_i) = c_i$ for each $i$. The set
+              $\{u_1, \ldots, u_{\kappa_2}\}$ is linearly independent (as $T$ is injective
+              on $\Span[K]{\{u_1,\ldots,u_{\kappa_2}\}}$ via the coordinate argument).
+              Extend by choosing $u_{\kappa_2+1}, \ldots, u_{\kappa_1} \in \Ker{T}$ forming
+              a basis of $\Ker{T}$ (which has dimension $\kappa_1 - \kappa_2$ by
+              rank-nullity), giving basis $\mathcal{B}_U = (u_1, \ldots, u_{\kappa_1})$.
+              The first $\kappa_2$ columns of $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$
+              are $e_1, \ldots, e_{\kappa_2}$ (since $T(u_i) = c_i$) and the last
+              $\kappa_1 - \kappa_2$ columns are zero (since $T(u_j) = 0$ for
+              $j > \kappa_2$), giving $\begin{pmatrix} I_{\kappa_2} & 0 \end{pmatrix}$.
+
+        \item Reformulation of: ``$T$ sends some basis to a generating set.'' Same argument
+              for one chosen $\mathcal{B}_V$.
+
+        \item Reformulation of surjectivity: every $w \in V$ has at least one preimage, i.e.\
+              the system $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}\, x
+              = \CoordVec[\mathcal{B}_V]{w}$ always has a solution.
+
+        \item Reformulation of: ``$T$ sends every basis to a generating set.''
+              The $j$-th column of $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$
+              is $\phi_{\mathcal{B}_V}(T(b_j))$.
+              Since $\phi_{\mathcal{B}_V}$ is an isomorphism, the columns generate
+              $K^{(\kappa_2)}$ iff $T(b_1), \ldots, T(b_{\kappa_1})$ generate $V$ iff $T$
+              sends $\mathcal{B}_U$ to a generating set. This holds for every $\mathcal{B}_U$
+              iff $T$ sends every basis to a generating set, which is
+              characterization~(7) of Theorem~\ref{thm:surjectivity}. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\begin{theorem}[Matrix Characterizations of Bijectivity]
+\label{thm:mat-bij}
+    Let $T: U \to V$ be $K$-linear with $\kappa_1 = \Dim[K]{U} = \Dim[K]{V} = \kappa_2$.
+    Each of the following is equivalent to $T$ being bijective:
+    \begin{enumerate}
+        \item For every ordered basis $\mathcal{B}_U$ of $U$, there exists an ordered basis
+              $\mathcal{B}_V$ of $V$ such that $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T} = I_{\kappa_1}$.
+        \item For every ordered basis $\mathcal{B}_V$ of $V$, there exists an ordered basis
+              $\mathcal{B}_U$ of $U$ such that $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T} = I_{\kappa_1}$.
+        \item There exist ordered bases $\mathcal{B}_U$ of $U$ and $\mathcal{B}_V$ of $V$
+              such that $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T} = I_{\kappa_1}$.
+        \item For every $w \in V$, the system
+              $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}\, x = \CoordVec[\mathcal{B}_V]{w}$
+              has exactly one solution $x \in K^{(\kappa_1)}$ (for any ordered bases).
+        \item The columns of $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$ form a basis of
+              $K^{(\kappa_1)}$ (for any ordered bases $\mathcal{B}_U$, $\mathcal{B}_V$).
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    \leavevmode
+    \begin{enumerate}
+        \item Reformulation of: ``$T$ sends every basis to a basis''
+              (Theorem~\ref{thm:bijectivity}). Given
+              $\mathcal{B}_U = (b_1, \ldots, b_{\kappa_1})$, by bijectivity
+              $T(\mathcal{B}_U)$ is a basis of $V$. Set
+              $\mathcal{B}_V = (T(b_1), \ldots, T(b_{\kappa_1}))$; then the $j$-th column
+              is $\CoordVec[\mathcal{B}_V]{T(b_j)} = e_j$, so
+              $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T} = I_{\kappa_1}$.
+
+        \item Given $\mathcal{B}_V = (c_1, \ldots, c_{\kappa_1})$, since $T$ is bijective,
+              the preimages $b_j = T^{-1}(c_j)$ form a basis $\mathcal{B}_U$ of $U$. The
+              $j$-th column is $\CoordVec[\mathcal{B}_V]{T(b_j)} = \CoordVec[\mathcal{B}_V]{c_j}
+              = e_j$, so $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T} = I_{\kappa_1}$.
+
+        \item Follows from (1) or (2).
+
+        \item Combine Theorem~\ref{thm:mat-inj}(3) (at most one solution) and
+              Theorem~\ref{thm:mat-surj}(3) (at least one solution).
+
+        \item Reformulation of: ``$T$ sends every basis to a basis.''
+              The columns are $\phi_{\mathcal{B}_V}(T(b_j))$; since $\phi_{\mathcal{B}_V}$
+              is an isomorphism, they form a basis of $K^{(\kappa_1)}$ iff $T(\mathcal{B}_U)$
+              is a basis of $V$, which holds for every $\mathcal{B}_U$ iff $T$ sends every
+              basis to a basis --- characterization~(5) of
+              Theorem~\ref{thm:bijectivity}. \qedhere
+    \end{enumerate}
+\end{proof}
+
+\begin{corollary}[Automorphisms Are Exactly the Change of Basis Matrices]
+\label{cor:aut-cob}
+    Let $A \in \CFMat{\kappa}{\kappa}[K]$, viewed as an endomorphism of $K^{(\kappa)}$.
+    The following are equivalent:
+    \begin{enumerate}
+        \item $A$ is an automorphism of $K^{(\kappa)}$.
+        \item For every ordered basis $\mathcal{B}$ of $K^{(\kappa)}$, there exists an ordered
+              basis $\mathcal{C}$ of $K^{(\kappa)}$ such that
+              $A = \CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{K^{(\kappa)}}}$.
+        \item For every ordered basis $\mathcal{C}$ of $K^{(\kappa)}$, there exists an ordered
+              basis $\mathcal{B}$ of $K^{(\kappa)}$ such that
+              $A = \CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{K^{(\kappa)}}}$.
+        \item There exist ordered bases $\mathcal{B}$, $\mathcal{C}$ of $K^{(\kappa)}$ such
+              that $A = \CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{K^{(\kappa)}}}$.
+    \end{enumerate}
+\end{corollary}
+
+\begin{proof}
+    Let $B = [b_1 \mid \cdots \mid b_\kappa]$ and $C = [c_1 \mid \cdots \mid c_\kappa]$
+    denote the matrices whose columns are the basis vectors of $\mathcal{B}$ and
+    $\mathcal{C}$. The $j$-th column of
+    $\CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{}}$ is $\CoordVec[\mathcal{C}]{b_j}$,
+    i.e.\ the unique $x$ with $Cx = b_j$, so
+    $\CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{}} = C^{-1}B$.
+    Thus $A = C^{-1}B$ iff $B = CA$.
+
+    \begin{itemize}
+        \item (1)$\Rightarrow$(2): Given $\mathcal{B}$ (with matrix $B$), set $C = BA^{-1}$.
+              Since $B$ and $A^{-1}$ are invertible, $C$ is invertible, so $\mathcal{C}$
+              (columns of $C$) is a basis. Then
+              $\CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{}} = C^{-1}B
+              = (BA^{-1})^{-1}B = AB^{-1}B = A$.
+
+        \item (1)$\Rightarrow$(3): Given $\mathcal{C}$ (with matrix $C$), set $B = CA$.
+              Since $C$ and $A$ are invertible, $B$ is invertible, so $\mathcal{B}$
+              (columns of $B$) is a basis. Then
+              $\CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{}} = C^{-1}B = C^{-1}CA = A$.
+
+        \item (2)$\Rightarrow$(4) and (3)$\Rightarrow$(4): Immediate.
+
+        \item (4)$\Rightarrow$(1): Every change of basis matrix is invertible
+              (Proposition~\ref{prop:cob-properties}(2)), hence an automorphism. \qedhere
+    \end{itemize}
+\end{proof}
+
+\begin{example}[Normal Form for Injection]
+    $T: \bb{R}^2 \to \bb{R}^3$, $T(x,y) = (x, y, 0)$.
+    With $\mathcal{B}_U = (e_0, e_1)$ and $\mathcal{B}_V = (e_0, e_1, e_2)$ (standard), already
+    $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+    = \begin{psmallmatrix}1&0\\0&1\\0&0\end{psmallmatrix}
+    = \begin{psmallmatrix}I_2\\0\end{psmallmatrix}$.
+\end{example}
+
+\begin{example}[Normal Form for Surjection]
+    $T: \bb{R}^3 \to \bb{R}^2$, $T(x,y,z) = (x,y)$.
+    Take $\mathcal{B}_U = (e_0, e_1, e_2)$, $\mathcal{B}_V = (e_0, e_1)$:
+    $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+    = \begin{pmatrix}1&0&0\\0&1&0\end{pmatrix}
+    = \begin{pmatrix}I_2 & 0\end{pmatrix}$.
+\end{example}
+
+\begin{example}[No Normal Form]
+    $T: \bb{R}^2 \to \bb{R}^2$, $T(x,y) = (x+y, x+y)$. Since
+    $\Rank{T} = 1 < 2$, no choice of bases gives $I_2$; $T$ is neither injective
+    nor surjective.
+\end{example}
+
+\subsection{Invertibility}
+
+\begin{theorem}[Inverse via Matrix Inverse]
+\label{thm:mat-inverse}
+    Let $T: U \xrightarrow{\sim} V$ be a $K$-linear isomorphism with ordered bases
+    $\mathcal{B}_U$, $\mathcal{B}_V$. Then:
+    \[
+        \bigl(\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}\bigr)^{-1}
+        = \CoordMatrix[\mathcal{B}_V][\mathcal{B}_U]{T^{-1}}
+    \]
+\end{theorem}
+
+\begin{proof}
+    Apply Corollary~\ref{thm:comp-mult} to
+    $\Composition{T^{-1}}{T} = \Identity{U}$ and
+    $\Composition{T}{T^{-1}} = \Identity{V}$:
+    \begin{align*}
+        \CoordMatrix[\mathcal{B}_V][\mathcal{B}_U]{T^{-1}}
+        \cdot \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+        &= \CoordMatrix[\mathcal{B}_U][\mathcal{B}_U]{\Composition{T^{-1}}{T}}
+         = \CoordMatrix[\mathcal{B}_U][\mathcal{B}_U]{\Identity{U}}
+         = I_n \\
+        \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+        \cdot \CoordMatrix[\mathcal{B}_V][\mathcal{B}_U]{T^{-1}}
+        &= \CoordMatrix[\mathcal{B}_V][\mathcal{B}_V]{\Composition{T}{T^{-1}}}
+         = \CoordMatrix[\mathcal{B}_V][\mathcal{B}_V]{\Identity{V}}
+         = I_m
+    \end{align*}
+    Hence the two matrices are mutual inverses. \qedhere
+\end{proof}
+
+\begin{corollary}[$T$ Invertible $\Leftrightarrow$ Matrix Invertible]
+\label{cor:invertible-iff-mat-invertible}
+    $T: U \to V$ is an isomorphism if and only if
+    $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$ is an invertible matrix (for any,
+    equivalently some, ordered bases $\mathcal{B}_U$, $\mathcal{B}_V$).
+\end{corollary}
+
+\begin{proof}
+    ($\Rightarrow$) Theorem~\ref{thm:mat-inverse} gives an explicit matrix inverse.
+
+    ($\Leftarrow$) Let $A = \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$ be invertible.
+    Define $S \defeq \Composition{\phi_{\mathcal{B}_U}^{-1}}
+    {\Composition{A^{-1}}{\phi_{\mathcal{B}_V}}}: V \to U$.
+    Then $S$ is $K$-linear and:
+    \[
+        \CoordMatrix[\mathcal{B}_V][\mathcal{B}_U]{S}
+        \cdot \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+        = A^{-1} \cdot A = I_n
+        = \CoordMatrix[\mathcal{B}_U][\mathcal{B}_U]{\Identity{U}}
+    \]
+    so $\Composition{S}{T} = \Identity{U}$; similarly $\Composition{T}{S} = \Identity{V}$.
+    Hence $T$ is an isomorphism.
+
+    \textit{Independence of bases}: If $A = \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$
+    is invertible, then for any other bases $\mathcal{C}_U$, $\mathcal{C}_V$:
+    \[
+        \CoordMatrix[\mathcal{C}_U][\mathcal{C}_V]{T}
+        = \CoordMatrix[\mathcal{B}_V][\mathcal{C}_V]{\Identity{V}}
+          \cdot A
+          \cdot \CoordMatrix[\mathcal{C}_U][\mathcal{B}_U]{\Identity{U}}
+    \]
+    is a product of invertible matrices, hence invertible. \qedhere
+\end{proof}
+
+\subsection{Examples}
+
+\begin{example}[Inverse via Matrix Inverse]
+\label{ex:mat-inverse}
+    Let $T: \bb{R}^2 \to \bb{R}^2$, $T(x,y) = (2x+y,\, x+y)$, with standard bases.
+    \[
+        A = \CoordMatrix[\mathcal{E}][\mathcal{E}]{T}
+        = \begin{pmatrix} 2 & 1 \\ 1 & 1 \end{pmatrix},
+        \qquad
+        A^{-1} = \begin{pmatrix} 1 & -1 \\ -1 & 2 \end{pmatrix}
+    \]
+    By Theorem~\ref{thm:mat-inverse},
+    $\CoordMatrix[\mathcal{E}][\mathcal{E}]{T^{-1}} = A^{-1}$, so
+    $T^{-1}(x,y) = (x-y,\, -x+2y)$.
+    Verify: $T(T^{-1}(x,y)) = T(x-y,\, -x+2y) = (2(x-y)+(-x+2y),\, (x-y)+(-x+2y))
+    = (x, y)$ $\checkmark$.
+\end{example}
+
+\begin{example}[Not Invertible]
+    $T: \bb{R}^2 \to \bb{R}^2$, $T(x,y) = (x+y,\, x+y)$.
+    $\CoordMatrix[\mathcal{E}][\mathcal{E}]{T}
+    = \begin{pmatrix}1&1\\1&1\end{pmatrix}$: the two columns are equal, hence linearly
+    dependent, so $T$ is not injective and not an isomorphism
+    (Theorem~\ref{thm:mat-inj}(4)).
+\end{example}
+
+\begin{example}[Basis-Independence of Invertibility]
+    For $T$ from Example~\ref{ex:mat-inverse} with $\mathcal{C} = (e_0+e_1,\, e_1)$:
+    \[
+        \CoordMatrix[\mathcal{C}][\mathcal{C}]{T}
+        = \begin{pmatrix}3&1\\-2&-1\end{pmatrix}
+    \]
+    The columns $\begin{psmallmatrix}3\\-2\end{psmallmatrix}$ and
+    $\begin{psmallmatrix}1\\-1\end{psmallmatrix}$ are linearly independent (neither is a
+    scalar multiple of the other), so $T$ is injective, and since $n = m = 2$ it is an
+    isomorphism --- as expected from Corollary~\ref{cor:invertible-iff-mat-invertible}.
+\end{example}

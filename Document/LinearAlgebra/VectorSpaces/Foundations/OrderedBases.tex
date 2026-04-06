@@ -36,14 +36,14 @@
             0 & \text{otherwise}
         \end{cases}
     \]
-    When $I$ is finite, we write $\CoordVec[\mathcal{B}]{v} = \ColVec{a_0 \\ \vdots \\ a_{n-1}}[\mathcal{B}] \in K^n$.
+    When $I$ is finite, we write $\CoordVec[\mathcal{B}]{v} = \begin{pmatrix} a_0 \\ \vdots \\ a_{n-1} \end{pmatrix}_{\mathcal{B}} \in K^n$.
 \end{definition}
 
 \begin{example}[Coordinate Dependence on Ordering]\label{ex:coord-ordering}
     In $\bb{R}^2$, let $v = (3, 2)$. With the standard basis:
     \begin{itemize}
-        \item $\mathcal{B}_1 = (e_0, e_1)$: $\CoordVec[\mathcal{B}_1]{v} = \ColVec{3 \\ 2}[\mathcal{B}_1]$
-        \item $\mathcal{B}_2 = (e_1, e_0)$: $\CoordVec[\mathcal{B}_2]{v} = \ColVec{2 \\ 3}[\mathcal{B}_2]$
+        \item $\mathcal{B}_1 = (e_0, e_1)$: $\CoordVec[\mathcal{B}_1]{v} = \begin{pmatrix} 3 \\ 2 \end{pmatrix}_{\mathcal{B}_1}$
+        \item $\mathcal{B}_2 = (e_1, e_0)$: $\CoordVec[\mathcal{B}_2]{v} = \begin{pmatrix} 2 \\ 3 \end{pmatrix}_{\mathcal{B}_2}$
     \end{itemize}
     The coordinates depend on the \textbf{ordering}, not just the set of basis vectors.
 \end{example}

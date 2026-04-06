@@ -4,13 +4,58 @@
 \newpage
 \section{Quotient Space Construction}
 
+\begin{intuition}[Chapter Overview]
+    Subspaces are the substructures of a vector space; quotient spaces are the
+    \textbf{factor structures}. Given a subspace $W \Subspace[K] V$, the quotient
+    $\QuotientSpace{V}{W}$ is the vector space obtained by ``collapsing $W$ to zero'' ---
+    declaring two vectors equivalent if they differ by an element of $W$. The resulting
+    equivalence classes (cosets $v + W$) inherit well-defined vector space operations, and the
+    canonical projection $\pi: V \to \QuotientSpace{V}{W}$ is a surjective linear map whose
+    kernel is exactly $W$.
+
+    Quotient spaces serve two fundamental roles:
+    \begin{itemize}
+        \item \textbf{Factoring linear maps.} Every linear map $T: V \to X$ with
+              $W \subseteq \Ker{T}$ factors uniquely through $\QuotientSpace{V}{W}$. This
+              universal property makes quotients the natural tool for analyzing maps by
+              ``dividing out'' their kernel.
+        \item \textbf{Structural theorems.} The four isomorphism theorems --- direct analogues
+              of the classical theorems for groups and rings --- describe how subspaces, sums,
+              intersections, and nested quotients interact. These theorems reduce complex
+              structural questions to manageable calculations.
+    \end{itemize}
+
+    Geometrically, if $V = \bb{R}^3$ and $W$ is a plane through the origin, the quotient
+    $\QuotientSpace{V}{W}$ is a one-dimensional space whose ``points'' are the planes parallel
+    to $W$. Each coset $v + W$ is a translate of $W$, and the quotient records only how far a
+    vector is displaced from $W$ in the transverse direction.
+\end{intuition}
+
 \begin{remark}[Intuition]
-    Given a subspace $W \Subspace[K] V$, we want to ``collapse'' $W$ to zero
-    while preserving the vector space structure. The resulting space $\QuotientSpace{V}{W}$
-    consists of parallel ``slices'' of $V$, each translated copy of $W$.
-    
-    Geometrically: if $V = \bb{R}^3$ and $W$ is a plane through the origin,
-    then $\QuotientSpace{V}{W}$ is the space of all planes parallel to $W$---a 1-dimensional space.
+    Given a subspace $W \Subspace[K] V$, we want to build a new vector space in which
+    every vector in $W$ becomes zero --- we ``collapse'' $W$ to a single point. The price
+    is that we can no longer distinguish vectors that differ only by an element of $W$: if
+    $u - v \in W$, then $u$ and $v$ become the same object in the quotient. The equivalence
+    classes $v + W = \{v + w \mid w \in W\}$ are the \textbf{cosets} of $W$, and they are
+    the ``points'' of the quotient space $\QuotientSpace{V}{W}$.
+
+    Geometrically, each coset is a translate of $W$ --- a parallel copy of the subspace
+    $W$ displaced by the vector $v$. The quotient space is the set of all such parallel
+    copies, equipped with natural addition and scalar multiplication defined through
+    representatives. For instance:
+    \begin{itemize}
+        \item If $V = \bb{R}^2$ and $W$ is a line through the origin, the cosets are lines
+              parallel to $W$. The quotient $\QuotientSpace{\bb{R}^2}{W}$ is one-dimensional:
+              it parameterizes how far a point is from $W$ in the transverse direction.
+        \item If $V = \bb{R}^3$ and $W$ is a plane through the origin, the cosets are planes
+              parallel to $W$, and $\QuotientSpace{\bb{R}^3}{W} \cong \bb{R}$.
+        \item If $V = K[X]$ and $W = \Span[K]{\{X^n \mid n \geq 2\}}$, the quotient
+              identifies two polynomials that agree up to degree $1$ --- it retains only the
+              constant and linear terms.
+    \end{itemize}
+    The key technical point is \textbf{well-definedness}: the operations on cosets must not
+    depend on which representative we choose. This is exactly where the hypothesis that $W$
+    is a subspace (not just a subset) is used.
 \end{remark}
 
 \begin{definition}[Quotient Equivalence Relation]\label{def:quotient-equiv}
@@ -52,13 +97,22 @@
     all cosets of $W$ in $V$:
     \[
         \QuotientSpace{V}{W} = \Set{\Coset{v}{W} \mid v \in V}
+        = \Set{\EquivClass{v} \mid v \in V}
     \]
-    equipped with the operations:
+    We write $\Coset{v}{W}$ (coset notation) and $\EquivClass{v}$ (equivalence class notation)
+    interchangeably for the same element of $\QuotientSpace{V}{W}$.
+
+    The vector space operations are defined through representatives:
     \begin{align*}
-        \Coset{u}{W} + \Coset{v}{W} &= \Coset{(u + v)}{W} \\
+        \Coset{u}{W} + \Coset{v}{W} &= \Coset{(u + v)}{W}
+        &\quad\text{i.e.,}\quad
+        \EquivClass{u} + \EquivClass{v} &= \EquivClass{u + v} \\
         a \cdot \Coset{v}{W} &= \Coset{(av)}{W}
+        &\quad\text{i.e.,}\quad
+        a \cdot \EquivClass{v} &= \EquivClass{av}
     \end{align*}
     for all $u, v \in V$ and $a \in K$.
+    More generally, $a\EquivClass{u} + b\EquivClass{v} = \EquivClass{au + bv}$.
 \end{definition}
 
 \begin{theorem}[Vector Space Structure]\label{thm:quotient-vs}
@@ -81,8 +135,10 @@
     \textbf{Vector space axioms:}
     The axioms follow from those of $V$ via representatives. For example:
     \begin{itemize}
-        \item Zero element: $\Coset{0}{W} = W$ satisfies $\Coset{v}{W} + \Coset{0}{W} = \Coset{(v+0)}{W} = \Coset{v}{W}$.
-        \item Additive inverse: $-\Coset{v}{W} = \Coset{(-v)}{W}$ since $\Coset{v}{W} + \Coset{(-v)}{W} = \Coset{0}{W}$.
+        \item Zero element: $\EquivClass{0} = \Coset{0}{W} = W$ satisfies
+              $\EquivClass{v} + \EquivClass{0} = \EquivClass{v+0} = \EquivClass{v}$.
+        \item Additive inverse: $-\EquivClass{v} = \EquivClass{-v}$ since
+              $\EquivClass{v} + \EquivClass{-v} = \EquivClass{0}$.
         \item Associativity, commutativity, distributivity all follow by computing with representatives
               and using well-definedness.
     \end{itemize}
@@ -91,7 +147,7 @@
 \begin{definition}[Canonical Projection]\label{def:canonical-proj}
     The \textbf{canonical projection} (or \textbf{quotient map}) is the linear map:
     \[
-        \pi: V \to \QuotientSpace{V}{W}, \quad \pi(v) = \Coset{v}{W}
+        \pi: V \to \QuotientSpace{V}{W}, \quad \pi(v) = \Coset{v}{W} = \EquivClass{v}
     \]
 \end{definition}
 
@@ -108,16 +164,16 @@
     \textbf{(1) Linearity:}
     For $u, v \in V$ and $a, b \in K$:
     \[
-        \pi(au + bv) = \Coset{(au + bv)}{W} = a\Coset{u}{W} + b\Coset{v}{W} = a\pi(u) + b\pi(v)
+        \pi(au + bv) = \EquivClass{au + bv} = a\EquivClass{u} + b\EquivClass{v} = a\pi(u) + b\pi(v)
     \]
-    
+
     \textbf{(2) Surjectivity:}
-    Every element of $\QuotientSpace{V}{W}$ has the form $\Coset{v}{W} = \pi(v)$ for some $v \in V$.
-    
+    Every element of $\QuotientSpace{V}{W}$ has the form $\EquivClass{v} = \pi(v)$ for some $v \in V$.
+
     \textbf{(3) Kernel:}
     \begin{align*}
-        v \in \Ker{\pi} &\Leftrightarrow \pi(v) = \Coset{0}{W} \\
-                        &\Leftrightarrow \Coset{v}{W} = \Coset{0}{W} \\
+        v \in \Ker{\pi} &\Leftrightarrow \pi(v) = \EquivClass{0} \\
+                        &\Leftrightarrow \EquivClass{v} = \EquivClass{0} \\
                         &\Leftrightarrow v - 0 \in W \\
                         &\Leftrightarrow v \in W
     \end{align*}
@@ -238,6 +294,21 @@
 \newpage
 \section{Dimension of Quotient Spaces}
 
+\begin{remark}[Motivation]
+    Since $\QuotientSpace{V}{W}$ is obtained by collapsing a $\Dim{W}$-dimensional piece
+    of $V$ to zero, we expect the quotient to have dimension $\Dim{V} - \Dim{W}$. The
+    quotient dimension formula makes this precise: $\Dim{W} + \Dim{\QuotientSpace{V}{W}} = \Dim{V}$.
+    This is stated in additive form so that it is valid even when the dimensions are infinite
+    cardinals, where subtraction may not be meaningful.
+
+    The proof is constructive: start with a basis for $W$, extend it to a basis for $V$,
+    and show that the cosets of the extension vectors form a basis for the quotient. This
+    is the same ``extend and project'' strategy used in the direct proof of rank-nullity
+    (Theorem~\ref{thm:rank-nullity}), and the resemblance is not coincidental --- the
+    first isomorphism theorem will show that rank-nullity is a corollary of the quotient
+    dimension formula.
+\end{remark}
+
 \begin{theorem}[Quotient Dimension Formula]\label{thm:quotient-dim}
     Let $W \Subspace[K] V$. Then:
     \[
@@ -261,7 +332,7 @@
     for finite $F_1 \subseteq I$, $F_2 \subseteq J$.
     Then:
     \[
-        \EquivClass{v} = \EquivClass*{\sum_{i \in F_1} a_i w_i + \sum_{j \in F_2} b_j v_j} 
+        \EquivClass{v} = \EquivClass{\sum_{i \in F_1} a_i w_i + \sum_{j \in F_2} b_j v_j} 
                        = \sum_{i \in F_1} a_i \EquivClass{w_i} + \sum_{j \in F_2} b_j \EquivClass{v_j}
                        = \sum_{j \in F_2} b_j \EquivClass{v_j}
     \]
@@ -288,6 +359,24 @@
 
 \newpage
 \section{Universal Property of Quotient Spaces}
+
+\begin{remark}[Motivation]
+    The universal property of quotient spaces is the dual of the universal property of free
+    vector spaces (Theorem~\ref{thm:vector-space-universal}). Where the free property says
+    ``maps \emph{out of} $V$ are determined by values on a basis,'' the quotient property
+    says ``maps \emph{out of} $\QuotientSpace{V}{W}$ correspond exactly to maps out of $V$
+    that kill $W$.''
+
+    In categorical language, the canonical projection $\pi: V \to \QuotientSpace{V}{W}$ is
+    the \textbf{cokernel} of the inclusion $W \hookrightarrow V$: it is the universal map
+    that makes the inclusion zero. This universal characterization means that $\QuotientSpace{V}{W}$
+    is determined up to unique isomorphism by the pair $(V, W)$ --- any other space with the
+    same factoring property is canonically isomorphic to $\QuotientSpace{V}{W}$.
+
+    In practice, the universal property is the main tool for constructing maps out of
+    quotient spaces: rather than working with cosets directly, define a map on $V$, verify
+    that it kills $W$, and invoke the theorem.
+\end{remark}
 
 The universal property characterizes the quotient space by its relationship to linear maps
 whose kernel contains the subspace $W$.

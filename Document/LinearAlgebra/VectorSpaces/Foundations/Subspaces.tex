@@ -4,14 +4,27 @@
 \newpage
 \section{Vector Subspaces}
 
+\begin{remark}[Why Subspaces?]
+    A vector space may be large or complicated, but its internal structure is revealed by its
+    subspaces --- subsets that are themselves vector spaces under the inherited operations.
+    Lines and planes through the origin in $\bb{R}^3$ are the prototypical examples: they are
+    the ``flat'' subsets that pass through zero. Every fundamental construction in linear
+    algebra --- kernel, image, span, eigenspace --- produces a subspace. Understanding
+    the lattice of all subspaces of $V$ (how they intersect, sum, and nest) is therefore
+    central to understanding $V$ itself.
+
+    The \textbf{subspace criterion} below reduces the verification to a single condition:
+    closure under linear combinations. This is the test used in practice.
+\end{remark}
+
 \begin{definition}[Vector Subspace]\label{def:subspace}
     Let $V$ be a $K$-vector space. A subset $U \subseteq V$ is a \textbf{$K$-vector subspace}
     of $V$ (written $U \Subspace[K] V$) if $U$ is itself a $K$-vector space under the
     inherited operations from $V$.
 \end{definition}
 
-\begin{remark}[The Subspace Lattice $\Sub{V}$]\label{rem:sub-lattice}
-    We write $\Sub{V}$ for the \textbf{set of all $K$-vector subspaces of $V$}, ordered by
+\begin{remark}[The Subspace Lattice $\SubspaceLattice{V}$]\label{rem:sub-lattice}
+    We write $\SubspaceLattice{V}$ for the \textbf{set of all $K$-vector subspaces of $V$}, ordered by
     inclusion. It is a \emph{complete lattice}: any family of subspaces has a meet (intersection)
     and a join (sum):
     \[

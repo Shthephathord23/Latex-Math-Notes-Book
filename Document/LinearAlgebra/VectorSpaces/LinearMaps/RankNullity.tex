@@ -4,6 +4,27 @@
 \newpage
 \section{The Rank-Nullity Theorem}
 
+\begin{remark}[Motivation]
+    The rank-nullity theorem is one of the most important results in linear algebra. It says
+    that for any linear map $T: U \to V$, the dimension of the domain is the sum of two
+    contributions:
+    \begin{itemize}
+        \item the \textbf{nullity} $\Nullity{T} = \Dim{\Ker{T}}$: the number of independent
+              directions that $T$ collapses to zero,
+        \item the \textbf{rank} $\Rank{T} = \Dim{\Rng{T}}$: the number of independent
+              directions that $T$ produces in the target.
+    \end{itemize}
+    In other words, every dimension in the domain either ``survives'' (contributes to the
+    range) or ``dies'' (is absorbed by the kernel), and nothing is lost in the accounting.
+    This is the quantitative expression of the fact that a linear map cannot create or
+    destroy dimensions independently --- collapsing $k$ dimensions in the domain
+    automatically reduces the image by exactly $k$ dimensions.
+
+    The proof constructs an explicit basis witnessing this decomposition: start with a basis
+    for the kernel, extend it to a basis for $U$, and show the images of the extension
+    vectors form a basis for the range.
+\end{remark}
+
 \begin{theorem}[Rank-Nullity Theorem]\label{thm:rank-nullity}
     For any linear map $T: U \to V$:
     \[

@@ -1,0 +1,480 @@
+% Document/LinearAlgebra/VectorSpaces/Matrices/MatrixSpaces.tex
+% Phase 16a–d: Matrix Spaces, Representation Theorem, Operations by Transport, Action Map
+
+\section{Matrix Spaces}
+\label{sec:mat-spaces}
+
+% ── Motivation ──────────────────────────────────────────────────────────────
+
+\begin{remark}[Why Matrices?]
+    We have built a rich theory of linear maps. But working with abstract maps is cumbersome
+    for computation: to describe $T \in \Hom[K]{U}{V}$ we would need to specify $T(v)$ for
+    every $v \in U$. By the universal property, $T$ is completely determined by its values
+    on a basis $\mathcal{B}_U = (b_j)_{j \in J}$, reducing the data to the family
+    $(T(b_j))_{j \in J}$ in $V$. Expressing each $T(b_j)$ in a basis
+    $\mathcal{B}_V = (c_i)_{i \in I}$ of $V$ further reduces the information to a family
+    of scalars $(a_{ij})_{i \in I, j \in J}$ with $T(b_j) = \sum_i a_{ij} c_i$.
+    A \textbf{matrix} is precisely this rectangular array of scalars. It stores the action
+    of $T$ in a form that is:
+    \begin{itemize}
+        \item \textbf{Finite}: finitely many nonzero entries per column, since $T(b_j) \in V$
+              has finite support in $\mathcal{B}_V$,
+        \item \textbf{Computable}: finding $T(v)$ for any $v$ reduces to arithmetic on scalars,
+        \item \textbf{Composable}: the matrix of $\Composition{S}{T}$ is determined by the
+              matrices of $S$ and $T$.
+    \end{itemize}
+    The array depends on the choice of ordered bases. We begin by formalizing the existence of
+    this array, then define matrices as purely combinatorial objects (grids of scalars). The
+    \textbf{Representation Theorem} (Theorem~\ref{thm:rep-thm}) establishes that the
+    column-finite ones are \emph{exactly} the linear maps between free modules with canonical
+    bases. Matrix operations are then defined by \textbf{transport of structure} from
+    composition of linear maps, and the classical \textbf{commutative diagram}
+    (Section~\ref{sec:matrix-of-map}) characterizes the matrix of an abstract linear map.
+\end{remark}
+
+\begin{proposition}[Existence and Uniqueness of the Scalar Array]
+\label{prop:scalar-array}
+    Let $T: U \to V$ be $K$-linear, with ordered bases $\mathcal{B}_U = (b_j)_{j \in J}$
+    and $\mathcal{B}_V = (c_i)_{i \in I}$. For each $j \in J$ there exist \textbf{unique}
+    scalars $(A_{ij})_{i \in I}$ with $A_{ij} \in K$ such that
+    \[
+        T(b_j) = \sum_{i \in I} A_{ij}\, c_i
+    \]
+    and for each fixed $j$, only finitely many $A_{ij}$ are nonzero.
+\end{proposition}
+
+\begin{proof}
+    Each $T(b_j) \in V$. Since $\mathcal{B}_V$ is a basis of $V$, every vector in $V$ has a
+    unique expression as a finite linear combination of $(c_i)_{i \in I}$. Applying this to
+    $T(b_j)$ gives the unique scalars $A_{ij} = \CoordVec[\mathcal{B}_V]{T(b_j)}(i)$, with
+    only finitely many nonzero (finite support by definition of a basis).
+\end{proof}
+
+\begin{remark}[The Fundamental Datum]
+    The double index $(i,j)$ is the fundamental datum of this chapter: $i$ picks the row
+    (the target basis vector $c_i$) and $j$ picks the column (the source basis vector $b_j$).
+    The family $(A_{ij})_{i \in I,\, j \in J}$ is the \textbf{matrix of $T$} with respect to
+    $\mathcal{B}_U$ and $\mathcal{B}_V$. Everything that follows --- evaluation formula,
+    matrix-times-vector, matrix multiplication --- is a consequence of this single fact
+    together with linearity. The key question is: \emph{what is a matrix, as a mathematical
+    object, independent of the linear map that produced it?}
+\end{remark}
+
+% ── 16a: Definitions ────────────────────────────────────────────────────────
+
+\subsection{General Matrices}
+
+\begin{definition}[{General Matrix Space $\MatSpace{Y}{X}[K]$}]
+\label{def:mat-space}
+    Let $X, Y$ be sets (column and row index sets, respectively). A \textbf{$(Y \times X)$-matrix
+    with entries in $K$} is a function
+    \[
+        A: Y \times X \to K
+    \]
+    Write $A_{ij}$ for $A(i,j)$ (row index $i \in Y$, column index $j \in X$). The set of
+    all such matrices is
+    \[
+        \MatSpace{Y}{X}[K] \defeq K^{Y \times X}
+    \]
+    with no finiteness condition imposed. For cardinals $\kappa_1, \kappa_2$, write
+    $\MatSpace{\kappa_2}{\kappa_1}[K]$ ($\kappa_2$ rows, $\kappa_1$ columns).
+\end{definition}
+
+\begin{remark}[Scope]
+    The general space $\MatSpace{Y}{X}[K]$ imposes no finiteness condition. In this chapter,
+    most results concern the column-finite subspace $\CFMat{Y}{X}[K]$, which captures exactly
+    the linear maps $K^{(\kappa_1)} \to K^{(\kappa_2)}$
+    (Theorem~\ref{thm:rep-thm}). The larger space $\MatSpace{Y}{X}[K]$ becomes essential in
+    functional analysis, where bounded operators on sequence spaces are represented by infinite
+    matrices with no column-finiteness requirement --- convergence replaces finite support as
+    the operative condition.
+\end{remark}
+
+\begin{remark}[Currying]
+    A matrix $A \in \MatSpace{Y}{X}[K]$ is equivalently a function
+    $j \mapsto A(-,j) \in K^Y$ (the column map) or $i \mapsto A(i,-) \in K^X$ (the row map).
+\end{remark}
+
+\begin{definition}[{Matrix Addition and Scalar Multiplication on $\MatSpace{Y}{X}[K]$}]
+\label{def:mat-add-scalar}
+    Since $\MatSpace{Y}{X}[K] = K^{Y \times X}$ is a product of copies of $K$, it inherits
+    pointwise operations making it a $K$-vector space:
+    \[
+        (A + B)_{ij} \defeq A_{ij} + B_{ij}, \qquad
+        (\lambda A)_{ij} \defeq \lambda\, A_{ij}, \qquad
+        0_{ij} \defeq 0
+    \]
+    These are defined for \textbf{all} $A, B \in \MatSpace{Y}{X}[K]$, with no finiteness
+    condition required.
+\end{definition}
+
+\subsection{Column-Finite Matrices}
+
+\begin{definition}[{Column-Finite Matrix Space $\CFMat{Y}{X}[K]$}]
+\label{def:cfmat-space}
+    A matrix $A \in \MatSpace{Y}{X}[K]$ is \textbf{column-finite} if for each $j \in X$,
+    the column $A(-,j): i \mapsto A_{ij}$ has \textbf{finite support}:
+    $A_{ij} = 0$ for all but finitely many $i \in Y$. Equivalently, $A(-,j) \in K^{(Y)}$
+    for all $j$. The set of column-finite matrices is
+    \[
+        \CFMat{Y}{X}[K] \defeq \Set{A \in \MatSpace{Y}{X}[K] \mid
+            \forall j \in X,\ A(-,j) \in K^{(Y)}}
+    \]
+\end{definition}
+
+\begin{remark}[Why Column-Finiteness?]
+    Column-finiteness is not an arbitrary restriction. When expressing a linear map $T: U \to V$
+    in ordered bases, each image $T(b_j) \in V$ is a \emph{finite} linear combination of the
+    target basis vectors --- this is a consequence of the definition of a basis. Column-finiteness
+    of the matrix is precisely this condition on the scalars.
+\end{remark}
+
+\begin{proposition}[{$\CFMat{Y}{X}[K]$ is a Subspace}]
+\label{prop:cfmat-subspace}
+    $\CFMat{Y}{X}[K]$ is a subspace of $\MatSpace{Y}{X}[K]$, and therefore a $K$-vector space
+    under the operations of Definition~\ref{def:mat-add-scalar}.
+\end{proposition}
+
+\begin{proof}
+    The zero matrix has $0(-,j) = 0 \in K^{(Y)}$ for all $j$.
+    For $A, B \in \CFMat{Y}{X}[K]$ and $\lambda \in K$:
+    $(A + B)(-,j) = A(-,j) + B(-,j) \in K^{(Y)}$ (sum of finitely supported functions
+    is finitely supported) and $(\lambda A)(-,j) = \lambda\, A(-,j) \in K^{(Y)}$.
+\end{proof}
+
+\begin{remark}[Currying for Column-Finite Matrices]
+    Via currying, $\CFMat{Y}{X}[K] \cong (K^{(Y)})^X$ --- functions from $X$ to
+    finitely-supported column vectors. This is \textbf{not} the same as $K^{(Y \times X)}$:
+    the latter requires globally finite support (only finitely many nonzero entries in total),
+    which is strictly stronger than column-finiteness when $X$ is infinite. A column-finite
+    matrix may have infinitely many nonzero columns, each individually finitely supported.
+\end{remark}
+
+\subsection{Sizes}
+
+\begin{remark}[General vs.\ Column-Finite]
+    \leavevmode
+    \begin{itemize}
+        \item \textbf{General matrices}: $\MatSpace{Y}{X}[K] = K^{Y \times X}$, canonically
+              isomorphic to $\prod_{j \in X} K^Y$ (one copy of $K^Y$ per column).
+        \item \textbf{Column-finite matrices}: $\CFMat{Y}{X}[K] \cong (K^{(Y)})^X$ --- functions
+              from $X$ to finitely-supported column vectors.
+        \item \textbf{Contrast with $K^{(Y \times X)}$}: The space $K^{(Y \times X)}$ requires
+              globally finite support (only finitely many nonzero entries in total). This is
+              strictly stronger than column-finiteness when $X$ is infinite.
+    \end{itemize}
+\end{remark}
+
+% ── 16b: The Representation Theorem ────────────────────────────────────────
+
+\newpage
+\subsection{The Representation Theorem}
+
+Write $\mathcal{E}_\kappa = (e_i)_{i \in \kappa}$ for the canonical ordered basis of
+$K^{(\kappa)}$.
+
+\begin{theorem}[{Representation Theorem: $\Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}} \cong \CFMat{\kappa_2}{\kappa_1}[K]$}]
+\label{thm:rep-thm}
+    There is a canonical $K$-linear isomorphism
+    \[
+        \Phi: \Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}} \xrightarrow{\;\sim\;}
+        \CFMat{\kappa_2}{\kappa_1}[K],
+        \qquad T \mapsto \CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{T}
+    \]
+    where the $(i,j)$-entry is defined by
+    $\bigl(\CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{T}\bigr)_{ij}
+    \defeq (T(e_j))_i$, the $i$-th coordinate of $T(e_j)$ in $K^{(\kappa_2)}$.
+    The codomain is $\CFMat{\kappa_2}{\kappa_1}[K]$ (not the larger
+    $\MatSpace{\kappa_2}{\kappa_1}[K]$): column-finiteness is not imposed externally but is a
+    \emph{consequence} of $T$ mapping into $K^{(\kappa_2)}$.
+\end{theorem}
+
+\begin{remark}[Convention: Why $(T(e_j))_i$ and Not $(T(e_i))_j$?]
+    The definition $\bigl(\CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{T}
+    \bigr)_{ij} = (T(e_j))_i$ is a choice: we could equally define the $(i,j)$-entry as
+    $(T(e_i))_j$, which would identify $\Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}}$ with
+    $\CFMat{\kappa_1}{\kappa_2}[K]$ (a $\kappa_1 \times \kappa_2$ matrix) rather than
+    $\CFMat{\kappa_2}{\kappa_1}[K]$ (a $\kappa_2 \times \kappa_1$ matrix). In some sense
+    this alternative is more natural: a map $K^{(\kappa_1)} \to K^{(\kappa_2)}$ would produce
+    a matrix whose dimensions match the order $(\kappa_1, \kappa_2)$.
+
+    The classical convention $(T(e_j))_i$ reverses these dimensions, but has the compensating
+    advantage that matrix multiplication follows the familiar left-to-right reading order:
+    a $\kappa_2 \times \kappa_1$ matrix times a $\kappa_1 \times \kappa_3$ matrix yields a
+    $\kappa_2 \times \kappa_3$ matrix, with adjacent indices contracting. Under the alternative
+    convention, the same contraction would require the reverse order. We follow the classical
+    convention throughout.
+\end{remark}
+
+\begin{proof}
+    \textit{Well-definedness} (image lands in $\CFMat{\kappa_2}{\kappa_1}[K]$):
+    Each $T(e_j) \in K^{(\kappa_2)}$ has finite support in $i$, so
+    $\CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{T}(-,j)
+    \in K^{(\kappa_2)}$, i.e.\ the matrix is column-finite.
+
+    \textit{$K$-linearity of $\Phi$}:
+    $\bigl(\CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{\alpha T + \beta S}
+    \bigr)_{ij}
+    = ((\alpha T + \beta S)(e_j))_i
+    = \alpha\, (T(e_j))_i + \beta\, (S(e_j))_i
+    = \alpha\, \bigl(\CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{T}
+    \bigr)_{ij}
+    + \beta\, \bigl(\CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{S}
+    \bigr)_{ij}$.
+
+    \textit{Injectivity}:
+    If $\CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{T} = 0$, then
+    $T(e_j) = 0$ for all $j$. Since $\mathcal{E}_{\kappa_1}$ is a basis of $K^{(\kappa_1)}$,
+    this gives $T = 0$.
+
+    \textit{Surjectivity and the matrix-times-column formula}:
+    Given $A \in \CFMat{\kappa_2}{\kappa_1}[K]$, define $T_A: K^{(\kappa_1)} \to K^{(\kappa_2)}$
+    by $T_A(e_j) \defeq A(-,j) \in K^{(\kappa_2)}$ (well-defined since $A$ is column-finite)
+    and extend linearly. Then
+    $\CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{T_A} = A$.
+    Moreover, for any $x = \sum_j x_j e_j \in K^{(\kappa_1)}$ (a finite sum):
+    \[
+        T_A(x) = \sum_j x_j\, A(-,j), \qquad
+        (T_A(x))_i = \sum_j A_{ij}\, x_j = (Ax)_i
+    \]
+    so $T_A(x) = Ax$. Every $A \in \CFMat{\kappa_2}{\kappa_1}[K]$ acts on
+    $K^{(\kappa_1)} \to K^{(\kappa_2)}$ by left multiplication.
+\end{proof}
+
+\begin{definition}[{Identity Matrix $\IdentityMat{\kappa}$}]
+\label{def:identity-matrix}
+    The \textbf{identity matrix} $\IdentityMat{\kappa} \in \CFMat{\kappa}{\kappa}[K]$ is
+    the matrix with entries
+    \[
+        (\IdentityMat{\kappa})_{ij} \defeq \delta_{ij}
+        = \begin{cases} 1 & \text{if } i = j \\ 0 & \text{if } i \neq j \end{cases}
+    \]
+    For finite $n$, write $\IdentityMat{n}$ for the $n \times n$ identity matrix.
+\end{definition}
+
+\begin{corollary}[Special Matrices]
+\label{cor:special-matrices}
+    Under the isomorphism $\Phi$:
+    \begin{enumerate}
+        \item \textbf{Zero matrix = zero map}:
+              $\bigl(\CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{0}\bigr)_{ij}
+              = (0 \cdot e_j)_i = 0$.
+        \item \textbf{Identity matrix = identity map}:
+              $\CoordMatrix[\mathcal{E}_\kappa][\mathcal{E}_\kappa]{
+              \Identity{K^{(\kappa)}}} = \IdentityMat{\kappa}$.
+
+              \textit{Proof}: $\bigl(\CoordMatrix[\mathcal{E}_\kappa][\mathcal{E}_\kappa]{
+              \Identity{K^{(\kappa)}}}\bigr)_{ij}
+              = (\Identity{K^{(\kappa)}}(e_j))_i = (e_j)_i = \delta_{ij}
+              = (\IdentityMat{\kappa})_{ij}$.
+        \item \textbf{Scalar matrix}:
+              $\CoordMatrix[\mathcal{E}_\kappa][\mathcal{E}_\kappa]{
+              \lambda\, \Identity{K^{(\kappa)}}}
+              = \lambda\, \IdentityMat{\kappa}$.
+    \end{enumerate}
+\end{corollary}
+
+\begin{remark}[{$V \cong \Hom[K]{K}{V}$ as a Special Case}]
+\label{rem:vec-as-hom}
+    The isomorphism $\Hom[K]{K}{V} \cong V$ of Theorem~\ref{thm:hom-k-v-iso} is the
+    $\kappa_1 = 1$ special case of the Representation Theorem:
+    $\CFMat{\kappa_2}{1}[K] \cong \Hom[K]{K}{K^{(\kappa_2)}} \cong K^{(\kappa_2)}$.
+    Column matrices with $\kappa_2$ rows \textbf{are} vectors in $K^{(\kappa_2)}$.
+    More generally, for any $V$ with ordered basis
+    $\mathcal{B}_V = (c_i)_{i \in I}$, the coordinate vector
+    $\CoordVec[\mathcal{B}_V]{v}$ \textbf{is} the matrix
+    $\CoordMatrix[(1)][\mathcal{B}_V]{\lambda_v}$ --- an $I \times \{1\}$ column matrix.
+    The coordinate representation of a vector and the matrix representation of a linear
+    map are literally the same object.
+\end{remark}
+
+% ── The Action Map ─────────────────────────────────────────────────────────
+
+\subsection{The Action Map}
+
+\begin{proposition}[Action Map]
+\label{prop:action-map}
+    Every $A \in \MatSpace{Y}{X}[K]$ defines a $K$-linear map
+    \[
+        \mu_A: K^{(X)} \to K^Y, \qquad
+        (\mu_A(x))_i \defeq \sum_{j \in X} A_{ij}\, x_j
+    \]
+    The sum is finite (since $x$ has finite support), so $\mu_A$ is well-defined.
+    Column-finiteness of $A$ is equivalent to
+    $\operatorname{im}(\mu_A) \subseteq K^{(Y)}$: i.e.\ $A$ is column-finite if and only if
+    $\mu_A$ restricts to a map $K^{(X)} \to K^{(Y)}$.
+\end{proposition}
+
+\begin{proof}
+    If $A$ is column-finite, then for any $x \in K^{(X)}$,
+    $\mu_A(x) = \sum_{j \in \operatorname{supp}(x)} x_j\, A(-,j)$ is a finite sum of
+    elements of $K^{(Y)}$, so $\mu_A(x) \in K^{(Y)}$. Conversely, if
+    $\mu_A(e_j) = A(-,j) \in K^{(Y)}$ for all $j$, then $A$ is column-finite.
+\end{proof}
+
+\begin{remark}[Scope]
+    The action map $\mu_A$ is well-defined for \textbf{all} matrices in $\MatSpace{Y}{X}[K]$,
+    not only column-finite ones --- the sum $\sum_j A_{ij} x_j$ is finite because $x$ has
+    finite support. What column-finiteness buys is that the result lands in $K^{(Y)}$ rather
+    than merely in $K^Y$. In functional analysis, convergence replaces finite support as the
+    operative condition, but this is not our concern here: we work primarily with
+    finite-dimensional spaces (for which $\CFMat{m}{n}[K] = \MatSpace{m}{n}[K]$ and all
+    conditions are automatic).
+\end{remark}
+
+% ── 16c: Matrix Operations by Transport of Structure ───────────────────────
+
+\newpage
+\subsection{Matrix Multiplication}
+
+\begin{remark}[Transport of Structure]
+    Matrix addition and scalar multiplication on $\CFMat{\kappa_2}{\kappa_1}[K]$ are
+    compatible with $\Phi$: the $K$-linearity of $\Phi$ (proved in
+    Theorem~\ref{thm:rep-thm}) means that the pointwise formulas of
+    Definition~\ref{def:mat-add-scalar} are the \emph{unique} operations making $\Phi$ a
+    $K$-linear map.
+
+    Matrix multiplication has no natural a priori definition; it is \emph{forced upon us} by
+    requiring $\Phi$ to be an algebra morphism. Since $\End[K]{K^{(\kappa)}}$ is a $K$-algebra
+    with composition as multiplication, requiring
+    $\Phi(\Composition{S}{T}) = \Phi(S) \cdot \Phi(T)$ uniquely determines the product of
+    column-finite matrices.
+\end{remark}
+
+\begin{definition}[Matrix Multiplication]
+\label{def:mat-mult}
+    Let $A \in \CFMat{Y}{Z}[K]$ and $B \in \CFMat{Z}{X}[K]$. Define
+    \[
+        AB \defeq \Phi\bigl(\Composition{\Phi^{-1}(A)}{\Phi^{-1}(B)}\bigr)
+    \]
+    That is, $AB$ is the unique matrix corresponding to the composition of the associated
+    linear maps.
+\end{definition}
+
+\begin{theorem}[Entry Formula]
+\label{thm:entry-formula}
+    For $A \in \CFMat{Y}{Z}[K]$ and $B \in \CFMat{Z}{X}[K]$:
+    \[
+        (AB)_{ij} = \sum_{k \in Z} A_{ik}\, B_{kj}
+    \]
+\end{theorem}
+
+\begin{proof}
+    Let $T_A = \Phi^{-1}(A)$ and $T_B = \Phi^{-1}(B)$. The $j$-th column of $AB$ is:
+    \[
+        \Phi(\Composition{T_A}{T_B})(-,j)
+        = (\Composition{T_A}{T_B})(e_j)
+        = T_A(T_B(e_j))
+        = T_A(B(-,j))
+    \]
+    Since $B(-,j) = \sum_k B_{kj}\, e_k \in K^{(Z)}$ (finite sum by column-finiteness of
+    $B$), linearity of $T_A$ gives:
+    \[
+        T_A(B(-,j)) = \sum_k B_{kj}\, T_A(e_k) = \sum_k B_{kj}\, A(-,k)
+    \]
+    The $i$-th entry is $(AB)_{ij} = \sum_{k \in Z} A_{ik}\, B_{kj}$.
+\end{proof}
+
+\begin{proposition}[Well-Definedness of Matrix Multiplication]
+\label{prop:mat-mult-wd}
+    The product $AB$ lies in $\CFMat{Y}{X}[K]$.
+\end{proposition}
+
+\begin{proof}
+    Fix $j \in X$. Let $S_j = \{k \in Z : B_{kj} \neq 0\}$; this set is finite by
+    column-finiteness of $B$. Then
+    $(AB)_{ij} = \sum_{k \in S_j} A_{ik}\, B_{kj}$
+    is a finite sum in $K$, well-defined for all $i \in Y$.
+    Moreover, $\{i \in Y : (AB)_{ij} \neq 0\}
+    \subseteq \bigcup_{k \in S_j} \{i \in Y : A_{ik} \neq 0\}$,
+    which is a finite union of finite sets (by column-finiteness of $A$),
+    so $(AB)(-,j) \in K^{(Y)}$.
+\end{proof}
+
+\begin{remark}[When Is Multiplication Defined for General Matrices?]
+    The entry formula $(AB)_{ij} = \sum_k A_{ik} B_{kj}$ requires the sum to be finite.
+    This is guaranteed when $B$ is column-finite (then $B_{kj} \neq 0$ for finitely many $k$).
+    So one can multiply $A \in \MatSpace{Y}{Z}[K]$ by $B \in \CFMat{Z}{X}[K]$ to get
+    $AB \in \MatSpace{Y}{X}[K]$ --- but the result need not be column-finite (this requires
+    $A$ to also be column-finite). Column-finiteness of both factors is the minimal condition
+    ensuring the product is well-defined \emph{and} stays in $\CFMat{Y}{X}[K]$.
+\end{remark}
+
+\begin{remark}[Properties Inherited from Composition]
+    Since $AB$ is defined as $\Phi(\Composition{\Phi^{-1}(A)}{\Phi^{-1}(B)})$ and $\Phi$
+    is a $K$-linear isomorphism, all algebraic properties of matrix multiplication are
+    inherited from composition of linear maps \textbf{without any index calculations}:
+    \begin{itemize}
+        \item \textbf{Associativity}: $(AB)C = A(BC)$, from associativity of composition.
+        \item \textbf{Bilinearity}: $A(B + C) = AB + AC$,\;
+              $(A + B)C = AC + BC$,\;
+              $\lambda(AB) = (\lambda A)B = A(\lambda B)$, from linearity.
+        \item \textbf{Identity}: $\IdentityMat{\kappa} \cdot A = A$ and $A \cdot \IdentityMat{\kappa} = A$,
+              from $\Composition{\Identity{}}{T} = T = \Composition{T}{\Identity{}}$.
+        \item \textbf{Zero}: $0 \cdot A = 0$ and $A \cdot 0 = 0$, from composing with the
+              zero map.
+    \end{itemize}
+\end{remark}
+
+\begin{corollary}[{$K$-Algebra Isomorphism $\End[K]{K^{(\kappa)}} \cong \CFMat{\kappa}{\kappa}[K]$}]
+\label{cor:end-algebra-iso}
+    $\Phi$ is an isomorphism of $K$-algebras:
+    \begin{itemize}
+        \item Adding maps $\leftrightarrow$ adding matrices
+        \item Composing maps $\leftrightarrow$ multiplying matrices
+        \item Zero map $\leftrightarrow$ zero matrix
+        \item Identity map $\leftrightarrow$ identity matrix
+    \end{itemize}
+\end{corollary}
+
+\subsection{Other Matrix Operations}
+
+\begin{definition}[Hadamard Product]
+\label{def:hadamard}
+    For $A, B \in \MatSpace{Y}{X}[K]$, the \textbf{Hadamard product} (entrywise product) is
+    \[
+        (\Hadamard{A}{B})_{ij} \defeq A_{ij}\, B_{ij}
+    \]
+    This is defined on all of $\MatSpace{Y}{X}[K]$ (same-size matrices only).
+    If $A, B \in \CFMat{Y}{X}[K]$, then $\Hadamard{A}{B} \in \CFMat{Y}{X}[K]$
+    (column-finiteness is preserved: $\{i : A_{ij} B_{ij} \neq 0\}
+    \subseteq \{i : A_{ij} \neq 0\}$).
+\end{definition}
+
+\begin{definition}[Transpose]
+\label{def:transpose}
+    For $A \in \MatSpace{Y}{X}[K]$, the \textbf{transpose} $\Transpose{A} \in \MatSpace{X}{Y}[K]$
+    is defined by
+    \[
+        (\Transpose{A})_{ij} \defeq A_{ji}
+    \]
+\end{definition}
+
+\begin{remark}[Transpose and Column-Finiteness]
+    The transpose of a column-finite matrix $A \in \CFMat{Y}{X}[K]$ is \textbf{not} in general
+    column-finite as an element of $\MatSpace{X}{Y}[K]$: transposing turns columns of $A$ into
+    rows of $\Transpose{A}$, and each row of $\Transpose{A}$ may have infinite support even if
+    each column of $A$ does not. For finite matrices (both $X$ and $Y$ finite),
+    $\Transpose{A} \in \CFMat{X}{Y}[K]$ always.
+\end{remark}
+
+\begin{definition}[Hermitian Conjugate]
+\label{def:hermitian}
+    If $K$ carries a conjugation involution $\overline{(\cdot)}: K \to K$ (e.g.\ $K = \bb{C}$),
+    the \textbf{Hermitian conjugate} (conjugate transpose) is
+    \[
+        (\Hermitian{A})_{ij} \defeq \overline{A_{ji}}
+    \]
+    Same column-finiteness caveat as for transpose.
+\end{definition}
+
+\begin{remark}[Determinant --- Forward Reference]
+    For square finite matrices $A \in \CFMat{n}{n}[K]$ ($n < \infty$) over a commutative ring,
+    the \textbf{Leibniz formula}
+    \[
+        \Det{A} = \sum_{\sigma \in S_n} \operatorname{sgn}(\sigma) \prod_{i=1}^{n} A_{i,\sigma(i)}
+    \]
+    will be derived in Chapter~7 (Multilinear Algebra) as the unique alternating multilinear form
+    normalized by $\Det{\IdentityMat{n}} = 1$. For now, use $\Det{A}$ as notation and rely on the Leibniz
+    formula when needed for small matrices.
+\end{remark}

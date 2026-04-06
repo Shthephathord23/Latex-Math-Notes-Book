@@ -207,6 +207,18 @@
     combination of elements in $L$, contradicting the independence of $L$.
 \end{proof}
 
+\begin{proposition}[Finite Character of Linear Independence]\label{prop:lin-indep-finite-char}
+    A set $L \subseteq V$ is linearly independent if and only if every finite subset of $L$
+    is linearly independent.
+\end{proposition}
+
+\begin{proof}
+    ($\Rightarrow$): Proposition~\ref{prop:subset-lin-indep}.
+    ($\Leftarrow$): Every nontrivial linear combination $\sum_{i \in n} a_i \ell_i = 0$
+    involves only finitely many elements $\{\ell_0, \ldots, \ell_{n-1}\} \subseteq L$.
+    If this finite subset is linearly independent, all $a_i = 0$, contradicting nontriviality.
+\end{proof}
+
 \begin{proposition}[Extending a Linearly Independent Set]\label{prop:extend-lin-indep}
     Let $L$ be linearly independent and $v \in V$. Then $L \Union \{v\}$ is linearly independent
     if and only if $v \notin \Span[K]{L}$.

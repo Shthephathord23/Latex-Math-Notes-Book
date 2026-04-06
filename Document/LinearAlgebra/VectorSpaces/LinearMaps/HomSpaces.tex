@@ -4,6 +4,26 @@
 \newpage
 \section{Hom Spaces as Vector Spaces}
 
+\begin{remark}[Motivation]
+    A striking feature of linear algebra is that the \emph{maps} between vector spaces are
+    themselves vectors. The set $\Hom[K]{U}{V}$ of all linear maps $U \to V$ carries a
+    natural vector space structure: we add maps pointwise and scale them pointwise, and the
+    result is again linear. This ``maps are vectors'' principle is the source of much of the
+    subject's power:
+    \begin{itemize}
+        \item It allows us to \emph{compute} with maps (add them, scale them, take linear
+              combinations) just as we compute with vectors.
+        \item It allows us to ask \emph{dimensional} questions about maps: the space
+              $\Hom[K]{U}{V}$ has dimension $\Dim{U} \cdot \Dim{V}$ when both are
+              finite-dimensional, giving a precise count of the ``degrees of freedom''
+              available in choosing a linear map.
+        \item When source and target coincide ($U = V$), the set $\End[K]{V} = \Hom[K]{V}{V}$
+              acquires a \emph{multiplication} (composition), making it a $K$-algebra. This
+              endomorphism algebra is the algebraic home of eigenvalues, minimal polynomials,
+              and all of spectral theory.
+    \end{itemize}
+\end{remark}
+
 \begin{theorem}[{$\Hom[K]{U}{V}$ is a Vector Space}]
 \label{thm:hom-vs}
     For $K$-vector spaces $U$ and $V$, the set $\Hom[K]{U}{V}$ of all $K$-linear maps

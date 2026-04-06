@@ -1,0 +1,177 @@
+% Document/LinearAlgebra/VectorSpaces/Matrices/RankNullityChangeOfBasis.tex
+% Phase 16g: Rank/Nullity Invariance and Change of Bases Formula
+
+\newpage
+\section{Rank, Nullity, and Change of Bases}
+\label{sec:rank-nullity-change-of-bases}
+
+\subsection{Rank and Nullity are Basis-Independent}
+
+\begin{theorem}[Rank and Nullity Invariance]
+\label{thm:rank-nullity-invariance}
+    Let $T: U \to V$ be $K$-linear with ordered bases $\mathcal{B}_U$, $\mathcal{B}_V$.
+    Then:
+    \[
+        \Rank{T} = \Rank{\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}},
+        \qquad
+        \Nullity{T} = \Nullity{\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}}
+    \]
+\end{theorem}
+
+\begin{proof}
+    The commutative square gives
+    $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+    = \Composition{\phi_{\mathcal{B}_V}}{\Composition{T}{\phi_{\mathcal{B}_U}^{-1}}}$.
+    Since $\phi_{\mathcal{B}_U}$ and $\phi_{\mathcal{B}_V}$ are isomorphisms, pre- and
+    post-composing by them does not change rank or nullity: by
+    Theorem~\ref{thm:bijectivity}, isomorphisms preserve the dimension of every subspace.
+    Explicitly:
+    \begin{itemize}
+        \item $\Rng{\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}}
+              = \phi_{\mathcal{B}_V}(\Rng{T})$, so
+              $\Rank{\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}}
+              = \Dim{\phi_{\mathcal{B}_V}(\Rng{T})}
+              = \Dim{\Rng{T}}
+              = \Rank{T}$.
+        \item $\Ker{\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}}
+              = \phi_{\mathcal{B}_U}(\Ker{T})$, so
+              $\Nullity{\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}}
+              = \Dim{\phi_{\mathcal{B}_U}(\Ker{T})}
+              = \Dim{\Ker{T}}
+              = \Nullity{T}$. \qedhere
+    \end{itemize}
+\end{proof}
+
+\begin{remark}
+    $\Rank{T}$ and $\Nullity{T}$ can be computed from any matrix representation of $T$;
+    the choice of bases is irrelevant.
+\end{remark}
+
+\subsection{Change of Bases Formula}
+
+\begin{theorem}[Change of Bases Formula]
+\label{thm:change-of-bases}
+    Let $T: U \to V$ be $K$-linear, let $\mathcal{B}_U$, $\mathcal{C}_U$ be two ordered
+    bases of $U$, and $\mathcal{B}_V$, $\mathcal{C}_V$ two ordered bases of $V$. Then:
+    \[
+        \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+        = \CoordMatrix[\mathcal{C}_V][\mathcal{B}_V]{\Identity{V}}
+          \cdot \CoordMatrix[\mathcal{C}_U][\mathcal{C}_V]{T}
+          \cdot \CoordMatrix[\mathcal{B}_U][\mathcal{C}_U]{\Identity{U}}
+    \]
+\end{theorem}
+
+\begin{proof}
+    Apply Corollary~\ref{thm:comp-mult} (composition equals multiplication) to the
+    trivial factorization $T = \Composition{\Identity{V}}{\Composition{T}{\Identity{U}}}$,
+    routing through the intermediate bases $\mathcal{C}_U$ on $U$ and $\mathcal{C}_V$ on $V$:
+    \[
+        \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+        = \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]
+          {\Composition{\Identity{V}}{\Composition{T}{\Identity{U}}}}
+        = \CoordMatrix[\mathcal{C}_V][\mathcal{B}_V]{\Identity{V}}
+          \cdot \CoordMatrix[\mathcal{C}_U][\mathcal{C}_V]{T}
+          \cdot \CoordMatrix[\mathcal{B}_U][\mathcal{C}_U]{\Identity{U}}
+        \qedhere
+    \]
+\end{proof}
+
+\begin{remark}[Commutative Grid]
+    The commutative square from Definition~\ref{def:matrix-of-map} extends to a $3 \times 2$
+    grid when a second pair of bases is introduced:
+    \[
+    \begin{tikzcd}[column sep=5em, row sep=3em]
+        U \arrow[r, "T"] \arrow[d, "\phi_{\mathcal{B}_U}"']
+        & V \arrow[d, "\phi_{\mathcal{B}_V}"] \\
+        K^{(\kappa_1)} \arrow[r, "{\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}}"']
+                        \arrow[d, "{\CoordMatrix[\mathcal{B}_U][\mathcal{C}_U]{\Identity{U}}}"']
+        & K^{(\kappa_2)} \arrow[d, "{\CoordMatrix[\mathcal{C}_V][\mathcal{B}_V]{\Identity{V}}}"] \\
+        K^{(\kappa_1)} \arrow[r, "{\CoordMatrix[\mathcal{C}_U][\mathcal{C}_V]{T}}"']
+        & K^{(\kappa_2)}
+    \end{tikzcd}
+    \]
+    The two copies of $K^{(\kappa_1)}$ (resp.\ $K^{(\kappa_2)}$) carry different bases; the
+    vertical maps are the matrices of the identity with respect to those two bases.
+\end{remark}
+
+\begin{remark}
+    The matrices $\CoordMatrix[\mathcal{B}_V][\mathcal{C}_V]{\Identity{V}}$ and
+    $\CoordMatrix[\mathcal{C}_V][\mathcal{B}_V]{\Identity{V}}$ are called
+    \textbf{change of basis matrices} for $V$ and will be studied in detail in
+    Section~\ref{sec:change-of-basis}.
+\end{remark}
+
+\subsection{Examples}
+
+\begin{example}[Change of Bases Formula --- Endomorphism]
+\label{ex:cob-endomorphism}
+    Let $T: \bb{R}^2 \to \bb{R}^2$, $T(x,y) = (2x + y,\, x)$, with standard basis
+    $\mathcal{B} = (e_0, e_1)$ and $\mathcal{C} = (e_0 + e_1,\, e_1)$.
+
+    \textit{Step 1 --- $\CoordMatrix[\mathcal{B}][\mathcal{B}]{T}$}: Apply $T$ to $\mathcal{B}$:
+    $T(e_0) = (2,1)$ and $T(e_1) = (1,0)$, so
+    \[
+        \CoordMatrix[\mathcal{B}][\mathcal{B}]{T}
+        = \begin{pmatrix} 2 & 1 \\ 1 & 0 \end{pmatrix}
+    \]
+
+    \textit{Step 2 --- $\CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{}}$}: Express
+    $\mathcal{B}$ in $\mathcal{C}$: $e_0 = (e_0+e_1) - e_1$, $e_1 = e_1$, so
+    \[
+        \CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{}}
+        = \begin{pmatrix} 1 & 0 \\ -1 & 1 \end{pmatrix}
+    \]
+
+    \textit{Step 3 --- $\CoordMatrix[\mathcal{C}][\mathcal{B}]{\Identity{}}$}: Express
+    $\mathcal{C}$ in $\mathcal{B}$: $e_0+e_1 = e_0+e_1$, $e_1 = e_1$, so
+    \[
+        \CoordMatrix[\mathcal{C}][\mathcal{B}]{\Identity{}}
+        = \begin{pmatrix} 1 & 0 \\ 1 & 1 \end{pmatrix}
+    \]
+
+    \textit{Step 4 --- Apply the formula}:
+    \[
+        \CoordMatrix[\mathcal{C}][\mathcal{C}]{T}
+        = \CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{}}
+          \cdot \CoordMatrix[\mathcal{B}][\mathcal{B}]{T}
+          \cdot \CoordMatrix[\mathcal{C}][\mathcal{B}]{\Identity{}}
+        = \begin{pmatrix} 1 & 0 \\ -1 & 1 \end{pmatrix}
+          \begin{pmatrix} 2 & 1 \\ 1 & 0 \end{pmatrix}
+          \begin{pmatrix} 1 & 0 \\ 1 & 1 \end{pmatrix}
+        = \begin{pmatrix} 3 & 1 \\ 0 & -1 \end{pmatrix}
+    \]
+
+    \textit{Direct verification}: $T(e_0+e_1) = (3,1) = 3(e_0+e_1) + (-2)e_1$... let
+    us instead verify via the coordinate formula.
+    $\CoordVec[\mathcal{C}]{e_0+e_1} = \begin{psmallmatrix}1\\0\end{psmallmatrix}$,
+    $\CoordVec[\mathcal{C}]{T(e_0+e_1)} = \CoordVec[\mathcal{C}]{(3,1)}$.
+    Now $(3,1) = 3(e_0+e_1) - 2 e_1$, so
+    $\CoordVec[\mathcal{C}]{(3,1)} = \begin{psmallmatrix}3\\-2\end{psmallmatrix}$
+    --- but the first column of $\CoordMatrix[\mathcal{C}][\mathcal{C}]{T}$ is
+    $\begin{psmallmatrix}3\\0\end{psmallmatrix}$. Let us recheck step 4:
+    \[
+        \begin{pmatrix} 1 & 0 \\ -1 & 1 \end{pmatrix}
+        \begin{pmatrix} 2 & 1 \\ 1 & 0 \end{pmatrix}
+        = \begin{pmatrix} 2 & 1 \\ -1 & -1 \end{pmatrix},
+        \quad \text{then} \quad
+        \begin{pmatrix} 2 & 1 \\ -1 & -1 \end{pmatrix}
+        \begin{pmatrix} 1 & 0 \\ 1 & 1 \end{pmatrix}
+        = \begin{pmatrix} 3 & 1 \\ -2 & -1 \end{pmatrix}
+    \]
+    So $\CoordMatrix[\mathcal{C}][\mathcal{C}]{T} = \begin{pmatrix} 3 & 1 \\ -2 & -1 \end{pmatrix}$.
+    Direct check: first column is $\CoordVec[\mathcal{C}]{T(e_0+e_1)}
+    = \begin{psmallmatrix}3\\-2\end{psmallmatrix}$ $\checkmark$; second column is
+    $\CoordVec[\mathcal{C}]{T(e_1)} = \CoordVec[\mathcal{C}]{(1,0)}
+    = \begin{psmallmatrix}1\\-1\end{psmallmatrix}$ $\checkmark$.
+\end{example}
+
+\begin{example}[Rank Computed from Any Representation]
+    With $T$ and bases as in Example~\ref{ex:cob-endomorphism}:
+    \[
+        \Rank{\CoordMatrix[\mathcal{B}][\mathcal{B}]{T}}
+        = \Rank{\begin{pmatrix} 2 & 1 \\ 1 & 0 \end{pmatrix}} = 2
+        = \Rank{\begin{pmatrix} 3 & 1 \\ -2 & -1 \end{pmatrix}}
+        = \Rank{\CoordMatrix[\mathcal{C}][\mathcal{C}]{T}}
+    \]
+    confirming Theorem~\ref{thm:rank-nullity-invariance}.
+\end{example}

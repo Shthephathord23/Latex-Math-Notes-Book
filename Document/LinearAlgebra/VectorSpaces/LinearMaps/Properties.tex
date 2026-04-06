@@ -3,154 +3,225 @@
 
 \newpage
 \section{Injectivity, Surjectivity, and Bijectivity}
+\label{sec:inj-surj-bij}
+
+\begin{remark}[Overview]
+    For a general function between sets, injectivity, surjectivity, and bijectivity are
+    independent properties. For a \emph{linear} map, however, these set-theoretic conditions
+    have multiple equivalent reformulations involving kernels, images, dimensions,
+    independence, spanning, lattice operations, and categorical properties.
+
+    The three theorems below collect these equivalences into exhaustive lists. Each list is
+    proved as a single implication cycle, so every condition is equivalent to every other.
+    The key insight running through all three is:
+    \begin{itemize}
+        \item \textbf{Injectivity} is about \emph{preserving independence}: an injective
+              map does not collapse distinct directions. Its hallmark is a trivial kernel.
+        \item \textbf{Surjectivity} is about \emph{preserving generation}: a surjective
+              map covers the entire target. Its hallmark is that every generating set maps
+              to a generating set.
+        \item \textbf{Bijectivity} combines both: it is about \emph{preserving bases},
+              i.e., both independence and generation simultaneously.
+    \end{itemize}
+    In finite dimensions, injectivity and surjectivity become equivalent for maps between
+    spaces of the same dimension (Theorem~\ref{thm:equal-dim-equiv}) --- a consequence of
+    the fact that on finite sets of the same cardinal injective functions are surjective and vice versa.
+\end{remark}
 
 \begin{theorem}[Characterizations of Injectivity]\label{thm:injectivity}
     For a linear map $T: U \to V$, the following are equivalent:
     \begin{enumerate}
-        \item $T$ is injective
         \item $\Ker{T} = \{0\}$
+        \item $T$ is injective
+        \item $\InverseImage{T}{\DirectImage{T}{W}} = W$ for every subspace
+              $W \Subspace[K] U$
+        \item $W \mapsto \DirectImage{T}{W}$ is injective on the subspace lattice of $U$
+        \item $\Dim[K]{\DirectImage{T}{W}} = \Dim[K]{W}$ for every subspace
+              $W \Subspace[K] U$
         \item $T$ sends every linearly independent set to a linearly independent set
         \item $T$ sends every basis of $U$ to a linearly independent set
         \item $T$ sends some basis of $U$ to a linearly independent set
-        \item $T$ is a split monomorphism (has a left inverse): $\Exists :{S: V \to U}{\Composition{S}{T} = \Identity{U}}$
-        \item $T$ is monic (left-cancellable): $\Forall :{S_1, S_2: W \to U}{\Composition{T}{S_1} = \Composition{T}{S_2} \implies S_1 = S_2}$
+        \item $T$ is a split monomorphism (has a left inverse):
+              $\Exists :{S: V \to U}{\Composition{S}{T} = \Identity{U}}$
+        \item $T$ is monic (left-cancellable):
+              $\Forall :{S_1, S_2: W \to U}{\Composition{T}{S_1} = \Composition{T}{S_2}
+              \implies S_1 = S_2}$
     \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-    We prove the equivalences in the chain: (1)$\Leftrightarrow$(2)$\Rightarrow$(3)$\Rightarrow$(4)$\Rightarrow$(5)$\Rightarrow$(6)$\Rightarrow$(7)$\Rightarrow$(2).
-    
-    \textbf{(1) $\Leftrightarrow$ (2)}:
-    
-    ($\Rightarrow$)
-    Suppose $T$ is injective. Let $u \in \Ker{T}$, so $T(u) = 0 = T(0)$.
-    By injectivity, $u = 0$. Thus $\Ker{T} = \{0\}$.
-    
-    ($\Leftarrow$)
-    Suppose $\Ker{T} = \{0\}$. Let $T(u_1) = T(u_2)$.
-    Then $T(u_1 - u_2) = T(u_1) - T(u_2) = 0$, so $u_1 - u_2 \in \Ker{T} = \{0\}$.
-    Thus $u_1 = u_2$, and $T$ is injective.
-    
+    We prove the chain
+    (1)$\Rightarrow$(2)$\Rightarrow$(3)$\Rightarrow$(4)$\Rightarrow$(5)$\Rightarrow$(6)$\Rightarrow$(7)$\Rightarrow$(8)$\Rightarrow$(9)$\Rightarrow$(10)$\Rightarrow$(1).
+
+    \textbf{(1) $\Rightarrow$ (2)}:
+    Let $T(u_1) = T(u_2)$. Then $T(u_1 - u_2) = 0$, so
+    $u_1 - u_2 \in \Ker{T} = \{0\}$, hence $u_1 = u_2$.
+
     \textbf{(2) $\Rightarrow$ (3)}:
-    Suppose $\Ker{T} = \{0\}$ and $L \subseteq U$ is linearly independent.
-    Let $\sum_{i \in n} a_i T(\ell_i) = 0$ for $\ell_i \in L$.
-    By linearity: $T\left(\sum_{i \in n} a_i \ell_i\right) = 0$.
-    Thus $\sum_{i \in n} a_i \ell_i \in \Ker{T} = \{0\}$.
-    By linear independence of $L$: all $a_i = 0$.
-    Therefore $\DirectImage{T}{L}$ is linearly independent.
-    
+    The inclusion $W \subseteq \InverseImage{T}{\DirectImage{T}{W}}$ is trivial.
+    Conversely, if $u \in \InverseImage{T}{\DirectImage{T}{W}}$, then $T(u) = T(w)$ for some
+    $w \in W$. Injectivity gives $u = w \in W$.
+
     \textbf{(3) $\Rightarrow$ (4)}:
-    If $T$ sends every linearly independent set to a linearly independent set,
-    then in particular it sends every basis (which is linearly independent) to a linearly independent set.
-    
+    If $\DirectImage{T}{W_1} = \DirectImage{T}{W_2}$, then
+    $W_1 = \InverseImage{T}{\DirectImage{T}{W_1}}
+    = \InverseImage{T}{\DirectImage{T}{W_2}} = W_2$.
+
     \textbf{(4) $\Rightarrow$ (5)}:
-    Trivial (every basis is some basis).
-    
+    Suppose $\Dim[K]{\DirectImage{T}{W}} < \Dim[K]{W}$ for some $W$. Then
+    $T|_W: W \to \DirectImage{T}{W}$ is not injective, so there exists
+    $0 \neq k \in \Ker{T} \cap W$. Then
+    $\DirectImage{T}{\Span[K]{\{k\}}} = \{0\} = \DirectImage{T}{\{0\}}$ but
+    $\Span[K]{\{k\}} \neq \{0\}$, contradicting (4).
+
     \textbf{(5) $\Rightarrow$ (6)}:
+    Let $L \subseteq U$ be linearly independent, and suppose
+    $\sum_{i \in n} a_i T(\ell_i) = 0$ for distinct $\ell_i \in L$.
+    Let $W = \Span[K]{\{\ell_0, \ldots, \ell_{n-1}\}}$; since
+    $\{\ell_0, \ldots, \ell_{n-1}\}$ is a subset of a linearly independent set,
+    $\Dim[K]{W} = n$. By Proposition~\ref{prop:span-image},
+    $\DirectImage{T}{W} = \Span[K]{\{T(\ell_0), \ldots, T(\ell_{n-1})\}}$.
+    If some $a_i \neq 0$, then $\{T(\ell_0), \ldots, T(\ell_{n-1})\}$ is linearly
+    dependent, so $\Dim[K]{\DirectImage{T}{W}} < n = \Dim[K]{W}$,
+    contradicting (5). Thus all $a_i = 0$.
+
+    \textbf{(6) $\Rightarrow$ (7)}:
+    Every basis is linearly independent.
+
+    \textbf{(7) $\Rightarrow$ (8)}:
+    Every basis is some basis.
+
+    \textbf{(8) $\Rightarrow$ (9)}:
     Suppose some basis $B$ is sent to a linearly independent set $\DirectImage{T}{B}$.
     Extend $\DirectImage{T}{B}$ to a basis $B' = \DirectImage{T}{B} \Union C$ for $V$
     (Theorem~\ref{thm:basis-extension}).
-    
-    Define $S: V \to U$ by specifying values on $B'$:
-    \begin{itemize}
-        \item $S(T(b)) = b$ for each $b \in B$
-        \item $S(c) = 0$ for each $c \in C$
-    \end{itemize}
-    By the universal property (Theorem~\ref{thm:vector-space-universal}), $S$ extends uniquely to a linear map.
-    
-    For any $b \in B$: $(\Composition{S}{T})(b) = S(T(b)) = b$.
-    Since $B$ generates $U$, we have $\Composition{S}{T} = \Identity{U}$.
-    
-    \textbf{(6) $\Rightarrow$ (7)}:
-    Suppose $\Composition{S}{T} = \Identity{U}$ for some $S: V \to U$.
-    Let $\Composition{T}{S_1} = \Composition{T}{S_2}$ for $S_1, S_2: W \to U$.
-    Composing with $S$ on the left:
-    \[
-        S_1 = \Composition{\Identity{U}}{S_1} = \Composition{(\Composition{S}{T})}{S_1} = \Composition{S}{(\Composition{T}{S_1})} = \Composition{S}{(\Composition{T}{S_2})} = \Composition{(\Composition{S}{T})}{S_2} = S_2
-    \]
-    
-    \textbf{(7) $\Rightarrow$ (2)}:
-    Suppose $T$ is monic. Consider the zero map $0: \Ker{T} \to U$ and the inclusion
-    $\iota: \Ker{T} \hookrightarrow U$ defined by $\iota(u) = u$.
-    
-    For any $u \in \Ker{T}$: $T(\iota(u)) = T(u) = 0 = T(0(u))$.
-    Thus $\Composition{T}{\iota} = \Composition{T}{0}$.
-    By the monic property, $\iota = 0$, so $\iota(u) = u = 0$ for all $u \in \Ker{T}$.
-    Therefore $\Ker{T} = \{0\}$.
+    Define $S: V \to U$ by $S(T(b)) = b$ for $b \in B$ and $S(c) = 0$ for $c \in C$,
+    extended linearly (Theorem~\ref{thm:vector-space-universal}).
+    Then $(\Composition{S}{T})(b) = b$ for all $b \in B$, so
+    $\Composition{S}{T} = \Identity{U}$.
+
+    \textbf{(9) $\Rightarrow$ (10)}:
+    Suppose $\Composition{S}{T} = \Identity{U}$ and
+    $\Composition{T}{S_1} = \Composition{T}{S_2}$. Composing with $S$ on the left:
+    $S_1 = \Composition{(\Composition{S}{T})}{S_1}
+    = \Composition{S}{(\Composition{T}{S_1})}
+    = \Composition{S}{(\Composition{T}{S_2})}
+    = \Composition{(\Composition{S}{T})}{S_2} = S_2$.
+
+    \textbf{(10) $\Rightarrow$ (1)}:
+    Let $\iota: \Ker{T} \hookrightarrow U$ be the inclusion and $0: \Ker{T} \to U$ the zero
+    map. For any $u \in \Ker{T}$: $T(\iota(u)) = T(u) = 0 = T(0(u))$, so
+    $\Composition{T}{\iota} = \Composition{T}{0}$. By the monic property,
+    $\iota = 0$, hence $\Ker{T} = \{0\}$.
 \end{proof}
 
 \newpage
 \begin{theorem}[Characterizations of Surjectivity]\label{thm:surjectivity}
     For a linear map $T: U \to V$, the following are equivalent:
     \begin{enumerate}
-        \item $T$ is surjective
         \item $\Rng{T} = V$
+        \item $T$ is surjective
+        \item $\DirectImage{T}{\InverseImage{T}{W}} = W$ for every subspace
+              $W \Subspace[K] V$
+        \item $W \mapsto \InverseImage{T}{W}$ is injective on the subspace lattice of $V$
+        \item $\Codim[K]{\InverseImage{T}{W}}{U} = \Codim[K]{W}{V}$ for every subspace
+              $W \Subspace[K] V$
         \item $T$ sends every generating system of $U$ to a generating system of $V$
         \item $T$ sends every basis of $U$ to a generating system of $V$
         \item $T$ sends some basis of $U$ to a generating system of $V$
-        \item $T$ is a split epimorphism (has a right inverse): $\Exists :{S: V \to U}{\Composition{T}{S} = \Identity{V}}$
-        \item $T$ is epic (right-cancellable): $\Forall :{S_1, S_2: V \to W}{\Composition{S_1}{T} = \Composition{S_2}{T} \implies S_1 = S_2}$
+        \item $T$ is a split epimorphism (has a right inverse):
+              $\Exists :{S: V \to U}{\Composition{T}{S} = \Identity{V}}$
+        \item $T$ is epic (right-cancellable):
+              $\Forall :{S_1, S_2: V \to W}{\Composition{S_1}{T} = \Composition{S_2}{T}
+              \implies S_1 = S_2}$
     \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-    We prove the equivalences in the chain: (1)$\Leftrightarrow$(2)$\Rightarrow$(3)$\Rightarrow$(4)$\Rightarrow$(5)$\Rightarrow$(6)$\Rightarrow$(7)$\Rightarrow$(2).
-    
-    \textbf{(1) $\Leftrightarrow$ (2)}:
-    This is the definition of surjectivity: $T$ is surjective iff $\Rng{T} = V$.
-    
+    We prove the chain
+    (1)$\Rightarrow$(2)$\Rightarrow$(3)$\Rightarrow$(4)$\Rightarrow$(5)$\Rightarrow$(6)$\Rightarrow$(7)$\Rightarrow$(8)$\Rightarrow$(9)$\Rightarrow$(10)$\Rightarrow$(1).
+
+    \textbf{(1) $\Rightarrow$ (2)}:
+    This is the definition of surjectivity.
+
     \textbf{(2) $\Rightarrow$ (3)}:
-    Suppose $\Rng{T} = V$ and $G$ generates $U$. By Proposition~\ref{prop:span-image}:
-    $\Rng{T} = \Span[K]{\DirectImage{T}{G}}$.
-    Since $\Rng{T} = V$, we have $\Span[K]{\DirectImage{T}{G}} = V$,
-    so $\DirectImage{T}{G}$ generates $V$.
-    
+    By Proposition~\ref{prop:image-preimage-formulas}(2),
+    $\DirectImage{T}{\InverseImage{T}{W}} = W \cap \Rng{T} = W \cap V = W$.
+
     \textbf{(3) $\Rightarrow$ (4)}:
-    Every basis is a generating system, so if every generating system maps to a generating system,
-    then every basis maps to a generating system.
-    
+    If $\InverseImage{T}{W_1} = \InverseImage{T}{W_2}$, then
+    $W_1 = \DirectImage{T}{\InverseImage{T}{W_1}}
+    = \DirectImage{T}{\InverseImage{T}{W_2}} = W_2$.
+
     \textbf{(4) $\Rightarrow$ (5)}:
-    Trivial (every basis is some basis).
-    
+    First note $\Rng{T} = V$: since
+    $\InverseImage{T}{\Rng{T}} = U = \InverseImage{T}{V}$, injectivity of
+    $W \mapsto \InverseImage{T}{W}$ gives $\Rng{T} = V$.
+    Now let $W \Subspace[K] V$ and pick a complement $C$ of $\InverseImage{T}{W}$ in $U$.
+
+    \textit{Claim}: $\DirectImage{T}{C}$ is a complement of $W$ in $V$.
+    If $T(c) \in W$ for $c \in C$, then $c \in \InverseImage{T}{W} \cap C = \{0\}$.
+    For any $v \in V$, surjectivity gives $v = T(w' + c) = T(w') + T(c)$ with
+    $w' \in \InverseImage{T}{W}$, $c \in C$, so $v \in W + \DirectImage{T}{C}$.
+
+    The map $T|_C: C \to \DirectImage{T}{C}$ is injective: if $T(c) = 0$, then
+    $c \in \Ker{T} \subseteq \InverseImage{T}{W}$ (since $0 \in W$), so
+    $c \in \InverseImage{T}{W} \cap C = \{0\}$. By Theorem~\ref{thm:injectivity}(5),
+    $\Dim[K]{C} = \Dim[K]{\DirectImage{T}{C}}$. Thus
+    $\Codim[K]{\InverseImage{T}{W}}{U} = \Dim[K]{C}
+    = \Dim[K]{\DirectImage{T}{C}} = \Codim[K]{W}{V}$.
+
     \textbf{(5) $\Rightarrow$ (6)}:
-    Suppose some basis $B$ of $U$ maps to a generating system $\DirectImage{T}{B}$ for $V$.
-    Let $B_V$ be any basis for $V$ (which is contained in or extracted from $\Span[K]{\DirectImage{T}{B}} = V$).
-    For each $b_V \in B_V$, since $b_V \in \Span[K]{\DirectImage{T}{B}}$, we can write
-    $b_V = \sum_{b \in F} a_b T(b)$ for some finite $F \subseteq B$.
-    
-    Define $S: V \to U$ by $S(b_V) = \sum_{b \in F} a_b b$ for each $b_V \in B_V$
-    and extend linearly (Theorem~\ref{thm:vector-space-universal}).
-    
-    For any $b_V \in B_V$: $(\Composition{T}{S})(b_V) = T\left(\sum_{b \in F} a_b b\right) = \sum_{b \in F} a_b T(b) = b_V$.
-    Since $B_V$ generates $V$, we have $\Composition{T}{S} = \Identity{V}$.
-    
+    Taking $W = \Rng{T}$: since $\InverseImage{T}{\Rng{T}} = U$, we have
+    $\Codim[K]{U}{U} = 0$, so $\Codim[K]{\Rng{T}}{V} = 0$ by (5).
+    Any complement of $\Rng{T}$ in $V$ is therefore $\{0\}$, hence $\Rng{T} = V$.
+    Now if $G$ generates $U$, Proposition~\ref{prop:span-image} gives
+    $V = \Rng{T} = \Span[K]{\DirectImage{T}{G}}$.
+
     \textbf{(6) $\Rightarrow$ (7)}:
-    Suppose $\Composition{T}{S} = \Identity{V}$ for some $S: V \to U$.
-    Let $\Composition{S_1}{T} = \Composition{S_2}{T}$ for $S_1, S_2: V \to W$.
-    Composing with $S$ on the right:
-    \[
-        S_1 = \Composition{S_1}{\Identity{V}} = \Composition{S_1}{(\Composition{T}{S})} = \Composition{(\Composition{S_1}{T})}{S} = \Composition{(\Composition{S_2}{T})}{S} = \Composition{S_2}{(\Composition{T}{S})} = S_2
-    \]
-    
-    \textbf{(7) $\Rightarrow$ (2)}:
-    Suppose $T$ is epic. Since $\Rng{T}$ is a subspace of $V$, by the Basis Extension Theorem
-    (Theorem~\ref{thm:basis-extension}) there exists a subspace $W$ such that $V = \Rng{T} \DirectSum W$.
-    Let $\pi: V \to W$ be the projection onto $W$ along $\Rng{T}$
-    (so $\pi(r + w) = w$ for $r \in \Rng{T}$, $w \in W$).
-    
-    For any $u \in U$: $\pi(T(u)) = 0$ since $T(u) \in \Rng{T}$.
-    Thus $\Composition{\pi}{T} = \Composition{0}{T}$, where $0: U \to W$ is the zero map.
-    By the epic property, $\pi = 0$, so $\pi(v) = 0$ for all $v \in V$.
-    In particular, for $w \in W$: $\pi(w) = w = 0$.
-    Thus $W = \{0\}$, and $\Rng{T} = V$.
+    Every basis is a generating system.
+
+    \textbf{(7) $\Rightarrow$ (8)}:
+    Every basis is some basis.
+
+    \textbf{(8) $\Rightarrow$ (9)}:
+    Suppose some basis $B$ of $U$ maps to a generating system $\DirectImage{T}{B}$ for $V$.
+    Let $B_V$ be any basis for $V$. For each $b_V \in B_V$, write
+    $b_V = \sum_{b \in F} a_b T(b)$ for some finite $F \subseteq B$.
+    Define $S: V \to U$ by $S(b_V) = \sum_{b \in F} a_b b$ and extend linearly.
+    Then $(\Composition{T}{S})(b_V) = b_V$ for all $b_V \in B_V$, so
+    $\Composition{T}{S} = \Identity{V}$.
+
+    \textbf{(9) $\Rightarrow$ (10)}:
+    Suppose $\Composition{T}{S} = \Identity{V}$ and
+    $\Composition{S_1}{T} = \Composition{S_2}{T}$. Composing with $S$ on the right:
+    $S_1 = \Composition{S_1}{(\Composition{T}{S})}
+    = \Composition{(\Composition{S_1}{T})}{S}
+    = \Composition{(\Composition{S_2}{T})}{S}
+    = \Composition{S_2}{(\Composition{T}{S})} = S_2$.
+
+    \textbf{(10) $\Rightarrow$ (1)}:
+    Suppose $T$ is epic. Pick a complement $W$ of $\Rng{T}$ in $V$, so
+    $V = \Rng{T} \DirectSum W$. Let $\pi: V \to W$ be the projection
+    ($\pi(r + w) = w$). For any $u \in U$: $\pi(T(u)) = 0$ since
+    $T(u) \in \Rng{T}$. Thus $\Composition{\pi}{T} = \Composition{0}{T}$.
+    By the epic property, $\pi = 0$, so $W = \{0\}$ and $\Rng{T} = V$.
 \end{proof}
 
 \newpage
 \begin{theorem}[Characterizations of Bijectivity]\label{thm:bijectivity}
     For a linear map $T: U \to V$, the following are equivalent:
     \begin{enumerate}
-        \item $T$ is bijective
-        \item $T$ is injective and surjective
+        \item $T$ is bijective (injective and surjective)
+        \item $\InverseImage{T}{\DirectImage{T}{W}} = W$ for every $W \Subspace[K] U$
+              \textbf{and}
+              $\DirectImage{T}{\InverseImage{T}{W'}} = W'$ for every $W' \Subspace[K] V$
+        \item $W \mapsto \DirectImage{T}{W}$ is a lattice isomorphism between the subspace
+              lattices of $U$ and $V$, with inverse $W' \mapsto \InverseImage{T}{W'}$
+        \item $\Dim[K]{\DirectImage{T}{W}} = \Dim[K]{W}$ for every $W \Subspace[K] U$
+              \textbf{and}
+              $\Codim[K]{\InverseImage{T}{W'}}{U} = \Codim[K]{W'}{V}$ for every
+              $W' \Subspace[K] V$
         \item $T$ sends every basis of $U$ to a basis of $V$
         \item $T$ sends some basis of $U$ to a basis of $V$
         \item $T$ is an isomorphism (has a two-sided linear inverse)
@@ -159,41 +230,58 @@
 \end{theorem}
 
 \begin{proof}
-    We prove the equivalences in the chain: (1)$\Leftrightarrow$(2)$\Rightarrow$(3)$\Rightarrow$(4)$\Rightarrow$(5)$\Rightarrow$(6)$\Rightarrow$(2).
-    
-    \textbf{(1) $\Leftrightarrow$ (2)}:
-    This is the definition of bijectivity.
-    
+    We prove the chain
+    (1)$\Rightarrow$(2)$\Rightarrow$(3)$\Rightarrow$(4)$\Rightarrow$(5)$\Rightarrow$(6)$\Rightarrow$(7)$\Rightarrow$(8)$\Rightarrow$(1).
+
+    All implications except (6)$\Rightarrow$(7) follow by combining the corresponding
+    characterizations from Theorems~\ref{thm:injectivity} and~\ref{thm:surjectivity}.
+
+    \textbf{(1) $\Rightarrow$ (2)}:
+    Injectivity gives (Thm.~\ref{thm:injectivity}(2)$\Rightarrow$(3)); surjectivity gives
+    (Thm.~\ref{thm:surjectivity}(2)$\Rightarrow$(3)).
+
     \textbf{(2) $\Rightarrow$ (3)}:
-    If $T$ is bijective, let $B$ be any basis of $U$.
-    By Theorem~\ref{thm:injectivity}(3), $\DirectImage{T}{B}$ is linearly independent.
-    By Theorem~\ref{thm:surjectivity}(4), $\DirectImage{T}{B}$ generates $V$.
-    Thus $\DirectImage{T}{B}$ is a basis for $V$.
-    
+    Condition (2) says $\DirectImage{T}{-}$ and $\InverseImage{T}{-}$ are mutual inverses
+    as functions between the subspace lattices. Both preserve inclusion, so they form a
+    lattice isomorphism.
+
     \textbf{(3) $\Rightarrow$ (4)}:
-    Trivial (every basis is some basis).
-    
+    A lattice isomorphism is in particular injective on both sides.
+    $W \mapsto \DirectImage{T}{W}$ injective gives
+    Thm.~\ref{thm:injectivity}(4)$\Rightarrow$(5): $\Dim[K]{\DirectImage{T}{W}} = \Dim[K]{W}$.
+    $W' \mapsto \InverseImage{T}{W'}$ injective gives
+    Thm.~\ref{thm:surjectivity}(4)$\Rightarrow$(5): codimensions are preserved.
+
     \textbf{(4) $\Rightarrow$ (5)}:
-    If some basis $B$ of $U$ maps to a basis $\DirectImage{T}{B}$ of $V$:
-    \begin{itemize}
-        \item $\DirectImage{T}{B}$ is linearly independent, so $T$ is injective by Theorem~\ref{thm:injectivity}(5)$\Rightarrow$(2)
-        \item $\DirectImage{T}{B}$ generates $V$, so $T$ is surjective by Theorem~\ref{thm:surjectivity}(5)$\Rightarrow$(2)
-    \end{itemize}
-    Thus $T$ is bijective, and its set-theoretic inverse $T^{-1}: V \to U$ exists.
-    We show $T^{-1}$ is linear. For $v_1, v_2 \in V$ and $a, b \in K$:
-    Let $u_1 = T^{-1}(v_1)$ and $u_2 = T^{-1}(v_2)$, so $T(u_1) = v_1$ and $T(u_2) = v_2$.
-    Then $T(au_1 + bu_2) = aT(u_1) + bT(u_2) = av_1 + bv_2$.
-    Applying $T^{-1}$: $T^{-1}(av_1 + bv_2) = au_1 + bu_2 = aT^{-1}(v_1) + bT^{-1}(v_2)$.
-    
+    $\Dim[K]{\DirectImage{T}{W}} = \Dim[K]{W}$ for all $W$ gives
+    Thm.~\ref{thm:injectivity}(5)$\Rightarrow$(6): $T$ sends linearly independent sets
+    to linearly independent sets. Codimension preservation gives
+    Thm.~\ref{thm:surjectivity}(5)$\Rightarrow$(7): $T$ sends every basis to a generating
+    system. Combining: every basis maps to a basis.
+
     \textbf{(5) $\Rightarrow$ (6)}:
-    If $T$ has a two-sided inverse $S$, then $\Composition{S}{T} = \Identity{U}$ implies $T$ is monic
-    (Theorem~\ref{thm:injectivity}(6)$\Rightarrow$(7)) and $\Composition{T}{S} = \Identity{V}$ implies
-    $T$ is epic (Theorem~\ref{thm:surjectivity}(6)$\Rightarrow$(7)).
-    
-    \textbf{(6) $\Rightarrow$ (2)}:
-    Combine Theorems~\ref{thm:injectivity} and~\ref{thm:surjectivity}:
-    monic $\Rightarrow$ injective (Theorem~\ref{thm:injectivity}(7)$\Rightarrow$(2)) and 
-    epic $\Rightarrow$ surjective (Theorem~\ref{thm:surjectivity}(7)$\Rightarrow$(2)).
+    Every basis is some basis.
+
+    \textbf{(6) $\Rightarrow$ (7)}:
+    Some basis $B$ maps to a basis $\DirectImage{T}{B}$ of $V$.
+    Then $\Ker{T} = \{0\}$ (Thm.~\ref{thm:injectivity}(8)$\Rightarrow$(1)) and
+    $\Rng{T} = V$ (Thm.~\ref{thm:surjectivity}(8)$\Rightarrow$(1)),
+    so $T$ is bijective. Its set-theoretic inverse $T^{-1}: V \to U$ is linear:
+    for $v_1, v_2 \in V$ and $a, b \in K$, let $u_i = T^{-1}(v_i)$; then
+    $T(au_1 + bu_2) = av_1 + bv_2$, so
+    $T^{-1}(av_1 + bv_2) = au_1 + bu_2 = aT^{-1}(v_1) + bT^{-1}(v_2)$.
+
+    \textbf{(7) $\Rightarrow$ (8)}:
+    $\Composition{S}{T} = \Identity{U}$ gives monic
+    (Thm.~\ref{thm:injectivity}(9)$\Rightarrow$(10));
+    $\Composition{T}{S} = \Identity{V}$ gives epic
+    (Thm.~\ref{thm:surjectivity}(9)$\Rightarrow$(10)).
+
+    \textbf{(8) $\Rightarrow$ (1)}:
+    Monic $\Rightarrow$ $\Ker{T} = \{0\}$
+    (Thm.~\ref{thm:injectivity}(10)$\Rightarrow$(1));
+    epic $\Rightarrow$ $\Rng{T} = V$
+    (Thm.~\ref{thm:surjectivity}(10)$\Rightarrow$(1)).
 \end{proof}
 
 \begin{definition}[Inverse Linear Map]\label{def:inverse-map}
@@ -217,7 +305,7 @@
     If $T: U \to V$ is an isomorphism and $B$ is a basis for $U$, then $\DirectImage{T}{B}$ is a basis for $V$
     (Theorem~\ref{thm:bijectivity}). Since $T$ is bijective, $\Card{B} = \Card{\DirectImage{T}{B}}$.
     Thus $\Dim[K]{U} = \Dim[K]{V}$.
-    
+
     ($\Leftarrow$)
     If $\Dim[K]{U} = \Dim[K]{V}$, let $B_U$ and $B_V$ be bases for $U$ and $V$ respectively.
     There exists a bijection $f: B_U \to B_V$. By the universal property (Theorem~\ref{thm:vector-space-universal}),
@@ -237,18 +325,18 @@
 
 \begin{proof}
     Let $n = \Dim[K]{U} = \Dim[K]{V}$, and let $B = \{b_0, \ldots, b_{n-1}\}$ be a basis for $U$.
-    
+
     \textbf{(1) $\Rightarrow$ (3)}: Suppose $T$ is injective.
-    By Theorem~\ref{thm:injectivity}(3), $\DirectImage{T}{B}$ is linearly independent in $V$.
+    By Theorem~\ref{thm:injectivity}(6), $\DirectImage{T}{B}$ is linearly independent in $V$.
     Since $|\DirectImage{T}{B}| = n = \Dim[K]{V}$, it is a maximal linearly independent set,
     hence a basis for $V$ (Proposition~\ref{prop:basis-maxmin}). Thus $T$ is surjective, hence bijective.
-    
+
     \textbf{(2) $\Rightarrow$ (3)}: Suppose $T$ is surjective.
-    By Theorem~\ref{thm:surjectivity}(4), $\DirectImage{T}{B}$ generates $V$.
+    By Theorem~\ref{thm:surjectivity}(7), $\DirectImage{T}{B}$ generates $V$.
     Since a generating set has at least $\Dim[K]{V} = n$ elements and $|\DirectImage{T}{B}| \leq n$,
     we have $|\DirectImage{T}{B}| = n$, so it is a minimal generating set, hence a basis.
     Thus $\DirectImage{T}{B}$ is linearly independent, so $T$ is injective, hence bijective.
-    
+
     \textbf{(3) $\Rightarrow$ (1), (2)}: Trivial.
 \end{proof}
 
@@ -273,12 +361,12 @@
               The right-shift operator $R: K^{(\bb{N})} \to K^{(\bb{N})}$ defined by
               $R(a_0, a_1, a_2, \ldots) = (0, a_0, a_1, a_2, \ldots)$ is injective but not surjective
               ($(1, 0, 0, \ldots) \notin \Rng{R}$).
-        
+
         \item \textbf{Infinite-dimensional, surjective but not injective}:
               The left-shift operator $L: K^{(\bb{N})} \to K^{(\bb{N})}$ defined by
               $L(a_0, a_1, a_2, \ldots) = (a_1, a_2, a_3, \ldots)$ is surjective but not injective
               ($L(1, 0, 0, \ldots) = (0, 0, \ldots) = L(0, 0, \ldots)$).
-        
+
         \item \textbf{Non-endomorphism (different spaces)}:
               The inclusion $\iota: K^n \hookrightarrow K^{n+1}$, $\iota(x_0, \ldots, x_{n-1}) = (x_0, \ldots, x_{n-1}, 0)$
               is injective but not surjective.
@@ -343,36 +431,17 @@
     \[
         \alpha v + \beta w = \sum_{i \in I} (\alpha a_i + \beta c_i) b_i
     \]
-    Thus $\CoordVec[\mathcal{B}]{\alpha v + \beta w} = \alpha \CoordVec[\mathcal{B}]{v} + \beta \CoordVec[\mathcal{B}]{w}$.
+    so $\phi_{\mathcal{B}}(\alpha v + \beta w) = (\alpha a_i + \beta c_i)_{i \in I}
+    = \alpha (a_i)_{i \in I} + \beta (c_i)_{i \in I}
+    = \alpha \phi_{\mathcal{B}}(v) + \beta \phi_{\mathcal{B}}(w)$.
 
-    \textbf{Bijectivity}: This was shown in Theorem~\ref{thm:coord-bijection}.
+    \textbf{Injectivity}: If $\phi_{\mathcal{B}}(v) = 0$, then $v = \sum_{i \in I} 0 \cdot b_i = 0$.
+
+    \textbf{Surjectivity}: For any $(a_i)_{i \in I} \in K^{(I)}$ (finitely supported),
+    $v = \sum_{i \in I} a_i b_i \in V$ satisfies $\phi_{\mathcal{B}}(v) = (a_i)_{i \in I}$.
 \end{proof}
 
-\begin{remark}[Dependence on Ordered Basis]\label{rem:coord-dependence}
-    Each ordered basis $\mathcal{B}$ gives a \textbf{different} coordinate isomorphism $\phi_{\mathcal{B}}$.
-    Changing the ordering of the same basis vectors produces a different isomorphism.
-    
-    \textbf{Example}: Consider $\bb{R}^2$ with basis vectors $e_0 = (1, 0)$ and $e_1 = (0, 1)$.
-    \begin{itemize}
-        \item For $\mathcal{B}_1 = (e_0, e_1)$: $\phi_{\mathcal{B}_1}(3e_0 + 2e_1) = (3, 2)$
-        \item For $\mathcal{B}_2 = (e_1, e_0)$: $\phi_{\mathcal{B}_2}(3e_0 + 2e_1) = (2, 3)$
-    \end{itemize}
-    The same vector maps to different coordinate tuples depending on the ordering.
-    The two isomorphisms $\phi_{\mathcal{B}_1}$ and $\phi_{\mathcal{B}_2}$ differ by the permutation
-    that swaps the two components.
-    
-    More generally, if $\sigma$ is a permutation of the indexing set $I$, and 
-    $\mathcal{B}_\sigma = (b_{\sigma(i)})_{i \in I}$, then
-    $\phi_{\mathcal{B}_\sigma}$ and $\phi_{\mathcal{B}}$ differ by the isomorphism 
-    $K^{(I)} \to K^{(I)}$ induced by $\sigma$.
-\end{remark}
-
-\begin{corollary}[Isomorphism to $K^{(I)}$]
-    Every $K$-vector space $V$ with basis of cardinality $\Card{I}$ is isomorphic to $K^{(I)}$.
-    In particular, $V \cong K^{(\Dim[K]{V})}$.
+\begin{corollary}[Coordinate Bijection]\label{cor:coord-bijection}
+    The coordinate map $\phi_{\mathcal{B}}$ is a bijection between $V$ and $K^{(I)}$.
+    In particular, $V \cong K^{(I)}$ as $K$-vector spaces.
 \end{corollary}
-
-\begin{proof}
-    The coordinate isomorphism $\phi_{\mathcal{B}}: V \to K^{(I)}$ is an isomorphism for any 
-    ordered basis $\mathcal{B}$ indexed by $I$.
-\end{proof}
