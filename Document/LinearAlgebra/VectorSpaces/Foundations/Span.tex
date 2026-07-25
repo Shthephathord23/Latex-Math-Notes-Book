@@ -66,11 +66,11 @@
 \end{example}
 
 \begin{example}[Spans in $\bb{R}^3$]\label{ex:span-R3}
-    In $\bb{R}^3$, consider the standard basis vectors $e_0 = (1,0,0)$, $e_1 = (0,1,0)$, $e_2 = (0,0,1)$:
+    In $\bb{R}^3$, consider the standard basis vectors $\CanonicalVector{0} = (1,0,0)$, $\CanonicalVector{1} = (0,1,0)$, $\CanonicalVector{2} = (0,0,1)$:
     \begin{enumerate}
-        \item \textbf{Line}: $\Span[\bb{R}]{\{e_2\}} = \Set{(0, 0, z) \mid z \in \bb{R}}$ (the $z$-axis)
-        \item \textbf{Plane}: $\Span[\bb{R}]{\{e_0, e_1\}} = \Set{(x, y, 0) \mid x, y \in \bb{R}}$ (the $xy$-plane)
-        \item \textbf{Whole space}: $\Span[\bb{R}]{\{e_0, e_1, e_2\}} = \bb{R}^3$
+        \item \textbf{Line}: $\Span[\bb{R}]{\{\CanonicalVector{2}\}} = \Set{(0, 0, z) \mid z \in \bb{R}}$ (the $z$-axis)
+        \item \textbf{Plane}: $\Span[\bb{R}]{\{\CanonicalVector{0}, \CanonicalVector{1}\}} = \Set{(x, y, 0) \mid x, y \in \bb{R}}$ (the $xy$-plane)
+        \item \textbf{Whole space}: $\Span[\bb{R}]{\{\CanonicalVector{0}, \CanonicalVector{1}, \CanonicalVector{2}\}} = \bb{R}^3$
     \end{enumerate}
 
     \textbf{Non-example}: $\{(1, 0, 0), (2, 0, 0)\}$ spans only a line, not a plane, because $(2, 0, 0) = 2 \cdot (1, 0, 0)$ is redundant.
@@ -83,11 +83,11 @@
 
         % xy-plane (span of e1, e2)
         \fill[blue!20, opacity=0.6] (-1.5,-1.5,0) -- (1.5,-1.5,0) -- (1.5,1.5,0) -- (-1.5,1.5,0) -- cycle;
-        \node[blue] at (1.5, 0, 0.3) {$\Span{e_0, e_1}$};
+        \node[blue] at (1.5, 0, 0.3) {$\Span{\CanonicalVector{0}, \CanonicalVector{1}}$};
 
         % z-axis (span of e3)
         \draw[thick, red] (0,0,-1.5) -- (0,0,1.5);
-        \node[red] at (0.4,0,1.5) {$\Span{e_2}$};
+        \node[red] at (0.4,0,1.5) {$\Span{\CanonicalVector{2}}$};
 
         % Coordinate axes
         \draw[->, thick] (0,0,0) -- (2,0,0) node[right] {$x$};
@@ -279,28 +279,28 @@
     By monotonicity: $V = \Span[K]{G} \subseteq \Span[K]{H} \subseteq V$.
 \end{proof}
 
-\begin{proposition}[$\operatorname{span}_K(\{e_i\}_{i \in I}) = K^{(I)}$]\label{prop:span-ei-finite-support}
+\begin{proposition}[$\operatorname{span}_K(\{\CanonicalVector{i}\}_{i \in I}) = K^{(I)}$]\label{prop:span-ei-finite-support}
     For any index set $I$, the span of the indicator functions equals the space of
     functions with finite support:
     \[
-        \Span[K]{\{e_i\}_{i \in I}} = K^{(I)}
+        \Span[K]{\{\CanonicalVector{i}\}_{i \in I}} = K^{(I)}
     \]
 \end{proposition}
 
 \begin{proof}
     This is an immediate reformulation of Proposition~\ref{prop:lincomb-finite-support} in the
-    language of span: the set of all linear combinations of the $e_i$'s is precisely $K^{(I)}$,
+    language of span: the set of all linear combinations of the $\CanonicalVector{i}$'s is precisely $K^{(I)}$,
     and by the constructive characterization of span (Proposition~\ref{prop:span-constructive}),
-    this set equals $\Span[K]{\{e_i\}_{i \in I}}$.
+    this set equals $\Span[K]{\{\CanonicalVector{i}\}_{i \in I}}$.
 \end{proof}
 
 \begin{corollary}\label{cor:span-ei-not-KI}
-    If $I$ is infinite, then $\Span[K]{\{e_i\}_{i \in I}} = K^{(I)} \subsetneq K^I$.
-    In particular, the indicator functions $(e_i)_{i \in I}$ do \textbf{not} generate $K^I$.
+    If $I$ is infinite, then $\Span[K]{\{\CanonicalVector{i}\}_{i \in I}} = K^{(I)} \subsetneq K^I$.
+    In particular, the indicator functions $(\CanonicalVector{i})_{i \in I}$ do \textbf{not} generate $K^I$.
 \end{corollary}
 
 \begin{proof}
-    By Proposition~\ref{prop:span-ei-finite-support}, $\Span[K]{\{e_i\}_{i \in I}} = K^{(I)}$.
+    By Proposition~\ref{prop:span-ei-finite-support}, $\Span[K]{\{\CanonicalVector{i}\}_{i \in I}} = K^{(I)}$.
     Since $I$ is infinite, the constant-$1$ function $f(i) = 1$ for all $i \in I$ lies in
     $K^I \setminus K^{(I)}$ (as shown in Proposition~\ref{prop:lincomb-finite-support}),
     so $K^{(I)} \subsetneq K^I$.

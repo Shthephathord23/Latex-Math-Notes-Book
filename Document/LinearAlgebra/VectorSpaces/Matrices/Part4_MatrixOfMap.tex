@@ -1,0 +1,469 @@
+% Document/LinearAlgebra/VectorSpaces/Matrices/Part4_MatrixOfMap.tex
+% Reordered Chapter 3 -- Section 4: the matrix of a linear map between ABSTRACT spaces, defined as the
+% conjugate phi_{B_V} o T o psi_{B_U}, an element of Hom_K(K^{(X)}, K^{(Y)}) (already a grid under the
+% Section-2 identification, but reasoned with as a map for clean proofs).
+% Generalises Section 3 (every transition matrix is a matrix of the identity); properties with proofs;
+% informal covariance/contravariance remark; forward-ref to matrices with vector entries; diagrams.
+
+\newpage
+\section{The Matrix of a Linear Map}
+\label{sec:matrix-of-map}
+
+\begin{intuition}
+    Section~\ref{sec:matrices} turned linear maps \emph{between coordinate spaces}, $K^{(X)} \to K^{(Y)}$,
+    into grids, because those spaces carry canonical bases. But the linear maps one meets in practice go
+    between \emph{abstract} spaces $U \to V$ --- spaces of polynomials, of functions, of geometric
+    arrows --- which have no preferred basis at all. To compute with such a $T$ we do the only thing
+    available: \emph{choose} an ordered basis of $U$ and one of $V$, use them to coordinatise source and
+    target, and read off the map $K^{(X)} \to K^{(Y)}$ that $T$ becomes in those coordinates. That
+    coordinatised map is the \textbf{matrix of $T$ in the chosen bases}.
+
+    Two points organise everything below. First, the construction is just conjugation by the two charts,
+    exactly the move that produced the transition maps of Section~\ref{sec:coordinates-and-actions}:
+    those were the special case $T = \Identity{V}$. Second, the object we build is presented as a
+    \emph{linear map} between coordinate spaces, an element of $\Hom[K]{K^{(X)}}{K^{(Y)}}$. Although such a
+    map is by now \emph{identified} with its grid of scalars (Section~\ref{sec:matrices-as-maps}, via the
+    bijection $\Phi$ of Theorem~\ref{thm:map-grid-bijection}), every structural fact here (evaluation,
+    composition, change of bases, invariance of rank) is cleanest as a statement about \emph{composing
+    maps}; so we deliberately reason at the level of maps and read the grid off only when computing a
+    concrete example.
+\end{intuition}
+
+Throughout, $U$ and $V$ are $K$-vector spaces with ordered bases $\mathcal B_U = (b_j)_{j \in X}$ and
+$\mathcal B_V = (c_i)_{i \in Y}$, with frames $\Frame{\mathcal B_U} : K^{(X)} \to U$,
+$\Frame{\mathcal B_V} : K^{(Y)} \to V$ and charts $\Chart{\mathcal B_U} = \Frame{\mathcal B_U}^{-1}$,
+$\Chart{\mathcal B_V} = \Frame{\mathcal B_V}^{-1}$ (Definition~\ref{def:frame-chart}).
+
+\begin{definition}[Matrix of a linear map]
+\label{def:matrix-of-map}
+    Let $T : U \to V$ be $K$-linear. The \textbf{matrix of $T$ with respect to $\mathcal B_U$ and
+    $\mathcal B_V$} is the linear map
+    \[
+        \CoordMatrix[\mathcal B_U][\mathcal B_V]{T}
+        \defeq \Composition{\Chart{\mathcal B_V}}{\Composition{T}{\Frame{\mathcal B_U}}}
+        \ \in\ \Hom[K]{K^{(X)}}{K^{(Y)}} ,
+    \]
+    the unique map making the coordinate square commute:
+    \begin{center}
+    \begin{tikzcd}[column sep=huge, row sep=large]
+        U \arrow[r, "T"] \arrow[d, "\Chart{\mathcal B_U}"'] & V \arrow[d, "\Chart{\mathcal B_V}"] \\
+        K^{(X)} \arrow[r, "{\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}}"'] & K^{(Y)}
+    \end{tikzcd}
+    \end{center}
+    Commutativity reads
+    $\Composition{\Chart{\mathcal B_V}}{T} = \Composition{\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}}{\Chart{\mathcal B_U}}$,
+    i.e.\ $\CoordMatrix[\mathcal B_U][\mathcal B_V]{T} = \Composition{\Chart{\mathcal B_V}}{\Composition{T}{\Frame{\mathcal B_U}}}$.
+\end{definition}
+
+\begin{remark}[Reason with it as a map; read it as a grid]
+\label{rem:matrix-in-hom}
+    The bracket notation $\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}$ names the single map
+    $K^{(X)} \to K^{(Y)}$ through which $T$ factors once source and target are coordinatised --- and
+    hence, under the identification of Section~\ref{sec:matrices-as-maps}, \emph{simultaneously} the
+    column-finite grid $\Phi\!\left(\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}\right) \in \CFMat{Y}{X}[K]$
+    that one writes down. We nonetheless reason with it as a \emph{map}, so that the theorems below are
+    visibly statements about composing maps; the grid is read off only in concrete computations.
+\end{remark}
+
+\subsection{Columns and the Coordinate Formula}
+
+\begin{proposition}[Action on the canonical basis]
+\label{prop:matrix-columns}
+    For each $j \in X$,
+    \[
+        \CoordMatrix[\mathcal B_U][\mathcal B_V]{T}(\CanonicalVector{j}) = \CoordVec[\mathcal B_V]{T(b_j)} .
+    \]
+    That is, $\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}$ sends the canonical vector $\CanonicalVector{j}$
+    to the coordinate vector of $T(b_j)$ in $\mathcal B_V$ --- the data that, under the identification of
+    maps with grids (Section~\ref{sec:matrices-as-maps}), are the columns of its grid.
+\end{proposition}
+
+\begin{proof}
+    Since $\Frame{\mathcal B_U}(\CanonicalVector{j}) = b_j$,
+    \[
+        \CoordMatrix[\mathcal B_U][\mathcal B_V]{T}(\CanonicalVector{j})
+        = \Chart{\mathcal B_V}\bigl(T(\Frame{\mathcal B_U}(\CanonicalVector{j}))\bigr)
+        = \Chart{\mathcal B_V}(T(b_j)) = \CoordVec[\mathcal B_V]{T(b_j)} . \qedhere
+    \]
+\end{proof}
+
+\begin{proposition}[Coordinate formula]
+\label{prop:coordinate-formula}
+    For every $v \in U$,
+    \[
+        \CoordVec[\mathcal B_V]{T(v)} = \CoordMatrix[\mathcal B_U][\mathcal B_V]{T}\bigl(\CoordVec[\mathcal B_U]{v}\bigr) .
+    \]
+    Equivalently, coordinatising commutes with applying $T$: read $v$ in $\mathcal B_U$, apply the matrix,
+    and obtain the coordinates of $T(v)$ in $\mathcal B_V$.
+\end{proposition}
+
+\begin{proof}
+    Using $\CoordVec[\mathcal B_U]{v} = \Chart{\mathcal B_U}(v)$ and
+    $\Composition{\Frame{\mathcal B_U}}{\Chart{\mathcal B_U}} = \Identity{U}$,
+    \[
+        \CoordMatrix[\mathcal B_U][\mathcal B_V]{T}\bigl(\CoordVec[\mathcal B_U]{v}\bigr)
+        = \Chart{\mathcal B_V}\bigl(T(\Frame{\mathcal B_U}(\Chart{\mathcal B_U}(v)))\bigr)
+        = \Chart{\mathcal B_V}(T(v)) = \CoordVec[\mathcal B_V]{T(v)} . \qedhere
+    \]
+\end{proof}
+
+\begin{theorem}[{Coordinatising $\operatorname{Hom}$ is a linear isomorphism}]
+\label{thm:hom-iso-coordbasis}
+    The assignment $T \mapsto \CoordMatrix[\mathcal B_U][\mathcal B_V]{T}$ is a $K$-linear isomorphism
+    \[
+        \Hom[K]{U}{V} \ \xrightarrow{\ \sim\ }\ \Hom[K]{K^{(X)}}{K^{(Y)}} ,
+    \]
+    with inverse $S \mapsto \Composition{\Frame{\mathcal B_V}}{\Composition{S}{\Chart{\mathcal B_U}}}$.
+\end{theorem}
+
+\begin{proof}
+    Write $\Lambda(T) = \Composition{\Chart{\mathcal B_V}}{\Composition{T}{\Frame{\mathcal B_U}}}$ and
+    $\Gamma(S) = \Composition{\Frame{\mathcal B_V}}{\Composition{S}{\Chart{\mathcal B_U}}}$.
+    \emph{Linearity}: for $T, T' \in \Hom[K]{U}{V}$ and $\alpha, \beta \in K$, pre- and
+    post-composition are linear, so
+    $\Lambda(\alpha T + \beta T') = \alpha \Lambda(T) + \beta \Lambda(T')$.
+    \emph{Mutually inverse}: using
+    $\Composition{\Frame{\mathcal B_V}}{\Chart{\mathcal B_V}} = \Identity{V}$ and
+    $\Composition{\Chart{\mathcal B_U}}{\Frame{\mathcal B_U}} = \Identity{K^{(X)}}$,
+    \[
+        \Gamma(\Lambda(T))
+        = \Composition{\Frame{\mathcal B_V}}{\Composition{\Chart{\mathcal B_V}}{\Composition{T}{\Composition{\Frame{\mathcal B_U}}{\Chart{\mathcal B_U}}}}}
+        = T,
+    \]
+    and symmetrically $\Lambda(\Gamma(S)) = S$. Hence $\Lambda$ is a linear bijection.
+\end{proof}
+
+\subsection{Composition and Change of Bases}
+
+\begin{theorem}[Composition is composition]
+\label{thm:composition-matrix}
+    Let $T : U \to V$ and $S : V \to W$ be $K$-linear, with $W$ carrying an ordered basis $\mathcal B_W$
+    indexed by $Z$. Then
+    \[
+        \CoordMatrix[\mathcal B_U][\mathcal B_W]{\Composition{S}{T}}
+        = \Composition{\CoordMatrix[\mathcal B_V][\mathcal B_W]{S}}{\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}} .
+    \]
+\end{theorem}
+
+\begin{proof}
+    Insert $\Composition{\Frame{\mathcal B_V}}{\Chart{\mathcal B_V}} = \Identity{V}$:
+    \[
+        \CoordMatrix[\mathcal B_U][\mathcal B_W]{\Composition{S}{T}}
+        = \Composition{\Chart{\mathcal B_W}}{\Composition{S}{\Composition{T}{\Frame{\mathcal B_U}}}}
+        = \Composition{\bigl(\Composition{\Chart{\mathcal B_W}}{\Composition{S}{\Frame{\mathcal B_V}}}\bigr)}
+                      {\bigl(\Composition{\Chart{\mathcal B_V}}{\Composition{T}{\Frame{\mathcal B_U}}}\bigr)}
+        = \Composition{\CoordMatrix[\mathcal B_V][\mathcal B_W]{S}}{\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}} . \qedhere
+    \]
+    The cancellation $\Composition{\Frame{\mathcal B_V}}{\Chart{\mathcal B_V}}$ is the middle space $V$
+    being contracted, visible in the stacked coordinate squares:
+    \begin{center}
+    \begin{tikzcd}[column sep=huge, row sep=large]
+        U \arrow[r, "T"] \arrow[d, "\Chart{\mathcal B_U}"'] & V \arrow[r, "S"] \arrow[d, "\Chart{\mathcal B_V}"description] & W \arrow[d, "\Chart{\mathcal B_W}"] \\
+        K^{(X)} \arrow[r, "{\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}}"'] & K^{(Y)} \arrow[r, "{\CoordMatrix[\mathcal B_V][\mathcal B_W]{S}}"'] & K^{(Z)}
+    \end{tikzcd}
+    \end{center}
+\end{proof}
+
+The transition maps of Section~\ref{sec:coordinates-and-actions} are now recognised as a special case.
+
+\begin{remark}[The matrix of the identity]
+\label{rem:change-of-basis}
+    Let $V$ have two ordered bases $\mathcal B$ and $\mathcal C$ (indexed by the same set $X$, since
+    $\Card{X} = \Dim[K]{V}$). Reading the identity $\Identity{V} : V \to V$ through
+    Definition~\ref{def:matrix-of-map}, with $\mathcal B$ on the source and $\mathcal C$ on the target,
+    introduces nothing new: it is the automorphism
+    \[
+        \CoordMatrix[\mathcal B][\mathcal C]{\Identity{V}}
+        = \Composition{\Chart{\mathcal C}}{\Frame{\mathcal B}} \ \in\ \GL{K^{(X)}} .
+    \]
+    By Proposition~\ref{prop:matrix-columns} its action on $\CanonicalVector{j}$ is
+    $\CoordVec[\mathcal C]{b_j}$, and by Proposition~\ref{prop:coordinate-formula} it converts
+    coordinates, $\CoordVec[\mathcal C]{v} = \CoordMatrix[\mathcal B][\mathcal C]{\Identity{V}}\bigl(\CoordVec[\mathcal B]{v}\bigr)$.
+    Such a matrix of the identity is what one calls a \emph{change-of-basis} or
+    \emph{change-of-coordinates} matrix --- a name for this special case, not a new object; the two names
+    are told apart in Remark~\ref{rem:basis-vs-coordinates}.
+\end{remark}
+
+\begin{remark}[Transition matrices are matrices of the identity]
+\label{rem:transition-is-identity}
+    The map $P = \Composition{\Chart{\mathcal B}}{\Frame{\mathcal C}}$ of
+    Proposition~\ref{prop:two-actions-vs} is precisely
+    $\CoordMatrix[\mathcal C][\mathcal B]{\Identity{V}}$, the change-of-basis matrix from $\mathcal C$ to
+    $\mathcal B$; its inverse $\CoordMatrix[\mathcal B][\mathcal C]{\Identity{V}}$ is the one in the other
+    direction. Thus the entire ``passive'' side of Section~\ref{sec:coordinates-and-actions} is the
+    construction of this section applied to $T = \Identity{V}$. Composing identities gives
+    $\Composition{\CoordMatrix[\mathcal C][\mathcal B]{\Identity{V}}}{\CoordMatrix[\mathcal B][\mathcal C]{\Identity{V}}}
+    = \CoordMatrix[\mathcal B][\mathcal B]{\Identity{V}} = \Identity{K^{(X)}}$, so change-of-basis
+    matrices are invertible, with
+    $\bigl(\CoordMatrix[\mathcal B][\mathcal C]{\Identity{V}}\bigr)^{-1} = \CoordMatrix[\mathcal C][\mathcal B]{\Identity{V}}$.
+\end{remark}
+
+\begin{remark}[Change of basis versus change of coordinates]
+\label{rem:basis-vs-coordinates}
+    The pair $(\mathcal B, \mathcal C)$ determines \emph{two} automorphisms of $K^{(X)}$, mutually
+    inverse, and they are best told apart by what they \emph{do} rather than by what they are called.
+    Write $P = \Composition{\Chart{\mathcal B}}{\Frame{\mathcal C}} = \CoordMatrix[\mathcal C][\mathcal B]{\Identity{V}}$
+    for the transition map of Section~\ref{sec:coordinates-and-actions}.
+    \begin{itemize}
+        \item $P$ is the \emph{change-of-basis matrix}: its columns are the new basis vectors read in
+              the old basis, $P(\CanonicalVector{j}) = \CoordVec[\mathcal B]{c_j}$, and it transports the
+              frame, $\Frame{\mathcal C} = \Composition{\Frame{\mathcal B}}{P}$. It acts on the
+              \emph{basis}, carrying $\mathcal B$ to $\mathcal C$.
+        \item $P^{-1} = \Composition{\Chart{\mathcal C}}{\Frame{\mathcal B}} = \CoordMatrix[\mathcal B][\mathcal C]{\Identity{V}}$
+              is the \emph{change-of-coordinates matrix}: it converts the coordinates of a \emph{fixed}
+              vector, $\CoordVec[\mathcal C]{v} = \CoordMatrix[\mathcal B][\mathcal C]{\Identity{V}}\,\CoordVec[\mathcal B]{v}$
+              (Proposition~\ref{prop:coords-fixed-vs}). It acts on \emph{coordinates}, carrying
+              $\mathcal B$-coordinates to $\mathcal C$-coordinates.
+    \end{itemize}
+    In this finer language the matrix $\CoordMatrix[\mathcal B][\mathcal C]{\Identity{V}}$ of
+    Remark~\ref{rem:change-of-basis} is the change-of-\emph{coordinates} matrix, notwithstanding the
+    looser ``change-of-basis'' name in common use. But the names are the
+    inessential part: they are not consistent across sources, and nothing rests on them. What is fixed is
+    the \emph{meaning} --- a basis and the coordinates of a fixed vector transform \emph{inversely}
+    (Proposition~\ref{prop:coords-fixed-vs}), the basis covariantly and the components contravariantly ---
+    so the two matrices are mutual inverses. Confronted with any ``change of basis from $\mathcal B$ to
+    $\mathcal C$,'' the question to ask is not what it is called but what it moves, the frame or the
+    coordinates; those two run in opposite directions, and that opposition is the whole content.
+\end{remark}
+
+\begin{corollary}[Change-of-bases formula]
+\label{cor:change-of-bases}
+    Let $T : U \to V$, let $\mathcal B_U, \mathcal C_U$ be ordered bases of $U$ and
+    $\mathcal B_V, \mathcal C_V$ ordered bases of $V$. Then
+    \[
+        \CoordMatrix[\mathcal B_U][\mathcal B_V]{T}
+        = \Composition{\CoordMatrix[\mathcal C_V][\mathcal B_V]{\Identity{V}}}
+            {\Composition{\CoordMatrix[\mathcal C_U][\mathcal C_V]{T}}
+              {\CoordMatrix[\mathcal B_U][\mathcal C_U]{\Identity{U}}}} .
+    \]
+    The abstract map sits on top, and we descend through two coordinate layers:
+    \begin{center}
+    \begin{tikzcd}[column sep=huge, row sep=large]
+        U \arrow[r, "T"] \arrow[d, "\Chart{\mathcal B_U}"']
+          \arrow[dd, bend right=85, looseness=1.4, "\Chart{\mathcal C_U}"']
+            & V \arrow[d, "\Chart{\mathcal B_V}"]
+                \arrow[dd, bend left=85, looseness=1.4, "\Chart{\mathcal C_V}"] \\
+        K^{(X)} \arrow[r, "{\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}}"description]
+                \arrow[d, "{\CoordMatrix[\mathcal B_U][\mathcal C_U]{\Identity{U}}}"']
+            & K^{(Y)} \arrow[d, "{\CoordMatrix[\mathcal B_V][\mathcal C_V]{\Identity{V}}}"] \\
+        K^{(X)} \arrow[r, "{\CoordMatrix[\mathcal C_U][\mathcal C_V]{T}}"']
+            & K^{(Y)}
+    \end{tikzcd}
+    \end{center}
+    At the top is the abstract map $T : U \to V$. The charts $\Chart{\mathcal B_U}, \Chart{\mathcal B_V}$
+    drop it onto the middle floor as its $\mathcal B$-representation
+    $\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}$; the transition matrices
+    $\CoordMatrix[\mathcal B_U][\mathcal C_U]{\Identity{U}}, \CoordMatrix[\mathcal B_V][\mathcal C_V]{\Identity{V}}$
+    then carry it down one further step to the bottom floor as its $\mathcal C$-representation
+    $\CoordMatrix[\mathcal C_U][\mathcal C_V]{T}$. The two long arrows
+    $\Chart{\mathcal C_U}, \Chart{\mathcal C_V}$ are the direct charts onto the $\mathcal C$-coordinates,
+    and each side-triangle commutes because a chart followed by a transition is the other chart, e.g.
+    $\Chart{\mathcal C_U} = \Composition{\CoordMatrix[\mathcal B_U][\mathcal C_U]{\Identity{U}}}{\Chart{\mathcal B_U}}$.
+    Reading off the lower square gives
+    \[
+        \Composition{\CoordMatrix[\mathcal B_V][\mathcal C_V]{\Identity{V}}}{\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}}
+        = \Composition{\CoordMatrix[\mathcal C_U][\mathcal C_V]{T}}{\CoordMatrix[\mathcal B_U][\mathcal C_U]{\Identity{U}}} ,
+    \]
+    and since the transition matrices are invertible this rearranges to the displayed identity.
+\end{corollary}
+
+\begin{proof}
+    Apply Theorem~\ref{thm:composition-matrix} to the factorisation
+    $T = \Composition{\Identity{V}}{\Composition{T}{\Identity{U}}}$, routing through $\mathcal C_U$ on $U$
+    and $\mathcal C_V$ on $V$:
+    $\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}
+    = \CoordMatrix[\mathcal B_U][\mathcal B_V]{\Composition{\Identity{V}}{\Composition{T}{\Identity{U}}}}
+    = \Composition{\CoordMatrix[\mathcal C_V][\mathcal B_V]{\Identity{V}}}{\Composition{\CoordMatrix[\mathcal C_U][\mathcal C_V]{T}}{\CoordMatrix[\mathcal B_U][\mathcal C_U]{\Identity{U}}}}$.
+\end{proof}
+
+\begin{remark}[Active and passive change of basis]
+\label{rem:active-passive-cob}
+    A change of basis wears two faces, displayed here together for source and target. The four corners
+    on each side are the \emph{same} space seen twice (the vertical $=$): once carrying the
+    $\mathcal B$-frame, once the $\mathcal C$-frame. The small pair of arrows flanking each $=$ is the
+    basis change together with its inverse.
+    \begin{center}
+    \begin{tikzcd}[row sep=6.5em, column sep=10em]
+        U \arrow[r, "{\Composition{Q}{\Composition{T}{P^{-1}}}}"]
+          \arrow[d, equal]
+          \arrow[d, bend left=24, "{\Frame{\mathcal B_U}\Frame{\mathcal C_U}^{-1}}", pos=0.78]
+            & V \arrow[d, equal]
+                \arrow[d, bend right=24, "{\Frame{\mathcal B_V}\Frame{\mathcal C_V}^{-1}}"', pos=0.78] \\
+        U \arrow[r, "T"]
+          \arrow[u, bend right=24, "{\Frame{\mathcal C_U}\Frame{\mathcal B_U}^{-1}}"', pos=0.78]
+            & V \arrow[u, bend left=24, "{\Frame{\mathcal C_V}\Frame{\mathcal B_V}^{-1}}", pos=0.78] \\
+        K^{(X)} \arrow[u, bend left=12, "{\Frame{\mathcal B_U}}"']
+                \arrow[d, equal]
+                \arrow[d, bend left=24, "{\Frame{\mathcal C_U}^{-1}\Frame{\mathcal B_U}}", pos=0.78]
+                \arrow[r, "{\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}}" description]
+            & K^{(Y)} \arrow[u, bend right=12, "{\Frame{\mathcal B_V}}"]
+                      \arrow[d, equal]
+                      \arrow[d, bend right=24, "{\Frame{\mathcal C_V}^{-1}\Frame{\mathcal B_V}}"', pos=0.78] \\
+        K^{(X)} \arrow[uuu, bend left=60, looseness=1.5, "{\Frame{\mathcal C_U}}"']
+                \arrow[u, bend right=24, "{\Frame{\mathcal B_U}^{-1}\Frame{\mathcal C_U}}"', pos=0.78]
+                \arrow[r, "{\CoordMatrix[\mathcal C_U][\mathcal C_V]{T}}"']
+            & K^{(Y)} \arrow[uuu, bend right=60, looseness=1.5, "{\Frame{\mathcal C_V}}"]
+                      \arrow[u, bend left=24, "{\Frame{\mathcal B_V}^{-1}\Frame{\mathcal C_V}}", pos=0.78]
+    \end{tikzcd}
+    \end{center}
+    Read the source column $U$; the frames $\Frame{\mathcal B_U}, \Frame{\mathcal C_U} : K^{(X)} \to U$
+    install the two bases. Write $P \defeq \Frame{\mathcal C_U}\Frame{\mathcal B_U}^{-1} \in \GL{U}$ and
+    $Q \defeq \Frame{\mathcal C_V}\Frame{\mathcal B_V}^{-1} \in \GL{V}$ for the upward arrows between the
+    abstract copies.
+    \begin{itemize}
+        \item \textbf{Active} (\emph{moves the frame}). The automorphism $P$ carries each old basis
+              vector to the new one, $b_j \mapsto c_j$ --- it physically transforms the frame
+              \emph{inside} $U$ (and $Q$ does the same in $V$). This is the active reading of
+              Section~\ref{sec:coordinates-and-actions}.
+        \item \textbf{Passive} (\emph{reexpresses coordinates}). The transition matrix
+              $\Frame{\mathcal B_U}^{-1}\Frame{\mathcal C_U} = \CoordMatrix[\mathcal C_U][\mathcal B_U]{\Identity{U}}
+              \in \GL{K^{(X)}}$ leaves $U$ untouched and rewrites the coordinates of a fixed vector from
+              $\mathcal C_U$ to $\mathcal B_U$ --- the passive reading.
+    \end{itemize}
+    \textbf{Active is passive, in coordinates.} The two are one change seen from two sides: read the
+    active automorphism in its \emph{own} coordinates and the passive transition matrix reappears,
+    \[
+        \CoordMatrix[\mathcal C_U][\mathcal C_U]{P} = \CoordMatrix[\mathcal C_U][\mathcal B_U]{\Identity{U}},
+        \qquad
+        \CoordMatrix[\mathcal C_V][\mathcal C_V]{Q} = \CoordMatrix[\mathcal C_V][\mathcal B_V]{\Identity{V}}.
+    \]
+    So conjugating $T$ by the active automorphisms (inside the spaces) is the very same operation as
+    multiplying $\CoordMatrix{T}$ by the change-of-basis matrices (on coordinates).
+
+    \textbf{The top arrow.} The top edge is the actively transformed map
+    $\Composition{Q}{\Composition{T}{P^{-1}}} : U \to V$. Read in the \emph{new} $\mathcal C$-bases it
+    returns the \emph{old} matrix,
+    \[
+        \CoordMatrix[\mathcal C_U][\mathcal C_V]{\Composition{Q}{\Composition{T}{P^{-1}}}}
+        = \CoordMatrix[\mathcal B_U][\mathcal B_V]{T} ,
+    \]
+    because the active conjugation by $P, Q$ exactly cancels the passive change of basis
+    (Corollary~\ref{cor:change-of-bases}). The asymmetry --- $P^{-1}$ on the source against $Q$ on the
+    target --- is the contravariance of Remark~\ref{rem:covariance}: the source basis change enters
+    inverted. A map of this form $\Composition{Q}{\Composition{T}{P^{-1}}}$ with $P \in \GL{U}$,
+    $Q \in \GL{V}$ is exactly an \emph{equivalence} of $T$ (Section~\ref{sec:equivalence-similarity}).
+    The four horizontal arrows are thus $\Composition{Q}{\Composition{T}{P^{-1}}}$ and $T$ above, and
+    the two coordinate forms $\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}$,
+    $\CoordMatrix[\mathcal C_U][\mathcal C_V]{T}$ below --- the diagram is Corollary~\ref{cor:change-of-bases}
+    with the frames drawn in.
+\end{remark}
+
+\subsection{Invariance of Rank and Nullity}
+
+\begin{theorem}[Rank and nullity are basis-independent]
+\label{thm:rank-nullity-invariance}
+    For any $T : U \to V$ and any ordered bases $\mathcal B_U$, $\mathcal B_V$,
+    \[
+        \Rank{T} = \Rank{\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}},
+        \qquad
+        \Nullity{T} = \Nullity{\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}} .
+    \]
+    In particular all matrix representations of $T$ have the same rank and nullity.
+\end{theorem}
+
+\begin{proof}
+    The charts and frames are isomorphisms, and
+    $\CoordMatrix[\mathcal B_U][\mathcal B_V]{T} = \Composition{\Chart{\mathcal B_V}}{\Composition{T}{\Frame{\mathcal B_U}}}$.
+    An isomorphism carries a subspace to a subspace of the same dimension, so
+    $\Rng{\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}} = \DirectImage{\Chart{\mathcal B_V}}{\Rng{T}}$ has the
+    same dimension as $\Rng{T}$, giving equality of ranks; and
+    $\Ker{\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}} = \DirectImage{\Chart{\mathcal B_U}}{\Ker{T}}$ has the
+    same dimension as $\Ker{T}$, giving equality of nullities.
+\end{proof}
+
+Combined with the identification of a matrix with the map it is (Section~\ref{sec:matrices-as-maps}),
+this pins the rank of an abstract map to the rank of \emph{any} of its matrices.
+
+\begin{corollary}[Rank of an abstract map equals rank of its matrix]
+\label{cor:rank-abstract-vs-grid}
+    For $T : U \to V$ with ordered bases $\mathcal B_U, \mathcal B_V$, the matrix
+    $\CoordMatrix[\mathcal B_U][\mathcal B_V]{T} \in \CFMat{Y}{X}[K]$ satisfies
+    \[
+        \Rank{\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}} = \Rank{T},
+        \qquad
+        \Nullity{\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}} = \Nullity{T} .
+    \]
+\end{corollary}
+
+\begin{proof}
+    Read as the linear map $K^{(X)} \to K^{(Y)}$ it is identified with
+    (Definition~\ref{def:matrix-invariants}), the matrix $\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}$ has
+    rank and nullity equal to $\Rank{T}$ and $\Nullity{T}$ by Theorem~\ref{thm:rank-nullity-invariance}.
+\end{proof}
+
+\subsection{Variance, and a Forward Reference}
+
+\begin{remark}[Covariance and contravariance (informal)]
+\label{rem:covariance}
+    Proposition~\ref{prop:coords-fixed-vs} already records the basic asymmetry of a change of basis:
+    under the transition matrix $P = \CoordMatrix[\mathcal C][\mathcal B]{\Identity{V}}$, the
+    \emph{basis vectors} transform one way while the \emph{coordinate components} of a fixed vector
+    transform by $P^{-1}$ --- the two move in opposite directions, and cancel on
+    $v = \sum_{j \in X} \CoordVec[\mathcal B]{v}_j\, b_j$. One calls quantities that transform like the
+    basis \textbf{covariant} and those that transform oppositely (like components) \textbf{contravariant}.
+    We use these words only as informal labels for this opposite-direction behaviour; a precise
+    definition --- in terms of the dual space and covectors --- must wait until that machinery is
+    available, and is taken up in a later chapter. No dual bases or index-variance calculus are used here.
+\end{remark}
+
+\begin{remark}[The frame as a row of vectors (forward reference)]
+\label{rem:frame-as-row}
+    The frame $\Frame{\mathcal B}$ can be recorded as the \emph{row of basis vectors}
+    $(b_j)_{j \in X}$ --- a ``matrix with vector entries,'' an object of a type we have not yet defined,
+    whose product with a coordinate column $\CoordVec[\mathcal B]{v}$ reconstructs
+    $v = \sum_{j \in X} \CoordVec[\mathcal B]{v}_j\, b_j$. Making this precise (and identifying the chart
+    $\Chart{\mathcal B}$ with a dual object) requires tools developed later; we record the viewpoint now
+    and return to it once those tools are in hand.
+\end{remark}
+
+\subsection{Examples}
+
+\begin{example}[The matrix of differentiation]
+\label{ex:derivative-matrix}
+    Let $U = \Set{p \in K[x] : \deg p \leqslant 2}$ with ordered basis
+    $\mathcal B_U = (1, x, x^2)$ (so $b_0 = 1$, $b_1 = x$, $b_2 = x^2$), and
+    $V = \Set{p \in K[x] : \deg p \leqslant 1}$ with $\mathcal B_V = (1, x)$. Let $D : U \to V$ be the
+    formal derivative, $D(p) = p'$. Applying $D$ to the source basis,
+    \[
+        D(1) = 0,\qquad D(x) = 1,\qquad D(x^2) = 2x,
+    \]
+    so by Proposition~\ref{prop:matrix-columns},
+    \[
+        \CoordMatrix[\mathcal B_U][\mathcal B_V]{D}(\CanonicalVector{0}) = \CoordVec[\mathcal B_V]{0} = (0,0),
+        \quad
+        \CoordMatrix[\mathcal B_U][\mathcal B_V]{D}(\CanonicalVector{1}) = \CoordVec[\mathcal B_V]{1} = (1,0),
+        \quad
+        \CoordMatrix[\mathcal B_U][\mathcal B_V]{D}(\CanonicalVector{2}) = \CoordVec[\mathcal B_V]{2x} = (0,2).
+    \]
+    Thus $\CoordMatrix[\mathcal B_U][\mathcal B_V]{D} : K^3 \to K^2$ is the map
+    $(a_0, a_1, a_2) \mapsto (a_1,\, 2 a_2)$, i.e.\ the grid
+    $\begin{psmallmatrix} 0 & 1 & 0 \\ 0 & 0 & 2 \end{psmallmatrix}$
+    (Section~\ref{sec:matrices-as-maps}). The coordinate formula checks out:
+    for $p = a_0 + a_1 x + a_2 x^2$, $D(p) = a_1 + 2 a_2 x$ has coordinates $(a_1, 2a_2)$, matching
+    $\CoordMatrix[\mathcal B_U][\mathcal B_V]{D}(a_0, a_1, a_2)$.
+\end{example}
+
+\begin{example}[Change of bases]
+\label{ex:change-of-bases-numeric}
+    Let $U = V = \bb{R}^2$, $T(x, y) = (2x + y,\; x)$, with $\mathcal B = (\CanonicalVector{0}, \CanonicalVector{1})$
+    standard and $\mathcal C = (\CanonicalVector{0} + \CanonicalVector{1},\, \CanonicalVector{1})$. In the
+    standard basis, $T(\CanonicalVector{0}) = (2, 1)$ and $T(\CanonicalVector{1}) = (1, 0)$, so (as a
+    grid) $\CoordMatrix[\mathcal B][\mathcal B]{T} = \begin{psmallmatrix} 2 & 1 \\ 1 & 0 \end{psmallmatrix}$.
+    The change-of-basis matrices are
+    $\CoordMatrix[\mathcal B][\mathcal C]{\Identity{}} = \begin{psmallmatrix} 1 & 0 \\ -1 & 1 \end{psmallmatrix}$
+    (columns $\CoordVec[\mathcal C]{\CanonicalVector{0}}, \CoordVec[\mathcal C]{\CanonicalVector{1}}$) and its inverse
+    $\CoordMatrix[\mathcal C][\mathcal B]{\Identity{}} = \begin{psmallmatrix} 1 & 0 \\ 1 & 1 \end{psmallmatrix}$.
+    By Corollary~\ref{cor:change-of-bases},
+    \[
+        \CoordMatrix[\mathcal C][\mathcal C]{T}
+        = \CoordMatrix[\mathcal B][\mathcal C]{\Identity{}}\,
+          \CoordMatrix[\mathcal B][\mathcal B]{T}\,
+          \CoordMatrix[\mathcal C][\mathcal B]{\Identity{}}
+        = \begin{pmatrix} 1 & 0 \\ -1 & 1 \end{pmatrix}
+          \begin{pmatrix} 2 & 1 \\ 1 & 0 \end{pmatrix}
+          \begin{pmatrix} 1 & 0 \\ 1 & 1 \end{pmatrix}
+        = \begin{pmatrix} 3 & 1 \\ -2 & -1 \end{pmatrix} .
+    \]
+    Both representations have rank $2$ (the columns are independent), as
+    Theorem~\ref{thm:rank-nullity-invariance} demands.
+\end{example}

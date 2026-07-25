@@ -19,10 +19,10 @@
 {
     \IfValueTF{#3}
     {
-        \operatorname{Mat}_{#1, (#2)} \left( #3 \right)
+        \operatorname{Mat}_{(#1), #2} \left( #3 \right)
     }
     {
-        \operatorname{Mat}_{#1, (#2)}
+        \operatorname{Mat}_{(#1), #2}
     }
 }
 
@@ -110,6 +110,36 @@
 \NewDocumentCommand{\IdentityMat}{m}
 {
     I_{#1}
+}
+
+% Equivalence of linear maps / matrices:  T = q o S o p^{-1}   (A = Q B P^{-1})
+% Usage: $S \Equivalent T$,  $A \Equivalent B$
+\NewDocumentCommand{\Equivalent}{}
+{
+    \approx
+}
+
+% Similarity (conjugacy) of endomorphisms / square matrices:  T = q^{-1} o S o q   (A = Q^{-1} B Q)
+% Usage: $S \Similar T$,  $A \Similar B$
+\NewDocumentCommand{\Similar}{}
+{
+    \sim
+}
+
+% Domain (column) equivalence: only the source basis changes.  T = S o p^{-1}   (A = B P^{-1})
+% Right multiplication by an invertible factor; remixes the columns (indexed by the source).
+% Usage: $S \DomainEquivalent T$,  $A \DomainEquivalent B$
+\NewDocumentCommand{\DomainEquivalent}{}
+{
+    \mathrel{\overset{\mathrm{col}}{\approx}}
+}
+
+% Codomain (row) equivalence: only the target basis changes.  T = q o S   (A = Q B)
+% Left multiplication by an invertible factor; remixes the rows (indexed by the target).
+% Usage: $S \CodomainEquivalent T$,  $A \CodomainEquivalent B$
+\NewDocumentCommand{\CodomainEquivalent}{}
+{
+    \mathrel{\overset{\mathrm{row}}{\approx}}
 }
 
 

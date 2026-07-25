@@ -1,0 +1,345 @@
+% Document/LinearAlgebra/VectorSpaces/Matrices/Part3_CoordinatesActions.tex
+% Reordered Chapter 3 -- Section 3: the deep dive. The pattern (a standard model, a dictionary to it, and
+% the two ways a transformation acts through the dictionary) is NOT special to vector spaces. We see it
+% first for finite sets and permutations, then mirror it in vector spaces (physical = active vs
+% perspective = passive). No "torsor/bitorsor" terminology; the map--grid identification (Section 2) is
+% already in force.
+
+\newpage
+\section{Coordinates and Actions: A Pattern Beyond Linear Algebra}
+\label{sec:coordinates-and-actions}
+
+\begin{intuition}
+    The bijection $\Phi$ of Section~\ref{sec:matrices} did something very general: it pinned an object (a
+    linear map) to a \emph{standard model} (a grid) through an invertible dictionary (the assignment
+    $\Phi$, built from the canonical bases). Almost nothing in that move used linearity. The same shape recurs
+    whenever a structured object is identified with a standard model through an invertible dictionary,
+    and it always comes with the same subtlety: a transformation can act \emph{through} the dictionary
+    in \emph{two} different ways --- by moving the object, or by changing the dictionary --- and the two
+    are related, but not equal.
+
+    To see the pattern stripped of all linear-algebraic distraction, we first play it out for plain
+    finite sets, where the ``dictionary'' is an \emph{enumeration} and the transformations are
+    \emph{permutations}. Every phenomenon we will later meet for bases of vector spaces --- the two
+    actions, the four ways to translate between them, the conjugation relating them --- appears already
+    here, with permutations in place of invertible matrices.
+\end{intuition}
+
+\subsection{The Set Picture: Enumerations and Permutations}
+\label{subsec:set-picture}
+
+Fix a finite set $A$ with $|A| = n$ and write $n = \{0, 1, \dots, n-1\}$ for the standard $n$-element
+set (the von Neumann ordinal). The role played by an ordered basis is played here by an
+\textbf{enumeration}.
+
+\begin{definition}[Enumeration and lookup]
+\label{def:enumeration}
+    An \textbf{enumeration} of $A$ is a bijection $\Frame{\mathcal B} : n \to A$ (``the $j$-th element is
+    $\Frame{\mathcal B}(j)$''). Its inverse $\Chart{\mathcal B} \defeq \Frame{\mathcal B}^{-1} : A \to n$ is
+    the \textbf{lookup}, assigning to each element its \emph{index} $\Chart{\mathcal B}(x) \in n$. The two
+    are inverse, $\Composition{\Chart{\mathcal B}}{\Frame{\mathcal B}} = \Identity{n}$ and
+    $\Composition{\Frame{\mathcal B}}{\Chart{\mathcal B}} = \Identity{A}$ --- precisely the relationship a
+    parametrisation and a chart will have for a basis.
+\end{definition}
+
+Two groups act on enumerations. Permutations of the \emph{index} set $n$ --- the symmetric group
+$\SymGroup{n}$ --- relabel the slots; permutations of the \emph{element} set $A$ --- the symmetric group
+$\SymGroup{A}$ --- move the contents. They act on opposite sides of $\Frame{\mathcal B}$.
+
+\begin{proposition}[Two actions producing a new enumeration]
+\label{prop:two-actions-set}
+    Let $\Frame{\mathcal B} : n \to A$ be an enumeration.
+    \begin{enumerate}
+        \item For $P \in \SymGroup{n}$, the composite $\Composition{\Frame{\mathcal B}}{P} : n \to A$ is
+              again an enumeration. This is the \textbf{right action} of $\SymGroup{n}$: it relabels the
+              slots, leaving the elements of $A$ untouched.
+        \item For $S \in \SymGroup{A}$, the composite $\Composition{S}{\Frame{\mathcal B}} : n \to A$ is
+              again an enumeration. This is the \textbf{left action} of $\SymGroup{A}$: it permutes the
+              elements of $A$.
+    \end{enumerate}
+    Given a second enumeration $\Frame{\mathcal C}$, there is a \emph{unique} $P \in \SymGroup{n}$ with
+    $\Composition{\Frame{\mathcal B}}{P} = \Frame{\mathcal C}$ and a \emph{unique} $S \in \SymGroup{A}$
+    with $\Composition{S}{\Frame{\mathcal B}} = \Frame{\mathcal C}$; the two produce the same
+    $\Frame{\mathcal C}$, and they are related by \textbf{conjugation through the enumeration}:
+    \[
+        S = \Composition{\Frame{\mathcal B}}{\Composition{P}{\Frame{\mathcal B}^{-1}}}
+          = \Composition{\Frame{\mathcal B}}{\Composition{P}{\Chart{\mathcal B}}} .
+    \]
+\end{proposition}
+
+\begin{proof}
+    A composite of bijections is a bijection, giving (1) and (2). For the uniqueness, set
+    $P \defeq \Composition{\Frame{\mathcal B}^{-1}}{\Frame{\mathcal C}} = \Composition{\Chart{\mathcal B}}{\Frame{\mathcal C}}
+    \in \SymGroup{n}$ and $S \defeq \Composition{\Frame{\mathcal C}}{\Frame{\mathcal B}^{-1}}
+    = \Composition{\Frame{\mathcal C}}{\Chart{\mathcal B}} \in \SymGroup{A}$; then
+    $\Composition{\Frame{\mathcal B}}{P} = \Frame{\mathcal C} = \Composition{S}{\Frame{\mathcal B}}$, and any
+    $P'$ with $\Composition{\Frame{\mathcal B}}{P'} = \Frame{\mathcal C}$ equals $P$ by cancelling the
+    bijection $\Frame{\mathcal B}$ on the left (similarly for $S$). Eliminating $\Frame{\mathcal C}$ from
+    $\Composition{\Frame{\mathcal B}}{P} = \Composition{S}{\Frame{\mathcal B}}$ gives
+    $S = \Composition{\Frame{\mathcal B}}{\Composition{P}{\Frame{\mathcal B}^{-1}}}$.
+\end{proof}
+
+\begin{example}[A $3$-cycle and a transposition on five elements]
+\label{ex:sym-five}
+    Take $A = \{a, b, c, d, e\}$ and $n = 5 = \{0, 1, 2, 3, 4\}$, with the enumeration
+    \[
+        \Frame{\mathcal B} : 0 \mapsto a,\ 1 \mapsto b,\ 2 \mapsto c,\ 3 \mapsto d,\ 4 \mapsto e,
+        \qquad
+        \Chart{\mathcal B} : a \mapsto 0,\ b \mapsto 1,\ c \mapsto 2,\ d \mapsto 3,\ e \mapsto 4 .
+    \]
+    Let $P = (0\,1\,2)(3\,4) \in \SymGroup{5}$ --- a $3$-cycle and a transposition --- so
+    $P(0) = 1,\ P(1) = 2,\ P(2) = 0,\ P(3) = 4,\ P(4) = 3$; its inverse is
+    $P^{-1} = (0\,2\,1)(3\,4)$.
+
+    \smallskip
+    \noindent\emph{The right action (relabelling the slots).} $\Frame{\mathcal C} \defeq
+    \Composition{\Frame{\mathcal B}}{P}$ sends
+    \[
+        0 \mapsto \Frame{\mathcal B}(1) = b,\quad 1 \mapsto c,\quad 2 \mapsto a,\quad 3 \mapsto e,\quad 4 \mapsto d ,
+    \]
+    i.e.\ $\Frame{\mathcal C} : 0 \mapsto b,\ 1 \mapsto c,\ 2 \mapsto a,\ 3 \mapsto e,\ 4 \mapsto d$.
+    Nothing in $A$ moved; we merely relabelled which slot holds which element.
+
+    \smallskip
+    \noindent\emph{The left action (permuting the elements).} The unique $S \in \SymGroup{A}$ with
+    $\Composition{S}{\Frame{\mathcal B}} = \Frame{\mathcal C}$ is
+    $S = \Composition{\Frame{\mathcal C}}{\Chart{\mathcal B}}$:
+    \[
+        S(a) = \Frame{\mathcal C}(0) = b,\quad S(b) = c,\quad S(c) = a,\quad S(d) = e,\quad S(e) = d ,
+    \]
+    that is $S = (a\,b\,c)(d\,e) \in \SymGroup{A}$ --- again a $3$-cycle and a transposition. Here the
+    elements genuinely move: $a$ becomes $b$, and so on.
+
+    \smallskip
+    \noindent\emph{Same result, two routes.} Both give the \emph{same} new enumeration
+    $\Frame{\mathcal C}$: relabelling the slots by $P$ and physically permuting the elements by $S$ are
+    indistinguishable at the level of the resulting enumeration. They are tied by conjugation,
+    $S = \Composition{\Frame{\mathcal B}}{\Composition{P}{\Chart{\mathcal B}}}$: indeed
+    $\Composition{\Frame{\mathcal B}}{\Composition{P}{\Chart{\mathcal B}}}(a)
+    = \Frame{\mathcal B}(P(0)) = \Frame{\mathcal B}(1) = b = S(a)$, and likewise on the rest.
+\end{example}
+
+\begin{remark}[The four ways to translate, and what each does]
+\label{rem:four-ways-set}
+    Around one re-enumeration $\mathcal B \rightsquigarrow \mathcal C$ there are exactly four invertible
+    maps, in two conjugate pairs:
+    \begin{itemize}
+        \item $P = \Composition{\Chart{\mathcal B}}{\Frame{\mathcal C}} \in \SymGroup{n}$ --- relabels
+              slots forward, $\mathcal B \rightsquigarrow \mathcal C$; here $P = (0\,1\,2)(3\,4)$.
+        \item $P^{-1} = \Composition{\Chart{\mathcal C}}{\Frame{\mathcal B}} = (0\,2\,1)(3\,4)$ --- relabels
+              slots backward, $\mathcal C \rightsquigarrow \mathcal B$.
+        \item $S = \Composition{\Frame{\mathcal C}}{\Chart{\mathcal B}} \in \SymGroup{A}$ --- moves the
+              elements forward; here $S = (a\,b\,c)(d\,e)$.
+        \item $S^{-1} = \Composition{\Frame{\mathcal B}}{\Chart{\mathcal C}} = (a\,c\,b)(d\,e)$ --- moves
+              the elements backward.
+    \end{itemize}
+    The slot maps $P, P^{-1}$ live in $\SymGroup{n}$ and act on the \emph{right} of an enumeration; the
+    element maps $S, S^{-1}$ live in $\SymGroup{A}$ and act on the \emph{left}. Conjugation by the
+    enumeration carries one side to the other, $S = \Composition{\Frame{\mathcal B}}{\Composition{P}{\Chart{\mathcal B}}}$
+    and $P = \Composition{\Chart{\mathcal B}}{\Composition{S}{\Frame{\mathcal B}}}$; in particular $P$ and
+    $S$ always have the \emph{same cycle type} (here both are a $3$-cycle and a transposition).
+\end{remark}
+
+\begin{proposition}[The index of a fixed element transforms by the inverse]
+\label{prop:indices-set}
+    Let $\mathcal B, \mathcal C, P, S$ be as in Proposition~\ref{prop:two-actions-set}, so that
+    $\Composition{\Frame{\mathcal B}}{P} = \Frame{\mathcal C} = \Composition{S}{\Frame{\mathcal B}}$. Then
+    the lookups satisfy
+    \[
+        \Chart{\mathcal C} = \Composition{P^{-1}}{\Chart{\mathcal B}}
+                          = \Composition{\Chart{\mathcal B}}{S^{-1}},
+        \qquad\text{equivalently}\qquad
+        \Chart{\mathcal C}(x) = \Chart{\mathcal B}\!\left(S^{-1}(x)\right) \ \text{ for all } x \in A .
+    \]
+    While the elements move forward by $S$, the index of a \emph{fixed} element moves backward, by
+    $P^{-1}$.
+\end{proposition}
+
+\begin{proof}
+    Inverting $\Frame{\mathcal C} = \Composition{\Frame{\mathcal B}}{P}$ gives
+    $\Chart{\mathcal C} = \Frame{\mathcal C}^{-1} = \Composition{P^{-1}}{\Frame{\mathcal B}^{-1}}
+    = \Composition{P^{-1}}{\Chart{\mathcal B}}$. Inverting
+    $\Frame{\mathcal C} = \Composition{S}{\Frame{\mathcal B}}$ gives
+    $\Chart{\mathcal C} = \Composition{\Frame{\mathcal B}^{-1}}{S^{-1}}
+    = \Composition{\Chart{\mathcal B}}{S^{-1}}$. The two expressions are equal since both equal
+    $\Frame{\mathcal C}^{-1}$.
+\end{proof}
+
+\begin{remark}[The five-element computation]
+\label{rem:indices-table}
+    For Example~\ref{ex:sym-five} the lookups are tabulated below; the new index of $x$ is the old index
+    of the element $S$ drags onto $x$.
+    \begin{center}
+    \begin{tabular}{c|ccccc}
+        element $x$ & $a$ & $b$ & $c$ & $d$ & $e$ \\
+        \hline
+        index $\Chart{\mathcal B}(x)$ & $0$ & $1$ & $2$ & $3$ & $4$ \\
+        index $\Chart{\mathcal C}(x)$ & $2$ & $0$ & $1$ & $4$ & $3$ \\
+    \end{tabular}
+    \end{center}
+    For instance $\Chart{\mathcal C}(a) = 2 = \Chart{\mathcal B}(c) = \Chart{\mathcal B}(S^{-1}(a))$, since
+    $S^{-1}(a) = c$.
+\end{remark}
+
+The conjugation relation is exactly the commuting square
+\[
+    \Composition{S}{\Frame{\mathcal B}} = \Composition{\Frame{\mathcal B}}{P} :
+\]
+\begin{center}
+\begin{tikzcd}[column sep=large, row sep=large]
+    A \arrow[r, "S"] & A \\
+    n \arrow[u, "\Frame{\mathcal B}"] \arrow[r, "P"'] & n \arrow[u, "\Frame{\mathcal B}"']
+\end{tikzcd}
+\end{center}
+
+\subsection{The Same Pattern in Vector Spaces}
+\label{subsec:vector-space-picture}
+
+Now replace the finite set $A$ by a $K$-vector space $V$, the standard model $n$ by a coordinate space
+$K^{(X)}$, an enumeration $\Frame{\mathcal B} : n \to A$ by a \textbf{frame}
+$\Frame{\mathcal B} : K^{(X)} \to V$, and the symmetric groups by the groups of invertible linear maps.
+Everything in Section~\ref{subsec:set-picture} transcribes verbatim, with ``bijection'' replaced by
+``linear isomorphism.''
+
+\begin{definition}[Frame and chart of a basis]
+\label{def:frame-chart}
+    Let $V$ be a $K$-vector space with an ordered basis $\mathcal B = (b_j)_{j \in X}$. The
+    \textbf{frame} (or parametrisation) of $\mathcal B$ is the linear isomorphism
+    \[
+        \Frame{\mathcal B} : K^{(X)} \to V, \qquad \Frame{\mathcal B}(\CanonicalVector{j}) = b_j ,
+    \]
+    and the \textbf{chart} (or coordinate map) is its inverse
+    $\Chart{\mathcal B} \defeq \Frame{\mathcal B}^{-1} : V \to K^{(X)}$, with
+    $\Chart{\mathcal B}(v) = \CoordVec[\mathcal B]{v}$ the coordinate tuple of $v$. As before
+    $\Composition{\Chart{\mathcal B}}{\Frame{\mathcal B}} = \Identity{K^{(X)}}$,
+    $\Composition{\Frame{\mathcal B}}{\Chart{\mathcal B}} = \Identity{V}$, and
+    $v = \Frame{\mathcal B}(\CoordVec[\mathcal B]{v})$.
+\end{definition}
+
+The two acting groups are now $\GL{V}$, the invertible linear self-maps of $V$ (the analogue of
+$\SymGroup{A}$), and $\GL{K^{(X)}}$, the invertible linear self-maps of the coordinate space (the
+analogue of $\SymGroup{n}$). In the finite-dimensional case $X = n$, Section~\ref{sec:matrices} identified
+$\GL{K^{(X)}}$ with the invertible matrices $\GL{K^n}$.
+
+\begin{proposition}[Two actions on frames, related by conjugation]
+\label{prop:two-actions-vs}
+    Let $\Frame{\mathcal B} : K^{(X)} \to V$ be a frame.
+    \begin{enumerate}
+        \item For $P \in \GL{K^{(X)}}$, the composite $\Composition{\Frame{\mathcal B}}{P}$ is again a
+              frame --- the \textbf{right (passive)} action of $\GL{K^{(X)}}$, a re-coordinatisation.
+        \item For $S \in \GL{V}$, the composite $\Composition{S}{\Frame{\mathcal B}}$ is again a frame ---
+              the \textbf{left (active)} action of $\GL{V}$, a genuine motion of vectors.
+    \end{enumerate}
+    Given a second frame $\Frame{\mathcal C}$, there are unique $P = \Composition{\Chart{\mathcal B}}{\Frame{\mathcal C}}
+    \in \GL{K^{(X)}}$ and $S = \Composition{\Frame{\mathcal C}}{\Chart{\mathcal B}} \in \GL{V}$ with
+    $\Composition{\Frame{\mathcal B}}{P} = \Frame{\mathcal C} = \Composition{S}{\Frame{\mathcal B}}$, related
+    by conjugation through the frame,
+    \[
+        S = \Composition{\Frame{\mathcal B}}{\Composition{P}{\Chart{\mathcal B}}},
+        \qquad
+        P = \Composition{\Chart{\mathcal B}}{\Composition{S}{\Frame{\mathcal B}}} .
+    \]
+\end{proposition}
+
+\begin{proof}
+    Word for word the proof of Proposition~\ref{prop:two-actions-set}, with ``bijection'' replaced by
+    ``linear isomorphism'': composites of isomorphisms are isomorphisms, the displayed $P$ and $S$
+    satisfy the two equations, uniqueness is left/right cancellation of the isomorphism
+    $\Frame{\mathcal B}$, and eliminating $\Frame{\mathcal C}$ gives the conjugation.
+\end{proof}
+
+\begin{remark}[Physical transformations are active; changes of perspective are passive]
+\label{rem:active-passive-meaning}
+    The two sides carry a standard interpretation in applications. An element $S \in \GL{V}$ is a
+    \emph{physical} transformation: a rotation, reflection, shear, or deformation that actually moves
+    the vectors of $V$. An element $P \in \GL{K^{(X)}}$ is a change of \emph{perspective}: it does not
+    touch the vectors at all, only the coordinates we use to name them. So
+    \[
+        \GL{V} \ \longleftrightarrow\ \text{active (physical) transformations,}
+        \qquad
+        \GL{K^{(X)}} \ \longleftrightarrow\ \text{passive (coordinate) transformations.}
+    \]
+    The conjugation $S = \Composition{\Frame{\mathcal B}}{\Composition{P}{\Chart{\mathcal B}}}$ says these
+    are two readings of one frame change: $P$ describes it downstairs on coordinates, $S$ performs it
+    upstairs on vectors. (The labels ``active'' and ``passive'' are ours, tracking which side we deem
+    physical; the mathematics privileges neither, just as for sets neither $A$ nor $n$ was preferred.)
+\end{remark}
+
+\begin{proposition}[Coordinates of a fixed vector transform by the inverse]
+\label{prop:coords-fixed-vs}
+    Let $\mathcal B, \mathcal C, P, S$ be as in Proposition~\ref{prop:two-actions-vs}, so that
+    $\Composition{\Frame{\mathcal B}}{P} = \Frame{\mathcal C} = \Composition{S}{\Frame{\mathcal B}}$. Then
+    \[
+        \Chart{\mathcal C} = \Composition{P^{-1}}{\Chart{\mathcal B}}
+                          = \Composition{\Chart{\mathcal B}}{S^{-1}},
+        \qquad\text{so}\qquad
+        \CoordVec[\mathcal C]{v} = P^{-1}\,\CoordVec[\mathcal B]{v} = \CoordVec[\mathcal B]{S^{-1} v}
+        \quad \text{for all } v \in V,
+    \]
+    where $P^{-1}\,\CoordVec[\mathcal B]{v}$ denotes the matrix--vector action of
+    Theorem~\ref{thm:entry-formulas}. The active transformation $S$ moves a vector by $P$ in
+    coordinates, whereas the change of perspective from $\mathcal B$ to $\mathcal C$ moves the
+    coordinates of a \emph{fixed} vector by $P^{-1}$.
+\end{proposition}
+
+\begin{proof}
+    Inverting $\Frame{\mathcal C} = \Composition{\Frame{\mathcal B}}{P}$ gives
+    $\Chart{\mathcal C} = \Composition{P^{-1}}{\Chart{\mathcal B}}$, and inverting
+    $\Frame{\mathcal C} = \Composition{S}{\Frame{\mathcal B}}$ gives
+    $\Chart{\mathcal C} = \Composition{\Chart{\mathcal B}}{S^{-1}}$; both equal $\Frame{\mathcal C}^{-1}$.
+    Applying these to a vector $v$ yields $\CoordVec[\mathcal C]{v} = \Chart{\mathcal C}(v)
+    = P^{-1}\Chart{\mathcal B}(v) = P^{-1}\CoordVec[\mathcal B]{v}$ and
+    $\Chart{\mathcal C}(v) = \Chart{\mathcal B}(S^{-1} v) = \CoordVec[\mathcal B]{S^{-1} v}$.
+\end{proof}
+
+\begin{remark}[The merry-go-round]
+\label{rem:merry-go-round}
+    A fixed vector, re-coordinatised to the new frame, reads exactly as the old coordinates of the
+    vector dragged backward by $S^{-1}$: turn the frame one way and a fixed point sweeps the other.
+\end{remark}
+
+\begin{example}[A rotation of the plane]
+\label{ex:rotation-plane}
+    Let $V = \bb{R}^2$ with the standard frame $\mathcal B$, so $\Frame{\mathcal B} = \Identity{}$ and
+    $\CoordVec[\mathcal B]{v} = v$. Let $S \in \GL{V}$ be the physical rotation by $90^\circ$
+    counter-clockwise: $S(\CanonicalVector{0}) = \CanonicalVector{1}$,
+    $S(\CanonicalVector{1}) = -\CanonicalVector{0}$. The frame it produces is
+    $\mathcal C = (S\CanonicalVector{0}, S\CanonicalVector{1}) = (\CanonicalVector{1}, -\CanonicalVector{0})$,
+    and the corresponding passive coordinate map is
+    $P = \Composition{\Chart{\mathcal B}}{\Frame{\mathcal C}}
+    = \begin{psmallmatrix} 0 & -1 \\ 1 & 0 \end{psmallmatrix} \in \GL{K^2}$
+    (its columns are $\CoordVec[\mathcal B]{\CanonicalVector{1}}$ and
+    $\CoordVec[\mathcal B]{-\CanonicalVector{0}}$).
+
+    Take the fixed vector $v = (1, 1)$. Physically moving it gives
+    $\CoordVec[\mathcal B]{S v} = P\,\CoordVec[\mathcal B]{v}
+    = \begin{psmallmatrix} 0 & -1 \\ 1 & 0 \end{psmallmatrix}\begin{psmallmatrix} 1 \\ 1 \end{psmallmatrix}
+    = (-1, 1)$ --- the arrow swung $90^\circ$ counter-clockwise. Re-coordinatising the \emph{same}
+    fixed $v$ to the rotated frame gives instead
+    \[
+        \CoordVec[\mathcal C]{v} = P^{-1}\,\CoordVec[\mathcal B]{v}
+        = \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}\begin{pmatrix} 1 \\ 1 \end{pmatrix}
+        = (1, -1) = \CoordVec[\mathcal B]{S^{-1} v},
+    \]
+    the components reading as though $v$ had rotated $90^\circ$ \emph{clockwise}. One matrix $P$, two
+    opposite effects: $P$ on a physically moved vector, $P^{-1}$ on the coordinates of a fixed one.
+\end{example}
+
+The conjugation is again a commuting square, now of linear isomorphisms:
+\begin{center}
+\begin{tikzcd}[column sep=large, row sep=large]
+    V \arrow[r, "S"] & V \\
+    K^{(X)} \arrow[u, "\Frame{\mathcal B}"] \arrow[r, "P"'] & K^{(X)} \arrow[u, "\Frame{\mathcal B}"']
+\end{tikzcd}
+\end{center}
+
+\begin{remark}[Where this is heading]
+\label{rem:part2-forward}
+    The matrix $P = \Composition{\Chart{\mathcal B}}{\Frame{\mathcal C}}$ attached to a frame change, and
+    the way the operator $S$ is read ``in coordinates'' through $\Frame{\mathcal B}$, are the first
+    instances of a single construction: the \emph{matrix of a linear map in chosen bases}, developed in
+    the next section. There we will see that every such $P$ is the matrix of the \emph{identity} read in
+    two different bases, and that conjugation by $\Frame{\mathcal B}$ is exactly the passage between an
+    operator and its matrix. For now we have only used invertible maps and their composites --- no
+    notion of ``the matrix of an operator'' has been invoked.
+\end{remark}

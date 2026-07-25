@@ -161,17 +161,17 @@
     \begin{enumerate}
         \item $3v_1 + 2v_2$ is a linear combination of $\{v_1, v_2\}$
         \item The empty sum $0$ is a linear combination of any set (including $\emptyset$)
-        \item In $\bb{R}^3$: $(1, 2, 3) = 1 \cdot e_0 + 2 \cdot e_1 + 3 \cdot e_2$ where $e_i$ are standard vectors
+        \item In $\bb{R}^3$: $(1, 2, 3) = 1 \cdot \CanonicalVector{0} + 2 \cdot \CanonicalVector{1} + 3 \cdot \CanonicalVector{2}$ where $\CanonicalVector{i}$ are standard vectors
     \end{enumerate}
 \end{example}
 
 \begin{remark}[Finiteness is Essential]\label{rem:finite-lincomb}
-    Infinite series like $\sum_{i=0}^{\infty} a_i v_i$ are \textbf{not} linear combinations
+    Infinite series like $\sum_{i \in \bb{N}} a_i v_i$ are \textbf{not} linear combinations
     in the algebraic sense. Such series require topological structure (limits) to define.
 
-    As a counterexample: in $K^{\bb{N}}$, let $e_i = (0, \ldots, 0, 1, 0, \ldots)$ with $1$ in position $i$.
+    As a counterexample: in $K^{\bb{N}}$, let $\CanonicalVector{i} = (0, \ldots, 0, 1, 0, \ldots)$ with $1$ in position $i$.
     Then the constant sequence $(1, 1, 1, \ldots)$ is \textbf{not} a (finite) linear combination
-    of the $e_i$'s, even though ``intuitively'' it equals $\sum_{i=0}^{\infty} e_i$.
+    of the $\CanonicalVector{i}$'s, even though ``intuitively'' it equals $\sum_{i \in \bb{N}} \CanonicalVector{i}$.
 \end{remark}
 
 \begin{proposition}[Subspace iff Closed Under Linear Combinations]\label{prop:subspace-lincomb}
@@ -189,21 +189,21 @@
 
 \begin{proposition}[Linear Combinations of Indicator Functions]%
     \label{prop:lincomb-finite-support}
-    Let $I$ be any set and let $(e_i)_{i \in I}$ be the indicator functions in $K^I$.
-    Then the set of all linear combinations of the $e_i$'s is precisely $K^{(I)}$.
+    Let $I$ be any set and let $(\CanonicalVector{i})_{i \in I}$ be the indicator functions in $K^I$.
+    Then the set of all linear combinations of the $\CanonicalVector{i}$'s is precisely $K^{(I)}$.
     In particular, if $I$ is infinite, then there exist elements of $K^I$ that are not
-    linear combinations of the $e_i$'s.
+    linear combinations of the $\CanonicalVector{i}$'s.
 \end{proposition}
 
 \begin{proof}
     We show both inclusions.
 
     ($\subseteq$)
-    Let $g$ be a linear combination of the $e_i$'s. Then
-    $g = \sum_{j \in n} a_j e_{i_j}$ for some $n \in \bb{N}$, scalars $a_j \in K$,
+    Let $g$ be a linear combination of the $\CanonicalVector{i}$'s. Then
+    $g = \sum_{j \in n} a_j \CanonicalVector{i_j}$ for some $n \in \bb{N}$, scalars $a_j \in K$,
     and distinct indices $i_0, \ldots, i_{n-1} \in I$. For any $k \in I$:
     \[
-        g(k) = \sum_{j \in n} a_j e_{i_j}(k) = \sum_{j \in n} a_j \delta_{i_j k}
+        g(k) = \sum_{j \in n} a_j \CanonicalVector{i_j}(k) = \sum_{j \in n} a_j \delta_{i_j k}
         =
         \begin{cases}
             a_j & \text{if } k = i_j \text{ for some } j \in \{0, \ldots, n-1\} \\
@@ -215,9 +215,9 @@
 
     ($\supseteq$)
     Let $f \in K^{(I)}$. Then $\operatorname{supp}(f) = \{i_0, \ldots, i_{n-1}\}$ is finite.
-    Define $g = \sum_{k \in n} f(i_k) \cdot e_{i_k}$. For any $j \in I$:
+    Define $g = \sum_{k \in n} f(i_k) \cdot \CanonicalVector{i_k}$. For any $j \in I$:
     \[
-        g(j) = \sum_{k \in n} f(i_k) \cdot e_{i_k}(j) = \sum_{k \in n} f(i_k) \cdot \delta_{i_k j}
+        g(j) = \sum_{k \in n} f(i_k) \cdot \CanonicalVector{i_k}(j) = \sum_{k \in n} f(i_k) \cdot \delta_{i_k j}
         =
         \begin{cases}
             f(i_k) & \text{if } j = i_k \text{ for some } k \in \{0, \ldots, n-1\} \\
@@ -226,11 +226,11 @@
     \]
     Since $j \notin \operatorname{supp}(f)$ implies $f(j) = 0 = g(j)$, and
     $j = i_k \in \operatorname{supp}(f)$ implies $g(j) = f(i_k) = f(j)$,
-    we conclude $f = g$. Hence $f$ is a linear combination of the $e_i$'s.
+    we conclude $f = g$. Hence $f$ is a linear combination of the $\CanonicalVector{i}$'s.
 
     For the last claim: if $I$ is infinite, then the constant-$1$ function
     $f(i) = 1$ for all $i \in I$ has $\operatorname{supp}(f) = I$, which is infinite.
-    By the first inclusion, $f$ is not a linear combination of the $e_i$'s.
+    By the first inclusion, $f$ is not a linear combination of the $\CanonicalVector{i}$'s.
 \end{proof}
 
 \begin{proposition}[Intersection of Subspaces]\label{prop:intersection-subspace}

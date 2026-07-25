@@ -104,3 +104,10 @@
 {
     \left| #1 \right|
 }
+
+% Symmetric group on a set: \SymGroup{X} for Sym(X), the group of bijections X -> X.
+% General-purpose (not linear-algebra-specific); distinct from the LA \Sym.
+\NewDocumentCommand{\SymGroup}{m}
+{
+    \operatorname{Sym}\!\left( #1 \right)
+}

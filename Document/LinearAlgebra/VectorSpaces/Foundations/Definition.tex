@@ -111,12 +111,12 @@
     the geometric operations on arrows described in Example~\ref{ex:geometric-vectors}.
 
     \textbf{Why addition matches the parallelogram rule.}
-    Let $e_0 = (1, 0)$ and $e_1 = (0, 1)$ be the standard basis vectors.
-    Any $u = (u_0, u_1)$ decomposes as $u = u_0 e_0 + u_1 e_1$,
-    and similarly $v = v_0 e_0 + v_1 e_1$. Then by the vector space axioms:
+    Let $\CanonicalVector{0} = (1, 0)$ and $\CanonicalVector{1} = (0, 1)$ be the standard basis vectors.
+    Any $u = (u_0, u_1)$ decomposes as $u = u_0 \CanonicalVector{0} + u_1 \CanonicalVector{1}$,
+    and similarly $v = v_0 \CanonicalVector{0} + v_1 \CanonicalVector{1}$. Then by the vector space axioms:
     \[
-        u + v = (u_0 e_0 + u_1 e_1) + (v_0 e_0 + v_1 e_1)
-        = (u_0 + v_0) e_0 + (u_1 + v_1) e_1
+        u + v = (u_0 \CanonicalVector{0} + u_1 \CanonicalVector{1}) + (v_0 \CanonicalVector{0} + v_1 \CanonicalVector{1})
+        = (u_0 + v_0) \CanonicalVector{0} + (u_1 + v_1) \CanonicalVector{1}
     \]
     which corresponds to the point $(u_0 + v_0, \; u_1 + v_1)$.
     Geometrically, this is the fourth vertex of the parallelogram
@@ -157,10 +157,10 @@
     \end{center}
 
     \textbf{Why scalar multiplication matches scaling.}
-    For $\alpha \in \bb{R}$ and $u = u_0 e_0 + u_1 e_1$, the scalar multiplication axioms give:
+    For $\alpha \in \bb{R}$ and $u = u_0 \CanonicalVector{0} + u_1 \CanonicalVector{1}$, the scalar multiplication axioms give:
     \[
-        \alpha \cdot u = \alpha (u_0 e_0 + u_1 e_1)
-        = (\alpha u_0) e_0 + (\alpha u_1) e_1
+        \alpha \cdot u = \alpha (u_0 \CanonicalVector{0} + u_1 \CanonicalVector{1})
+        = (\alpha u_0) \CanonicalVector{0} + (\alpha u_1) \CanonicalVector{1}
     \]
     which corresponds to the point $(\alpha u_0, \; \alpha u_1)$.
     Geometrically, this is the point at fraction $\alpha$ along the ray from $0$
@@ -234,9 +234,9 @@
         (af)(i) &= a \cdot f(i)
     \end{align*}
 
-    For each $i \in I$, define the \textbf{indicator function} $e_i: I \to K$ by
+    For each $i \in I$, define the \textbf{indicator function} $\CanonicalVector{i}: I \to K$ by
     \[
-        e_i(j) = \delta_{ij} =
+        \CanonicalVector{i}(j) = \delta_{ij} =
         \begin{cases}
             1_K & \text{if } j = i \\
             0_K & \text{if } j \neq i
@@ -252,7 +252,7 @@
     \]
     is a subspace of $K^I$. Every $f \in K^{(I)}$ can be written as a finite sum
     \[
-        f = \sum_{i \in \operatorname{supp}(f)} f(i) \cdot e_i
+        f = \sum_{i \in \operatorname{supp}(f)} f(i) \cdot \CanonicalVector{i}
     \]
     where $\operatorname{supp}(f) = \Set{i \in I \mid f(i) \neq 0}$ is the support of $f$.
 
@@ -269,12 +269,40 @@
     \]
     For instance, the indicator functions in $K^n$ are denoted
     \[
-        e_0 = \begin{pmatrix} 1 \\ 0 \\ \vdots \\ 0 \end{pmatrix}, \quad
-        e_1 = \begin{pmatrix} 0 \\ 1 \\ \vdots \\ 0 \end{pmatrix}, \quad \ldots, \quad
-        e_{n-1} = \begin{pmatrix} 0 \\ 0 \\ \vdots \\ 1 \end{pmatrix}
+        \CanonicalVector{0} = \begin{pmatrix} 1 \\ 0 \\ \vdots \\ 0 \end{pmatrix}, \quad
+        \CanonicalVector{1} = \begin{pmatrix} 0 \\ 1 \\ \vdots \\ 0 \end{pmatrix}, \quad \ldots, \quad
+        \CanonicalVector{n-1} = \begin{pmatrix} 0 \\ 0 \\ \vdots \\ 1 \end{pmatrix}
     \]
     and a general element $(a_0, a_1, \ldots, a_{n-1}) \in K^n$ is written as
     $\begin{pmatrix} a_0 \\ a_1 \\ \vdots \\ a_{n-1} \end{pmatrix}$.
+\end{remark}
+
+\begin{remark}[Two Structures on $K^I$ and $K^{(I)}$]\label{rem:two-structures}
+    The spaces $K^I$ and $K^{(I)}$ carry two fundamentally different structures simultaneously:
+    \begin{itemize}
+        \item \textbf{As a $K$-vector space}: equipped with pointwise addition and scalar
+              multiplication. The operations that respect this structure are $K$-linear maps.
+        \item \textbf{As a set of functions $I \to K$} (a ``data structure''): a collection of
+              $I$-indexed families of scalars. Operations that respect this structure include
+              evaluation at a point ($f \mapsto f(i)$), support
+              ($f \mapsto \operatorname{supp}(f)$), entrywise absolute value (when $K$ is
+              ordered), sorting entries, lexicographic ordering, and restriction to subsets
+              of $I$.
+    \end{itemize}
+    The two structures coexist on the same underlying set, but they are logically independent.
+    Most operations from the second list are \emph{not} $K$-linear (e.g.,
+    $f \mapsto |f(i)|$ fails linearity over $\bb{C}$; sorting entries is not even well-defined
+    as a vector space operation). Conversely, a $K$-linear map
+    $T: K^{(I)} \to K^{(J)}$ need not respect any ``data'' property of tuples --- it scrambles
+    entries according to its matrix.
+
+    When we write $(1, 0, 0) \in \bb{R}^3$, we are silently using both structures: as a
+    \emph{vector} it can be added and scaled; as a \emph{triple of real numbers} it can be
+    compared componentwise, plugged into a formula, or printed on a page. Linear algebra
+    concerns itself with the first structure; computation (by hand or machine) requires the
+    second. The coordinate isomorphism (Theorem~\ref{thm:coord-bijection}) and the
+    Representation Theorem (Theorem~\ref{thm:map-grid-bijection}) are the bridges that let us pass
+    between them.
 \end{remark}
 
 \begin{example}[Polynomial Spaces]\label{ex:polynomial-space}

@@ -113,7 +113,7 @@
     first $N+1$ coefficients of a polynomial. Specifically:
     \[
         \left(\sum_{i=0}^{N} c_i \delta_i\right)(p) = \sum_{i=0}^{N} c_i a_i
-        \quad \text{for } p = \sum_{j} a_j X^j
+        \quad \text{for } p = \sum_{j \in \bb{N}} a_j X^j
     \]
     
     \textbf{Evaluation at $1$}: Define $\mathrm{ev}_1: K[X] \to K$ by:
@@ -173,8 +173,8 @@
     \textit{Well-defined}: By Theorem~\ref{thm:vector-space-universal}, $\psi_{\mathcal{B}}$ 
     extends uniquely to a linear map on all of $V$.
     
-    \textit{Injectivity}: Suppose $\psi_{\mathcal{B}}(v) = 0$ for some $v = \sum a_i b_i$.
-    Then $\psi_{\mathcal{B}}(v) = \sum a_i b^i = 0$.
+    \textit{Injectivity}: Suppose $\psi_{\mathcal{B}}(v) = 0$ for some $v = \sum_{i \in n} a_i b_i$.
+    Then $\psi_{\mathcal{B}}(v) = \sum_{i \in n} a_i b^i = 0$.
     By linear independence of the dual basis (Theorem~\ref{thm:dual-basis-li}), $a_i = 0$ for all $i$.
     Thus $v = 0$.
     
@@ -243,18 +243,18 @@
     
     ($\subseteq$) Let $\varphi \in \Ann{S}$. We must show $\varphi(w) = 0$ for all $w \in \Span[K]{S}$.
     
-    Any $w \in \Span[K]{S}$ can be written as $w = \sum_{i=1}^k a_i s_i$ for some 
+    Any $w \in \Span[K]{S}$ can be written as $w = \sum_{i \in k} a_i s_i$ for some 
     $a_i \in K$, $s_i \in S$, $k \in \bb{N}$.
     
     By linearity of $\varphi$:
     \[
-        \varphi(w) = \varphi\left(\sum_{i=1}^k a_i s_i\right) = \sum_{i=1}^k a_i \varphi(s_i)
+        \varphi(w) = \varphi\left(\sum_{i \in k} a_i s_i\right) = \sum_{i \in k} a_i \varphi(s_i)
     \]
     
     Since $s_i \in S$ and $\varphi \in \Ann{S}$, we have $\varphi(s_i) = 0$ for all $i$.
     Thus:
     \[
-        \varphi(w) = \sum_{i=1}^k a_i \cdot 0 = 0
+        \varphi(w) = \sum_{i \in k} a_i \cdot 0 = 0
     \]
     
     Therefore $\varphi \in \Ann{\Span[K]{S}}$.
@@ -362,7 +362,7 @@
     For $H \Subspace[K] V$, the following are equivalent:
     \begin{enumerate}
         \item $H$ is a hyperplane (i.e., $\Dim[K]{\QuotientSpace{V}{H}} = 1$)
-        \item $\Exists :{\text{1-dim } L \Subspace V}{V = H \oplus L}$
+        \item $\Exists :{\text{1-dim } L \Subspace V}{V = H \DirectSum L}$
         \item $H = \Ker{f}$ for some nonzero $f \in \AlgebraicDual{V}$
         \item $\Dim[K]{\Ann{H}} = 1$
     \end{enumerate}
@@ -372,7 +372,7 @@
 \begin{proof}
     \textbf{(1) $\Leftrightarrow$ (2)}:
     $\Dim[K]{\QuotientSpace{V}{H}} = 1$ iff $\Exists :{v_0 \notin H}{V = H + \Span[K]{\{v_0\}}}$.
-    Since $H \cap \Span[K]{\{v_0\}} = \{0\}$ (else $v_0 \in H$), this sum is direct.
+    Since $H \Intersect \Span[K]{\{v_0\}} = \{0\}$ (else $v_0 \in H$), this sum is direct.
     
     \textbf{(1) $\Rightarrow$ (3)}:
     The projection $\pi: V \to \QuotientSpace{V}{H}$ composed with an isomorphism 
@@ -380,7 +380,7 @@
     
     \textbf{(3) $\Rightarrow$ (1)}:
     For nonzero $f$, pick $v_0$ with $f(v_0) \neq 0$. Scale so $f(v_0) = 1$.
-    Then $V = \Ker{f} \oplus \Span[K]{\{v_0\}}$, and the induced map
+    Then $V = \Ker{f} \DirectSum \Span[K]{\{v_0\}}$, and the induced map
     $\QuotientSpace{V}{\Ker{f}} \to K$ is an isomorphism.
     
     \textbf{(3) $\Leftrightarrow$ (4)}:
@@ -525,7 +525,7 @@
     Since $T$ is injective, we can define $\varphi_0: \Rng{T} \to K$ by $\varphi_0(T(u)) = \psi(u)$.
     This is well-defined (injectivity) and linear.
     
-    Choose a complement: $V = \Rng{T} \oplus W$ (by extending a basis of $\Rng{T}$).
+    Choose a complement: $V = \Rng{T} \DirectSum W$ (by extending a basis of $\Rng{T}$).
     Define $\varphi(v) = \varphi_0(v_R)$ where $v = v_R + v_W$.
     Then $\AlgebraicDualMap{T}(\varphi) = \psi$.
     

@@ -170,7 +170,7 @@
 \newpage
 \subsection{The Representation Theorem}
 
-Write $\mathcal{E}_\kappa = (e_i)_{i \in \kappa}$ for the canonical ordered basis of
+Write $\CanonicalBase{\kappa} = (\CanonicalVector{i})_{i \in \kappa}$ for the canonical ordered basis of
 $K^{(\kappa)}$.
 
 \begin{theorem}[{Representation Theorem: $\Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}} \cong \CFMat{\kappa_2}{\kappa_1}[K]$}]
@@ -178,27 +178,29 @@ $K^{(\kappa)}$.
     There is a canonical $K$-linear isomorphism
     \[
         \Phi: \Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}} \xrightarrow{\;\sim\;}
-        \CFMat{\kappa_2}{\kappa_1}[K],
-        \qquad T \mapsto \CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{T}
+        \CFMat{\kappa_2}{\kappa_1}[K]
     \]
-    where the $(i,j)$-entry is defined by
-    $\bigl(\CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{T}\bigr)_{ij}
-    \defeq (T(e_j))_i$, the $i$-th coordinate of $T(e_j)$ in $K^{(\kappa_2)}$.
+    defined by
+    \[
+        \Phi(T)_{ij} \defeq \bigl(T(\CanonicalVector{j})\bigr)_i
+    \]
+    --- the $i$-th coordinate of $T(\CanonicalVector{j})$ in $K^{(\kappa_2)}$.
+    Equivalently, the $j$-th column of $\Phi(T)$ is $T(\CanonicalVector{j}) \in K^{(\kappa_2)}$.
     The codomain is $\CFMat{\kappa_2}{\kappa_1}[K]$ (not the larger
     $\MatSpace{\kappa_2}{\kappa_1}[K]$): column-finiteness is not imposed externally but is a
     \emph{consequence} of $T$ mapping into $K^{(\kappa_2)}$.
 \end{theorem}
 
-\begin{remark}[Convention: Why $(T(e_j))_i$ and Not $(T(e_i))_j$?]
-    The definition $\bigl(\CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{T}
-    \bigr)_{ij} = (T(e_j))_i$ is a choice: we could equally define the $(i,j)$-entry as
-    $(T(e_i))_j$, which would identify $\Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}}$ with
-    $\CFMat{\kappa_1}{\kappa_2}[K]$ (a $\kappa_1 \times \kappa_2$ matrix) rather than
-    $\CFMat{\kappa_2}{\kappa_1}[K]$ (a $\kappa_2 \times \kappa_1$ matrix). In some sense
-    this alternative is more natural: a map $K^{(\kappa_1)} \to K^{(\kappa_2)}$ would produce
-    a matrix whose dimensions match the order $(\kappa_1, \kappa_2)$.
+\begin{remark}[Convention: Why $(T(\CanonicalVector{j}))_i$ and Not $(T(\CanonicalVector{i}))_j$?]
+    The definition $\Phi(T)_{ij} = (T(\CanonicalVector{j}))_i$ is a choice: we could equally
+    define the $(i,j)$-entry as $(T(\CanonicalVector{i}))_j$, which would identify
+    $\Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}}$ with $\CFMat{\kappa_1}{\kappa_2}[K]$ (a
+    $\kappa_1 \times \kappa_2$ matrix) rather than $\CFMat{\kappa_2}{\kappa_1}[K]$ (a
+    $\kappa_2 \times \kappa_1$ matrix). In some sense this alternative is more natural: a map
+    $K^{(\kappa_1)} \to K^{(\kappa_2)}$ would produce a matrix whose dimensions match the
+    order $(\kappa_1, \kappa_2)$.
 
-    The classical convention $(T(e_j))_i$ reverses these dimensions, but has the compensating
+    The classical convention $(T(\CanonicalVector{j}))_i$ reverses these dimensions, but has the compensating
     advantage that matrix multiplication follows the familiar left-to-right reading order:
     a $\kappa_2 \times \kappa_1$ matrix times a $\kappa_1 \times \kappa_3$ matrix yields a
     $\kappa_2 \times \kappa_3$ matrix, with adjacent indices contracting. Under the alternative
@@ -207,32 +209,31 @@ $K^{(\kappa)}$.
 \end{remark}
 
 \begin{proof}
-    \textit{Well-definedness} (image lands in $\CFMat{\kappa_2}{\kappa_1}[K]$):
-    Each $T(e_j) \in K^{(\kappa_2)}$ has finite support in $i$, so
-    $\CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{T}(-,j)
-    \in K^{(\kappa_2)}$, i.e.\ the matrix is column-finite.
+    We construct a $K$-linear inverse $\Psi: \CFMat{\kappa_2}{\kappa_1}[K] \to
+    \Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}}$.
 
-    \textit{$K$-linearity of $\Phi$}:
-    $\bigl(\CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{\alpha T + \beta S}
-    \bigr)_{ij}
-    = ((\alpha T + \beta S)(e_j))_i
-    = \alpha\, (T(e_j))_i + \beta\, (S(e_j))_i
-    = \alpha\, \bigl(\CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{T}
-    \bigr)_{ij}
-    + \beta\, \bigl(\CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{S}
-    \bigr)_{ij}$.
+    \textit{$\Phi$ is well-defined and $K$-linear}:
+    Each $T(\CanonicalVector{j}) \in K^{(\kappa_2)}$ has finite support in $i$, so
+    $\Phi(T)(-,j) \in K^{(\kappa_2)}$, i.e.\ the matrix is column-finite. Linearity:
+    $\Phi(\alpha T + \beta S)_{ij}
+    = ((\alpha T + \beta S)(\CanonicalVector{j}))_i
+    = \alpha\, \Phi(T)_{ij} + \beta\, \Phi(S)_{ij}$.
 
-    \textit{Injectivity}:
-    If $\CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{T} = 0$, then
-    $T(e_j) = 0$ for all $j$. Since $\mathcal{E}_{\kappa_1}$ is a basis of $K^{(\kappa_1)}$,
-    this gives $T = 0$.
+    \textit{Construction of $\Psi$}:
+    Given $A \in \CFMat{\kappa_2}{\kappa_1}[K]$, define $\Psi(A) = T_A$ by
+    $T_A(\CanonicalVector{j}) \defeq A(-,j) \in K^{(\kappa_2)}$ (well-defined since $A$ is
+    column-finite) and extend by linearity. The map $A \mapsto T_A$ is $K$-linear
+    (since $(A + B)(-,j) = A(-,j) + B(-,j)$ and $(\lambda A)(-,j) = \lambda\, A(-,j)$).
 
-    \textit{Surjectivity and the matrix-times-column formula}:
-    Given $A \in \CFMat{\kappa_2}{\kappa_1}[K]$, define $T_A: K^{(\kappa_1)} \to K^{(\kappa_2)}$
-    by $T_A(e_j) \defeq A(-,j) \in K^{(\kappa_2)}$ (well-defined since $A$ is column-finite)
-    and extend linearly. Then
-    $\CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{T_A} = A$.
-    Moreover, for any $x = \sum_j x_j e_j \in K^{(\kappa_1)}$ (a finite sum):
+    \textit{$\Psi$ is a two-sided inverse}:
+    $(\Phi \circ \Psi)(A)_{ij} = (T_A(\CanonicalVector{j}))_i = A(-,j)(i) = A_{ij}$,
+    so $\Phi \circ \Psi = \Identity{\CFMat{\kappa_2}{\kappa_1}[K]}$.
+    $(\Psi \circ \Phi)(T)(\CanonicalVector{j}) = \Phi(T)(-,j) = T(\CanonicalVector{j})$,
+    so $\Psi(\Phi(T))$ and $T$ agree on the basis $\CanonicalBase{\kappa_1}$, hence
+    $\Psi \circ \Phi = \Identity{\Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}}}$.
+
+    \textit{Matrix-times-column formula}:
+    For any $x = \sum_j x_j \CanonicalVector{j} \in K^{(\kappa_1)}$ (a finite sum):
     \[
         T_A(x) = \sum_j x_j\, A(-,j), \qquad
         (T_A(x))_i = \sum_j A_{ij}\, x_j = (Ax)_i
@@ -257,19 +258,15 @@ $K^{(\kappa)}$.
     Under the isomorphism $\Phi$:
     \begin{enumerate}
         \item \textbf{Zero matrix = zero map}:
-              $\bigl(\CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{0}\bigr)_{ij}
-              = (0 \cdot e_j)_i = 0$.
+              $\Phi(0)_{ij} = (0 \cdot \CanonicalVector{j})_i = 0$.
         \item \textbf{Identity matrix = identity map}:
-              $\CoordMatrix[\mathcal{E}_\kappa][\mathcal{E}_\kappa]{
-              \Identity{K^{(\kappa)}}} = \IdentityMat{\kappa}$.
+              $\Phi(\Identity{K^{(\kappa)}}) = \IdentityMat{\kappa}$.
 
-              \textit{Proof}: $\bigl(\CoordMatrix[\mathcal{E}_\kappa][\mathcal{E}_\kappa]{
-              \Identity{K^{(\kappa)}}}\bigr)_{ij}
-              = (\Identity{K^{(\kappa)}}(e_j))_i = (e_j)_i = \delta_{ij}
+              \textit{Proof}: $\Phi(\Identity{K^{(\kappa)}})_{ij}
+              = (\Identity{K^{(\kappa)}}(\CanonicalVector{j}))_i = (\CanonicalVector{j})_i = \delta_{ij}
               = (\IdentityMat{\kappa})_{ij}$.
         \item \textbf{Scalar matrix}:
-              $\CoordMatrix[\mathcal{E}_\kappa][\mathcal{E}_\kappa]{
-              \lambda\, \Identity{K^{(\kappa)}}}
+              $\Phi(\lambda\, \Identity{K^{(\kappa)}})
               = \lambda\, \IdentityMat{\kappa}$.
     \end{enumerate}
 \end{corollary}
@@ -280,12 +277,70 @@ $K^{(\kappa)}$.
     $\kappa_1 = 1$ special case of the Representation Theorem:
     $\CFMat{\kappa_2}{1}[K] \cong \Hom[K]{K}{K^{(\kappa_2)}} \cong K^{(\kappa_2)}$.
     Column matrices with $\kappa_2$ rows \textbf{are} vectors in $K^{(\kappa_2)}$.
-    More generally, for any $V$ with ordered basis
-    $\mathcal{B}_V = (c_i)_{i \in I}$, the coordinate vector
-    $\CoordVec[\mathcal{B}_V]{v}$ \textbf{is} the matrix
-    $\CoordMatrix[(1)][\mathcal{B}_V]{\lambda_v}$ --- an $I \times \{1\}$ column matrix.
-    The coordinate representation of a vector and the matrix representation of a linear
-    map are literally the same object.
+\end{remark}
+
+\begin{remark}[{Grid vs.\ Map: Two Structures on the Same Set}]
+\label{rem:grid-vs-map}
+    The Representation Theorem establishes a canonical bijection
+    $\Phi: \Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}} \xrightarrow{\sim}
+    \CFMat{\kappa_2}{\kappa_1}[K]$. The domain and codomain are the \emph{same underlying
+    set} --- a column-finite matrix $A$ and the linear map $x \mapsto Ax$ carry identical
+    information. But they support different operations:
+    \begin{itemize}
+        \item \textbf{As an element of
+              $\Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}}$} (the ``map'' view): $A$ can be
+              composed with other maps, it has a kernel and an image, and it transforms under
+              change of basis by conjugation. These are the \emph{$K$-linear} operations ---
+              they see $A$ as a morphism in the category $K$-Vect.
+        \item \textbf{As an element of
+              $\CFMat{\kappa_2}{\kappa_1}[K]$} (the ``grid'' view): $A$ is a function
+              $\kappa_2 \times \kappa_1 \to K$, and we can perform entrywise operations ---
+              the Hadamard product $(\Hadamard{A}{B})_{ij} = A_{ij} B_{ij}$, entrywise
+              absolute value, transpose as the index swap $(i,j) \mapsto (j,i)$, extraction of
+              rows/columns/diagonals, sparsity analysis, reshaping. None of these are natural
+              operations on $\operatorname{Hom}$.
+    \end{itemize}
+    This is the same phenomenon as for vectors
+    (Remark~\ref{rem:three-layers-vector}): $K^{(I)}$ is simultaneously a vector space and a
+    set of $I$-tuples. The coordinate isomorphism bridges the geometric world to the
+    computational world; the Representation Theorem does the same for linear maps. We identify
+    the two views via $\Phi$ and use context to determine which structure is active.
+
+    \textbf{Convention}: From this point on, we use $K$-linear maps
+    $K^{(\kappa_1)} \to K^{(\kappa_2)}$ and column-finite matrices in
+    $\CFMat{\kappa_2}{\kappa_1}[K]$ interchangeably via $\Phi$, without further comment.
+    In particular, we write $A$ both for a matrix and for the linear map $\Phi^{-1}(A)$,
+    and $T$ both for a linear map and for the matrix $\Phi(T)$.
+
+    For a linear map $T: U \to V$ between \emph{abstract} vector spaces (with no canonical
+    basis), a dedicated notation $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$ for its
+    matrix with respect to ordered bases $\mathcal{B}_U$, $\mathcal{B}_V$ will be
+    introduced in Section~\ref{sec:matrix-of-map}.
+
+    This is the same pattern at three levels of abstraction:
+
+    \medskip
+    \begin{center}
+    \begin{tabular}{l|lll}
+    \hline
+    \textbf{Level} & \textbf{Geometric object} & \textbf{Canonical representation} & \textbf{Data structure} \\
+    \hline
+    Scalar & $a \in K$ & $a \in K$ & a field element \\[4pt]
+    Vector & $v \in V$ & $\Chart{\mathcal{B}}(v) \in K^{(I)}$ & tuple $(a_i)_{i \in I}$ \\[4pt]
+    Map & $T \in \Hom[K]{U}{V}$ &
+        $\Chart{\mathcal{B}_V} \circ T \circ \Frame{\mathcal{B}_U}$ &
+        grid $(A_{ij})$ \\
+        & & $\in \Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}}$ &
+        $(i,j) \in \kappa_2 \times \kappa_1$ \\
+    \hline
+    \end{tabular}
+    \end{center}
+    \medskip
+
+    At each level, the canonical representation is a vector space element (in a space with a
+    canonical basis), and the data structure is the same set viewed as a family of scalars.
+    The representation theorem ($\Phi$) is the bridge between the last two columns at the Map
+    level, just as coordinate extraction is the bridge at the Vector level.
 \end{remark}
 
 % ── The Action Map ─────────────────────────────────────────────────────────
@@ -309,7 +364,7 @@ $K^{(\kappa)}$.
     If $A$ is column-finite, then for any $x \in K^{(X)}$,
     $\mu_A(x) = \sum_{j \in \operatorname{supp}(x)} x_j\, A(-,j)$ is a finite sum of
     elements of $K^{(Y)}$, so $\mu_A(x) \in K^{(Y)}$. Conversely, if
-    $\mu_A(e_j) = A(-,j) \in K^{(Y)}$ for all $j$, then $A$ is column-finite.
+    $\mu_A(\CanonicalVector{j}) = A(-,j) \in K^{(Y)}$ for all $j$, then $A$ is column-finite.
 \end{proof}
 
 \begin{remark}[Scope]
@@ -320,6 +375,18 @@ $K^{(\kappa)}$.
     operative condition, but this is not our concern here: we work primarily with
     finite-dimensional spaces (for which $\CFMat{m}{n}[K] = \MatSpace{m}{n}[K]$ and all
     conditions are automatic).
+
+    One cannot extend the domain of matrix-vector multiplication from $K^{(X)}$ to $K^X$
+    without a topology: if $x \in K^X$ has infinite support, the sum $\sum_j A_{ij} x_j$ may
+    have infinitely many nonzero terms, and there is no purely algebraic way to assign it a
+    value. The passage from finite support (algebraic) to convergent sums (analytic) is exactly
+    where functional analysis begins. In that setting, coordinate representations use
+    topological bases (Schauder bases, orthonormal bases) rather than Hamel bases, the
+    coordinate map targets a space like $\ell^2(I)$ rather than $K^{(I)}$, and the resulting
+    ``matrices'' need not be column-finite --- they must instead satisfy boundedness conditions
+    dictated by the topology. A different notation for these topological coordinate
+    representations is warranted, since the target space and the governing finiteness conditions
+    are genuinely different.
 \end{remark}
 
 % ── 16c: Matrix Operations by Transport of Structure ───────────────────────
@@ -363,14 +430,14 @@ $K^{(\kappa)}$.
     Let $T_A = \Phi^{-1}(A)$ and $T_B = \Phi^{-1}(B)$. The $j$-th column of $AB$ is:
     \[
         \Phi(\Composition{T_A}{T_B})(-,j)
-        = (\Composition{T_A}{T_B})(e_j)
-        = T_A(T_B(e_j))
+        = (\Composition{T_A}{T_B})(\CanonicalVector{j})
+        = T_A(T_B(\CanonicalVector{j}))
         = T_A(B(-,j))
     \]
-    Since $B(-,j) = \sum_k B_{kj}\, e_k \in K^{(Z)}$ (finite sum by column-finiteness of
+    Since $B(-,j) = \sum_k B_{kj}\, \CanonicalVector{k} \in K^{(Z)}$ (finite sum by column-finiteness of
     $B$), linearity of $T_A$ gives:
     \[
-        T_A(B(-,j)) = \sum_k B_{kj}\, T_A(e_k) = \sum_k B_{kj}\, A(-,k)
+        T_A(B(-,j)) = \sum_k B_{kj}\, T_A(\CanonicalVector{k}) = \sum_k B_{kj}\, A(-,k)
     \]
     The $i$-th entry is $(AB)_{ij} = \sum_{k \in Z} A_{ik}\, B_{kj}$.
 \end{proof}
@@ -427,7 +494,15 @@ $K^{(\kappa)}$.
     \end{itemize}
 \end{corollary}
 
-\subsection{Other Matrix Operations}
+\subsection{Other Matrix Operations --- Grid-Side Operations}
+
+\begin{remark}[Grid-Side Operations]
+    The operations in this subsection are \emph{grid-side} operations: they act on entries of the
+    matrix viewed as a function $Y \times X \to K$. They do not, in general, correspond to natural
+    operations on $\Hom[K]{K^{(X)}}{K^{(Y)}}$. The Hadamard product, for instance, depends on the
+    choice of canonical basis and has no intrinsic meaning for abstract linear maps. This is the
+    grid/map distinction from Remark~\ref{rem:grid-vs-map} in action.
+\end{remark}
 
 \begin{definition}[Hadamard Product]
 \label{def:hadamard}
@@ -439,6 +514,9 @@ $K^{(\kappa)}$.
     If $A, B \in \CFMat{Y}{X}[K]$, then $\Hadamard{A}{B} \in \CFMat{Y}{X}[K]$
     (column-finiteness is preserved: $\{i : A_{ij} B_{ij} \neq 0\}
     \subseteq \{i : A_{ij} \neq 0\}$).
+
+    This is a grid operation: it multiplies corresponding \emph{entries}, not maps. It depends
+    on the indexing and has no natural interpretation in $\operatorname{Hom}$.
 \end{definition}
 
 \begin{definition}[Transpose]
@@ -456,6 +534,14 @@ $K^{(\kappa)}$.
     rows of $\Transpose{A}$, and each row of $\Transpose{A}$ may have infinite support even if
     each column of $A$ does not. For finite matrices (both $X$ and $Y$ finite),
     $\Transpose{A} \in \CFMat{X}{Y}[K]$ always.
+\end{remark}
+
+\begin{remark}[Transpose: Grid vs.\ Algebra]
+    As a grid operation, transposing simply swaps indices. Its relationship to the
+    \emph{algebraic} transpose (the dual map $T^*: V^* \to U^*$) is a theorem, not a
+    tautology --- the algebraic transpose is defined basis-independently via
+    $T^*(\varphi) = \Composition{\varphi}{T}$, and the fact that its matrix is the
+    grid-transpose of the matrix of $T$ requires proof using dual bases.
 \end{remark}
 
 \begin{definition}[Hermitian Conjugate]

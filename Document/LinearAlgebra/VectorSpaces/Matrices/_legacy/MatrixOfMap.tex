@@ -12,7 +12,7 @@ linear map'' --- and that is the concept that deserves emphasis.
 
 \begin{remark}[{Why $K^{(I)}$?}]
     Abstract vector spaces have no canonical basis --- any basis requires an arbitrary choice.
-    The spaces $K^{(I)}$ are the exception: they carry the canonical basis $(e_i)_{i \in I}$,
+    The spaces $K^{(I)}$ are the exception: they carry the canonical basis $(\CanonicalVector{i})_{i \in I}$,
     intrinsically defined by the function-space structure. This is the key reason we factor $T$
     through coordinate spaces: once we pass to $K^{(\kappa_1)} \to K^{(\kappa_2)}$, the
     canonical bases are automatically available and the Representation Theorem
@@ -25,61 +25,68 @@ linear map'' --- and that is the concept that deserves emphasis.
 Let $U$ and $V$ be $K$-vector spaces with ordered bases $\mathcal{B}_U = (b_j)_{j \in J}$ and
 $\mathcal{B}_V = (c_i)_{i \in I}$, where $|J| = \kappa_1$ and $|I| = \kappa_2$.
 Let $T: U \to V$ be $K$-linear. Recall the coordinate isomorphisms
-$\phi_{\mathcal{B}_U}: U \xrightarrow{\sim} K^{(\kappa_1)}$ and
-$\phi_{\mathcal{B}_V}: V \xrightarrow{\sim} K^{(\kappa_2)}$ from Theorem~\ref{thm:coord-bijection}.
+$\Chart{\mathcal{B}_U}: U \xrightarrow{\sim} K^{(\kappa_1)}$ and
+$\Chart{\mathcal{B}_V}: V \xrightarrow{\sim} K^{(\kappa_2)}$ from Theorem~\ref{thm:coord-bijection}.
 
 \begin{definition}[Matrix of $T$ w.r.t.\ $\mathcal{B}_U$, $\mathcal{B}_V$]
 \label{def:matrix-of-map}
     The \textbf{matrix of $T$ with respect to $\mathcal{B}_U$ and $\mathcal{B}_V$} is the
-    unique element
-    $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T} \in \CFMat{\kappa_2}{\kappa_1}[K]$
-    making the following square commute:
+    $K$-linear map
+    \[
+        \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+        \defeq
+        \Composition{\Chart{\mathcal{B}_V}}{\Composition{T}{\Frame{\mathcal{B}_U}}}
+        \;\in\; \Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}}
+    \]
+    i.e.\ the composite
+    $K^{(\kappa_1)} \xrightarrow{\Frame{\mathcal{B}_U}} U \xrightarrow{T} V
+    \xrightarrow{\Chart{\mathcal{B}_V}} K^{(\kappa_2)}$.
+    Since we identify $\Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}}$ with
+    $\CFMat{\kappa_2}{\kappa_1}[K]$ via the Representation Theorem
+    (Theorem~\ref{thm:rep-thm}), $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$ is
+    simultaneously a linear map between canonical spaces and a column-finite matrix.
+    The commutative square is:
     \[
     \begin{tikzcd}
-        U \arrow[r, "T"] \arrow[d, "\phi_{\mathcal{B}_U}"'] &
-        V \arrow[d, "\phi_{\mathcal{B}_V}"] \\
+        U \arrow[r, "T"] \arrow[d, "\Chart{\mathcal{B}_U}"'] &
+        V \arrow[d, "\Chart{\mathcal{B}_V}"] \\
         K^{(\kappa_1)} \arrow[r,
             "{\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}}"'] &
         K^{(\kappa_2)}
     \end{tikzcd}
     \]
-    Explicitly,
-    $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
-    = \Phi(\Composition{\phi_{\mathcal{B}_V}}{\Composition{T}{\phi_{\mathcal{B}_U}^{-1}}})$,
-    i.e.\ the matrix (under $\Phi$ from Theorem~\ref{thm:rep-thm}) of the composite
-    $K^{(\kappa_1)} \xrightarrow{\phi_{\mathcal{B}_U}^{-1}} U \xrightarrow{T} V
-    \xrightarrow{\phi_{\mathcal{B}_V}} K^{(\kappa_2)}$ with respect to the canonical bases.
 \end{definition}
 
 \begin{remark}
     \leavevmode
     \begin{itemize}
-        \item The matrix is automatically column-finite: the linear map
-              $\Composition{\phi_{\mathcal{B}_V}}{\Composition{T}{\phi_{\mathcal{B}_U}^{-1}}}$
-              maps into $K^{(\kappa_2)}$, so the Representation Theorem applies.
+        \item Column-finiteness is automatic:
+              $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$ maps into $K^{(\kappa_2)}$
+              (since $\Chart{\mathcal{B}_V}$ does), so the Representation Theorem places it
+              in $\CFMat{\kappa_2}{\kappa_1}[K]$.
         \item This definition requires \textbf{ordered} bases (to have a specific coordinate
               isomorphism); unordered bases give only an isomorphism up to reordering.
         \item \textbf{Notation}: Always write
               $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$ with basis indices, even when the
               bases are canonical:
-              $\CoordMatrix[\mathcal{E}_{\kappa_1}][\mathcal{E}_{\kappa_2}]{T}$.
+              $\CoordMatrix[\CanonicalBase{\kappa_1}][\CanonicalBase{\kappa_2}]{T}$.
     \end{itemize}
 \end{remark}
 
 \begin{theorem}[Evaluation Formula]
 \label{thm:column-formula}
     The $j$-th column of $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$ (i.e., the value
-    of the associated linear map on $e_j \in K^{(\kappa_1)}$) equals the coordinate vector
-    $\phi_{\mathcal{B}_V}(T(b_j))$. Explicitly, if
+    of the associated linear map on $\CanonicalVector{j} \in K^{(\kappa_1)}$) equals the coordinate vector
+    $\Chart{\mathcal{B}_V}(T(b_j))$. Explicitly, if
     $T(b_j) = \sum_{i \in I} a_{ij}\, c_i$, then the $(i,j)$-entry of the matrix is $a_{ij}$.
 \end{theorem}
 
 \begin{proof}
-    The composite evaluated at $e_j$ gives
-    $\phi_{\mathcal{B}_V}(T(\phi_{\mathcal{B}_U}^{-1}(e_j)))
-    = \phi_{\mathcal{B}_V}(T(b_j))$.
+    The composite evaluated at $\CanonicalVector{j}$ gives
+    $\Chart{\mathcal{B}_V}(T(\Frame{\mathcal{B}_U}(\CanonicalVector{j})))
+    = \Chart{\mathcal{B}_V}(T(b_j))$.
     The $i$-th component is
-    $(\phi_{\mathcal{B}_V}(T(b_j)))_i = a_{ij}$.
+    $(\Chart{\mathcal{B}_V}(T(b_j)))_i = a_{ij}$.
 \end{proof}
 
 \begin{remark}[Practical Consequence]
@@ -113,12 +120,12 @@ $\phi_{\mathcal{B}_V}: V \xrightarrow{\sim} K^{(\kappa_2)}$ from Theorem~\ref{th
 \begin{proof}
     This is the matrix-times-column formula of Theorem~\ref{thm:rep-thm} applied to the
     linear map
-    $\Composition{\phi_{\mathcal{B}_V}}{\Composition{T}{\phi_{\mathcal{B}_U}^{-1}}}$:
+    $\Composition{\Chart{\mathcal{B}_V}}{\Composition{T}{\Frame{\mathcal{B}_U}}}$:
     \[
-        \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T} \cdot \phi_{\mathcal{B}_U}(v)
-        = (\Composition{\phi_{\mathcal{B}_V}}{\Composition{T}{\phi_{\mathcal{B}_U}^{-1}}})
-          (\phi_{\mathcal{B}_U}(v))
-        = \phi_{\mathcal{B}_V}(T(v))
+        \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T} \cdot \Chart{\mathcal{B}_U}(v)
+        = (\Composition{\Chart{\mathcal{B}_V}}{\Composition{T}{\Frame{\mathcal{B}_U}}})
+          (\Chart{\mathcal{B}_U}(v))
+        = \Chart{\mathcal{B}_V}(T(v))
         = \CoordVec[\mathcal{B}_V]{T(v)} \qedhere
     \]
 \end{proof}
@@ -140,25 +147,32 @@ $\phi_{\mathcal{B}_V}: V \xrightarrow{\sim} K^{(\kappa_2)}$ from Theorem~\ref{th
     $\mathcal{B}_U$, $\mathcal{B}_V$, $\mathcal{B}_W$:
     \[
         \CoordMatrix[\mathcal{B}_U][\mathcal{B}_W]{\Composition{S}{T}}
-        = \CoordMatrix[\mathcal{B}_V][\mathcal{B}_W]{S}
-          \cdot \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+        = \Composition{\CoordMatrix[\mathcal{B}_V][\mathcal{B}_W]{S}}
+          {\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}}
     \]
+    That is, composition of abstract maps becomes composition (equivalently, matrix
+    multiplication) of their coordinate representations.
 \end{corollary}
 
 \begin{proof}
-    By the coordinate formula, for any $v \in U$:
+    By definition, inserting
+    $\Identity{V} = \Composition{\Frame{\mathcal{B}_V}}{\Chart{\mathcal{B}_V}}$:
     \begin{align*}
         \CoordMatrix[\mathcal{B}_U][\mathcal{B}_W]{\Composition{S}{T}}
-        \cdot \CoordVec[\mathcal{B}_U]{v}
-        &= \CoordVec[\mathcal{B}_W]{S(T(v))} \\
-        &= \CoordMatrix[\mathcal{B}_V][\mathcal{B}_W]{S}
-           \cdot \CoordVec[\mathcal{B}_V]{T(v)} \\
-        &= \CoordMatrix[\mathcal{B}_V][\mathcal{B}_W]{S}
-           \cdot \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
-           \cdot \CoordVec[\mathcal{B}_U]{v}
+        &= \Composition{\Chart{\mathcal{B}_W}}
+           {\Composition{(\Composition{S}{T})}{\Frame{\mathcal{B}_U}}} \\
+        &= \Composition{\Chart{\mathcal{B}_W}}
+           {\Composition{S}
+           {\Composition{\Frame{\mathcal{B}_V}}
+           {\Composition{\Chart{\mathcal{B}_V}}}
+           {\Composition{T}{\Frame{\mathcal{B}_U}}}}} \\
+        &= \Composition{(\Composition{\Chart{\mathcal{B}_W}}
+           {\Composition{S}{\Frame{\mathcal{B}_V}}})}
+           {(\Composition{\Chart{\mathcal{B}_V}}
+           {\Composition{T}{\Frame{\mathcal{B}_U}}})} \\
+        &= \Composition{\CoordMatrix[\mathcal{B}_V][\mathcal{B}_W]{S}}
+           {\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}} \qedhere
     \end{align*}
-    Since this holds for all $v$ and $\phi_{\mathcal{B}_U}$ is surjective, the matrices
-    are equal.
 \end{proof}
 
 \subsection{Vectors as Maps}
@@ -195,16 +209,16 @@ $\phi_{\mathcal{B}_V}: V \xrightarrow{\sim} K^{(\kappa_2)}$ from Theorem~\ref{th
               $\lambda_v \in \Hom[K]{K}{V}$ via Theorem~\ref{thm:hom-k-v-iso}),
               the chain is
               \[
-                  V \xrightarrow{\;\phi_{\mathcal{B}}\;} K^{(I)}
+                  V \xrightarrow{\;\Chart{\mathcal{B}}\;} K^{(I)}
                   \;\cong\; \CFMat{I}{\{*\}}[K]
               \]
-              The coordinate vector $\CoordVec[\mathcal{B}]{v} = \phi_{\mathcal{B}}(v)$
+              The coordinate vector $\CoordVec[\mathcal{B}]{v} = \Chart{\mathcal{B}}(v)$
               is a column matrix with row-index set $I$ and a singleton column-index set.
         \item For a map $T \in \Hom[K]{U}{V}$, the chain is
               \[
                   \Hom[K]{U}{V}
-                  \xrightarrow{\;\phi_{\mathcal{B}_V} \circ (-) \circ
-                  \phi_{\mathcal{B}_U}^{-1}\;}
+                  \xrightarrow{\;\Chart{\mathcal{B}_V} \circ (-) \circ
+                  \Frame{\mathcal{B}_U}\;}
                   \Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}}
                   \;\cong\; \CFMat{\kappa_2}{\kappa_1}[K]
               \]
@@ -245,14 +259,14 @@ $\phi_{\mathcal{B}_V}: V \xrightarrow{\sim} K^{(\kappa_2)}$ from Theorem~\ref{th
     \[
     \begin{tikzcd}[column sep=huge]
         \Hom[K]{U}{V}
-        \arrow[r, "\sim", "{\phi_{\mathcal{B}_V} \circ (-) \circ \phi_{\mathcal{B}_U}^{-1}}"']
+        \arrow[r, "\sim", "{\Chart{\mathcal{B}_V} \circ (-) \circ \Frame{\mathcal{B}_U}}"']
         & \Hom[K]{K^{(|\mathcal{B}_U|)}}{K^{(|\mathcal{B}_V|)}}
         \arrow[r, "\sim", "\Phi"']
         & \CFMat{|\mathcal{B}_V|}{|\mathcal{B}_U|}[K]
     \end{tikzcd}
     \]
     The first map sends $T$ to
-    $\Composition{\phi_{\mathcal{B}_V}}{\Composition{T}{\phi_{\mathcal{B}_U}^{-1}}}$
+    $\Composition{\Chart{\mathcal{B}_V}}{\Composition{T}{\Frame{\mathcal{B}_U}}}$
     and is a $K$-linear isomorphism (conjugation by fixed isomorphisms). The second is $\Phi$
     from Theorem~\ref{thm:rep-thm}. Their composition is the desired isomorphism.
 \end{proof}
@@ -262,15 +276,62 @@ $\phi_{\mathcal{B}_V}: V \xrightarrow{\sim} K^{(\kappa_2)}$ from Theorem~\ref{th
     change-of-basis matrices).
 \end{remark}
 
+\begin{remark}[{Coordinate Vectors as Matrix Representations --- Deferred from
+    Remark~\ref{rem:vec-as-hom}}]
+\label{rem:coord-vec-as-matrix}
+    The Representation Theorem (Theorem~\ref{thm:rep-thm}) showed that
+    $\CFMat{\kappa_2}{1}[K] \cong K^{(\kappa_2)}$: column matrices \emph{are} vectors. Now
+    that we have the general notation $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$, we
+    can state the full picture: for any $V$ with ordered basis
+    $\mathcal{B}_V = (c_i)_{i \in I}$, the coordinate vector
+    $\CoordVec[\mathcal{B}_V]{v}$ \textbf{is} the matrix
+    $\CoordMatrix[(1)][\mathcal{B}_V]{\lambda_v}$ --- an $I \times \{1\}$ column matrix,
+    where $\lambda_v: K \to V$ sends $1 \mapsto v$. The coordinate representation of a
+    vector and the matrix representation of a linear map are literally the same object.
+\end{remark}
+
+\begin{remark}[Three Layers of a Linear Map]\label{rem:three-layers-map}
+    The matrix of a linear map exhibits the same three-layer structure as the coordinate
+    vector of a vector (Remark~\ref{rem:three-layers-vector}):
+    \begin{enumerate}
+        \item \textbf{The geometric object}: $T: U \to V$, a $K$-linear map between abstract
+              vector spaces. Basis-free.
+        \item \textbf{The coordinate representation}:
+              $\Composition{\Chart{\mathcal{B}_V}}{\Composition{T}{\Frame{\mathcal{B}_U}}}
+              \in \Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}}$, a $K$-linear map between canonical
+              spaces. This is an algebraic object: it can be composed, it has a kernel and
+              image, and the structural theorems (composition = multiplication, change of basis)
+              are proved at this level.
+        \item \textbf{The data structure}:
+              $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
+              \in \CFMat{\kappa_2}{\kappa_1}[K]$, the grid of scalars extracted via the
+              Representation Theorem ($\Phi$). This is the object we compute with: we write it
+              on a page, store it in a computer, perform Gaussian elimination on it, compute
+              its determinant.
+    \end{enumerate}
+    Layers (1) and (2) are related by the coordinate isomorphisms ($\Chart{\mathcal{B}}$).
+    Layers (2) and (3) are the same set with different structure, related by the Representation
+    Theorem ($\Phi$). We proved the structural theorems --- composition, change of basis, rank
+    invariance --- at layer (2), where they are tautologies about function composition. The
+    entry formulas are then \emph{consequences} extracted at layer (3).
+
+    For vectors, we noted that layers (2) and (3) are the same set ($K^{(I)}$) viewed as a
+    vector space or as a set of tuples. For linear maps, the situation is identical:
+    $\Hom[K]{K^{(\kappa_1)}}{K^{(\kappa_2)}}$ and $\CFMat{\kappa_2}{\kappa_1}[K]$ are the
+    same set viewed as a $K$-vector space (with composition) or as a set of grids (with
+    entrywise operations). Having established the identification, we pass freely between the
+    two views.
+\end{remark}
+
 \begin{example}[Matrix of a Linear Map --- Standard Bases]
 \label{ex:matrix-of-map}
     Let $T: \bb{R}^3 \to \bb{R}^2$ be defined by $T(x,y,z) = (x + 2y, 3z)$. With the
-    standard ordered bases $\mathcal{B}_U = (e_0, e_1, e_2)$ on $\bb{R}^3$ and
-    $\mathcal{B}_V = (e_0, e_1)$ on $\bb{R}^2$:
+    standard ordered bases $\mathcal{B}_U = (\CanonicalVector{0}, \CanonicalVector{1}, \CanonicalVector{2})$ on $\bb{R}^3$ and
+    $\mathcal{B}_V = (\CanonicalVector{0}, \CanonicalVector{1})$ on $\bb{R}^2$:
     \begin{align*}
-        T(e_0) &= (1, 0) = 1 \cdot e_0 + 0 \cdot e_1 \\
-        T(e_1) &= (2, 0) = 2 \cdot e_0 + 0 \cdot e_1 \\
-        T(e_2) &= (0, 3) = 0 \cdot e_0 + 3 \cdot e_1
+        T(\CanonicalVector{0}) &= (1, 0) = 1 \cdot \CanonicalVector{0} + 0 \cdot \CanonicalVector{1} \\
+        T(\CanonicalVector{1}) &= (2, 0) = 2 \cdot \CanonicalVector{0} + 0 \cdot \CanonicalVector{1} \\
+        T(\CanonicalVector{2}) &= (0, 3) = 0 \cdot \CanonicalVector{0} + 3 \cdot \CanonicalVector{1}
     \end{align*}
     Placing these as columns:
     \[
@@ -334,7 +395,7 @@ $\phi_{\mathcal{B}_V}: V \xrightarrow{\sim} K^{(\kappa_2)}$ from Theorem~\ref{th
 \begin{example}[{$\CoordMatrix[\mathcal{B}_U][\mathcal{B}_W]{\Composition{S}{T}} = \CoordMatrix[\mathcal{B}_V][\mathcal{B}_W]{S} \cdot \CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}$} --- I]
     Let $T: \bb{R}^2 \to \bb{R}^2$ be $T(x,y) = (x + y, x - y)$ and
     $S: \bb{R}^2 \to \bb{R}^2$ be $S(x,y) = (2x, y)$, all with the standard basis
-    $\mathcal{B} = (e_0, e_1)$.
+    $\mathcal{B} = (\CanonicalVector{0}, \CanonicalVector{1})$.
     \[
         \CoordMatrix[\mathcal{B}][\mathcal{B}]{T}
         = \begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix}, \qquad

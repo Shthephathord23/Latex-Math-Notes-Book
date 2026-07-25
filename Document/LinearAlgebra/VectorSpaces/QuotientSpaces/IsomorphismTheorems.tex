@@ -16,7 +16,7 @@
               the quotient by the kernel as the intermediate space. This is the most frequently
               used of the four theorems.
         \item The \textbf{Second Isomorphism Theorem}
-              ($\QuotientSpace{(U+W)}{W} \cong \QuotientSpace{U}{(U \cap W)}$)
+              ($\QuotientSpace{(U+W)}{W} \cong \QuotientSpace{U}{(U \Intersect W)}$)
               compares two ways of ``modding out'' by $W$: starting from $U + W$ or starting
               from $U$. As a corollary, it yields the Grassmann dimension formula.
         \item The \textbf{Third Isomorphism Theorem}
@@ -198,7 +198,7 @@ U \arrow[r, "T"] \arrow[d, "\pi"'] & V \\
 \begin{tikzcd}
 & U + W \arrow[d, "\pi_W"] \\
 U \arrow[ru, hook] \arrow[r, "\iota"] & \QuotientSpace{(U+W)}{W} \\
-U \Intersect W \arrow[u, hook] \arrow[r, "\pi_{U \cap W}"'] & \QuotientSpace{U}{(U \Intersect W)} \arrow[u, "\cong"']
+U \Intersect W \arrow[u, hook] \arrow[r, "\pi_{U \Intersect W}"'] & \QuotientSpace{U}{(U \Intersect W)} \arrow[u, "\cong"']
 \end{tikzcd}
 \end{center}
 
@@ -309,8 +309,9 @@ U \Intersect W \arrow[u, hook] \arrow[r, "\pi_{U \cap W}"'] & \QuotientSpace{U}{
         \fill (6.5,0,-2.3) circle (1.5pt) node[right] {\small $\EquivClass{0}$};
         \node[right] at (7.3,0,-0.6) {$\QuotientSpace{U}{(U \Intersect W)} \cong \bb{R}$};
 
-        % Isomorphism
-        \draw[<->, double, thick] (9.5,0,-0.2) -- (9.5,0,0.2) node[midway, right] {$\cong$};
+        % Isomorphism between the two quotients (vertical, between top and bottom)
+        \draw[<->, double, thick] (8.5,0,1.7) -- (8.5,0,-0.3)
+            node[midway, right] {$\cong$};
     \end{tikzpicture}
     \end{center}
 
@@ -345,28 +346,28 @@ U \Intersect W \arrow[u, hook] \arrow[r, "\pi_{U \cap W}"'] & \QuotientSpace{U}{
     \[
         \Dim[K]{U + W} + \Dim[K]{U \Intersect W} = \Dim[K]{U} + \Dim[K]{W}
     \]
-    In finite dimensions: $\Dim[K]{U + W} = \Dim[K]{U} + \Dim[K]{W} - \Dim[K]{U \Intersect W}$.
+    In finite dimensions, this rearranges to
+    $\Dim[K]{U + W} = \Dim[K]{U} + \Dim[K]{W} - \Dim[K]{U \Intersect W}$.
 \end{corollary}
 
 \begin{proof}
-    By the Second Isomorphism Theorem: $\QuotientSpace{(U + W)}{W} \cong \QuotientSpace{U}{(U \Intersect W)}$.
-    
-    Thus $\Dim[K]{\QuotientSpace{(U + W)}{W}} = \Dim[K]{\QuotientSpace{U}{(U \Intersect W)}}$.
-    
+    By the Second Isomorphism Theorem,
+    $\QuotientSpace{(U + W)}{W} \cong \QuotientSpace{U}{(U \Intersect W)}$, so the two
+    quotients have a common dimension
+    \[
+        \delta \defeq \Dim[K]{\QuotientSpace{(U + W)}{W}}
+        = \Dim[K]{\QuotientSpace{U}{(U \Intersect W)}}
+    \]
     By the Quotient Dimension Formula (applied twice):
     \begin{align*}
-        \Dim[K]{W} + \Dim[K]{\QuotientSpace{(U + W)}{W}} &= \Dim[K]{U + W} \\
-        \Dim[K]{U \Intersect W} + \Dim[K]{\QuotientSpace{U}{(U \Intersect W)}} &= \Dim[K]{U}
+        \Dim[K]{U + W} &= \Dim[K]{W} + \delta \\
+        \Dim[K]{U} &= \Dim[K]{U \Intersect W} + \delta
     \end{align*}
-    
-    Since the quotient dimensions are equal:
-    \begin{align*}
-        \Dim[K]{U + W} - \Dim[K]{W} &= \Dim[K]{U} - \Dim[K]{U \Intersect W}
-    \end{align*}
-    
-    Rearranging to additive form:
+    Substituting both into the desired left-hand side:
     \[
-        \Dim[K]{U + W} + \Dim[K]{U \Intersect W} = \Dim[K]{U} + \Dim[K]{W}
+        \Dim[K]{U + W} + \Dim[K]{U \Intersect W}
+        = \Dim[K]{W} + \delta + \Dim[K]{U \Intersect W}
+        = \Dim[K]{W} + \Dim[K]{U} \qedhere
     \]
 \end{proof}
 
@@ -450,8 +451,8 @@ V \arrow[r, "\pi_U"] \arrow[d, "\pi_W"'] & \QuotientSpace{V}{U} \arrow[d, "\bar{
 \end{proof}
 
 \begin{example}[Third Isomorphism Theorem in $\bb{R}^3$]\label{ex:third-iso}
-    Let $V = \bb{R}^3$, $U = \Span[\bb{R}]{\Set{e_0}}$ (the $x$-axis),
-    and $W = \Span[\bb{R}]{\Set{e_0, e_1}}$ (the $xy$-plane), so $U \subseteq W \subseteq V$.
+    Let $V = \bb{R}^3$, $U = \Span[\bb{R}]{\Set{\CanonicalVector{0}}}$ (the $x$-axis),
+    and $W = \Span[\bb{R}]{\Set{\CanonicalVector{0}, \CanonicalVector{1}}}$ (the $xy$-plane), so $U \subseteq W \subseteq V$.
 
     \textbf{Stage 1} --- collapse the $x$-axis:
     $\QuotientSpace{V}{U} = \QuotientSpace{\bb{R}^3}{\text{$x$-axis}}$ is 2-dimensional, parameterized
@@ -532,9 +533,11 @@ V \arrow[r, "\pi_U"] \arrow[d, "\pi_W"'] & \QuotientSpace{V}{U} \arrow[d, "\bar{
         \node[right] at (13.3,2.8) {$\cong \bb{R}$};
         \node[right] at (13.2,-1) {$\QuotientSpace{V}{W} \cong \bb{R}_{(z)}$};
 
-        % === Direct path (bottom) ===
-        \draw[->, very thick, densely dashed] (0,-3.8) -- (12.7,-3.8) -- (13,-3.1);
-        \node[above, font=\small] at (6.5,-3.8) {$/W$ (collapse $xy$-plane directly)};
+        % === Direct path (bottom): smooth curved arc from R^3 to R_(z) ===
+        \draw[->, very thick, densely dashed]
+            (0,-2.8) to[out=-30, in=-150] (13,-2.8);
+        \node[below, font=\small] at (6.5,-3.5)
+            {$/W$ (collapse $xy$-plane directly)};
     \end{tikzpicture}
     \end{center}
 \end{example}
@@ -603,6 +606,11 @@ V \arrow[r, "\pi_U"] \arrow[d, "\pi_W"'] & \QuotientSpace{V}{U} \arrow[d, "\bar{
 \end{theorem}
 
 \begin{proof}
+    We prove (a) well-definedness of both maps, (b) that they are mutual inverses,
+    and (c) that both are lattice homomorphisms.
+
+    \textbf{(a) Well-definedness.}
+
     \textbf{$\Phi$ is well-defined:}
     If $U \Subspace[K] V$ with $W \subseteq U$, then $\QuotientSpace{U}{W} = \Set{\Coset{u}{W} \mid u \in U}$
     is a subspace of $\QuotientSpace{V}{W}$.
@@ -614,10 +622,13 @@ V \arrow[r, "\pi_U"] \arrow[d, "\pi_W"'] & \QuotientSpace{V}{U} \arrow[d, "\bar{
     For any subspace $X \Subspace[K] \QuotientSpace{V}{W}$, the preimage
     $\InverseImage{\pi}{X}$ is a subspace of $V$ (Proposition~\ref{prop:image-preimage-subspace}).
 
-    Since $\Coset{0}{W} \in X$ (because $X$ is a subspace), we have $W = \InverseImage{\pi}{\Set{\Coset{0}{W}}} \subseteq \InverseImage{\pi}{X}$.
+    Since $\Coset{0}{W} \in X$ (because $X$ is a subspace), we have
+    $W = \InverseImage{\pi}{\Set{\Coset{0}{W}}} \subseteq \InverseImage{\pi}{X}$.
     Thus $W \subseteq \InverseImage{\pi}{X}$.
 
-    \textbf{$\Psi \circ \Phi = \Identity{}$:}
+    \textbf{(b) $\Phi$ and $\Psi$ are mutual inverses.}
+
+    \textbf{$\Psi \circ \Phi = \Identity{\Set{U \in \SubspaceLattice{V} \mid W \subseteq U}}$:}
     For $U \Subspace[K] V$ with $W \subseteq U$:
     \begin{align*}
         \Psi(\Phi(U)) &= \Psi(\QuotientSpace{U}{W}) \\
@@ -629,7 +640,7 @@ V \arrow[r, "\pi_U"] \arrow[d, "\pi_W"'] & \QuotientSpace{V}{U} \arrow[d, "\bar{
     \end{align*}
     The last equality holds because $W \subseteq U$ implies $U + W = U$.
 
-    \textbf{$\Phi \circ \Psi = \Identity{}$:}
+    \textbf{$\Phi \circ \Psi = \Identity{\SubspaceLattice{\QuotientSpace{V}{W}}}$:}
     For $X \Subspace[K] \QuotientSpace{V}{W}$:
     \begin{align*}
         \Phi(\Psi(X)) &= \Phi(\InverseImage{\pi}{X}) \\
@@ -638,38 +649,79 @@ V \arrow[r, "\pi_U"] \arrow[d, "\pi_W"'] & \QuotientSpace{V}{U} \arrow[d, "\bar{
                       &= X
     \end{align*}
 
-    \textbf{Properties (1)--(4):}
+    \textbf{(c) Both $\Phi$ and $\Psi$ are lattice homomorphisms.}
 
-    (1) If $U_1 \subseteq U_2$, then every coset $\Coset{u}{W}$ with $u \in U_1$ also has $u \in U_2$,
-    so $\Phi(U_1) \subseteq \Phi(U_2)$. Conversely, if $\Phi(U_1) \subseteq \Phi(U_2)$, apply $\Psi$
-    (which is order-preserving as a preimage) to get $U_1 = \Psi(\Phi(U_1)) \subseteq \Psi(\Phi(U_2)) = U_2$.
+    We prove that each map preserves inclusion, join (sum), and meet (intersection).
 
-    (2) For the join, we verify both inclusions:
+    \textbf{$\Phi$ preserves inclusion:}
+    If $U_1 \subseteq U_2$, then every coset $\Coset{u}{W}$ with $u \in U_1$ also has
+    $u \in U_2$, so $\Phi(U_1) \subseteq \Phi(U_2)$. Conversely, if
+    $\Phi(U_1) \subseteq \Phi(U_2)$, apply $\Psi$ (which is order-preserving as a preimage)
+    to get $U_1 = \Psi(\Phi(U_1)) \subseteq \Psi(\Phi(U_2)) = U_2$.
+
+    \textbf{$\Phi$ preserves joins:}
     \begin{align*}
-        \Coset{v}{W} \in \Phi(U_1 + U_2) &\Leftrightarrow v \in U_1 + U_2 \\
+        \Coset{v}{W} \in \Phi(U_1 + U_2)
+            &\Leftrightarrow v \in U_1 + U_2 \\
             &\Leftrightarrow v = u_1 + u_2 \text{ for some } u_1 \in U_1,\; u_2 \in U_2 \\
-            &\Leftrightarrow \Coset{v}{W} = \Coset{u_1}{W} + \Coset{u_2}{W} \in \Phi(U_1) + \Phi(U_2)
+            &\Leftrightarrow \Coset{v}{W} = \Coset{u_1}{W} + \Coset{u_2}{W}
+                \in \Phi(U_1) + \Phi(U_2)
     \end{align*}
 
-    (3) For the meet:
-    \begin{align*}
-        \Coset{v}{W} \in \Phi(U_1 \Intersect U_2) &\Leftrightarrow v \in U_1 \Intersect U_2 \\
-            &\Rightarrow \Coset{v}{W} \in \Phi(U_1) \Intersect \Phi(U_2)
-    \end{align*}
-    Conversely, if $\Coset{v}{W} \in \Phi(U_1) \Intersect \Phi(U_2)$, then $v \in \Psi(\Phi(U_1)) \Intersect \Psi(\Phi(U_2)) = U_1 \Intersect U_2$.
+    \textbf{$\Phi$ preserves meets:}
+    ($\subseteq$): If $v \in U_1 \Intersect U_2$, then $\Coset{v}{W} \in \Phi(U_1)$ and
+    $\Coset{v}{W} \in \Phi(U_2)$, so $\Coset{v}{W} \in \Phi(U_1) \Intersect \Phi(U_2)$.
 
-    (4) follows from $\Phi(U) = \QuotientSpace{U}{W}$ by definition.
+    ($\supseteq$): If $\Coset{v}{W} \in \Phi(U_1) \Intersect \Phi(U_2)$, then
+    $v \in \Psi(\Phi(U_1)) \Intersect \Psi(\Phi(U_2)) = U_1 \Intersect U_2$, so
+    $\Coset{v}{W} \in \Phi(U_1 \Intersect U_2)$.
+
+    \textbf{$\Psi$ preserves inclusion:}
+    If $X_1 \subseteq X_2$, then
+    $\Psi(X_1) = \InverseImage{\pi}{X_1} \subseteq \InverseImage{\pi}{X_2} = \Psi(X_2)$,
+    since preimages preserve inclusion. Conversely, if $\Psi(X_1) \subseteq \Psi(X_2)$,
+    apply $\Phi$ to get $X_1 = \Phi(\Psi(X_1)) \subseteq \Phi(\Psi(X_2)) = X_2$.
+
+    \textbf{$\Psi$ preserves joins:}
+    We show $\Psi(X_1 + X_2) = \Psi(X_1) + \Psi(X_2)$.
+
+    ($\supseteq$): If $v_1 \in \Psi(X_1)$ and $v_2 \in \Psi(X_2)$, then
+    $\Coset{v_1}{W} \in X_1$ and $\Coset{v_2}{W} \in X_2$. So
+    $\pi(v_1 + v_2) = \Coset{v_1}{W} + \Coset{v_2}{W} \in X_1 + X_2$,
+    hence $v_1 + v_2 \in \Psi(X_1 + X_2)$.
+
+    ($\subseteq$): If $v \in \Psi(X_1 + X_2)$, then $\Coset{v}{W} \in X_1 + X_2$,
+    so $\Coset{v}{W} = \bar{x}_1 + \bar{x}_2$ for some $\bar{x}_1 \in X_1$,
+    $\bar{x}_2 \in X_2$. Since $\pi$ is surjective, pick $v_1, v_2 \in V$ with
+    $\pi(v_1) = \bar{x}_1$ and $\pi(v_2) = \bar{x}_2$. Then $v_1 \in \Psi(X_1)$,
+    $v_2 \in \Psi(X_2)$, and $\pi(v - v_1 - v_2) = \Coset{0}{W}$, so
+    $w \defeq v - v_1 - v_2 \in W \subseteq \Psi(X_1)$. Therefore
+    $v = (v_1 + w) + v_2 \in \Psi(X_1) + \Psi(X_2)$.
+
+    \textbf{$\Psi$ preserves meets:}
+    We show $\Psi(X_1 \Intersect X_2) = \Psi(X_1) \Intersect \Psi(X_2)$.
+
+    ($\subseteq$): If $v \in \Psi(X_1 \Intersect X_2)$, then
+    $\Coset{v}{W} \in X_1 \Intersect X_2$, so $\Coset{v}{W} \in X_1$ and
+    $\Coset{v}{W} \in X_2$. Thus $v \in \Psi(X_1) \Intersect \Psi(X_2)$.
+
+    ($\supseteq$): If $v \in \Psi(X_1) \Intersect \Psi(X_2)$, then
+    $\Coset{v}{W} \in X_1$ and $\Coset{v}{W} \in X_2$, so
+    $\Coset{v}{W} \in X_1 \Intersect X_2$, hence $v \in \Psi(X_1 \Intersect X_2)$.
+
+    \textbf{Dimension:}
+    Follows from $\Phi(U) = \QuotientSpace{U}{W}$ by definition.
 \end{proof}
 
 \begin{example}[Fourth Isomorphism Theorem in $\bb{R}^3$]\label{ex:fourth-iso}
-    Let $V = \bb{R}^3$ and $W = \Span[\bb{R}]{\Set{e_0}}$ (the $x$-axis).
+    Let $V = \bb{R}^3$ and $W = \Span[\bb{R}]{\Set{\CanonicalVector{0}}}$ (the $x$-axis).
     Then $\QuotientSpace{V}{W} \cong \bb{R}^2$ (parameterized by $(y,z)$).
 
     The subspaces of $V$ containing $W$ are:
     \begin{itemize}
         \item $W$ itself (the $x$-axis)
         \item Every plane through the origin containing the $x$-axis
-              (e.g., the $xy$-plane, the $xz$-plane, $\Span[\bb{R}]{\Set{e_0, e_1 + e_2}}$, \ldots)
+              (e.g., the $xy$-plane, the $xz$-plane, $\Span[\bb{R}]{\Set{\CanonicalVector{0}, \CanonicalVector{1} + \CanonicalVector{2}}}$, \ldots)
         \item $\bb{R}^3$
     \end{itemize}
 

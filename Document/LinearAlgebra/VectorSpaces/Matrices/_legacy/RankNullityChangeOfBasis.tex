@@ -21,22 +21,22 @@
 \begin{proof}
     The commutative square gives
     $\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}
-    = \Composition{\phi_{\mathcal{B}_V}}{\Composition{T}{\phi_{\mathcal{B}_U}^{-1}}}$.
-    Since $\phi_{\mathcal{B}_U}$ and $\phi_{\mathcal{B}_V}$ are isomorphisms, pre- and
+    = \Composition{\Chart{\mathcal{B}_V}}{\Composition{T}{\Frame{\mathcal{B}_U}}}$.
+    Since $\Chart{\mathcal{B}_U}$ and $\Chart{\mathcal{B}_V}$ are isomorphisms, pre- and
     post-composing by them does not change rank or nullity: by
     Theorem~\ref{thm:bijectivity}, isomorphisms preserve the dimension of every subspace.
     Explicitly:
     \begin{itemize}
         \item $\Rng{\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}}
-              = \phi_{\mathcal{B}_V}(\Rng{T})$, so
+              = \Chart{\mathcal{B}_V}(\Rng{T})$, so
               $\Rank{\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}}
-              = \Dim{\phi_{\mathcal{B}_V}(\Rng{T})}
+              = \Dim{\Chart{\mathcal{B}_V}(\Rng{T})}
               = \Dim{\Rng{T}}
               = \Rank{T}$.
         \item $\Ker{\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}}
-              = \phi_{\mathcal{B}_U}(\Ker{T})$, so
+              = \Chart{\mathcal{B}_U}(\Ker{T})$, so
               $\Nullity{\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}}
-              = \Dim{\phi_{\mathcal{B}_U}(\Ker{T})}
+              = \Dim{\Chart{\mathcal{B}_U}(\Ker{T})}
               = \Dim{\Ker{T}}
               = \Nullity{T}$. \qedhere
     \end{itemize}
@@ -81,8 +81,8 @@
     grid when a second pair of bases is introduced:
     \[
     \begin{tikzcd}[column sep=5em, row sep=3em]
-        U \arrow[r, "T"] \arrow[d, "\phi_{\mathcal{B}_U}"']
-        & V \arrow[d, "\phi_{\mathcal{B}_V}"] \\
+        U \arrow[r, "T"] \arrow[d, "\Chart{\mathcal{B}_U}"']
+        & V \arrow[d, "\Chart{\mathcal{B}_V}"] \\
         K^{(\kappa_1)} \arrow[r, "{\CoordMatrix[\mathcal{B}_U][\mathcal{B}_V]{T}}"']
                         \arrow[d, "{\CoordMatrix[\mathcal{B}_U][\mathcal{C}_U]{\Identity{U}}}"']
         & K^{(\kappa_2)} \arrow[d, "{\CoordMatrix[\mathcal{C}_V][\mathcal{B}_V]{\Identity{V}}}"] \\
@@ -106,24 +106,24 @@
 \begin{example}[Change of Bases Formula --- Endomorphism]
 \label{ex:cob-endomorphism}
     Let $T: \bb{R}^2 \to \bb{R}^2$, $T(x,y) = (2x + y,\, x)$, with standard basis
-    $\mathcal{B} = (e_0, e_1)$ and $\mathcal{C} = (e_0 + e_1,\, e_1)$.
+    $\mathcal{B} = (\CanonicalVector{0}, \CanonicalVector{1})$ and $\mathcal{C} = (\CanonicalVector{0} + \CanonicalVector{1},\, \CanonicalVector{1})$.
 
     \textit{Step 1 --- $\CoordMatrix[\mathcal{B}][\mathcal{B}]{T}$}: Apply $T$ to $\mathcal{B}$:
-    $T(e_0) = (2,1)$ and $T(e_1) = (1,0)$, so
+    $T(\CanonicalVector{0}) = (2,1)$ and $T(\CanonicalVector{1}) = (1,0)$, so
     \[
         \CoordMatrix[\mathcal{B}][\mathcal{B}]{T}
         = \begin{pmatrix} 2 & 1 \\ 1 & 0 \end{pmatrix}
     \]
 
     \textit{Step 2 --- $\CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{}}$}: Express
-    $\mathcal{B}$ in $\mathcal{C}$: $e_0 = (e_0+e_1) - e_1$, $e_1 = e_1$, so
+    $\mathcal{B}$ in $\mathcal{C}$: $\CanonicalVector{0} = (\CanonicalVector{0}+\CanonicalVector{1}) - \CanonicalVector{1}$, $\CanonicalVector{1} = \CanonicalVector{1}$, so
     \[
         \CoordMatrix[\mathcal{B}][\mathcal{C}]{\Identity{}}
         = \begin{pmatrix} 1 & 0 \\ -1 & 1 \end{pmatrix}
     \]
 
     \textit{Step 3 --- $\CoordMatrix[\mathcal{C}][\mathcal{B}]{\Identity{}}$}: Express
-    $\mathcal{C}$ in $\mathcal{B}$: $e_0+e_1 = e_0+e_1$, $e_1 = e_1$, so
+    $\mathcal{C}$ in $\mathcal{B}$: $\CanonicalVector{0}+\CanonicalVector{1} = \CanonicalVector{0}+\CanonicalVector{1}$, $\CanonicalVector{1} = \CanonicalVector{1}$, so
     \[
         \CoordMatrix[\mathcal{C}][\mathcal{B}]{\Identity{}}
         = \begin{pmatrix} 1 & 0 \\ 1 & 1 \end{pmatrix}
@@ -141,11 +141,11 @@
         = \begin{pmatrix} 3 & 1 \\ 0 & -1 \end{pmatrix}
     \]
 
-    \textit{Direct verification}: $T(e_0+e_1) = (3,1) = 3(e_0+e_1) + (-2)e_1$... let
+    \textit{Direct verification}: $T(\CanonicalVector{0}+\CanonicalVector{1}) = (3,1) = 3(\CanonicalVector{0}+\CanonicalVector{1}) + (-2)\CanonicalVector{1}$... let
     us instead verify via the coordinate formula.
-    $\CoordVec[\mathcal{C}]{e_0+e_1} = \begin{psmallmatrix}1\\0\end{psmallmatrix}$,
-    $\CoordVec[\mathcal{C}]{T(e_0+e_1)} = \CoordVec[\mathcal{C}]{(3,1)}$.
-    Now $(3,1) = 3(e_0+e_1) - 2 e_1$, so
+    $\CoordVec[\mathcal{C}]{\CanonicalVector{0}+\CanonicalVector{1}} = \begin{psmallmatrix}1\\0\end{psmallmatrix}$,
+    $\CoordVec[\mathcal{C}]{T(\CanonicalVector{0}+\CanonicalVector{1})} = \CoordVec[\mathcal{C}]{(3,1)}$.
+    Now $(3,1) = 3(\CanonicalVector{0}+\CanonicalVector{1}) - 2 \CanonicalVector{1}$, so
     $\CoordVec[\mathcal{C}]{(3,1)} = \begin{psmallmatrix}3\\-2\end{psmallmatrix}$
     --- but the first column of $\CoordMatrix[\mathcal{C}][\mathcal{C}]{T}$ is
     $\begin{psmallmatrix}3\\0\end{psmallmatrix}$. Let us recheck step 4:
@@ -159,9 +159,9 @@
         = \begin{pmatrix} 3 & 1 \\ -2 & -1 \end{pmatrix}
     \]
     So $\CoordMatrix[\mathcal{C}][\mathcal{C}]{T} = \begin{pmatrix} 3 & 1 \\ -2 & -1 \end{pmatrix}$.
-    Direct check: first column is $\CoordVec[\mathcal{C}]{T(e_0+e_1)}
+    Direct check: first column is $\CoordVec[\mathcal{C}]{T(\CanonicalVector{0}+\CanonicalVector{1})}
     = \begin{psmallmatrix}3\\-2\end{psmallmatrix}$ $\checkmark$; second column is
-    $\CoordVec[\mathcal{C}]{T(e_1)} = \CoordVec[\mathcal{C}]{(1,0)}
+    $\CoordVec[\mathcal{C}]{T(\CanonicalVector{1})} = \CoordVec[\mathcal{C}]{(1,0)}
     = \begin{psmallmatrix}1\\-1\end{psmallmatrix}$ $\checkmark$.
 \end{example}
 

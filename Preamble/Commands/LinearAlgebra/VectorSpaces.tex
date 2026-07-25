@@ -11,6 +11,23 @@
     }
 }
 
+% Coordinate chart (coordinate isomorphism) of an ordered basis: V -> K^{(X)}.
+% Basis carried as a SUPERSCRIPT, matching \CoordVec[\mathcal B]{v} = [v]^{\mathcal B},
+% so that \Chart{\mathcal B}(v) = [v]^{\mathcal B}.
+% Usage: \Chart{\mathcal B}, \Chart{\mathcal B_U}
+\NewDocumentCommand{\Chart}{m}
+{
+    \phi^{#1}
+}
+
+% Frame (parametrisation) of an ordered basis: K^{(X)} -> V, the inverse of the chart.
+% Basis carried as a SUBSCRIPT.
+% Usage: \Frame{\mathcal B}, \Frame{\mathcal B_U}
+\NewDocumentCommand{\Frame}{m}
+{
+    \psi_{#1}
+}
+
 \NewDocumentCommand{\Span}{o m}
 {
     \IfValueTF{#1}
@@ -174,4 +191,14 @@
 \NewDocumentCommand{\MinkowskiProd}{m m}
 {
     #1 \cdot #2
+}
+
+\NewDocumentCommand{\CanonicalVector}{m}
+{
+    e_{#1}
+}
+
+\NewDocumentCommand{\CanonicalBase}{m}
+{
+    \mathcal{E}_{#1}
 }

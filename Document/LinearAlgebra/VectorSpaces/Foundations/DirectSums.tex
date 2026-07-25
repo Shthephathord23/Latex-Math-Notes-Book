@@ -115,7 +115,7 @@
     Consider the following direct sum decompositions:
     \begin{enumerate}
         \item $\bb{R}^3 = $ (xy-plane) $\DirectSum$ (z-axis)
-        \item $K^n = \DirectSum{i \in n}{K \cdot e_i}$ (direct sum of coordinate axes)
+        \item $K^n = \DirectSum{i \in n}{K \cdot \CanonicalVector{i}}$ (direct sum of coordinate axes)
         \item $K[X] = K[X]_{\text{even}} \DirectSum K[X]_{\text{odd}}$ (even/odd degree polynomials)
     \end{enumerate}
 
@@ -153,7 +153,8 @@
 \end{example}
 
 \begin{proposition}[Linear Independence and Direct Sum]\label{prop:lin-indep-direct-sum}
-    Let $F \subseteq V$ and let $(A_i)_{i \in I}$ be a partition of $F$. Then the following are equivalent:
+    Let $F \subseteq V$ and let $(A_i)_{i \in I}$ be a partition of $F$ into linearly
+    independent subsets. Then the following are equivalent:
     \begin{enumerate}
         \item $F$ is linearly independent
         \item $(\Span[K]{A_i})_{i \in I}$ is a direct sum family
@@ -177,31 +178,46 @@
     This contradicts $u_i \neq 0$, so $G = \emptyset$.
 
     \textbf{(2) $\Rightarrow$ (1)}:
-    Suppose $(\Span[K]{A_i})_{i \in I}$ is a direct sum family. Let $0 = \sum_{v \in G} a_v v$
-    with $a_v \neq 0$ and $G \subseteq F$ finite.
+    Suppose $(\Span[K]{A_i})_{i \in I}$ is a direct sum family. To prove $F$ is linearly
+    independent, consider any relation $0 = \sum_{v \in G} a_v v$ with $G \subseteq F$ finite
+    and scalars $a_v \in K$; we show that every $a_v = 0$.
 
-    For each $i \in I$, let $G_i = G \Intersect A_i$ and define $u_i = \sum_{v \in G_i} a_v v \in \Span[K]{A_i}$.
-    Then $0 = \sum_{i : G_i \neq \emptyset} u_i$.
+    Group the terms by the block of the partition to which each vector belongs: for each
+    $i \in I$ put $G_i = G \Intersect A_i$ and
+    \[
+        u_i = \sum_{v \in G_i} a_v v \in \Span[K]{A_i}.
+    \]
+    Since $(A_i)$ partitions $F$, the sets $G_i$ are pairwise disjoint with union $G$, so
+    \[
+        \sum_{i \in I} u_i = \sum_{v \in G} a_v v = 0
+    \]
+    (a finite sum, as only finitely many $G_i$ are nonempty). By the defining property of a
+    direct sum family (characterization (iv)), each $u_i = 0$.
 
-    By the direct sum property, each $u_i$ with $G_i \neq \emptyset$ must equal zero.
-    But if $G_i \neq \emptyset$, then $u_i = \sum_{v \in G_i} a_v v$ with $a_v \neq 0$,
-    and $u_i = 0$ means $\sum_{v \in G_i} a_v v = 0$.
-
-    Since $(A_i)$ is a partition, elements in different $A_i$ are disjoint from each other.
-    If any $G_i \neq \emptyset$, we get a nontrivial linear relation within $G_i$, but
-    $G_i \subseteq A_i \subseteq F$ and we're trying to prove $F$ is linearly independent.
-
-    The key insight: by the direct sum unique representation of $0$, we must have $G_i = \emptyset$
-    for all $i$ (else $u_i \neq 0$ would give a nontrivial sum). Thus $G = \emptyset$.
+    Now fix $i \in I$. Then $\sum_{v \in G_i} a_v v = u_i = 0$ is a finite linear combination
+    of the block $A_i$, which is linearly independent \emph{by hypothesis}; hence $a_v = 0$ for
+    every $v \in G_i$. As this holds for all $i$ and the $G_i$ cover $G$, we conclude $a_v = 0$
+    for every $v \in G$. Therefore $F$ is linearly independent.
 \end{proof}
 
 \begin{corollary}[Singleton Partition Case]\label{cor:lin-indep-singleton-partition}
-    Let $F \subseteq V$. Then $F$ is linearly independent if and only if
+    Let $F \subseteq V$ with $0 \notin F$. Then $F$ is linearly independent if and only if
     $(\Span[K]{\{v\}})_{v \in F}$ is a direct sum family with sum $\Span[K]{F}$.
 \end{corollary}
 
 \begin{proof}
-    Apply Proposition~\ref{prop:lin-indep-direct-sum} with the partition $(\{v\})_{v \in F}$.
+    Since $0 \notin F$, each singleton block $\{v\}$ (for $v \in F$) is linearly independent;
+    hence $(\{v\})_{v \in F}$ is a partition of $F$ into linearly independent subsets, and
+    Proposition~\ref{prop:lin-indep-direct-sum} applies to give the stated equivalence. The
+    hypothesis $0 \notin F$ cannot be dropped: a block $\Span[K]{\{0\}} = \{0\}$ satisfies the
+    direct-sum condition vacuously, so for $F \ni 0$ the family would be a direct sum family
+    even though $F$ is linearly dependent. Finally, the sum of the family is
+    \[
+        \SubspaceSum{v \in F}{\Span[K]{\{v\}}}
+        = \Span[K]{\BigUnion[v \in F] \{v\}}
+        = \Span[K]{F}
+    \]
+    (sum of spans equals the span of the union), independently of directness.
 \end{proof}
 
 \begin{proposition}[Direct Sum Characterization via Linear Independence]\label{prop:direct-sum-lin-indep}

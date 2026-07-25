@@ -16,22 +16,14 @@
 \subsection{Ordered Bases and Set-Theoretic Requirements}
 
 \begin{remark}[Total Order vs.\ Well-Order]
-    There is a subtle but important distinction between the ordering requirements for
-    coordinates versus for matrices:
-    \begin{itemize}
-        \item \textbf{For coordinates only}: A \emph{total order} on the basis $B$ suffices.
-              Given any total order, each $v \in V$ has a unique finite representation
-              $v = \sum_{i \in F} a_i b_i$, and we can write the coordinate function
-              $\phi_{\mathcal{B}}: V \to K^{(I)}$ unambiguously.
-
-        \item \textbf{For matrices}: A \emph{well-order} on $B$ is required. This indexes
-              the basis by ordinal numbers $(\alpha)_{\alpha < \kappa}$, guaranteeing a
-              definitive ``first'' column/row (a top-left corner) and discrete sequential
-              steps. Without well-ordering, the column-index arithmetic underlying matrix
-              multiplication has no canonical starting point for infinite bases.
-    \end{itemize}
-    For \textbf{finite-dimensional} spaces, every total order is a well-order, so the
-    distinction vanishes in practice.
+    A \emph{total order} on the basis already suffices for coordinates, and \emph{no} order at
+    all is needed to define matrices or matrix multiplication --- only column-finiteness (see
+    the chapter on Matrices). A \emph{well-order} is needed only for the transfinite
+    \emph{constructions} of this section (recovering an adapted basis from a complete flag) and
+    of later chapters (echelon and rank normal forms, Gram--Schmidt). For
+    \textbf{finite-dimensional} spaces every total order is a well-order, so the distinction
+    vanishes. See Remark~\ref{rem:order-buys} for the full accounting of what each layer of the
+    theory requires.
 \end{remark}
 
 % ─────────────────────────────────────────────────────────────────────────────
@@ -55,9 +47,9 @@
     In $V = \bb{R}^2$ (dimension $2$), examples of flags:
     \begin{itemize}
         \item $\{0\} \subsetneq \bb{R}^2$ \quad --- length $2$, a chain of two subspaces.
-        \item $\{0\} \subsetneq \Span[K]{e_0} \subsetneq \bb{R}^2$ \quad --- length $3$,
-              a chain of three subspaces where $\Span[K]{e_0}$ is a line.
-        \item $\Span[K]{e_1} \subsetneq \bb{R}^2$ \quad --- length $2$; a flag need not
+        \item $\{0\} \subsetneq \Span[K]{\CanonicalVector{0}} \subsetneq \bb{R}^2$ \quad --- length $3$,
+              a chain of three subspaces where $\Span[K]{\CanonicalVector{0}}$ is a line.
+        \item $\Span[K]{\CanonicalVector{1}} \subsetneq \bb{R}^2$ \quad --- length $2$; a flag need not
               start at $\{0\}$ or end at $V$.
     \end{itemize}
     There are infinitely many flags of length $3$ in $\bb{R}^2$: one for each line through
@@ -82,6 +74,16 @@
     A flag $\mathcal{F}$ in $V$ is \textbf{complete} if it is a \emph{maximal chain} in the
     poset of all subspaces of $V$: no subspace can be inserted into $\mathcal{F}$ at any
     position without violating strict inclusion.
+
+    In infinite dimensions a complete flag is, in addition, \textbf{continuous at limits}: being
+    a maximal chain, it is closed under the unions and intersections of its subchains. (Indeed
+    the union of any subchain is a subspace comparable to every member, so maximality returns it
+    to the chain; dually for intersections.) Consequently each \emph{limit} member --- one with
+    no immediate predecessor --- equals the union of its predecessors, and dually each member with
+    no immediate successor equals the intersection of its successors; a \emph{jump} member instead
+    exceeds its predecessor by a single dimension. (In finite dimensions there are no limit
+    members and this is automatic.) This is the order-theoretic content of a \emph{complete nest}
+    in operator theory.
 \end{definition}
 
 \begin{example}[Complete and Non-Complete Flags in $\bb{R}^3$]\label{ex:flag-complete-R3}
@@ -92,19 +94,19 @@
               Any line or plane can be inserted.
 
         \item \textbf{Non-complete, length $3$ (dimension gap)}:
-              $\{0\} \subsetneq \Span[K]{e_0} \subsetneq \bb{R}^3$
+              $\{0\} \subsetneq \Span[K]{\CanonicalVector{0}} \subsetneq \bb{R}^3$
               (dimensions $0, 1, 3$). Any plane $P$ with
-              $\Span[K]{e_0} \subsetneq P \subsetneq \bb{R}^3$
-              (e.g.\ $P = \Span[K]{e_0, e_1}$) can be inserted between the last two terms.
+              $\Span[K]{\CanonicalVector{0}} \subsetneq P \subsetneq \bb{R}^3$
+              (e.g.\ $P = \Span[K]{\CanonicalVector{0}, \CanonicalVector{1}}$) can be inserted between the last two terms.
               Not maximal.
 
         \item \textbf{Complete, length $4$}:
-              $\{0\} \subsetneq \Span[K]{e_0} \subsetneq \Span[K]{e_0, e_1} \subsetneq \bb{R}^3$
+              $\{0\} \subsetneq \Span[K]{\CanonicalVector{0}} \subsetneq \Span[K]{\CanonicalVector{0}, \CanonicalVector{1}} \subsetneq \bb{R}^3$
               (dimensions $0, 1, 2, 3$; each step $+1$; nothing can be inserted).
 
         \item \textbf{Another complete flag, length $4$}:
-              $\{0\} \subsetneq \Span[K]{e_0 + e_1} \subsetneq
-               \Span[K]{e_0 + e_1,\, e_2} \subsetneq \bb{R}^3$.
+              $\{0\} \subsetneq \Span[K]{\CanonicalVector{0} + \CanonicalVector{1}} \subsetneq
+               \Span[K]{\CanonicalVector{0} + \CanonicalVector{1},\, \CanonicalVector{2}} \subsetneq \bb{R}^3$.
     \end{itemize}
 \end{example}
 
@@ -134,75 +136,254 @@
 \begin{example}[Verifying Completeness in $\bb{R}^4$]\label{ex:flag-verify}
     Two flags from $\{0\}$ to $\bb{R}^4$:
     \begin{itemize}
-        \item $\mathcal{F}_1$: $\{0\} \subsetneq \Span[K]{e_0} \subsetneq \Span[K]{e_0,e_1}
-              \subsetneq \Span[K]{e_0,e_1,e_2} \subsetneq \bb{R}^4$.
+        \item $\mathcal{F}_1$: $\{0\} \subsetneq \Span[K]{\CanonicalVector{0}} \subsetneq \Span[K]{\CanonicalVector{0},\CanonicalVector{1}}
+              \subsetneq \Span[K]{\CanonicalVector{0},\CanonicalVector{1},\CanonicalVector{2}} \subsetneq \bb{R}^4$.
               Dimensions: $0,1,2,3,4$. Length $= 5 = 4+1$. Each step $+1$.
               \textbf{Complete.}
 
-        \item $\mathcal{F}_2$: $\{0\} \subsetneq \Span[K]{e_0} \subsetneq
-              \Span[K]{e_0,e_1,e_2} \subsetneq \bb{R}^4$.
+        \item $\mathcal{F}_2$: $\{0\} \subsetneq \Span[K]{\CanonicalVector{0}} \subsetneq
+              \Span[K]{\CanonicalVector{0},\CanonicalVector{1},\CanonicalVector{2}} \subsetneq \bb{R}^4$.
               Dimensions: $0,1,3,4$. Length $= 4$. Step $1\to 3$ jumps by $2$:
-              $\Span[K]{e_0, e_1}$ can be inserted. \textbf{Not complete.}
+              $\Span[K]{\CanonicalVector{0}, \CanonicalVector{1}}$ can be inserted. \textbf{Not complete.}
     \end{itemize}
 \end{example}
 
 % ─────────────────────────────────────────────────────────────────────────────
 \subsection{Flags from Ordered Bases}
 
-\begin{proposition}[Every Ordered Basis Induces a Complete Flag]\label{prop:basis-flag}
-    Let $\mathcal{B} = (b_i)_{i \in I}$ be an ordered basis of $V$ (with $I$ well-ordered).
-    For each $\alpha \in I$, define
+\begin{remark}[Why the Naive Successor Chain Fails]\label{rem:naive-flag-fails}
+    One is tempted to set $V_\alpha \defeq \Span[K]{\Set{b_i \mid i \leqslant \alpha}}$ for each
+    $\alpha \in I$ and string these into a chain through successors $\alpha^+$. This works in
+    finite dimensions but is \textbf{incomplete in infinite dimensions}: it presupposes that
+    every index has a successor and that $I$ has a minimum, and its maximality check only closes
+    the \emph{successor} gaps $V_\alpha \subsetneq V_{\alpha^+}$. At a \emph{limit} index
+    $\lambda$ the open segment $\Span[K]{\Set{b_i \mid i < \lambda}}$ lies strictly between all
+    earlier $V_\alpha$ and $V_\lambda$ and is insertable, so the chain is \emph{not maximal}.
+    This already fails for a basis of order type $\omega + 1$, and for every uncountable
+    dimension. The cure is to index the flag by \emph{initial segments} rather than by elements,
+    which is uniform over any total order.
+\end{remark}
+
+\begin{proposition}[Every Ordered Basis Induces a Complete Flag; Any Total Order]\label{prop:basis-flag}
+    Let $\mathcal{B} = (b_i)_{i \in I}$ be an ordered basis of $V$, with $I$ totally ordered. For
+    each \textbf{initial segment} $L \subseteq I$ --- a downward-closed subset, i.e.\ $i \in L$
+    and $j < i$ imply $j \in L$ --- set
     \[
-        V_\alpha \defeq \Span[K]{\Set{b_i \mid i \leqslant \alpha}}.
+        W_L \defeq \Span[K]{\Set{b_i \mid i \in L}}.
     \]
-    Set $V_0 \defeq \{0\}$. Then the chain
-    \[
-        V_0 \subsetneq V_{\alpha_0} \subsetneq \cdots \subsetneq V_\alpha \subsetneq V_{\alpha^+}
-        \subsetneq \cdots
-    \]
-    is a complete flag of $V$, where $\alpha_0$ is the minimum element of $I$ and $\alpha^+$ denotes
-    the successor of $\alpha$ in $I$.
+    Then $\Set{W_L \mid L \text{ an initial segment of } I}$ is a complete flag of $V$.
 \end{proposition}
 
 \begin{proof}
-    We verify each required property.
+    \textbf{Order-embedding.}
+    If $L \subsetneq L'$ are initial segments, pick $i \in L' \setminus L$; then $b_i \in W_{L'}$,
+    while $b_i \notin W_L$ by linear independence (every element of $W_L$ is a finite combination
+    of basis vectors indexed in $L$, and $i \notin L$). Hence $W_L \subsetneq W_{L'}$. The initial
+    segments of $I$, ordered by $\subseteq$, form a complete chain $\widehat{I}$ --- the cut
+    completion of $I$ --- and $L \mapsto W_L$ embeds it into $\SubspaceLattice{V}$ as a chain. The
+    least initial segment $L = \emptyset$ gives $W_\emptyset = \{0\}$, and the greatest $L = I$
+    gives $W_I = V$.
 
-    \textbf{Strict inclusions}: Since $(b_i)_{i \in I}$ is linearly independent,
-    $b_{\alpha^+} \notin \Span[K]{\Set{b_i \mid i \leqslant \alpha}} = V_\alpha$, so
-    $V_\alpha \subsetneq V_{\alpha^+}$.
+    \textbf{Continuity.}
+    Call $L$ a \emph{limit cut} if $L = \BigUnion[L'' \subsetneq L] L''$, the union of the
+    strictly smaller initial segments. For such $L$,
+    \[
+        W_L = \Span[K]{\Set{b_i \mid i \in L}} = \BigUnion[L'' \subsetneq L] W_{L''},
+    \]
+    because any vector of $W_L$ uses only finitely many basis indices: each lies in some strictly
+    smaller initial segment, and as those segments form a chain the finitely many of them all lie
+    in their largest, a single $L'' \subsetneq L$. Thus the chain is closed under the unions of its
+    subchains.
 
-    \textbf{The chain covers $V$}: Since $\mathcal{B}$ generates $V$, every $v \in V$ is a
-    finite linear combination $v = \sum_{j \in F} c_j b_j$ for some finite $F \subseteq I$.
-    Taking $\alpha = \max F$ (which exists since $F$ is finite and $I$ is well-ordered),
-    $v \in V_\alpha$. Hence $\bigcup_{\alpha \in I} V_\alpha = V$.
-
-    \textbf{Completeness (maximality)}: Suppose $W \Subspace[K] V$ satisfies
-    $V_\alpha \subsetneq W \Subspace[K] V_{\alpha^+}$ for some $\alpha$. Pick
-    $w \in W \setminus V_\alpha$. Write $w = \sum_{j \leqslant \alpha^+} c_j b_j$ using
-    linear independence; the coefficient of $b_{\alpha^+}$ must be nonzero (else
-    $w \in V_\alpha$, contradiction). Then $b_{\alpha^+} = c_{\alpha^+}^{-1}(w - \sum_{j \leqslant \alpha} c_j b_j) \in W$,
-    so $V_{\alpha^+} = V_\alpha + \Span[K]{b_{\alpha^+}} \Subspace[K] W$, giving $W = V_{\alpha^+}$.
-    No proper subspace fits strictly between $V_\alpha$ and $V_{\alpha^+}$.
+    \textbf{Maximality.}
+    Let $X \Subspace[K] V$ be comparable (under $\Subspace[K]$) to every $W_L$. Put
+    \[
+        L^{*} \defeq \BigUnion \Set{L \mid W_L \Subspace[K] X},
+    \]
+    a union of initial segments, hence itself an initial segment; by continuity
+    $W_{L^{*}} = \BigUnion \Set{W_L \mid W_L \Subspace[K] X} \Subspace[K] X$. For every initial
+    segment $L \supsetneq L^{*}$ we have $W_L \not\Subspace[K] X$ (otherwise $L$ would be one of
+    the segments unioned into $L^{*}$), so comparability forces $X \Subspace[K] W_L$; hence
+    $X \Subspace[K] \BigIntersect[L \supsetneq L^{*}] W_L$. Two cases:
+    \begin{itemize}
+        \item If $I \setminus L^{*}$ has a least element $i$, then $L^{*} \Union \Set{i}$ is the
+              smallest initial segment properly containing $L^{*}$, so
+              \[
+                  \BigIntersect[L \supsetneq L^{*}] W_L = W_{L^{*} \Union \Set{i}}
+                  = W_{L^{*}} \DirectSum \Span[K]{b_i},
+              \]
+              a one-dimensional extension of $W_{L^{*}}$. From
+              $W_{L^{*}} \Subspace[K] X \Subspace[K] W_{L^{*}} \DirectSum \Span[K]{b_i}$ we get
+              $X \in \Set{W_{L^{*}},\ W_{L^{*}} \DirectSum \Span[K]{b_i}}$ --- in either case some
+              $W_L$.
+        \item Otherwise $I \setminus L^{*}$ has no least element. Suppose
+              $v \in \BigIntersect[L \supsetneq L^{*}] W_L$ but $v \notin W_{L^{*}}$; then the
+              finite support of $v$ meets $I \setminus L^{*}$ in a nonempty set, with least
+              element $m$. As $I \setminus L^{*}$ has no least element, some
+              $m' \in I \setminus L^{*}$ satisfies $m' < m$, so $L \defeq \Set{x \in I \mid x < m}$
+              is an initial segment with $L^{*} \subsetneq L$ and $m \notin L$. Then
+              $v \in W_L = \Span[K]{\Set{b_x \mid x < m}}$ forces the coefficient of $b_m$ in $v$
+              to vanish, contradicting $m$ being in the support of $v$. Hence
+              $\BigIntersect[L \supsetneq L^{*}] W_L = W_{L^{*}}$ and $X = W_{L^{*}}$.
+    \end{itemize}
+    Either way $X$ is already a member of the chain, so nothing can be inserted: the flag is
+    maximal, hence complete.
 \end{proof}
+
+\begin{remark}[The Jumps Recover the Basis]\label{rem:jumps-recover}
+    The covering pairs of $\widehat{I}$ are exactly $\Set{j \mid j < i} \prec \Set{j \mid j \leqslant i}$,
+    one for each $i \in I$, and the corresponding jump
+    $W_{\Set{j < i}} \subsetneq W_{\Set{j \leqslant i}}$ has one-dimensional quotient spanned by
+    $b_i$. So the flag remembers $\mathcal{B}$: the basis vector $b_i$ sits in the $i$-th jump.
+\end{remark}
+
+\begin{remark}[Well-Ordered Specialization]\label{rem:wo-specialization}
+    When $I$ is well-ordered (order-isomorphic to an ordinal $\kappa$), the initial segments are
+    exactly the sets $\Set{i \mid i < \beta}$ for $\beta \leqslant \kappa$, and the cut-flag
+    becomes
+    \[
+        W_\beta = \Span[K]{\Set{b_i \mid i < \beta}}, \qquad W_0 = \{0\}, \quad W_\kappa = V,
+    \]
+    \[
+        W_{\beta+1} = W_\beta \DirectSum \Span[K]{b_\beta}, \qquad
+        W_\lambda = \BigUnion[\beta < \lambda] W_\beta \quad (\lambda \text{ a limit ordinal}).
+    \]
+    This is the corrected form of the naive statement (Remark~\ref{rem:naive-flag-fails}): use
+    \emph{strict} initial segments $\Set{i \mid i < \beta}$ and include the limit clause
+    $W_\lambda = \BigUnion[\beta < \lambda] W_\beta$ in the completeness proof.
+\end{remark}
 
 \begin{example}[Induced Flags]\label{ex:induced-flag}
     The following ordered bases yield the following complete flags:
     \begin{itemize}
-        \item Standard basis $(e_0, e_1, e_2)$ of $\bb{R}^3$:
-              $\{0\} \subsetneq \Span[K]{e_0} \subsetneq \Span[K]{e_0,e_1} \subsetneq \bb{R}^3$.
-        \item Rotated basis $(e_0+e_1,\, e_1,\, e_2)$ of $\bb{R}^3$:
-              $\{0\} \subsetneq \Span[K]{e_0+e_1} \subsetneq \Span[K]{e_0+e_1,\, e_1}
+        \item Standard basis $(\CanonicalVector{0}, \CanonicalVector{1}, \CanonicalVector{2})$ of $\bb{R}^3$:
+              $\{0\} \subsetneq \Span[K]{\CanonicalVector{0}} \subsetneq \Span[K]{\CanonicalVector{0},\CanonicalVector{1}} \subsetneq \bb{R}^3$.
+        \item Rotated basis $(\CanonicalVector{0}+\CanonicalVector{1},\, \CanonicalVector{1},\, \CanonicalVector{2})$ of $\bb{R}^3$:
+              $\{0\} \subsetneq \Span[K]{\CanonicalVector{0}+\CanonicalVector{1}} \subsetneq \Span[K]{\CanonicalVector{0}+\CanonicalVector{1},\, \CanonicalVector{1}}
                \subsetneq \bb{R}^3$.
-        \item Canonical basis $(e_n)_{n \in \bb{N}}$ of $K^{(\bb{N})}$:
-              $\{0\} \subsetneq \Span[K]{e_0} \subsetneq \Span[K]{e_0,e_1}
+        \item Canonical basis $(\CanonicalVector{n})_{n \in \bb{N}}$ of $K^{(\bb{N})}$:
+              $\{0\} \subsetneq \Span[K]{\CanonicalVector{0}} \subsetneq \Span[K]{\CanonicalVector{0},\CanonicalVector{1}}
                \subsetneq \cdots$ (an infinite complete flag).
     \end{itemize}
 \end{example}
 
-\begin{remark}[Converse]\label{rem:flag-from-basis}
-    The converse also holds in finite dimensions: every complete flag
-    $\{0\} = V_0 \subsetneq V_1 \subsetneq \cdots \subsetneq V_n = V$
-    admits an \emph{adapted ordered basis} $(b_0, \ldots, b_{n-1})$ with
-    $V_{i+1} = \Span[K]{b_0, \ldots, b_i}$, constructed by choosing $b_i \in V_{i+1} \setminus V_i$
-    at each step. Different choices give different adapted bases for the same flag.
+\begin{example}[Cut-Flags in Infinite Dimensions]\label{ex:cut-flag-infinite}
+    The cut construction specialises cleanly:
+    \begin{itemize}
+        \item \textbf{Standard basis of $K^n$}: the initial segments are
+              $\emptyset \subsetneq \Set{0} \subsetneq \Set{0,1} \subsetneq \cdots \subsetneq
+              \Set{0, \ldots, n-1}$, giving the standard complete flag of dimensions
+              $0, 1, \ldots, n$.
+        \item \textbf{Canonical basis of $K^{(\bb{N})}$}:
+              $\{0\} \subsetneq \Span[K]{\CanonicalVector{0}} \subsetneq
+              \Span[K]{\CanonicalVector{0}, \CanonicalVector{1}} \subsetneq \cdots$, with the whole
+              space reached as the union $\BigUnion[n \in \bb{N}] W_{\Set{0, \ldots, n-1}}$ at the
+              top. There is \emph{no top jump}: the top member is a limit, not a successor.
+        \item \textbf{A $\bb{Q}$-indexed basis} $(b_q)_{q \in \bb{Q}}$: the initial segments of
+              $\bb{Q}$ are its Dedekind cuts, so the flag is indexed by
+              $\widehat{\bb{Q}} \approx \bb{R}$ (with endpoints), a continuum, even though the
+              basis itself is countable. The jumps sit back at the rationals; the irrational cuts
+              are continuous --- gap-filling, with no jump and no basis vector.
+    \end{itemize}
+\end{example}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{From a Complete Flag Back to a Basis: Jumps}
+
+\begin{definition}[Jump]\label{def:jump}
+    In a complete flag, a \textbf{jump} is a covering pair $W^{-} \prec W$ (members with
+    $W^{-} \subsetneq W$ and nothing strictly between). Maximality forces
+    $\Dim[K]{\QuotientSpace{W}{W^{-}}} = 1$. A \textbf{jump-vector} is a choice of one vector in
+    $W \setminus W^{-}$ for each jump.
+\end{definition}
+
+\begin{proposition}[Jump-Vectors Are Linearly Independent]\label{prop:jump-independent}
+    The jump-vectors of any complete flag are linearly independent.
+\end{proposition}
+
+\begin{proof}
+    Suppose $\sum_{k \in F} c_k v_k = 0$ with $F$ finite, every $c_k \neq 0$, and the $v_k$
+    distinct jump-vectors at jumps $W_k^{-} \prec W_k$. The members $W_k$ are distinct (distinct
+    jumps have distinct top members); among the finitely many of them, let $W_m$ be the highest in
+    the chain, so each other $W_k$ is strictly below $W_m$. As the members form a chain, $W_k$ is
+    comparable to $W_m^{-}$, and being strictly below $W_m$ with $W_m^{-} \prec W_m$ a covering
+    pair forces $W_k \Subspace[K] W_m^{-}$; hence $v_k \in W_m^{-}$ for $k \neq m$. Then
+    \[
+        v_m = -\,c_m^{-1} \sum_{k \in F \setminus \Set{m}} c_k v_k \in W_m^{-},
+    \]
+    contradicting $v_m \in W_m \setminus W_m^{-}$.
+\end{proof}
+
+\begin{proposition}[When the Jumps Form a Basis]\label{prop:jump-recovery}
+    The jump-vectors of a complete flag span $V$ --- and hence, with
+    Proposition~\ref{prop:jump-independent}, form a basis \emph{adapted} to the flag --- if and
+    only if the flag is \textbf{jump-spanned}: every member is the span of the jumps below it. In
+    particular this holds in the following two cases:
+    \begin{enumerate}
+        \item \textbf{Well-ordered flags.} If the flag is well-ordered (no infinite strictly
+              descending chain of members), then ``peeling'' terminates: given $v \neq 0$, let
+              $W$ be the least member containing it; $W$ is a successor $W^{-} \prec W$ (a limit
+              member is the union of its predecessors, so a vector in it already lies in a smaller
+              member), so $v = c\, b + w$ with $b$ the jump-vector at $W$ and $w \in W^{-}$, and
+              one repeats on $w$. Well-foundedness forbids an infinite descent, so $v$ is
+              expressed in finitely many jump-vectors.
+        \item \textbf{Cut-flags.} The flags of Proposition~\ref{prop:basis-flag} are jump-spanned
+              by construction (each $W_L$ is spanned by the $b_i$ with $i \in L$, i.e.\ by the
+              jumps below it), and are exactly the complete flags arising from totally ordered
+              bases.
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    ($\Leftarrow$) First note the flag's greatest member is $V$: the union of all members is a
+    subspace (a union of a chain of subspaces) comparable to every member, so by maximality it
+    belongs to the chain as its top element, and that top must be $V$ (otherwise $V$ itself could
+    be appended). Jump-spannedness applied to this top member gives that $V$ is the span of all
+    jump-vectors, so they generate $V$; with Proposition~\ref{prop:jump-independent} they form a
+    basis, adapted to the flag since each jump-vector lies in its member.
+
+    ($\Rightarrow$) Suppose the jump-vectors span $V$, and let $W$ be a member. The jump-vectors
+    whose jump is $\Subspace[K] W$ clearly lie in $W$. Conversely, take $w \in W$ and write
+    $w = \sum_{k \in F} c_k v_k$ over jump-vectors ($F$ finite, every $c_k \neq 0$). Let $v_M$
+    have the highest jump $W_M^{-} \prec W_M$ among them. If $W_M \not\Subspace[K] W$, then
+    $W \subsetneq W_M$; as $W$ is comparable to $W_M^{-}$ (the members form a chain) and lies
+    strictly below $W_M$ with $W_M^{-} \prec W_M$ a covering pair, $W \Subspace[K] W_M^{-}$. Every
+    other $v_k$ also lies in $W_M^{-}$ (its jump is lower), so
+    $v_M = c_M^{-1}\bigl(w - \sum_{k \in F \setminus \Set{M}} c_k v_k\bigr) \in W_M^{-}$,
+    contradicting $v_M \in W_M \setminus W_M^{-}$. Hence $W_M \Subspace[K] W$, every jump in the
+    expansion is $\Subspace[K] W$, and $w$ is a combination of jumps below $W$. Thus $W$ is the
+    span of the jumps below it. The two displayed cases are verified inline above.
+\end{proof}
+
+\begin{remark}[The Jump-Spanned Hypothesis Is Genuine]\label{rem:not-jump-spanned}
+    Not every complete flag is jump-spanned, so the equivalence above is not vacuous. A maximal
+    chain in $\SubspaceLattice{V}$ need not be well-ordered: it can contain an order-\emph{dense}
+    interval --- a subinterval order-isomorphic to a densely ordered family of subspaces, with no
+    covering pairs at all. Across such an interval the dimension grows while there are \emph{no}
+    jumps, so the jump-vectors cannot reach those members and fail to span $V$; correspondingly
+    there is no least member containing a given vector, and ``peeling'' has nothing to start from.
+    Thus jump-spannedness --- automatic for cut-flags
+    (Proposition~\ref{prop:basis-flag}) and for well-ordered flags --- is a real restriction, and
+    recovering a basis from an arbitrary complete flag genuinely requires it.
 \end{remark}
+
+\begin{remark}[Round Trip; What Is Indexed by What]\label{rem:roundtrip}
+    The passage basis $\rightsquigarrow$ cut-flag $\rightsquigarrow$ jumps returns the original
+    basis together with its order $I$. Note that the basis is indexed by the \emph{jumps} of
+    $\widehat{I}$ --- which biject with $I$ --- and \emph{not} by all of $\widehat{I}$: the
+    gap-filling cuts are continuous (no jump, no vector). So the flag index $\widehat{I}$
+    (Dedekind-complete) and the basis index $I$ are genuinely different objects whenever $I$ has
+    gaps. Cardinality forces the gap: $\Dim[K]{V} = \Card{I} \leqslant \Card{\widehat{I}}$, e.g.\
+    $\Card{\bb{Q}} = \aleph_0$ versus $\Card{\widehat{\bb{Q}}} = \mathfrak{c}$ for the
+    $\bb{Q}$-indexed basis of Example~\ref{ex:cut-flag-infinite}.
+\end{remark}
+
+\begin{corollary}[Converse in Finite Dimensions]\label{rem:flag-from-basis}
+    In finite dimensions every complete flag
+    $\{0\} = V_0 \subsetneq V_1 \subsetneq \cdots \subsetneq V_n = V$
+    is a finite chain, hence well-ordered and jump-spanned, so by
+    Proposition~\ref{prop:jump-recovery} it admits an \emph{adapted ordered basis}
+    $(b_0, \ldots, b_{n-1})$ with $V_{i+1} = \Span[K]{\Set{b_0, \ldots, b_i}}$, obtained by
+    choosing $b_i \in V_{i+1} \setminus V_i$ at each step. Different choices give different
+    adapted bases for the same flag.
+\end{corollary}

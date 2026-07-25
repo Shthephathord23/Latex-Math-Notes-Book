@@ -1,8 +1,15 @@
-*.pdf
+
 *.aux
 *.log
 *.out
 *.toc
+*.gz
+*.fls
+*.fdb_latexmk
+*.xdv
 .vscode/
 .github/
-# .agent/
+.agent/
+.claude/
+prompts/
+*.md

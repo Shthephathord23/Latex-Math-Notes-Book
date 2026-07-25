@@ -1,0 +1,363 @@
+% Document/LinearAlgebra/VectorSpaces/SubspaceRepresentations/EquivalenceSimilarity.tex
+% SEPARATE CHAPTER (draft) -- split out of the old combined Part 5. Equivalence (A = Q B P^{-1}) and
+% similarity (A = Q^{-1} B Q) of maps/matrices; one-sided (domain/codomain) equivalence; matrices of one
+% map are equivalent (similar for endomorphisms); kernel/range one-sided invariance; rank a complete
+% equivalence invariant (forward ref); basis-free content = the class; det/trace/char.poly as forward
+% refs. Depends on the Matrices chapter's invertibility section. Gaussian elimination / normal forms join
+% this track later. DRAFT for review.
+
+\newpage
+\section{Equivalence and Similarity of Linear Maps}
+\label{sec:equivalence-similarity}
+
+\begin{intuition}
+    The matrix of a fixed linear map $T : U \to V$ is not unique: it depends on the ordered bases chosen
+    for source and target. So which matrices represent one and the same map? The change-of-bases formula
+    (Corollary~\ref{cor:change-of-bases}) already answers in form --- two matrices of $T$ differ by
+    invertible factors fore and aft --- and isolating that relation, abstracted from any particular $T$,
+    produces the notion of \textbf{equivalence} of linear maps (hence of matrices). Tightening it to a
+    \emph{single} change of basis on a self-map gives \textbf{similarity} of endomorphisms. The payoff is
+    conceptual: the genuinely basis-free content of a map is precisely its equivalence class --- for an
+    endomorphism, its similarity class --- so a quantity read off a matrix is an intrinsic invariant of
+    the underlying map exactly when it depends only on that class. This chapter develops the two relations
+    and their one-sided refinements; the \emph{classification} that completes the story --- normal forms,
+    and the Gaussian elimination that computes them --- follows in the chapters to come.
+\end{intuition}
+
+Equivalence and similarity are, at bottom, relations between \emph{linear maps}: they say that two maps
+agree after a change of coordinates --- on source and target independently for equivalence, by a single
+change for similarity. We define them at the level of maps, where they are most transparent. There is no
+separate notion for matrices: a matrix \emph{is} a linear map between coordinate spaces
+(Section~\ref{sec:matrices-as-maps}), and the invertible matrices are exactly the automorphisms
+$\GL{K^{(X)}}$ (Remark~\ref{rem:invertible-square}), so each definition below applies to matrices with
+nothing added --- equivalence of matrices simply \emph{is} equivalence of the maps they are. We record
+the resulting matrix form inline as each definition is given.
+
+\begin{definition}[Equivalence of linear maps]
+\label{def:map-equivalence}
+    Linear maps $S, T : U \to V$ are \textbf{equivalent}, written $S \Equivalent T$, if there are
+    isomorphisms $P \in \GL{U}$ and $Q \in \GL{V}$ with
+    \[
+        T = \Composition{Q}{\Composition{S}{P^{-1}}} ,
+    \]
+    that is, the square
+    \begin{center}
+    \begin{tikzcd}[column sep=large, row sep=large]
+        U \arrow[r, "S"] \arrow[d, "P"'] & V \arrow[d, "Q"] \\
+        U \arrow[r, "T"'] & V
+    \end{tikzcd}
+    \end{center}
+    commutes ($\Composition{Q}{S} = \Composition{T}{P}$). One changes coordinates by $P$ in the source
+    and, independently, by $Q$ in the target.
+
+    \emph{In coordinates.} Taking $U = K^{(X)}$ and $V = K^{(Y)}$ --- so that $S, T$ are matrices
+    $A, B \in \CFMat{Y}{X}[K]$ --- the very same definition reads: $A \Equivalent B$ iff there are
+    invertible matrices $P \in \CFMat{X}{X}[K]$ and $Q \in \CFMat{Y}{Y}[K]$ with $A = Q B P^{-1}$, where
+    $\circ$ is the matrix product. This \emph{is} the equivalence of matrices; it is not a fresh
+    definition but the one above with coordinate spaces in place of $U, V$.
+\end{definition}
+
+Before tying the two ends together by a single change (similarity, below), it pays to isolate each end
+on its own. Full equivalence reparametrises source and target at once; relaxing it to move only one at a
+time splits $\Equivalent$ into two \emph{one-sided} relations, of which it is the composite.
+
+\begin{definition}[Domain and codomain equivalence]
+\label{def:one-sided-equivalence}
+    Let $S, T : U \to V$ be linear maps. They are:
+    \begin{itemize}
+        \item \textbf{domain-equivalent} (or \textbf{column-equivalent}), written
+              $S \DomainEquivalent T$, if $T = \Composition{S}{P^{-1}}$ for some $P \in \GL{U}$ --- only
+              the source is reparametrised (the case $Q = \Identity{V}$ of
+              Definition~\ref{def:map-equivalence});
+        \item \textbf{codomain-equivalent} (or \textbf{row-equivalent}), written
+              $S \CodomainEquivalent T$, if $T = \Composition{Q}{S}$ for some $Q \in \GL{V}$ --- only
+              the target is reparametrised (the case $P = \Identity{U}$).
+    \end{itemize}
+    Each is again an equivalence relation, by Proposition~\ref{prop:equiv-is-equiv}.
+
+    \emph{In coordinates.} For matrices $A, B \in \CFMat{Y}{X}[K]$ the same two definitions read:
+    $A \DomainEquivalent B$ iff $A = B P^{-1}$ for an invertible $P \in \CFMat{X}{X}[K]$ --- right
+    multiplication, remixing the \emph{columns} (indexed by the source $X$) --- and
+    $A \CodomainEquivalent B$ iff $A = Q B$ for an invertible $Q \in \CFMat{Y}{Y}[K]$ --- left
+    multiplication, remixing the \emph{rows} (indexed by the target $Y$). Again these are the map
+    relations applied to coordinate spaces, not new notions.
+\end{definition}
+
+\begin{proposition}[Equivalence is a domain step followed by a codomain step]
+\label{prop:equivalence-factors}
+    For linear maps $S, T : U \to V$ the following are equivalent.
+    \begin{enumerate}
+        \item $S \Equivalent T$.
+        \item There is a map $R : U \to V$ with $S \DomainEquivalent R$ and $R \CodomainEquivalent T$
+              --- reparametrise the source, then the target.
+        \item There is a map $R' : U \to V$ with $S \CodomainEquivalent R'$ and $R' \DomainEquivalent T$
+              --- reparametrise the target, then the source.
+    \end{enumerate}
+    Hence, as composites of relations,
+    \[
+        \Equivalent \;=\; \CodomainEquivalent \circ \DomainEquivalent
+                    \;=\; \DomainEquivalent \circ \CodomainEquivalent :
+    \]
+    the two one-sided changes commute, and either order realises full equivalence. The same holds
+    verbatim for matrices, with $P, Q$ the invertible factors of $A = Q B P^{-1}$.
+\end{proposition}
+
+\begin{proof}
+    $S \Equivalent T$ means $T = \Composition{Q}{\Composition{S}{P^{-1}}}$ with $P \in \GL{U}$,
+    $Q \in \GL{V}$ (Definition~\ref{def:map-equivalence}). Associating the composite one way, set
+    $R \defeq \Composition{S}{P^{-1}}$: then $S \DomainEquivalent R$ via $P$, and
+    $T = \Composition{Q}{R}$ gives $R \CodomainEquivalent T$ via $Q$ --- this is~(2). Associating the
+    other way, set $R' \defeq \Composition{Q}{S}$: then $S \CodomainEquivalent R'$ via $Q$, and
+    $T = \Composition{R'}{P^{-1}}$ gives $R' \DomainEquivalent T$ via $P$ --- this is~(3). Conversely,
+    substituting the intermediate map back into either chain reconstitutes
+    $T = \Composition{Q}{\Composition{S}{P^{-1}}}$, so each of~(2),~(3) implies $S \Equivalent T$. The two
+    factorisations agree because composition is associative,
+    $\Composition{Q}{(\Composition{S}{P^{-1}})} = \Composition{(\Composition{Q}{S})}{P^{-1}}$, which is
+    exactly the commutativity of the two one-sided relations.
+\end{proof}
+
+\begin{remark}[Reading the decomposition off the four-level diagram]
+\label{rem:one-sided-diagram}
+    The two one-sided equivalences are the two independent \emph{columns} of the four-level
+    change-of-basis diagram (Remark~\ref{rem:active-passive-cob}): the source space $U$ with its frames
+    occupies the left column, the target $V$ the right. Passing between the coordinate rows
+    $\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}$ and $\CoordMatrix[\mathcal C_U][\mathcal C_V]{T}$ is
+    governed, on the right, by the source transition
+    $\CoordMatrix[\mathcal C_U][\mathcal B_U]{\Identity{U}}$ and, on the left, by the target transition
+    $\CoordMatrix[\mathcal B_V][\mathcal C_V]{\Identity{V}}$. Sliding down the \emph{source} column alone
+    --- holding $\mathcal B_V = \mathcal C_V$ --- turns $\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}$ into
+    \[
+        \CoordMatrix[\mathcal C_U][\mathcal B_V]{T}
+        = \Composition{\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}}
+                      {\CoordMatrix[\mathcal C_U][\mathcal B_U]{\Identity{U}}} ,
+    \]
+    a domain (column) equivalence; sliding down the \emph{target} column alone gives
+    $\CoordMatrix[\mathcal B_U][\mathcal C_V]{T}
+    = \Composition{\CoordMatrix[\mathcal B_V][\mathcal C_V]{\Identity{V}}}{\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}}$,
+    a codomain (row) equivalence; performing both --- in either order --- is the full change-of-bases
+    formula (Corollary~\ref{cor:change-of-bases}), hence the full equivalence
+    $\CoordMatrix[\mathcal B_U][\mathcal B_V]{T} \Equivalent \CoordMatrix[\mathcal C_U][\mathcal C_V]{T}$
+    (of the matrices, as the maps they are). The commutativity of
+    Proposition~\ref{prop:equivalence-factors} is precisely the independence of the two columns: the
+    source frame may be changed before or after the target frame, with the same result.
+\end{remark}
+
+\begin{definition}[Similarity of endomorphisms]
+\label{def:map-similarity}
+    Endomorphisms $S, T \in \End[K]{V}$ are \textbf{similar} (or \textbf{conjugate}), written
+    $S \Similar T$, if there is an automorphism $Q \in \GL{V}$ with
+    \[
+        T = \Composition{Q^{-1}}{\Composition{S}{Q}} .
+    \]
+    Similarity is the special case of equivalence in which source and target are changed by the
+    \emph{same} isomorphism ($U = V$, $P = Q$); it is precisely the conjugation action of $\GL{V}$ on
+    $\End[K]{V}$.
+
+    \emph{In coordinates.} For square matrices $A, B \in \CFMat{X}{X}[K]$ the same definition reads:
+    $A \Similar B$ iff $A = Q^{-1} B Q$ for an invertible $Q \in \CFMat{X}{X}[K]$ --- once more the map
+    relation in coordinate spaces, the conjugation orbit of $A$ under $\GL{K^{(X)}}$.
+\end{definition}
+
+\begin{proposition}[All four relations are equivalence relations]
+\label{prop:equiv-is-equiv}
+    Equivalence, column (domain) equivalence, and row (codomain) equivalence are equivalence relations on
+    $\Hom[K]{U}{V}$, and similarity is an equivalence relation on $\End[K]{V}$.
+\end{proposition}
+
+\begin{proof}
+    We prove it for $\Equivalent$ and obtain the other three as special cases. Reflexivity:
+    $T = \Composition{\Identity{V}}{\Composition{T}{\Identity{U}^{-1}}}$, witnessed by the identity pair
+    $(P, Q) = (\Identity{U}, \Identity{V})$. Symmetry: from $T = \Composition{Q}{\Composition{S}{P^{-1}}}$
+    we get
+    $S = \Composition{Q^{-1}}{\Composition{T}{P}} = \Composition{Q^{-1}}{\Composition{T}{(P^{-1})^{-1}}}$,
+    witnessed by the inverse pair $(P^{-1}, Q^{-1})$. Transitivity: if
+    $T = \Composition{Q}{\Composition{S}{P^{-1}}}$ and $S = \Composition{Q'}{\Composition{R}{(P')^{-1}}}$,
+    then $T = \Composition{(\Composition{Q}{Q'})}{\Composition{R}{(\Composition{P}{P'})^{-1}}}$, witnessed
+    by the composite pair $(\Composition{P}{P'}, \Composition{Q}{Q'})$, using
+    $(\Composition{P}{P'})^{-1} = \Composition{(P')^{-1}}{P^{-1}}$ and that composites of isomorphisms are
+    isomorphisms.
+
+    The only facts used are that the automorphism pairs $(P, Q)$ contain the identity pair and are closed
+    under componentwise inverse and composition. Each of the other three relations is $\Equivalent$ with
+    $(P, Q)$ confined to a subset of $\GL{U} \times \GL{V}$ that is again closed under these three
+    operations:
+    \begin{itemize}
+        \item $\CodomainEquivalent$ (row): $P = \Identity{U}$, i.e.\ the subset $\Set{\Identity{U}} \times \GL{V}$;
+        \item $\DomainEquivalent$ (column): $Q = \Identity{V}$, i.e.\ the subset $\GL{U} \times \Set{\Identity{V}}$;
+        \item $\Similar$ (when $U = V$): $P = Q$, i.e.\ the diagonal $\Set{(R, R) \mid R \in \GL{V}}$, giving
+              the conjugation $T = \Composition{Q}{\Composition{S}{Q^{-1}}}$.
+    \end{itemize}
+    Each subset contains $(\Identity{U}, \Identity{V})$ and is closed under inverses and composition, so the
+    three displayed witnesses stay inside it. The same computation therefore proves each of the four
+    relations reflexive, symmetric, and transitive.
+\end{proof}
+
+Since the matrix relations are nothing but these map relations restricted to coordinate spaces, the
+content still to be settled is how they connect a \emph{fixed abstract} map to its coordinate matrices in
+\emph{arbitrary} bases. The next two theorems are that bridge: a map relation holds iff the corresponding
+relation holds between coordinate matrices, in \emph{any} bases; and conversely two matrices are related
+iff they present a single map.
+
+\begin{theorem}[Equivalence in coordinates]
+\label{thm:matrices-of-map-equivalent}
+    Let $S, T : U \to V$ be linear maps.
+    \begin{enumerate}
+        \item For \emph{any} ordered bases $\mathcal B_U$ of $U$ and $\mathcal B_V$ of $V$,
+              \[
+                  S \Equivalent T
+                  \quad\Longleftrightarrow\quad
+                  \CoordMatrix[\mathcal B_U][\mathcal B_V]{S} \Equivalent \CoordMatrix[\mathcal B_U][\mathcal B_V]{T} .
+              \]
+        \item Two matrices $A, B \in \CFMat{Y}{X}[K]$ are equivalent iff they are the matrices of one
+              common map: $A = \CoordMatrix[\mathcal B_U][\mathcal B_V]{R}$ and
+              $B = \CoordMatrix[\mathcal C_U][\mathcal C_V]{R}$ for some $R : U \to V$ and ordered bases.
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    \emph{(1).} If $T = \Composition{Q}{\Composition{S}{P^{-1}}}$ with $P \in \GL{U}$, $Q \in \GL{V}$,
+    then the composition theorem (Theorem~\ref{thm:composition-matrix}) and the inversion rule
+    (Theorem~\ref{thm:inverse-matrix}) give
+    \[
+        \CoordMatrix[\mathcal B_U][\mathcal B_V]{T}
+        = \Composition{\CoordMatrix[\mathcal B_V][\mathcal B_V]{Q}}
+            {\Composition{\CoordMatrix[\mathcal B_U][\mathcal B_V]{S}}
+              {\bigl(\CoordMatrix[\mathcal B_U][\mathcal B_U]{P}\bigr)^{-1}}} ,
+    \]
+    an equivalence of the two matrices via the invertible factors
+    $\CoordMatrix[\mathcal B_V][\mathcal B_V]{Q}$ and $\CoordMatrix[\mathcal B_U][\mathcal B_U]{P}$
+    (Corollary~\ref{cor:invertible-detect}). Conversely, if
+    $\CoordMatrix[\mathcal B_U][\mathcal B_V]{S}$ and $\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}$ are
+    equivalent matrices, their invertible factors are --- again by
+    Corollary~\ref{cor:invertible-detect} --- the matrices
+    $\CoordMatrix[\mathcal B_V][\mathcal B_V]{Q}$ and $\CoordMatrix[\mathcal B_U][\mathcal B_U]{P}$ of
+    automorphisms $Q \in \GL{V}$ and $P \in \GL{U}$; reading the display backwards gives
+    $T = \Composition{Q}{\Composition{S}{P^{-1}}}$, i.e.\ $S \Equivalent T$.
+
+    \emph{(2).} ($\Leftarrow$) The change-of-bases formula (Corollary~\ref{cor:change-of-bases}) gives
+    $A = \CoordMatrix[\mathcal C_V][\mathcal B_V]{\Identity{V}}\, B\, \CoordMatrix[\mathcal B_U][\mathcal C_U]{\Identity{U}}$,
+    a product $Q B P^{-1}$ of $B$ with invertible transition matrices, so $A \Equivalent B$.
+    ($\Rightarrow$) If $A = Q B P^{-1}$, take $R = B : K^{(X)} \to K^{(Y)}$ with $\mathcal C_U, \mathcal C_V$
+    the canonical bases (so $\CoordMatrix[\mathcal C_U][\mathcal C_V]{R} = B$); the columns of $P^{-1}$ and
+    $Q^{-1}$ are ordered bases $\mathcal B_U, \mathcal B_V$ with
+    $\CoordMatrix[\mathcal B_U][\mathcal C_U]{\Identity{}} = P^{-1}$ and
+    $\CoordMatrix[\mathcal C_V][\mathcal B_V]{\Identity{}} = Q$, whence
+    $\CoordMatrix[\mathcal B_U][\mathcal B_V]{R} = Q B P^{-1} = A$.
+\end{proof}
+
+\begin{theorem}[Similarity in coordinates]
+\label{thm:matrices-of-endo-similar}
+    Let $S, T \in \End[K]{V}$ be endomorphisms.
+    \begin{enumerate}
+        \item For \emph{any} ordered basis $\mathcal B$ of $V$,
+              \[
+                  S \Similar T
+                  \quad\Longleftrightarrow\quad
+                  \CoordMatrix[\mathcal B][\mathcal B]{S} \Similar \CoordMatrix[\mathcal B][\mathcal B]{T} .
+              \]
+        \item Square matrices $A, B \in \CFMat{X}{X}[K]$ are similar iff they are the matrices of one
+              common endomorphism: $A = \CoordMatrix[\mathcal B][\mathcal B]{R}$ and
+              $B = \CoordMatrix[\mathcal C][\mathcal C]{R}$ for some $R \in \End[K]{V}$ and ordered bases
+              $\mathcal B, \mathcal C$ of $V$.
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    Both parts repeat the previous proof with one basis on each side and $P = Q$. For (1), if
+    $T = \Composition{Q^{-1}}{\Composition{S}{Q}}$ then
+    $\CoordMatrix[\mathcal B][\mathcal B]{T} = \bigl(\CoordMatrix[\mathcal B][\mathcal B]{Q}\bigr)^{-1}\, \CoordMatrix[\mathcal B][\mathcal B]{S}\, \CoordMatrix[\mathcal B][\mathcal B]{Q}$
+    with $\CoordMatrix[\mathcal B][\mathcal B]{Q}$ invertible, and conversely. For (2), the
+    ($\Leftarrow$) direction is Corollary~\ref{cor:change-of-bases} with a single basis per side,
+    yielding $A = \CoordMatrix[\mathcal C][\mathcal B]{\Identity{V}}\, B\, \CoordMatrix[\mathcal B][\mathcal C]{\Identity{V}} = Q^{-1} B Q$;
+    the ($\Rightarrow$) direction takes $R = B$ on $K^{(X)}$ with $\mathcal C$ canonical and $\mathcal B$
+    the columns of $Q$.
+\end{proof}
+
+The sharp statement is at the level of the \emph{subspaces} themselves, and it splits cleanly along the
+two one-sided relations: a row (codomain) change leaves the kernel untouched, a column (domain) change
+leaves the range untouched. The numerical invariants --- rank and nullity --- are then mere shadows.
+
+\begin{proposition}[Kernel is codomain-invariant; range is domain-invariant]
+\label{prop:ker-rng-one-sided-invariant}
+    Let $A, B \in \CFMat{Y}{X}[K]$.
+    \begin{enumerate}
+        \item If $A \CodomainEquivalent B$ then $\Ker{A} = \Ker{B}$: the kernel depends only on the
+              codomain (row) class.
+        \item If $A \DomainEquivalent B$ then $\Rng{A} = \Rng{B}$: the range depends only on the domain
+              (column) class.
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    \emph{(1).} Here $A = Q B$ with $Q$ invertible, in particular injective; so for every
+    $x \in K^{(X)}$, $A(x) = Q(B(x)) = 0 \iff B(x) = 0$, that is $\Ker{A} = \Ker{B}$.
+
+    \emph{(2).} Here $A = B P^{-1}$ with $P^{-1}$ invertible, in particular surjective; so
+    \[
+        \Rng{A} = \DirectImage{A}{K^{(X)}}
+        = \DirectImage{B}{\DirectImage{P^{-1}}{K^{(X)}}}
+        = \DirectImage{B}{K^{(X)}} = \Rng{B} . \qedhere
+    \]
+\end{proof}
+
+\begin{corollary}[Rank and nullity are equivalence invariants]
+\label{prop:rank-equiv-invariant}
+    If $A \Equivalent B$ then $\Rank{A} = \Rank{B}$ and $\Nullity{A} = \Nullity{B}$.
+\end{corollary}
+
+\begin{proof}
+    By Proposition~\ref{prop:equivalence-factors} factor the equivalence as a column step followed by a
+    row step: there is $C$ with $B \DomainEquivalent C$ and $C \CodomainEquivalent A$, namely
+    $C = B P^{-1}$ and $A = Q C$.
+    \begin{itemize}
+        \item \emph{Rank.} The column step fixes the range exactly,
+              $\Rng{C} = \Rng{B}$ (Proposition~\ref{prop:ker-rng-one-sided-invariant}(2)); the row step
+              $A = Q C$ moves it by the isomorphism $Q$, $\Rng{A} = \DirectImage{Q}{\Rng{C}}$, preserving
+              its dimension. Hence $\Rank{A} = \Rank{C} = \Rank{B}$.
+        \item \emph{Nullity.} The row step fixes the kernel exactly,
+              $\Ker{A} = \Ker{C}$ (Proposition~\ref{prop:ker-rng-one-sided-invariant}(1)); the column
+              step $C = B P^{-1}$ moves it by the isomorphism $P$, $\Ker{C} = \DirectImage{P}{\Ker{B}}$,
+              preserving its dimension. Hence $\Nullity{A} = \Nullity{C} = \Nullity{B}$.
+    \end{itemize}
+\end{proof}
+
+\begin{remark}[The basis-free content: the equivalence and similarity classes]
+\label{rem:basis-free-content}
+    Theorem~\ref{thm:matrices-of-map-equivalent} says the set of all matrices of a fixed map $T : U \to V$
+    is exactly one equivalence class; for an endomorphism, insisting on one basis for both source and
+    target (Theorem~\ref{thm:matrices-of-endo-similar}) refines this to a single similarity class. So a
+    quantity computed from a matrix is an intrinsic invariant of the underlying map precisely when it
+    depends only on the class, not on the chosen representative. We have already isolated one invariant
+    of the equivalence class --- the rank (Corollary~\ref{prop:rank-equiv-invariant}), which by the
+    forthcoming normal-form theorem turns out to be a \emph{complete} invariant of equivalence. The
+    similarity classes are finer, and their classification needs invariants special to the endomorphism
+    case --- the \textbf{determinant}, the \textbf{trace}, and the \textbf{characteristic polynomial}.
+    These are constructed in later chapters and there shown to depend only on the similarity class; we
+    name them here only to signpost where the theory is heading.
+\end{remark}
+
+\subsection{Worked Example}
+
+\begin{example}[Two matrices of one endomorphism are similar]
+\label{ex:similar-numeric}
+    Return to Example~\ref{ex:change-of-bases-numeric}: $T(x, y) = (2x + y,\; x)$ on $\bb{R}^2$, with
+    $\mathcal B$ standard and $\mathcal C = (\CanonicalVector{0} + \CanonicalVector{1},\, \CanonicalVector{1})$.
+    There we found
+    $\CoordMatrix[\mathcal B][\mathcal B]{T} = \begin{psmallmatrix} 2 & 1 \\ 1 & 0 \end{psmallmatrix}$ and
+    $\CoordMatrix[\mathcal C][\mathcal C]{T} = \begin{psmallmatrix} 3 & 1 \\ -2 & -1 \end{psmallmatrix}$.
+    With $Q = \CoordMatrix[\mathcal B][\mathcal C]{\Identity{}} = \begin{psmallmatrix} 1 & 0 \\ -1 & 1 \end{psmallmatrix}$
+    and $Q^{-1} = \begin{psmallmatrix} 1 & 0 \\ 1 & 1 \end{psmallmatrix}$,
+    \[
+        Q^{-1}\, \CoordMatrix[\mathcal C][\mathcal C]{T}\, Q
+        = \begin{pmatrix} 1 & 0 \\ 1 & 1 \end{pmatrix}
+          \begin{pmatrix} 3 & 1 \\ -2 & -1 \end{pmatrix}
+          \begin{pmatrix} 1 & 0 \\ -1 & 1 \end{pmatrix}
+        = \begin{pmatrix} 2 & 1 \\ 1 & 0 \end{pmatrix}
+        = \CoordMatrix[\mathcal B][\mathcal B]{T} ,
+    \]
+    so $\CoordMatrix[\mathcal B][\mathcal B]{T} \Similar \CoordMatrix[\mathcal C][\mathcal C]{T}$ ---
+    exactly part~(2) of Theorem~\ref{thm:matrices-of-endo-similar}, the two matrices of the one
+    endomorphism $T$. Both have rank $2$
+    (Corollary~\ref{prop:rank-equiv-invariant}); looking ahead, they will also share the finer
+    similarity invariants --- determinant, trace, characteristic polynomial --- once those are defined.
+\end{example}

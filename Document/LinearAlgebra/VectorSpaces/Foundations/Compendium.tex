@@ -30,17 +30,17 @@ $A + \BigIntersect[i] B_i \subseteq \BigIntersect[i](A + B_i)$, $\{a\} + \BigInt
 
 %% SUBSPACES
 \textbf{Subspace Criterion}:
-$U \Subspace[K] V \Leftrightarrow U \neq \emptyset \land \Forall :{a,b \in K, u,v \in U}{au + bv \in U}$
+$U \Subspace[K] V \Leftrightarrow U \neq \emptyset \LogicAnd \Forall :{a,b \in K, u,v \in U}{au + bv \in U}$
 
 \textbf{Minkowski Characterization}:
-$U$ subspace $\Leftrightarrow U \neq \emptyset \land U + U = U \land KU = U \Leftrightarrow U \neq \emptyset \land KU + KU = U$
+$U$ subspace $\Leftrightarrow U \neq \emptyset \LogicAnd U + U = U \LogicAnd KU = U \Leftrightarrow U \neq \emptyset \LogicAnd KU + KU = U$
 
 \textbf{Operations}:
 $\BigIntersect[i \in I] U_i$ is subspace; $U \Union W$ subspace $\Leftrightarrow U \subseteq W \LogicOr W \subseteq U$
 
 %% SPAN
 \textbf{Span (equivalences)}:
-$\Span[K]{S} = \BigIntersect \Set{U \Subspace[K] V \mid S \subseteq U} = \Set{\sum_{i=1}^n a_i v_i \mid n \in \bb{N}, a_i \in K, v_i \in S}$
+$\Span[K]{S} = \BigIntersect \Set{U \Subspace[K] V \mid S \subseteq U} = \Set{\sum_{i \in n} a_i v_i \mid n \in \bb{N}, a_i \in K, v_i \in S}$
 
 \textbf{Span Properties}:
 \begin{itemize}
@@ -74,7 +74,7 @@ $(U_i)_{i \in I}$ is direct sum family iff:
 %% BASES
 \textbf{Basis}: $B$ lin.\ indep.\ AND $\Span[K]{B} = V$ $\Leftrightarrow$ maximal lin.\ indep.\ $\Leftrightarrow$ minimal generating
 
-\textbf{Basis Extension} (Zorn): $L$ lin.\ indep.\ $\subseteq G$ generating $\Rightarrow \exists B$ basis with $L \subseteq B \subseteq G$
+\textbf{Basis Extension} (Zorn): $L$ lin.\ indep.\ $\subseteq G$ generating $\Rightarrow \Exists :{B \text{ basis}}{L \subseteq B \subseteq G}$
 
 \textbf{Steinitz Exchange}: $L$ lin.\ indep., $S$ spanning $\Rightarrow \Card{L} \leq \Card{S}$
 
@@ -94,7 +94,7 @@ $(U_i)_{i \in I}$ is direct sum family iff:
 \end{itemize}
 
 %% COORDINATES
-\textbf{Coordinate Isomorphism}: $\phi_{\mathcal{B}}: V \xrightarrow{\sim} K^{(I)}$, $v \mapsto \CoordVec[\mathcal{B}]{v}$; \quad $\Dim[K]{K^{(I)}} = \Card{I}$
+\textbf{Coordinate Isomorphism}: $\Chart{\mathcal{B}}: V \xrightarrow{\sim} K^{(I)}$, $v \mapsto \CoordVec[\mathcal{B}]{v}$; \quad $\Dim[K]{K^{(I)}} = \Card{I}$
 
 \textbf{Key Dimensions}: $\Dim[K]{K^n} = n$, $\Dim[K]{K[X]_{\leq n}} = n+1$, $\Dim[K]{\MatSpace{m}{n}[K]} = mn$, $\Dim[K]{K[X]} = \aleph_0$, $\Dim[\bb{Q}]{\bb{R}} = \mathfrak{c}$, $\Dim[\bb{R}]{C([0,1])} = \mathfrak{c}$
 

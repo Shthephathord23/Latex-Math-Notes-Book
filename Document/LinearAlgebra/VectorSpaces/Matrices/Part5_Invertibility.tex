@@ -1,0 +1,117 @@
+% Document/LinearAlgebra/VectorSpaces/Matrices/Part5_Invertibility.tex
+% Reordered Chapter 3 -- Section 5 (closes the Matrices chapter): invertibility of matrices (as maps),
+% ([T]_{B_U}^{B_V})^{-1} = [T^{-1}]_{B_V}^{B_U}; T invertible iff its matrix is; every change-of-basis
+% matrix invertible. Equivalence + similarity were SPLIT OUT into EquivalenceSimilarity.tex (a separate
+% chapter). General cardinalities. DRAFT for review.
+
+\newpage
+\section{Invertibility}
+\label{sec:invertibility}
+
+\begin{intuition}
+    With maps and matrices now identified (Section~\ref{sec:matrices-as-maps}), ``inverting a matrix''
+    means exactly ``inverting the map it is,'' and the arithmetic of Section~\ref{sec:matrices} guarantees
+    the inverse is again a matrix. One question then organises this section: how does inversion interact
+    with the matrix of an \emph{abstract} map? The answer is as clean as possible --- inverting the map
+    swaps the roles of the two bases and inverts the matrix --- and it specialises to the fact that every
+    change-of-basis matrix is invertible, its inverse being the change run backwards. (Which matrices
+    represent one and the same map, the question this naturally raises next, is taken up in the following
+    chapter, on equivalence and similarity.)
+\end{intuition}
+
+\subsection{Invertible Matrices}
+
+\begin{definition}[Invertible matrix]
+\label{def:invertible-matrix}
+    A matrix $A \in \CFMat{Y}{X}[K]$ is \textbf{invertible} if it is invertible as a linear map
+    $A : K^{(X)} \to K^{(Y)}$ --- that is, bijective. Its inverse map is again linear, hence a matrix
+    $A^{-1} \in \CFMat{X}{Y}[K]$ (the grid of $A^{-1}$ under the identification of
+    Definition~\ref{def:identification}), characterised by
+    \[
+        A^{-1} A = \IdentityMat{X}, \qquad A A^{-1} = \IdentityMat{Y} .
+    \]
+\end{definition}
+
+\begin{remark}[Two-sided inverse, and when one can exist]
+\label{rem:invertible-square}
+    Because the identification turns composition into the matrix product and the identity map into the
+    identity grid (Corollary~\ref{cor:inherited-laws}), $A$ is invertible exactly when it has a two-sided
+    multiplicative inverse $B$ with $B A = \IdentityMat{X}$ and $A B = \IdentityMat{Y}$, and then
+    $B = A^{-1}$ is unique (a two-sided inverse in a monoid is unique). An invertible $A$ is an
+    isomorphism $K^{(X)} \xrightarrow{\sim} K^{(Y)}$, so $\Card{X} = \Card{Y}$ (isomorphic coordinate
+    spaces have canonical bases of equal cardinality); in the finite case $X = Y = n$ and $A$ is a
+    \emph{square} $n \times n$ matrix. The invertible elements of the algebra
+    $\End[K]{K^{(X)}} = \CFMat{X}{X}[K]$ form, under the matrix product, the group $\GL{K^{(X)}}$ ---
+    written $\GL{K^n}$ when $X = n$.
+\end{remark}
+
+\subsection{The Inverse of the Matrix of a Map}
+
+\begin{theorem}[Inversion swaps the two bases]
+\label{thm:inverse-matrix}
+    Let $T : U \to V$ be an isomorphism, with ordered bases $\mathcal B_U$ of $U$ and $\mathcal B_V$ of
+    $V$. Then $\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}$ is invertible and
+    \[
+        \bigl( \CoordMatrix[\mathcal B_U][\mathcal B_V]{T} \bigr)^{-1}
+        = \CoordMatrix[\mathcal B_V][\mathcal B_U]{T^{-1}} .
+    \]
+\end{theorem}
+
+\begin{proof}
+    Since $T$ is an isomorphism, $T^{-1} : V \to U$ is linear, so
+    $\CoordMatrix[\mathcal B_V][\mathcal B_U]{T^{-1}}$ is defined. By the composition theorem
+    (Theorem~\ref{thm:composition-matrix}) and the fact that the matrix of an identity in one basis is
+    the identity grid (Remark~\ref{rem:change-of-basis}, with $\Phi(\Identity{}) = I$ from
+    Corollary~\ref{cor:inherited-laws}),
+    \[
+        \Composition{\CoordMatrix[\mathcal B_V][\mathcal B_U]{T^{-1}}}{\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}}
+        = \CoordMatrix[\mathcal B_U][\mathcal B_U]{\Composition{T^{-1}}{T}}
+        = \CoordMatrix[\mathcal B_U][\mathcal B_U]{\Identity{U}}
+        = \IdentityMat{X} ,
+    \]
+    and symmetrically
+    $\Composition{\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}}{\CoordMatrix[\mathcal B_V][\mathcal B_U]{T^{-1}}}
+    = \CoordMatrix[\mathcal B_V][\mathcal B_V]{\Composition{T}{T^{-1}}}
+    = \CoordMatrix[\mathcal B_V][\mathcal B_V]{\Identity{V}} = \IdentityMat{Y}$. By
+    Remark~\ref{rem:invertible-square} the two-sided inverse is unique, which is the claim.
+\end{proof}
+
+\begin{corollary}[Invertibility is detected by any matrix]
+\label{cor:invertible-detect}
+    For $T : U \to V$ with ordered bases $\mathcal B_U, \mathcal B_V$, the map $T$ is an isomorphism iff
+    $\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}$ is invertible. In particular every change-of-basis
+    matrix is invertible, with
+    \[
+        \bigl( \CoordMatrix[\mathcal B][\mathcal C]{\Identity{V}} \bigr)^{-1}
+        = \CoordMatrix[\mathcal C][\mathcal B]{\Identity{V}} .
+    \]
+\end{corollary}
+
+\begin{proof}
+    If $T$ is an isomorphism, Theorem~\ref{thm:inverse-matrix} exhibits the inverse. Conversely,
+    $\CoordMatrix[\mathcal B_U][\mathcal B_V]{T} = \Composition{\Chart{\mathcal B_V}}{\Composition{T}{\Frame{\mathcal B_U}}}$
+    with $\Chart{\mathcal B_V}, \Frame{\mathcal B_U}$ isomorphisms (Definition~\ref{def:matrix-of-map}); if
+    this composite is bijective then
+    $T = \Composition{\Frame{\mathcal B_V}}{\Composition{\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}}{\Chart{\mathcal B_U}}}$
+    is a composite of bijections, hence bijective. The change-of-basis matrix is the case
+    $T = \Identity{V}$, an isomorphism, and its inverse is read off from
+    Theorem~\ref{thm:inverse-matrix}.
+\end{proof}
+
+\subsection{Worked Example}
+
+\begin{example}[The inverse of a matrix is the matrix of the inverse]
+\label{ex:inverse-shear}
+    Let $T : \bb{R}^2 \to \bb{R}^2$ be the shear $T(x, y) = (x + y,\; y)$, an isomorphism with inverse
+    $T^{-1}(x, y) = (x - y,\; y)$. In the standard basis $\mathcal B$,
+    \[
+        \CoordMatrix[\mathcal B][\mathcal B]{T} = \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix},
+        \qquad
+        \CoordMatrix[\mathcal B][\mathcal B]{T^{-1}} = \begin{pmatrix} 1 & -1 \\ 0 & 1 \end{pmatrix},
+    \]
+    and indeed
+    $\begin{psmallmatrix} 1 & 1 \\ 0 & 1 \end{psmallmatrix}\begin{psmallmatrix} 1 & -1 \\ 0 & 1 \end{psmallmatrix}
+    = \begin{psmallmatrix} 1 & 0 \\ 0 & 1 \end{psmallmatrix}$, confirming
+    $\bigl(\CoordMatrix[\mathcal B][\mathcal B]{T}\bigr)^{-1} = \CoordMatrix[\mathcal B][\mathcal B]{T^{-1}}$
+    as Theorem~\ref{thm:inverse-matrix} predicts.
+\end{example}

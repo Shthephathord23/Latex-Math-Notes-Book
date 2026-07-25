@@ -1,0 +1,141 @@
+% Document/LinearAlgebra/VectorSpaces/Matrices/Part2_MatricesAsLinearMaps.tex
+% Reordered Chapter 3 -- Section 2: the identification Hom_K(K^{(X)}, K^{(Y)}) = CFMat_{(Y),X}(K)
+% "no questions asked". After this, a matrix IS a map: kernel/image/rank of a matrix; column space;
+% map-side vs grid-side operations. Placed directly after Section 1 so the canonical world (maps between
+% coordinate spaces) is finished before abstract spaces + chosen bases enter. General cardinalities.
+
+\newpage
+\section{Matrices as Linear Maps}
+\label{sec:matrices-as-maps}
+
+\begin{intuition}
+    Up to this point we have been scrupulous: a matrix is a grid, a map is a map, and the bijection
+    $\Phi$ of Theorem~\ref{thm:map-grid-bijection} ferries one to the other. We even refused to speak of
+    ``the kernel of a matrix'' (Remark~\ref{rem:grid-vs-map}). That scruple has done its work --- it
+    forced us to prove that $\Phi$ is not merely a bijection of sets but an isomorphism carrying every
+    operation faithfully (Corollary~\ref{cor:inherited-laws}).
+
+    When two objects are linked by an isomorphism that (i) requires \emph{no arbitrary choices} to write
+    down and (ii) respects \emph{all} the structure in sight, mathematics drops the distinction and
+    writes a single symbol for both. The canonical bases of $K^{(X)}$ and $K^{(Y)}$ are built into those
+    spaces, so $\Phi$ needs no input from us; this is exactly the licence to \textbf{identify} a map with
+    its grid. From now on a matrix \emph{is} a linear map, and a linear map between coordinate spaces
+    \emph{is} a matrix, with no translation step. This is the move that makes every map-theoretic notion
+    --- kernel, image, rank --- available to matrices, and conversely lets a matrix be evaluated,
+    composed, and inverted.
+\end{intuition}
+
+\begin{definition}[{The map--grid identification, $\operatorname{Hom}_K(K^{(X)}, K^{(Y)}) = \operatorname{Mat}_{(Y), X}(K)$}]
+\label{def:identification}
+    For all index sets $X, Y$ we henceforth \textbf{identify}, along the isomorphism $\Phi$ of
+    Theorem~\ref{thm:map-grid-bijection} and Corollary~\ref{cor:inherited-laws},
+    \[
+        \Hom[K]{K^{(X)}}{K^{(Y)}} \;=\; \CFMat{Y}{X}[K] ,
+    \]
+    suppressing $\Phi$ and $\Phi^{-1}$ from the notation: a column-finite grid $A$ and the linear map
+    $\Phi^{-1}(A) = \mu_A : K^{(X)} \to K^{(Y)}$ are written by the same symbol $A$, and a map $T$ and its
+    grid $\Phi(T)$ by the same symbol $T$. Concretely:
+    \begin{itemize}
+        \item $A(x)$ (also written $A x$) denotes the value of the map on $x \in K^{(X)}$, computed by
+              the matrix--vector formula $\bigl(A x\bigr)_i = \sum_{j \in X} A_{ij}\, x_j$
+              (Theorem~\ref{thm:entry-formulas});
+        \item the product $A B$ denotes \emph{simultaneously} the composite of maps and the grid product,
+              the two being equal by the definition of the latter
+              (Definition~\ref{def:matrix-ops-transport});
+        \item the $j$-th column of $A$ is the image vector $A(\CanonicalVector{j}) \in K^{(Y)}$.
+    \end{itemize}
+    In the finite case this reads $\Hom[K]{K^n}{K^m} = \MatSpace{m}{n}[K]$, and for endomorphisms it is
+    an identity of $K$-algebras $\End[K]{K^{(X)}} = \CFMat{X}{X}[K]$.
+\end{definition}
+
+\begin{remark}[Why ``no questions asked'' --- and where it stops]
+\label{rem:no-questions}
+    The identification is legitimate precisely because $\Phi$ is \emph{canonical}: it is determined by
+    the spaces $K^{(X)}, K^{(Y)}$ alone, through their built-in canonical bases, with no choice left to
+    the reader. It is worth being clear in advance about where this licence ends. Later in this chapter we
+    attach to a map between \emph{abstract} spaces $U \to V$ a matrix
+    $\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}$ (Section~\ref{sec:matrix-of-map}); that matrix is
+    \emph{not} canonically attached to $T$ --- it will depend on a choice of ordered bases
+    $\mathcal B_U, \mathcal B_V$. So we do \emph{not} identify an abstract map $T : U \to V$ with a grid.
+    What we \emph{will} be entitled to say is that, once bases are fixed,
+    $\CoordMatrix[\mathcal B_U][\mathcal B_V]{T}$ --- by construction an element of
+    $\Hom[K]{K^{(X)}}{K^{(Y)}}$ --- already \emph{is} a column-finite grid under the present
+    identification, with no further bijection to invoke. The choice of bases is the only arbitrary input;
+    the passage from the coordinatised map to its array is free.
+\end{remark}
+
+The structural invariants of a linear map, defined in the previous chapter, now apply \emph{verbatim} to
+a matrix.
+
+\begin{definition}[Kernel, image, rank, and nullity of a matrix]
+\label{def:matrix-invariants}
+    For $A \in \CFMat{Y}{X}[K]$, regarded as the map $A : K^{(X)} \to K^{(Y)}$, set
+    \[
+        \Ker{A} \defeq \Set{ x \in K^{(X)} \mid A(x) = 0 },
+        \qquad
+        \Rng{A} \defeq \DirectImage{A}{K^{(X)}} \SubsetEq K^{(Y)} ,
+    \]
+    and $\Rank{A} \defeq \Dim[K]{\Rng{A}}$, $\Nullity{A} \defeq \Dim[K]{\Ker{A}}$. The subspace
+    $\Rng{A}$ is called the \textbf{column space} of $A$.
+\end{definition}
+
+\begin{proposition}[The image is the span of the columns]
+\label{prop:column-space}
+    For $A \in \CFMat{Y}{X}[K]$,
+    \[
+        \Rng{A} = \Span[K]{\Set{ A(\CanonicalVector{j}) \mid j \in X }} ,
+    \]
+    the span of the columns of $A$; consequently $\Rank{A}$ is the maximal number of linearly
+    independent columns.
+\end{proposition}
+
+\begin{proof}
+    Every $x \in K^{(X)}$ is a finite combination $x = \sum_{j \in X} x_j\, \CanonicalVector{j}$ (finite
+    support), so by linearity $A(x) = \sum_{j \in X} x_j\, A(\CanonicalVector{j})$ is a finite linear
+    combination of columns; hence $\Rng{A} \SubsetEq \Span[K]{\Set{ A(\CanonicalVector{j}) \mid j \in X }}$. Conversely
+    each column $A(\CanonicalVector{j})$ lies in $\Rng{A}$, and $\Rng{A}$ is a subspace, so it contains
+    their span. The two inclusions give equality, and the dimension of a span is the maximal number of
+    linearly independent vectors drawn from a spanning set.
+\end{proof}
+
+\begin{remark}[Map-side and grid-side operations]
+\label{rem:map-side-grid-side}
+    The identification stacks two layers of structure on a single object, and it pays to keep them apart
+    --- this is the distinction foretold in Remark~\ref{rem:grid-vs-map}, now made operative.
+    \begin{itemize}
+        \item \textbf{Map-side} (morphism structure): evaluation $A(x)$, the product/composite $A B$,
+              kernel, image, rank, nullity, and --- next --- invertibility. These respect the
+              linear-algebraic meaning: for instance $\Rng{A B} \SubsetEq \Rng{A}$ holds because it is a
+              statement about composing maps, and the product is not a free choice --- it \emph{is}
+              composition, read through $\Phi$.
+        \item \textbf{Grid-side} (data structure): the entrywise (Hadamard) product
+              $(\Hadamard{A}{B})_{ij} = A_{ij}\, B_{ij}$, the index swap
+              $(\Transpose p{A})_{ji} = A_{ij}$ (transpose), extraction of a single row, column, or the
+              diagonal, and sparsity bookkeeping. These manipulate the table of scalars and need carry
+              \emph{no} map-theoretic meaning: the Hadamard product of two maps is not in general a
+              natural operation on maps at all, and the intrinsic meaning of the transpose --- the
+              induced map between dual spaces --- must wait until those are built (a forward reference).
+    \end{itemize}
+    Now that both layers ride on one symbol, the only discipline required is to know which structure a
+    given manipulation belongs to: composition and kernels concern the \emph{arrow}; Hadamard products
+    and transposes concern the \emph{array}.
+\end{remark}
+
+\begin{example}[Kernel and column space of a concrete matrix]
+\label{ex:kernel-column-space}
+    Take $A = \begin{psmallmatrix} 1 & 0 & 2 \\ 1 & -1 & 0 \end{psmallmatrix} \in \MatSpace{2}{3}[K]$ from
+    Example~\ref{ex:read-off}, now read as the map $A : K^3 \to K^2$. Its columns
+    \[
+        A(\CanonicalVector{0}) = (1, 1), \quad
+        A(\CanonicalVector{1}) = (0, -1), \quad
+        A(\CanonicalVector{2}) = (2, 0)
+    \]
+    already span $K^2$ (the first two are independent), so $\Rng{A} = K^2$ and $\Rank{A} = 2$. By
+    rank--nullity (previous chapter) $\Nullity{A} = 3 - 2 = 1$. Concretely, $A(x) = 0$ means
+    $x_0 + 2 x_2 = 0$ and $x_0 - x_1 = 0$, i.e.\ $x_0 = x_1 = -2 x_2$, so
+    \[
+        \Ker{A} = \Span[K]{\Set{ (-2, -2, 1) }} ,
+    \]
+    a line, confirming $\Nullity{A} = 1$. Every symbol here --- $A(x)$, $\Ker{A}$, $\Rng{A}$,
+    $\Rank{A}$ --- is now applied directly to the array, with no $\Phi$ in sight.
+\end{example}

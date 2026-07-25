@@ -1,0 +1,54 @@
+% Document/LinearAlgebra/VectorSpaces/SubspaceRepresentations/Reduction.tex
+% STUB + FUTURE PROMPT for the next implementation pass.
+%
+% ============================ FUTURE PROMPT ============================
+% Implement "Reduction: Gaussian elimination and normal forms" in the framework of the reordered
+% Matrices chapter (frames/charts psi_B / phi^B; the map<->grid identification; [T]_{B_U}^{B_V};
+% equivalence A = Q B P^{-1} and similarity A = Q^{-1} B Q -- already in EquivalenceSimilarity.tex).
+% PORT and RE-LABEL the following from the superseded draft files (kept in
+% Document/LinearAlgebra/VectorSpaces/Matrices/_legacy/ as source; old labels in parentheses):
+%
+%   1. Elementary row/column operations as one-sided basis changes:
+%        row ops = codomain (left) change of basis; column ops = domain (right) change of basis.
+%        (source: Matrices/_legacy/ChangeOfBasis.tex rem:gaussian-infinite)
+%   2. Rank normal form in any dimension (partial identity of size = rank); rank is a COMPLETE
+%        invariant of equivalence -- the result promised in EquivalenceSimilarity.tex
+%        rem:basis-free-content. (source: ChangeOfBasis.tex thm:rank-normal-form)
+%   3. Injectivity / surjectivity / bijectivity normal forms (I_k | 0, etc.) via matrices, and
+%        "automorphisms = change-of-basis matrices".
+%        (source: ChangeOfBasis.tex thm:mat-inj, thm:mat-surj, thm:mat-bij, cor:aut-cob)
+%   4. Gaussian / Gauss-Jordan elimination as the ALGORITHM computing the normal form in finite
+%        dimensions; matrix inversion by solving A v_j = e_j for each j (block-column lemma --
+%        introduce block matrices via index-set partitions, NOT via coproducts; see the blocks
+%        discussion). Termination/effectivity caveats in infinite dimensions.
+%   5. Triangular form & flag-compatibility (T as a morphism of flags).
+%        (source: ChangeOfBasis.tex sec:triangular-two-bases) -- FLAGS are deferred per the author.
+%
+% Separately, decide the home of the grid-side operations dropped from the new Matrices chapter:
+% transpose (index swap), Hermitian conjugate, Hadamard product, and the determinant forward-ref
+% (source: Matrices/_legacy/MatrixSpaces.tex def:transpose / def:hermitian / def:hadamard). These are
+% strictly-matrix operations; preferred home is a short section back in the Matrices chapter.
+% ======================================================================
+
+\newpage
+\section{Reduction: Gaussian Elimination and Normal Forms}
+\label{sec:rank-normal-form}
+
+\begin{remark}[Roadmap --- section under construction]
+    This section completes the basis-free analysis begun in
+    Section~\ref{sec:equivalence-similarity}. Two maps are equivalent exactly when they share a
+    rank, and a suitable pair of bases reduces any $T : U \to V$ to a \emph{partial identity} of
+    size $\Rank{T}$ --- the \textbf{rank normal form}, the complete invariant of equivalence
+    (foretold in Remark~\ref{rem:basis-free-content}). In finite dimensions the form is
+    \emph{computed} by \textbf{Gaussian elimination}, under the dictionary
+    \[
+        \text{row operations} \;=\; \text{codomain (left) change of basis}, \qquad
+        \text{column operations} \;=\; \text{domain (right) change of basis},
+    \]
+    and matrix inversion is the special case of solving $A v_j = \CanonicalVector{j}$ for the unknown
+    columns $v_j$ of $A^{-1}$, one block-column at a time. The injectivity, surjectivity, and bijectivity
+    normal forms ($\begin{psmallmatrix} I \\ 0 \end{psmallmatrix}$,
+    $\begin{psmallmatrix} I & 0 \end{psmallmatrix}$, $I$) are the extreme cases. The full
+    development, together with triangular/flag form, is deferred to the next implementation pass;
+    the porting checklist is recorded in the source of this file.
+\end{remark}

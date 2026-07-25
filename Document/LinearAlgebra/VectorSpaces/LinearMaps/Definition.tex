@@ -235,9 +235,9 @@
             \draw[->] (0,-0.5) -- (0,2.5) node[above] {$y$};
             \fill[blue!20] (0,0) -- (1,0) -- (1,1) -- (0,1) -- cycle;
             \draw[blue, thick] (0,0) -- (1,0) -- (1,1) -- (0,1) -- cycle;
-            \draw[->, thick, red] (0,0) -- (1,0) node[midway, below] {$e_0$};
-            \draw[->, thick, green!50!black] (0,0) -- (0,1) node[midway, left] {$e_1$};
-            \node[below] at (1,-0.8) {Basis $B = \{e_0, e_1\}$};
+            \draw[->, thick, red] (0,0) -- (1,0) node[midway, below] {$\CanonicalVector{0}$};
+            \draw[->, thick, green!50!black] (0,0) -- (0,1) node[midway, left] {$\CanonicalVector{1}$};
+            \node[below] at (1,-0.8) {Basis $B = \{\CanonicalVector{0}, \CanonicalVector{1}\}$};
         \end{scope}
         
         % Arrow for transformation
@@ -249,13 +249,13 @@
             \draw[->] (0,-0.5) -- (0,2.5) node[above] {$y$};
             \fill[orange!20] (0,0) -- (2,0) -- (2.5,1.5) -- (0.5,1.5) -- cycle;
             \draw[orange, thick] (0,0) -- (2,0) -- (2.5,1.5) -- (0.5,1.5) -- cycle;
-            \draw[->, thick, red] (0,0) -- (2,0) node[midway, below] {$f(e_0)$};
-            \draw[->, thick, green!50!black] (0,0) -- (0.5,1.5) node[midway, left] {$f(e_1)$};
+            \draw[->, thick, red] (0,0) -- (2,0) node[midway, below] {$f(\CanonicalVector{0})$};
+            \draw[->, thick, green!50!black] (0,0) -- (0.5,1.5) node[midway, left] {$f(\CanonicalVector{1})$};
             \node[below] at (1.25,-0.8) {Target $W$};
         \end{scope}
     \end{tikzpicture}
-    \caption{The universal property in action: specifying $f(e_0)$ and $f(e_1)$ uniquely determines the linear map $T$.
-    The unit square spanned by $\{e_0, e_1\}$ maps to the parallelogram spanned by $\{f(e_0), f(e_1)\}$.}
+    \caption{The universal property in action: specifying $f(\CanonicalVector{0})$ and $f(\CanonicalVector{1})$ uniquely determines the linear map $T$.
+    The unit square spanned by $\{\CanonicalVector{0}, \CanonicalVector{1}\}$ maps to the parallelogram spanned by $\{f(\CanonicalVector{0}), f(\CanonicalVector{1})\}$.}
     \label{fig:universal-property}
 \end{figure}
 \begin{theorem}[Equivalent Characterizations of Free Vector Spaces]%
@@ -311,7 +311,7 @@
 \begin{corollary}[Linear Maps Determined by Basis Values]\label{cor:linear-map-basis}
     A linear map $T: V \to W$ is uniquely determined by its values on any basis of $V$.
     In particular, for finite-dimensional spaces, every linear map $T: K^n \to K^m$ is uniquely 
-    determined by the images of the standard basis vectors $T(e_0), \ldots, T(e_{n-1}) \in K^m$.
+    determined by the images of the standard basis vectors $T(\CanonicalVector{0}), \ldots, T(\CanonicalVector{n-1}) \in K^m$.
 \end{corollary}
 
 \begin{proposition}[Images and Preimages of Subspaces]\label{prop:image-preimage-subspace}

@@ -1,0 +1,447 @@
+% Document/LinearAlgebra/VectorSpaces/Matrices/Part1_Matrices.tex
+% Reordered Chapter 3 -- Part 0 (Why matrices?) + Part 1 (the bijection
+% Hom_K(K^{(X)}, K^{(Y)}) = column-finite matrices, transport of ALL structure, examples).
+% General cardinalities; column-finite matrices; sum convention \sum_{j \in X}. DRAFT for review.
+
+\newpage
+\section{Matrices}
+\label{sec:matrices}
+
+\subsection{Why Matrices?}
+
+\begin{intuition}
+    The previous chapter built linear maps as \emph{abstract} objects: a linear map $T : U \to V$ is a
+    function respecting addition and scalar multiplication, and we proved theorems about such functions
+    --- about kernels, images, rank, injectivity --- without ever writing a single number. That
+    abstraction is exactly what makes the theory clean, but it is useless for \emph{computation}. To
+    actually evaluate $T$ on a vector, to compose two maps, to invert one, or to solve $T(v) = w$, we
+    need a concrete, mechanical surrogate for $T$ --- an array of scalars we can add and multiply by
+    rote.
+
+    A \textbf{matrix} is that surrogate. The whole chapter is the disciplined construction of the
+    dictionary between maps and their numerical surrogates: we show (i) that for maps between
+    coordinate spaces the surrogate loses \emph{no} information --- the correspondence is a bijection
+    --- and (ii) that every operation on maps (composition, addition, scaling, later inversion) can be
+    \emph{transported} across the dictionary into a purely arithmetic operation on the surrogates. Once
+    that is done, ``computing with a linear map'' becomes ``computing with an array of scalars,'' and
+    the abstract guarantees of the previous chapter certify that the computation means what we want.
+\end{intuition}
+
+\begin{goal}
+    Fix the field $K$. For index sets $X$ (the \emph{source} index) and $Y$ (the \emph{target} index)
+    of \emph{arbitrary} cardinality, we will:
+    \begin{enumerate}
+        \item define the set $\MatSpace{Y}{X}[K]$ of $(Y \times X)$-\emph{grids} of scalars --- a pure
+              data structure, with no operations assumed --- and its column-finite subset
+              $\CFMat{Y}{X}[K]$;
+        \item exhibit a canonical \textbf{bijection} between linear maps $K^{(X)} \to K^{(Y)}$ and the
+              column-finite grids $\CFMat{Y}{X}[K]$;
+        \item \emph{transport} every operation --- addition, scalar multiplication, and composition ---
+              from maps onto grids, and \emph{derive} the familiar entry formulas as theorems rather
+              than positing them.
+    \end{enumerate}
+    The finite case --- $X = n = \{0, \dots, n-1\}$ for the source and $Y = m = \{0, \dots, m-1\}$ for
+    the target, giving maps $K^n \to K^m$ --- is the one to keep in mind; there $K^{(X)} = K^n$ and
+    every grid is automatically column-finite.
+\end{goal}
+
+\subsection{Linear Maps Between Coordinate Spaces and Their Grids}
+\label{subsec:bijection-hom-mat}
+
+Recall that for an index set $X$ the coordinate space $K^{(X)}$ is the space of \emph{finitely
+supported} families $X \to K$, with canonical basis $(\CanonicalVector{j})_{j \in X}$, where
+$\CanonicalVector{j}(i) = \delta_{ij}$. We begin with the data structure, deliberately stripped of all
+algebraic structure.
+
+\begin{definition}[Grids and column-finite grids]
+\label{def:matrix-grid}
+    Let $X, Y$ be index sets. A \textbf{$(Y \times X)$-grid over $K$} is a function
+    \[
+        A : Y \times X \longrightarrow K .
+    \]
+    We write $A_{ij} \defeq A(i, j)$ for its \textbf{entries}, where $i \in Y$ is the \textbf{row index}
+    and $j \in X$ the \textbf{column index}, and $A(-, j) : i \mapsto A_{ij}$ for the $j$-th
+    \textbf{column}. The set of all grids is $\MatSpace{Y}{X}[K] \defeq K^{Y \times X}$. A grid $A$ is
+    \textbf{column-finite} if every column has finite support, $A(-, j) \in K^{(Y)}$ for all $j \in X$;
+    the set of column-finite grids is
+    \[
+        \CFMat{Y}{X}[K] \defeq \Set{ A \in \MatSpace{Y}{X}[K] \mid A(-, j) \in K^{(Y)} \ \text{for all}\ j \in X } .
+    \]
+    At this stage these are merely \emph{sets of grids}: no addition, no multiplication, no
+    interpretation as a map.
+\end{definition}
+
+\begin{remark}[{The convention $\MatSpace{Y}{X}[K]$ for maps $K^{(X)} \to K^{(Y)}$, and the finite case}]
+\label{rem:convention-and-finite}
+    The row index $Y$ is written first and matches the \emph{target} $K^{(Y)}$; the column index $X$
+    matches the \emph{source} $K^{(X)}$. This is the convention under which composition of maps reads as
+    left-to-right multiplication of grids (Theorem~\ref{thm:entry-formulas}). When $X$ and $Y$ are
+    \emph{finite}, say $X = n = \{0, \dots, n-1\}$ and $Y = m = \{0, \dots, m-1\}$, every column is
+    automatically finitely supported, so $\CFMat{m}{n}[K] = \MatSpace{m}{n}[K]$ is the set of ordinary
+    $m \times n$ matrices and $K^{(n)} = K^n$. Column-finiteness only bites when $Y$ is infinite.
+\end{remark}
+
+\begin{remark}[Column-finiteness is weaker than global finiteness]
+\label{rem:currying-cfmat}
+    Reading a grid one column at a time identifies $\CFMat{Y}{X}[K]$ with the functions
+    $X \to K^{(Y)}$, $j \mapsto A(-, j)$ --- one finitely supported column per index $j$ --- so that
+    $\CFMat{Y}{X}[K] \cong \bigl(K^{(Y)}\bigr)^{X}$. This is \emph{not} the space $K^{(Y \times X)}$ of
+    grids with \textbf{globally} finite support: column-finiteness constrains each column on its own and
+    still permits infinitely many nonzero columns, whereas $K^{(Y \times X)}$ allows only finitely many
+    nonzero entries in total. The two notions coincide when $X$ is finite and diverge strictly once $X$
+    is infinite. It is column-finiteness --- not global finiteness --- that matches the linear maps
+    $K^{(X)} \to K^{(Y)}$, as the next theorem shows.
+\end{remark}
+
+The link between a map and a grid rests on one elementary fact: a linear map out of $K^{(X)}$ is
+completely pinned down by what it does to the canonical basis, and each such value lies in $K^{(Y)}$,
+hence has finitely many nonzero coordinates.
+
+\begin{theorem}[The Map--Grid Bijection]
+\label{thm:map-grid-bijection}
+    Let $X, Y$ be index sets. The assignment
+    \[
+        \Phi : \Hom[K]{K^{(X)}}{K^{(Y)}} \longrightarrow \MatSpace{Y}{X}[K],
+        \qquad
+        \Phi(T)_{ij} \defeq \bigl( T(\CanonicalVector{j}) \bigr)_i ,
+    \]
+    whose $j$-th column is the image vector $T(\CanonicalVector{j}) \in K^{(Y)}$, takes values in
+    $\CFMat{Y}{X}[K]$ and is a \emph{bijection}
+    \[
+        \Phi : \Hom[K]{K^{(X)}}{K^{(Y)}} \xrightarrow{\ \sim\ } \CFMat{Y}{X}[K] ,
+    \]
+    with inverse denoted $\Phi^{-1}$.
+\end{theorem}
+
+\begin{proof}
+    \emph{$\Phi$ lands in $\CFMat{Y}{X}[K]$.} For each $T$, the $j$-th column of $\Phi(T)$ is
+    $T(\CanonicalVector{j}) \in K^{(Y)}$, which has finite support; hence $\Phi(T)$ is column-finite.
+
+    \emph{Injective.} Suppose $\Phi(S) = \Phi(T)$. Then $S(\CanonicalVector{j}) = T(\CanonicalVector{j})$
+    for every $j \in X$, since two vectors of $K^{(Y)}$ with equal coordinates are equal. A linear map
+    is determined by its values on a basis: for arbitrary $x = \sum_{j \in X} x_j \CanonicalVector{j}
+    \in K^{(X)}$ --- a finite sum, as $x$ has finite support ---
+    \[
+        S(x) = \sum_{j \in X} x_j\, S(\CanonicalVector{j}) = \sum_{j \in X} x_j\, T(\CanonicalVector{j}) = T(x),
+    \]
+    so $S = T$.
+
+    \emph{Surjective.} Let $A \in \CFMat{Y}{X}[K]$. Each column $A(-, j)$ lies in $K^{(Y)}$, so there is
+    a \emph{unique} linear map $T_A : K^{(X)} \to K^{(Y)}$ with $T_A(\CanonicalVector{j}) \defeq A(-, j)$
+    (a basis determines a linear map uniquely by prescribing its values on the basis). By construction
+    $\Phi(T_A)_{ij} = \bigl( T_A(\CanonicalVector{j}) \bigr)_i = A_{ij}$, i.e.\ $\Phi(T_A) = A$. Thus
+    $\Phi$ is onto, and being injective and surjective it is a bijection.
+\end{proof}
+
+\begin{remark}[The fundamental datum: rows index the target, columns the source]
+\label{rem:fundamental-datum}
+    The double index $(i, j)$ is the central bookkeeping device of the chapter. The \textbf{column}
+    index $j$ selects a source basis vector $\CanonicalVector{j}$, and the corresponding column of
+    $\Phi(T)$ \emph{is} its image $T(\CanonicalVector{j})$; the \textbf{row} index $i$ then reads off
+    the $i$-th coordinate of that image in the target. ``Apply $T$ to each input basis vector and stack
+    the results as columns'' is the entire recipe for $\Phi(T)$.
+\end{remark}
+
+\begin{remark}[{Convention: why $(T(\CanonicalVector{j}))_i$ and not $(T(\CanonicalVector{i}))_j$?}]
+\label{rem:index-swap-convention}
+    The definition $\Phi(T)_{ij} = \bigl( T(\CanonicalVector{j}) \bigr)_i$ is a \emph{choice}. We could
+    equally have declared the $(i, j)$-entry to be $\bigl( T(\CanonicalVector{i}) \bigr)_j$, which would
+    identify $\Hom[K]{K^{(X)}}{K^{(Y)}}$ with $\MatSpace{X}{Y}[K]$ (an $X \times Y$ matrix) rather than
+    with $\MatSpace{Y}{X}[K]$ (a $Y \times X$ matrix). In some sense that alternative is more natural:
+    the size of the matrix would then match the order $(X, Y)$ in which source and target appear in
+    $K^{(X)} \to K^{(Y)}$.
+
+    We adopt the swapped convention $\Phi(T)_{ij} = \bigl( T(\CanonicalVector{j}) \bigr)_i$ instead,
+    because we want a map $K^{(X)} \to K^{(Y)}$ to be recorded as a $Y \times X$ matrix --- the
+    \emph{target} index $i$ labelling rows, the \emph{source} index $j$ labelling columns. This is the
+    standard convention. Under it the image $T(\CanonicalVector{j})$ of the $j$-th source basis vector
+    is exactly the $j$-th \emph{column} of $\Phi(T)$, matching the recipe of
+    Remark~\ref{rem:fundamental-datum}; the alternative would stack those images as rows instead. We
+    follow the target-first ($Y \times X$) convention throughout.
+\end{remark}
+
+\begin{definition}[The identity grid]
+\label{def:identity-grid}
+    The \textbf{identity grid} on an index set $X$ is the image of the identity map under the bijection,
+    \[
+        \IdentityMat{X} \defeq \Phi\bigl(\Identity{K^{(X)}}\bigr) \in \CFMat{X}{X}[K] .
+    \]
+    Its entries are the Kronecker delta, read straight off the definition of $\Phi$:
+    \[
+        (\IdentityMat{X})_{ij}
+        = \bigl(\Identity{K^{(X)}}(\CanonicalVector{j})\bigr)_i
+        = (\CanonicalVector{j})_i = \delta_{ij}
+        = \begin{cases} 1 & i = j, \\ 0 & i \neq j, \end{cases}
+    \]
+    so its $j$-th column is $\CanonicalVector{j}$. When $X = n$ is finite we write $\IdentityMat{n}$ for
+    the $n \times n$ identity. Once composition is transported (Subsection~\ref{subsec:transport}),
+    $\IdentityMat{X}$ is the two-sided multiplicative unit (Corollary~\ref{cor:inherited-laws}) --- as
+    befits the grid of the identity map.
+\end{definition}
+
+\begin{remark}[{A one-column grid is a vector: the case $X = 1$}]
+\label{rem:column-grid-is-vector}
+    The most degenerate source index makes the bijection reproduce a fact from the previous chapter. Take
+    $X = 1 = \{0\}$, a one-element set, so that $K^{(X)} = K^{(\{0\})} = K$ with canonical basis the
+    single vector $\CanonicalVector{0} = 1$. A grid in $\CFMat{Y}{1}[K]$ then has a \emph{single} column,
+    and Theorem~\ref{thm:map-grid-bijection} specialises to
+    \[
+        \Hom[K]{K}{K^{(Y)}} \xrightarrow{\ \sim\ } \CFMat{Y}{1}[K],
+        \qquad T \longmapsto T(1),
+    \]
+    that one column being the image $T(1) \in K^{(Y)}$. Composing with the natural isomorphism
+    $\Hom[K]{K}{K^{(Y)}} \cong K^{(Y)}$ that evaluates a map at $1$
+    (Theorem~\ref{thm:hom-k-v-iso}, applied to $V = K^{(Y)}$) collapses both sides to
+    \[
+        \CFMat{Y}{1}[K] \cong K^{(Y)} :
+    \]
+    a one-column grid \emph{is} a vector of $K^{(Y)}$, namely its single column, and conversely every
+    vector is the one-column grid of its own coordinates. This is why a vector is recorded as a column.
+    The same identification, carried out for an \emph{abstract} space $V$ through a chosen basis, is what
+    makes the coordinate vector $\CoordVec[\mathcal B]{v}$ itself a column matrix.
+\end{remark}
+
+\begin{remark}[Two structures on one set: grid versus map --- insist on this]
+\label{rem:grid-vs-map}
+    Theorem~\ref{thm:map-grid-bijection} identifies two \emph{a priori} different kinds of object on
+    the same underlying data. It is worth dwelling on the distinction, because the rest of the chapter
+    consists of moving back and forth across it.
+    \begin{itemize}
+        \item \textbf{The map view} ($T : K^{(X)} \to K^{(Y)}$). Here the object is a \emph{morphism}:
+              it can be evaluated on vectors, \emph{composed} with other maps, and it has structural
+              invariants (kernel, image, rank). These are the operations of linear algebra proper ---
+              they see the object as an arrow in the category of $K$-vector spaces.
+        \item \textbf{The grid view} ($A \in \CFMat{Y}{X}[K]$). Here the object is a \emph{table of
+              numbers}: a function on a rectangle of indices. It supports entrywise operations that
+              ignore the linear-algebraic meaning entirely --- reading off a single entry, extracting a
+              row or column or diagonal, the entrywise (Hadamard) product
+              $(\Hadamard{A}{B})_{ij} = A_{ij} B_{ij}$, the index swap $(i, j) \mapsto (j, i)$, sparsity
+              patterns, reshaping.
+    \end{itemize}
+    The point of $\Phi$ is that these are two \emph{coordinatisations} of one and the same information:
+    the abstract map, its presentation as data, and the bridge between them. The same three-layer
+    pattern governed vectors in the previous chapters --- a geometric vector $v$, its coordinate tuple
+    $\CoordVec[\mathcal B]{v} = \Chart{\mathcal B}(v)$ given by the coordinate isomorphism
+    $\Chart{\mathcal B}$ of an ordered basis, and the bridge $\Chart{\mathcal B}$ itself --- and it will
+    reappear in full force in a later section, when we coordinatise maps between \emph{abstract} spaces.
+    For maps $K^{(X)} \to K^{(Y)}$ the middle ``coordinatisation'' layer is invisible because these
+    spaces already carry canonical bases; the table below records the general shape we are heading
+    toward (here $\Chart{\mathcal B} : V \to K^{(X)}$ is the coordinate isomorphism of a basis
+    $\mathcal B$ of $V$).
+
+    \begin{center}
+    \begin{tabular}{l|l|l|l}
+        Level & Geometric object & Coordinatisation & Data structure \\
+        \hline
+        Scalar & $a \in K$ & $a \in K$ & a field element \\
+        Vector & $v \in V$ & $\Chart{\mathcal B}(v) \in K^{(X)}$ & tuple $(a_i)_{i \in X}$ \\
+        Map & $T : U \to V$ & $\Composition{\Chart{\mathcal B_V}}{\Composition{T}{\Frame{\mathcal B_U}}}$ & grid $(A_{ij})_{(i,j) \in Y \times X}$ \\
+    \end{tabular}
+    \end{center}
+
+    Until we make the identification official in a later section, we keep the two views
+    \emph{notationally distinct}: $\Phi(T)$ is the grid of a map, and $\Phi^{-1}(A)$ is the map of a
+    grid. We do not yet speak of ``the kernel of a matrix'' or let a bare grid act on vectors; that
+    licence is granted only after the identification.
+\end{remark}
+
+\subsection{Transport of Structure}
+\label{subsec:transport}
+
+The set $\Hom[K]{K^{(X)}}{K^{(Y)}}$ of linear maps is itself a $K$-vector space under the
+\textbf{pointwise} operations
+\[
+    (S + T)(x) \defeq S(x) + T(x),
+    \qquad
+    (\lambda T)(x) \defeq \lambda\, T(x),
+\]
+which are again linear (a linear combination of linear maps is linear, as established for linear maps),
+and linear maps can be \emph{composed}. Using the bijection $\Phi$ of
+Theorem~\ref{thm:map-grid-bijection} --- and its inverse $\Phi^{-1}$ --- we \textbf{transport} each of
+these operations onto column-finite grids: we \emph{define} the matrix operation to be whatever $\Phi$
+turns the map operation into. Nothing is posited about grids directly; every entry formula below is
+then \emph{derived}.
+
+\begin{definition}[Matrix operations, by transport along $\Phi$]
+\label{def:matrix-ops-transport}
+    Let $\Phi$ be the bijection of Theorem~\ref{thm:map-grid-bijection} and $\Phi^{-1}$ its inverse.
+    For $A, B \in \CFMat{Y}{X}[K]$ and $\lambda \in K$ define the \textbf{sum} and \textbf{scalar
+    multiple} by transporting the pointwise operations on $\Hom[K]{K^{(X)}}{K^{(Y)}}$:
+    \[
+        A + B \defeq \Phi\bigl(\Phi^{-1}(A) + \Phi^{-1}(B)\bigr),
+        \qquad
+        \lambda A \defeq \Phi\bigl(\lambda\, \Phi^{-1}(A)\bigr).
+    \]
+    For $A \in \CFMat{Y}{Z}[K]$ and $B \in \CFMat{Z}{X}[K]$ define the \textbf{product} by transporting
+    composition,
+    \[
+        A B \defeq \Phi\bigl(\Composition{\Phi^{-1}(A)}{\Phi^{-1}(B)}\bigr) \in \CFMat{Y}{X}[K],
+    \]
+    where $\Phi^{-1}(A) : K^{(Z)} \to K^{(Y)}$ and $\Phi^{-1}(B) : K^{(X)} \to K^{(Z)}$ compose to a
+    map $K^{(X)} \to K^{(Y)}$, whose grid is again column-finite by
+    Theorem~\ref{thm:map-grid-bijection}.
+\end{definition}
+
+Because they are transports of operations on a vector space along a bijection, these endow
+$\CFMat{Y}{X}[K]$ with a $K$-vector space structure for which $\Phi$ is, \emph{by construction}, a
+linear isomorphism; and the product inherits associativity, bilinearity, and units from composition.
+What remains is to compute what these transported operations \emph{are} on entries. Note in particular
+that addition and scalar multiplication are obtained here \emph{by transport}, not posited entrywise
+--- the entrywise formulas are a conclusion.
+
+\begin{theorem}[Entry formulas]
+\label{thm:entry-formulas}
+    The transported operations of Definition~\ref{def:matrix-ops-transport} are given on entries by
+    \[
+        (A + B)_{ij} = A_{ij} + B_{ij},
+        \qquad
+        (\lambda A)_{ij} = \lambda\, A_{ij},
+        \qquad
+        (A B)_{ij} = \sum_{k \in Z} A_{ik}\, B_{kj} ,
+    \]
+    where each product sum is finite because $B(-, j) \in K^{(Z)}$ has finite support, and the product
+    $AB$ is again column-finite. Moreover, for $A \in \CFMat{Y}{X}[K]$ and $x \in K^{(X)}$, the map
+    $\Phi^{-1}(A)$ acts by
+    \[
+        \bigl( \Phi^{-1}(A)(x) \bigr)_i = \sum_{j \in X} A_{ij}\, x_j ,
+    \]
+    a finite sum since $x$ has finite support --- the matrix--vector product.
+\end{theorem}
+
+\begin{proof}
+    \emph{Action on a vector.} Write $S = \Phi^{-1}(A)$, so $S(\CanonicalVector{j}) = A(-, j)$ has
+    $i$-th coordinate $A_{ij}$. For $x = \sum_{j \in X} x_j \CanonicalVector{j}$ (finite support),
+    linearity gives $S(x) = \sum_{j \in X} x_j\, S(\CanonicalVector{j})$, whose $i$-th coordinate is
+    $\sum_{j \in X} x_j A_{ij} = \sum_{j \in X} A_{ij} x_j$ (a finite sum).
+
+    \emph{Sum and scalar multiple.} Let $S = \Phi^{-1}(A)$, $T = \Phi^{-1}(B)$. By definition
+    $A + B = \Phi(S + T)$, so
+    \[
+        (A + B)_{ij} = \bigl((S + T)(\CanonicalVector{j})\bigr)_i
+                     = \bigl(S(\CanonicalVector{j})\bigr)_i + \bigl(T(\CanonicalVector{j})\bigr)_i
+                     = A_{ij} + B_{ij},
+    \]
+    using additivity of coordinates in $K^{(Y)}$. Likewise
+    $(\lambda A)_{ij} = \bigl((\lambda S)(\CanonicalVector{j})\bigr)_i
+    = \lambda\, \bigl(S(\CanonicalVector{j})\bigr)_i = \lambda A_{ij}$.
+
+    \emph{Product.} Let $S = \Phi^{-1}(A) : K^{(Z)} \to K^{(Y)}$ and $T = \Phi^{-1}(B) : K^{(X)} \to
+    K^{(Z)}$. By definition $A B = \Phi(\Composition{S}{T})$, whose $j$-th column is
+    $(\Composition{S}{T})(\CanonicalVector{j}) = S\bigl(T(\CanonicalVector{j})\bigr) = S\bigl(B(-,j)\bigr)$.
+    Now $B(-, j) = \sum_{k \in Z} B_{kj}\, \CanonicalVector{k}$ is a finite sum (column-finiteness of
+    $B$), so by linearity of $S$ and the action formula just proved,
+    \[
+        (A B)_{ij} = \Bigl( S\bigl(B(-, j)\bigr) \Bigr)_i
+        = \sum_{k \in Z} B_{kj}\, \bigl( S(\CanonicalVector{k}) \bigr)_i
+        = \sum_{k \in Z} B_{kj}\, A_{ik}
+        = \sum_{k \in Z} A_{ik}\, B_{kj} .
+    \]
+    Finally, $\Set{ i \in Y \mid (AB)_{ij} \neq 0 } \SubsetEq \BigUnion[k \in \operatorname{supp} B(-,j)]
+    \Set{ i \in Y \mid A_{ik} \neq 0 }$ is a finite union of finite sets, so $(AB)(-, j) \in K^{(Y)}$ and $AB$ is
+    column-finite, consistent with Definition~\ref{def:matrix-ops-transport}.
+\end{proof}
+
+\begin{remark}[The matrix--vector product is transport of structure too]
+\label{rem:matvec-is-transport}
+    The action formula $\bigl(\Phi^{-1}(A)(x)\bigr)_i = \sum_{j \in X} A_{ij}\, x_j$ reads like a new
+    operation --- a matrix acting on a vector --- but it is transport of structure once more, with
+    nothing extra to prove. By Remark~\ref{rem:application-is-composition}, applying the map
+    $\Phi^{-1}(A)$ to a vector $x \in K^{(X)}$ is composition with the name $T_x : K \to K^{(X)}$,
+    $1_K \mapsto x$, of that vector: $\Phi^{-1}(A)(x) = \Composition{\Phi^{-1}(A)}{T_x}$. Read through
+    $\Phi$, the vector $x$ is the single-column grid $\Phi(T_x)$ --- the one-column-grid-is-a-vector
+    identification of Remark~\ref{rem:column-grid-is-vector}, the case $X = 1$ where
+    $\Hom[K]{K}{K^{(X)}} \cong K^{(X)}$ --- and the matrix--vector product $A x$ is the matrix product of
+    $A$ with that column (Definition~\ref{def:matrix-ops-transport}). Hence ``matrix times vector'' is not
+    a separate primitive: it is matrix multiplication with a one-column factor --- a special case of the
+    matrix product --- exactly as application is the one-argument case of composition.
+\end{remark}
+
+\begin{corollary}[Inherited algebraic laws]
+\label{cor:inherited-laws}
+    Matrix addition and scalar multiplication make $\CFMat{Y}{X}[K]$ a $K$-vector space, and $\Phi$ is
+    a linear isomorphism $\Hom[K]{K^{(X)}}{K^{(Y)}} \xrightarrow{\sim} \CFMat{Y}{X}[K]$. Matrix
+    multiplication is associative and bilinear wherever the index sets match, with the identity grid
+    $\IdentityMat{X}$ (Definition~\ref{def:identity-grid}) as two-sided unit:
+    \[
+        (AB)C = A(BC), \quad A(B + C) = AB + AC, \quad (A + B)C = AC + BC,
+        \quad \IdentityMat{Y} A = A = A\, \IdentityMat{X} .
+    \]
+    In particular, for $X = Y$, $\Phi$ is an isomorphism of $K$-algebras
+    $\End[K]{K^{(X)}} \xrightarrow{\sim} \CFMat{X}{X}[K]$.
+\end{corollary}
+
+\begin{proof}
+    Each law holds for the corresponding operation on maps --- the pointwise operations make
+    $\Hom[K]{K^{(X)}}{K^{(Y)}}$ a vector space, composition is associative and bilinear, and the
+    identity map $\Identity{K^{(X)}}$ is its unit. Transporting along the bijection $\Phi$ preserves
+    every such identity: associativity follows from
+    $\Composition{(\Composition{R}{S})}{T} = \Composition{R}{(\Composition{S}{T})}$ together with the
+    definitions, and $\Phi(\Identity{K^{(X)}}) = \IdentityMat{X}$ since
+    $\bigl(\Identity{K^{(X)}}(\CanonicalVector{j})\bigr)_i = (\CanonicalVector{j})_i = \delta_{ij}$. No
+    entrywise computation is needed.
+\end{proof}
+
+\begin{remark}[The general grid space and the action map]
+\label{rem:action-map}
+    Dropping column-finiteness, every grid $A \in \MatSpace{Y}{X}[K]$ still defines a linear
+    \textbf{action map}
+    \[
+        \mu_A : K^{(X)} \to K^{Y}, \qquad \bigl(\mu_A(x)\bigr)_i \defeq \sum_{j \in X} A_{ij}\, x_j ,
+    \]
+    the sum being finite because $x \in K^{(X)}$ has finite support. Column-finiteness of $A$ is
+    exactly the condition that $\mu_A$ land in $K^{(Y)}$ rather than the full product $K^Y$, i.e.\ that
+    $A$ represent a map $K^{(X)} \to K^{(Y)}$. Thus $\CFMat{Y}{X}[K]$ is the correct home for matrices
+    of maps between coordinate spaces at \emph{any} cardinality; the larger $\MatSpace{Y}{X}[K]$ becomes
+    indispensable only once a topology lets one make sense of non-finite sums (the passage from
+    algebra to functional analysis).
+\end{remark}
+
+\subsection{Practical Examples}
+
+We compute with the formulas just derived; everything below is elementary arithmetic in the finite case
+$K^n \to K^m$, where every grid is column-finite.
+
+\begin{example}[Reading off $\Phi(T)$]
+\label{ex:read-off}
+    Let $T : K^3 \to K^2$ be $T(x_0, x_1, x_2) = (x_0 + 2 x_2,\; x_0 - x_1)$. Applying $T$ to the
+    canonical basis $(\CanonicalVector{0}, \CanonicalVector{1}, \CanonicalVector{2})$ of $K^3$ gives the
+    columns:
+    \[
+        T(\CanonicalVector{0}) = (1, 1), \quad
+        T(\CanonicalVector{1}) = (0, -1), \quad
+        T(\CanonicalVector{2}) = (2, 0),
+        \qquad
+        \Phi(T) = \begin{pmatrix} 1 & 0 & 2 \\ 1 & -1 & 0 \end{pmatrix} \in \CFMat{2}{3}[K].
+    \]
+    The action formula recovers $T$: for $x = (x_0, x_1, x_2)$,
+    $\bigl(\Phi^{-1}(\Phi(T))(x)\bigr) = \bigl(\sum_{j \in 3} \Phi(T)_{0j} x_j,\ \sum_{j \in 3}
+    \Phi(T)_{1j} x_j\bigr) = (x_0 + 2x_2,\; x_0 - x_1) = T(x)$.
+\end{example}
+
+\begin{example}[Composition is multiplication]
+\label{ex:composition-is-mult}
+    Let $T : K^3 \to K^2$ be as above and $S : K^2 \to K^2$, $S(y_0, y_1) = (y_1,\; y_0 + y_1)$, so
+    $\Phi(S) = \begin{psmallmatrix} 0 & 1 \\ 1 & 1 \end{psmallmatrix}$. The composite
+    $\Composition{S}{T} : K^3 \to K^2$ has grid
+    \[
+        \Phi(\Composition{S}{T}) = \Phi(S)\, \Phi(T)
+        = \begin{pmatrix} 0 & 1 \\ 1 & 1 \end{pmatrix}
+          \begin{pmatrix} 1 & 0 & 2 \\ 1 & -1 & 0 \end{pmatrix}
+        = \begin{pmatrix} 1 & -1 & 0 \\ 2 & -1 & 2 \end{pmatrix}.
+    \]
+    Checking directly: $S(T(x)) = S(x_0 + 2x_2,\, x_0 - x_1) = (x_0 - x_1,\; 2x_0 - x_1 + 2x_2)$, whose
+    grid is exactly the product above. The shared index $k$ in
+    $(\Phi(S)\Phi(T))_{ij} = \sum_{k \in 2} \Phi(S)_{ik}\Phi(T)_{kj}$ is the intermediate space $K^2$
+    being cancelled --- this is why the inner index sets must agree.
+\end{example}
+
+\begin{example}[Associativity for free]
+    With $A = \begin{psmallmatrix} 1 & 1 \\ 0 & 1 \end{psmallmatrix}$,
+    $B = \begin{psmallmatrix} 2 & 0 \\ 1 & 3 \end{psmallmatrix}$,
+    $C = \begin{psmallmatrix} 1 \\ 1 \end{psmallmatrix}$ one verifies
+    $(AB)C = \begin{psmallmatrix} 3 & 3 \\ 1 & 3 \end{psmallmatrix}\begin{psmallmatrix} 1 \\ 1 \end{psmallmatrix}
+    = \begin{psmallmatrix} 6 \\ 4 \end{psmallmatrix}$ and
+    $A(BC) = \begin{psmallmatrix} 1 & 1 \\ 0 & 1 \end{psmallmatrix}\begin{psmallmatrix} 2 \\ 4 \end{psmallmatrix}
+    = \begin{psmallmatrix} 6 \\ 4 \end{psmallmatrix}$. The agreement is guaranteed in advance by
+    Corollary~\ref{cor:inherited-laws}: it is associativity of composition, read through $\Phi$.
+\end{example}

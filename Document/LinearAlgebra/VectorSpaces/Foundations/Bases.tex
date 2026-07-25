@@ -40,7 +40,7 @@
         \item $\{(1, 0), (0, 1)\}$ is the standard basis for $\bb{R}^2$
         \item $\{(1, 1), (1, -1)\}$ is a non-standard basis for $\bb{R}^2$
         \item $\{1, X, X^2, \ldots\}$ is a basis for $K[X]$
-        \item $\{e_0, \ldots, e_{n-1}\}$ is the standard basis for $K^n$
+        \item $\{\CanonicalVector{0}, \ldots, \CanonicalVector{n-1}\}$ is the standard basis for $K^n$
     \end{enumerate}
 
     \begin{center}
@@ -49,8 +49,8 @@
         \begin{scope}
             \draw[->, thick] (-0.3,0) -- (2,0) node[right] {$x$};
             \draw[->, thick] (0,-0.3) -- (0,2) node[above] {$y$};
-            \draw[->, very thick, blue] (0,0) -- (1,0) node[below right] {$e_0$};
-            \draw[->, very thick, red] (0,0) -- (0,1) node[above left] {$e_1$};
+            \draw[->, very thick, blue] (0,0) -- (1,0) node[below right] {$\CanonicalVector{0}$};
+            \draw[->, very thick, red] (0,0) -- (0,1) node[above left] {$\CanonicalVector{1}$};
             \node at (0.8,-0.8) {Standard basis};
         \end{scope}
 
@@ -71,19 +71,19 @@
 
     \textbf{Bases (linearly independent + spanning)}:
     \begin{itemize}
-        \item $\{e_0, e_1, e_2\} = \{(1,0,0), (0,1,0), (0,0,1)\}$ --- standard basis
+        \item $\{\CanonicalVector{0}, \CanonicalVector{1}, \CanonicalVector{2}\} = \{(1,0,0), (0,1,0), (0,0,1)\}$ --- standard basis
         \item $\{(1,1,0), (1,0,1), (0,1,1)\}$ --- non-standard basis (verify: determinant $\neq 0$)
         \item $\{(1,0,0), (1,1,0), (1,1,1)\}$ --- upper triangular basis
     \end{itemize}
 
     \textbf{Not a basis (spanning but dependent)}:
     \begin{itemize}
-        \item $\{e_0, e_1, e_2, (1,1,1)\}$ --- 4 vectors in $\bb{R}^3$, so dependent
+        \item $\{\CanonicalVector{0}, \CanonicalVector{1}, \CanonicalVector{2}, (1,1,1)\}$ --- 4 vectors in $\bb{R}^3$, so dependent
     \end{itemize}
 
     \textbf{Not a basis (independent but not spanning)}:
     \begin{itemize}
-        \item $\{e_0, e_1\}$ --- only spans the $xy$-plane, not all of $\bb{R}^3$
+        \item $\{\CanonicalVector{0}, \CanonicalVector{1}\}$ --- only spans the $xy$-plane, not all of $\bb{R}^3$
     \end{itemize}
 
     \begin{center}
@@ -93,9 +93,9 @@
         z={(0cm,1cm)}]
 
         % Standard basis in R^3
-        \draw[->, very thick, blue] (0,0,0) -- (1.5,0,0) node[right] {$e_0$};
-        \draw[->, very thick, red] (0,0,0) -- (0,1.5,0) node[above right] {$e_1$};
-        \draw[->, very thick, green!60!black] (0,0,0) -- (0,0,1.5) node[above] {$e_2$};
+        \draw[->, very thick, blue] (0,0,0) -- (1.5,0,0) node[right] {$\CanonicalVector{0}$};
+        \draw[->, very thick, red] (0,0,0) -- (0,1.5,0) node[above right] {$\CanonicalVector{1}$};
+        \draw[->, very thick, green!60!black] (0,0,0) -- (0,0,1.5) node[above] {$\CanonicalVector{2}$};
 
         % Coordinate axes (lighter)
         \draw[thin, gray] (-0.5,0,0) -- (2,0,0);
@@ -257,7 +257,7 @@
 \begin{proof}
     Consider the poset
     \[
-        \mathcal{P} = \Set{(L_0, S_0) \mid L_0 \subseteq L, S_0 \subseteq S, \exists \text{ bijection } g: L_0 \to S_0,
+        \mathcal{P} = \Set{(L_0, S_0) \mid L_0 \subseteq L, S_0 \subseteq S, \Exists :{g \colon L_0 \to S_0}{g \text{ a bijection}},
         (S \setminus S_0) \Union L_0 \text{ spans } V}
     \]
     ordered by $(L_0, S_0) \leq (L_1, S_1)$ iff $L_0 \subseteq L_1$ and $S_0 \subseteq S_1$.
@@ -348,7 +348,7 @@
 \begin{proposition}[Dimensions of Finite-Dimensional Spaces]\label{prop:dim-finite}
     The following hold:
     \begin{enumerate}
-        \item $\Dim[K]{K^n} = n$, since $\{e_0, \ldots, e_{n-1}\}$ is a basis.
+        \item $\Dim[K]{K^n} = n$, since $\{\CanonicalVector{0}, \ldots, \CanonicalVector{n-1}\}$ is a basis.
         \item $\Dim[K]{K[X]_{\leq n}} = n + 1$, since $\{1, X, \ldots, X^n\}$ is a basis.
         \item $\Dim[K]{\MatSpace{m}{n}[K]} = mn$, since the elementary matrices $E_{ij}$ form a basis.
     \end{enumerate}
@@ -357,8 +357,8 @@
 \begin{proof}
     In each case, we exhibit a basis and count its elements.
 
-    \textbf{(1)}: The standard vectors $e_i = (0, \ldots, 0, 1, 0, \ldots, 0)$ with $1$ in position $i$
-    span $K^n$ (any $(a_0, \ldots, a_{n-1}) = \sum_{i \in n} a_i e_i$) and are linearly independent
+    \textbf{(1)}: The standard vectors $\CanonicalVector{i} = (0, \ldots, 0, 1, 0, \ldots, 0)$ with $1$ in position $i$
+    span $K^n$ (any $(a_0, \ldots, a_{n-1}) = \sum_{i \in n} a_i \CanonicalVector{i}$) and are linearly independent
     (evaluate at position $i$ to see coefficient $a_i$ is determined).
 
     \textbf{(2)}: The monomials $1, X, \ldots, X^n$ span $K[X]_{\leq n}$ by definition.
@@ -452,9 +452,79 @@
 \end{proposition}
 
 \begin{proof}
-    By Corollary~\ref{cor:direct-sum-dim}:
-    $\Dim[K]{V} = \Dim[K]{U} + \Dim[K]{W_1} = \Dim[K]{U} + \Dim[K]{W_2}$.
-    Thus $\Dim[K]{W_1} = \Dim[K]{V} - \Dim[K]{U} = \Dim[K]{W_2}$.
+    The additive identity
+    $\Dim[K]{U} + \Dim[K]{W_1} = \Dim[K]{V} = \Dim[K]{U} + \Dim[K]{W_2}$
+    (Corollary~\ref{cor:direct-sum-dim}) does \emph{not} permit cancelling $\Dim[K]{U}$:
+    for infinite cardinals, $\kappa + \mu = \kappa + \nu$ does not imply $\mu = \nu$
+    (for instance $\aleph_0 + 1 = \aleph_0 + 2$). Instead we construct an explicit bijection
+    between $W_1$ and $W_2$ that carries a basis to a basis.
+
+    \textbf{The projection onto $W_1$ along $U$.}
+    Since $V = U \DirectSum W_1$, Theorem~\ref{thm:direct-sum-equiv} gives every $v \in V$
+    a \emph{unique} representation $v = u + w$ with $u \in U$ and $w \in W_1$.
+    Define a function $\varphi \colon V \to W_1$ by $\varphi(v) = w$, the $W_1$-component of $v$.
+
+    \emph{$\varphi$ preserves the vector space operations.}
+    Let $v = u + w$ and $v' = u' + w'$ be the decompositions of $v, v' \in V$
+    (so $u, u' \in U$ and $w, w' \in W_1$), and let $\lambda \in K$. Then
+    \[
+        v + v' = (u + u') + (w + w'), \qquad \lambda v = (\lambda u) + (\lambda w),
+    \]
+    where $u + u', \lambda u \in U$ and $w + w', \lambda w \in W_1$.
+    By uniqueness of the decomposition these \emph{are} the representations of $v + v'$ and
+    $\lambda v$, so
+    \[
+        \varphi(v + v') = w + w' = \varphi(v) + \varphi(v'), \qquad
+        \varphi(\lambda v) = \lambda w = \lambda\, \varphi(v).
+    \]
+
+    \emph{Two immediate values.} If $w \in W_1$ then $w = 0 + w$ is its decomposition, so
+    $\varphi(w) = w$. If $u \in U$ then $u = u + 0$, so $\varphi(u) = 0$.
+    Conversely, $\varphi(v) = 0$ means the $W_1$-component of $v$ vanishes, i.e.\ $v = u \in U$.
+    Hence
+    \begin{equation}
+        \varphi(v) = 0 \iff v \in U. \tag{$\ast$}\label{eq:complement-kernel}
+    \end{equation}
+
+    \textbf{The restriction of $\varphi$ to $W_2$ is a bijection onto $W_1$.}
+    Let $g \defeq \Restriction{\varphi}[W_2] \colon W_2 \to W_1$.
+
+    \emph{Injective.} Suppose $w \in W_2$ with $g(w) = 0$. By~\eqref{eq:complement-kernel},
+    $w \in U$, so $w \in U \Intersect W_2 = \{0\}$ (as $V = U \DirectSum W_2$), giving $w = 0$.
+
+    \emph{Surjective.} Let $w_1 \in W_1$. Since $V = U \DirectSum W_2$, write
+    $w_1 = u + w_2$ with $u \in U$ and $w_2 \in W_2$. Applying $\varphi$ and using
+    $\varphi(u) = 0$ together with $\varphi(w_1) = w_1$,
+    \[
+        w_1 = \varphi(w_1) = \varphi(u) + \varphi(w_2) = 0 + g(w_2) = g(w_2),
+    \]
+    so $w_1$ lies in the image of $g$.
+
+    \textbf{Transporting a basis.}
+    Let $B$ be a basis of $W_2$, and set $\DirectImage{g}{B} = \Set{g(b) \mid b \in B}$.
+    We show $\DirectImage{g}{B}$ is a basis of $W_1$ with $\Card{\DirectImage{g}{B}} = \Card{B}$.
+
+    Since $g$ is injective, the vectors $g(b)$ for $b \in B$ are pairwise distinct, so
+    $b \mapsto g(b)$ is a bijection of $B$ onto $\DirectImage{g}{B}$ and
+    $\Card{\DirectImage{g}{B}} = \Card{B}$.
+
+    \emph{Spanning.} Let $w_1 \in W_1$. By surjectivity $w_1 = g(w_2)$ for some $w_2 \in W_2$,
+    and $w_2 = \sum_{i \in F} \lambda_i b_i$ for a finite $F$ and distinct $b_i \in B$.
+    As $g$ preserves the operations,
+    \[
+        w_1 = g\!\left(\sum_{i \in F} \lambda_i b_i\right) = \sum_{i \in F} \lambda_i\, g(b_i)
+        \in \Span[K]{\DirectImage{g}{B}}.
+    \]
+
+    \emph{Linear independence.} Suppose $\sum_{i \in F} \mu_i\, g(b_i) = 0$ for a finite $F$
+    and distinct $b_i \in B$. Then $g\!\left(\sum_{i \in F} \mu_i b_i\right) = 0$, so
+    $\sum_{i \in F} \mu_i b_i = 0$ by injectivity of $g$, whence all $\mu_i = 0$ by linear
+    independence of $B$.
+
+    Therefore $\DirectImage{g}{B}$ is a basis of $W_1$, and
+    \[
+        \Dim[K]{W_1} = \Card{\DirectImage{g}{B}} = \Card{B} = \Dim[K]{W_2}. \qedhere
+    \]
 \end{proof}
 
 \begin{definition}[Codimension]\label{def:codimension}
